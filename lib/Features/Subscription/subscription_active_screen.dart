@@ -4,6 +4,7 @@ import 'package:readytogo/Features/Donate/add_new_card.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
 import '../../widgets/boxDecorationWidget.dart';
+import '../../widgets/custom_alert_dialog.dart';
 
 class SubscriptionActiveScreen extends StatefulWidget {
   String imageAsset, planName, price;
@@ -98,7 +99,8 @@ class _SubscriptionActiveScreenState extends State<SubscriptionActiveScreen> {
                     label: 'Next Payment', value: 'July 1, 2025'),
                 SubscriptionDetailRow(
                     label: 'Payment Method', value: 'Mastercard'),
-                SubscriptionDetailRow(label: 'Total', value: '\$${widget.price}.00'),
+                SubscriptionDetailRow(
+                    label: 'Total', value: '\$${widget.price}.00'),
                 SizedBox(height: 30),
                 Row(
                   children: [
@@ -107,7 +109,9 @@ class _SubscriptionActiveScreenState extends State<SubscriptionActiveScreen> {
                         width: 160,
                         height: 51,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showCancelSubscriptionDialog(context);
+                          },
                           style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
