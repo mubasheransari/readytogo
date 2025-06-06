@@ -13,8 +13,45 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 1;
+
+    final List<Widget> _screens = [
+    const MyGeoScreen(),
+    ResourcesScreen(),
+    FindProvidersScreen(
+    ),
+    const ProfileScreen(),
+  ];
+
+  // final List<Widget> _screens = const [
+  //   MyGeoScreen(),
+  //    ResourcesScreen(),
+  //   FindProvidersScreen(),
+  //   ProfileScreen(),
+  // ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: BottomNavBarExact(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
+    );
+  }
+}
+
+/*class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1; // Default to Resources tab
 
   // List of screens shown on tabs
@@ -43,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // drawer: CustomNavDrawer(),
     );
   }
-}
+}*/
 
 class BottomNavBarExact extends StatelessWidget {
   final int currentIndex;
