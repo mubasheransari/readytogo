@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // List of screens shown on tabs
   final List<Widget> _screens = [
     const MyGeoScreen(),
-    ResourcesScreen(),
+    ResourcesScreen()
     FindProvidersScreen(
       key: mapKey,
     ),

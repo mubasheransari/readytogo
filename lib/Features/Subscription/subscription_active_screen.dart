@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/Donate/add_new_card.dart';
+import 'package:readytogo/Features/Subscription/subscription_success_screen.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
-
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/custom_alert_dialog.dart';
 
@@ -132,7 +132,13 @@ class _SubscriptionActiveScreenState extends State<SubscriptionActiveScreen> {
                         width: 160,
                         height: 51,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        SubscriptionSuccess(image: widget.imageAsset)));
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Constants().themeColor,
                             shape: RoundedRectangleBorder(
@@ -140,7 +146,7 @@ class _SubscriptionActiveScreenState extends State<SubscriptionActiveScreen> {
                             ),
                           ),
                           child: CustomTextWidget(
-                              text: "Change",
+                              text: "Continue",
                               color: Colors.white,
                               textSize: 18,
                               fontWeight: FontWeight.w500),

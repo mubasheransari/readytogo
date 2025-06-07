@@ -47,7 +47,16 @@ class SubscriptionScreen extends StatelessWidget {
                   price: '\$29/month',
                   features: ['All Basic features', 'Advanced analytics'],
                   buttonText: 'Get Pro Plan',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SubscriptionActiveScreen(
+                                  imageAsset: "assets/proplan.png",
+                                  planName: "Pro Plan",
+                                  price: "29",
+                                )));
+                  },
                   icon: Icons.person,
                   imageassets: "assets/proplan.png"),
               SizedBox(height: 20),
@@ -62,7 +71,16 @@ class SubscriptionScreen extends StatelessWidget {
                     'Custom integrations'
                   ],
                   buttonText: 'Get Enterprise Plan',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SubscriptionActiveScreen(
+                                  imageAsset: "assets/enterpriseplan.png",
+                                  planName: "Enterprise Plan",
+                                  price: "49",
+                                )));
+                  },
                   icon: Icons.credit_card,
                   imageassets: "assets/enterpriseplan.png"),
               // SizedBox(height: 10),
@@ -70,7 +88,7 @@ class SubscriptionScreen extends StatelessWidget {
               Center(
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.88,
-                  height: 90,
+                  height: 99,
                   child: Center(
                     child: ElevatedButton(
                       onPressed: () {},
@@ -93,14 +111,14 @@ class SubscriptionScreen extends StatelessWidget {
                             style: TextStyle(
                                 color: Constants().themeColor,
                                 fontFamily: 'Satoshi',
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w600),
                           ),
-                          const SizedBox(width: 5),
+                          const SizedBox(width: 2),
                           Image.asset(
                             'assets/arrow-narrow-left.png',
-                            width: 25,
-                            height: 25,
+                            width: 18,
+                            height: 18,
                             color: Constants().themeColor,
                           ),
                         ],
@@ -468,7 +486,7 @@ class PlanCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: 320,
+        height: 300,
         width: MediaQuery.of(context).size.width * 0.95,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -677,11 +695,12 @@ class PlanCard extends StatelessWidget {
                   //     Text('$feature', style: TextStyle(fontSize: 14))),
                   SizedBox(height: 22),
                   Center(
-                    child: Container(
+                    child: SizedBox(
                       width: 344, //MediaQuery.of(context).size.width * 0.75,
-                      height: 60,
+                      height: 52,
                       child: ElevatedButton(
                         onPressed: onPressed,
+                        // ignore: sort_child_properties_last
                         child: CustomTextWidget(
                           text: buttonText,
                           color: Colors.white,
@@ -690,7 +709,7 @@ class PlanCard extends StatelessWidget {
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Constants().themeColor,
-                          minimumSize: Size(double.infinity, 40),
+                          // minimumSize: Size(double.infinity, 40),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50)),
                         ),
