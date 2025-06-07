@@ -20,7 +20,7 @@ class CustomScaffoldWidget extends StatelessWidget {
     this.appBar,
     this.drawer,
     this.isDrawerRequired = false,
-    this.isAppBarContentRequired = true
+    this.isAppBarContentRequired = true,
   }) : super(key: key);
 
   @override
@@ -36,61 +36,64 @@ class CustomScaffoldWidget extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-         isAppBarContentRequired == true ?     Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    isDrawerRequired
-                        ? InkWell(
+              isAppBarContentRequired == true
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          isDrawerRequired
+                              ? InkWell(
+                                  onTap: () {
+                                    _scaffoldKey.currentState?.openDrawer();
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 22,
+                                    backgroundColor: Colors.white,
+                                    child: Image.asset("assets/menu-02.png"),
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const CircleAvatar(
+                                    radius: 22,
+                                    backgroundColor: Colors.white,
+                                    child: Icon(Icons.arrow_back,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                          Text(
+                            appbartitle,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Satoshi',
+                            ),
+                          ),
+                          InkWell(
                             onTap: () {
-                              _scaffoldKey.currentState?.openDrawer();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const NotificationScreen(),
+                                ),
+                              );
                             },
                             child: CircleAvatar(
                               radius: 22,
                               backgroundColor: Colors.white,
-                              child: Image.asset("assets/menu-02.png"),
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const CircleAvatar(
-                              radius: 22,
-                              backgroundColor: Colors.white,
-                              child:
-                                  Icon(Icons.arrow_back, color: Colors.black),
+                              child: Image.asset("assets/notification.png"),
                             ),
                           ),
-                    Text(
-                      appbartitle,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Satoshi',
+                        ],
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NotificationScreen(),
-                          ),
-                        );
-                      },
-                      child: CircleAvatar(
-                        radius: 22,
-                        backgroundColor: Colors.white,
-                        child: Image.asset("assets/notification.png"),
-                      ),
-                    ),
-                  ],
-                ),
-              ):SizedBox(),
+                    )
+                  : SizedBox(),
               Expanded(child: body),
             ],
           ),

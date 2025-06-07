@@ -3,6 +3,7 @@ import 'package:readytogo/Features/Donate/donate_navbar.dart';
 import 'package:readytogo/Features/Subscription/subscription_screen.dart';
 import 'package:readytogo/Features/howtouse_screen.dart';
 
+import 'Settings/settings_screen.dart';
 import 'aboutus_screen.dart';
 import 'manage_my_geo_navbar.dart';
 
@@ -203,8 +204,17 @@ class CustomNavDrawer extends StatelessWidget {
                             ),
                             _buildMenuItem("assets/lifesupportguard.png",
                                 'Life Guard Support'),
-                            _buildMenuItem(
-                                "assets/settings-02.png", 'Settings'),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SettingsScreen()));
+                              },
+                              child: _buildMenuItem(
+                                  "assets/settings-02.png", 'Settings'),
+                            ),
                             _buildMenuItem("assets/aboutus.png", 'About Us',
                                 onTap: () {
                               Navigator.push(
