@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/Features/Resources/reading_material_screen.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 import '../../widgets/boxDecorationWidget.dart';
 
@@ -41,6 +42,13 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                       child: _ResourceCard(
                         item: items[index],
                         onTap: () {
+                          if (items[index].title == "Reading Materials") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ReadingMaterialsScreen()));
+                          }
                           print("Click ${items[index].title}");
                         },
                       ),
