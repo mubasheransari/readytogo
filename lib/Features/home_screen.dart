@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Features/profile_screen.dart';
-import 'package:readytogo/Features/resources_screen.dart';
+import 'package:readytogo/Features/Resources/resources_screen.dart';
 import 'package:readytogo/Features/search_screen.dart'; // This is FindProvidersScreen
 import 'mygeo_screen.dart';
 import 'navdrawer.dart';
