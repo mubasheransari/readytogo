@@ -125,8 +125,11 @@ class _ResourceCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.only(top: 80.0),
-                  child: Image.asset("assets/arrow-up-right.png"))
+                padding: const EdgeInsets.only(top: 80.0),
+                child: Icon(Icons.open_in_new_rounded,
+                    color: Color(0xFF4A60A1),
+                    size: 20), //Image.asset("assets/arrow-up-right.png")
+              )
             ],
           ),
         ),
