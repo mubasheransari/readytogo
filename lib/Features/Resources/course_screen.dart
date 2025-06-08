@@ -98,7 +98,7 @@ class CourseScreen extends StatelessWidget {
         boxShadow: [
           if (isSelected)
             BoxShadow(
-              color: Colors.blue.withOpacity(0.3),
+              color: Constants().themeColor,
               blurRadius: 5,
               offset: const Offset(0, 2),
             ),
