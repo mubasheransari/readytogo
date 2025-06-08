@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
 import '../../Constants/constants.dart';
 
@@ -7,32 +8,18 @@ class CourseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F8FF),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 16.0),
-          child: Icon(Icons.menu, color: Colors.black),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: Icon(Icons.notifications_none, color: Colors.black),
-          ),
-        ],
-      ),
+    return CustomScaffoldWidget(
+      appbartitle: 'Courses',
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              "Courses",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-          ),
+          // const Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 20),
+          //   child: Text(
+          //     "Courses",
+          //     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          //   ),
+          // ),
           const SizedBox(height: 16),
           SizedBox(
             height: 40,
