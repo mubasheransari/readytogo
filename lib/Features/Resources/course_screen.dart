@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
 import '../../Constants/constants.dart';
+import 'courses_details.dart';
 
 class CourseScreen extends StatelessWidget {
   const CourseScreen({super.key});
@@ -93,7 +94,7 @@ class CourseScreen extends StatelessWidget {
       margin: const EdgeInsets.only(right: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: isSelected ? Colors.blue : Colors.white,
+        color: isSelected ? Constants().themeColor : Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           if (isSelected)
@@ -132,81 +133,88 @@ class CourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.90,
-      height: 120,
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
-                  image,
-                  width: 108,
-                  height: 104,
-                  fit: BoxFit.cover,
+    return InkWell(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CourseDetailPage()));
+      },
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.90,
+        height: 120,
+        child: Card(
+          margin: const EdgeInsets.only(bottom: 16),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    image,
+                    width: 108,
+                    height: 104,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            title,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                fontFamily: 'satoshi'),
-                            overflow: TextOverflow.ellipsis,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  fontFamily: 'satoshi'),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                        // Icon(
-                        //   isFavorite ? Icons.favorite : Icons.favorite_border,
-                        //   color: isFavorite ? Colors.red : Colors.grey,
-                        // )
-                      ],
+                          // Icon(
+                          //   isFavorite ? Icons.favorite : Icons.favorite_border,
+                          //   color: isFavorite ? Colors.red : Colors.grey,
+                          // )
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text('$duration | $lessons',
+                          style: TextStyle(
+                              color: Colors.grey[800], fontFamily: 'satoshi')),
+                      const SizedBox(height: 6),
+                      LinearProgressIndicator(
+                        value: progress,
+                        backgroundColor: Colors.grey[200],
+                        color: Constants().themeColor,
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  children: [
+                    Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : Colors.grey,
                     ),
-                    const SizedBox(height: 4),
-                    Text('$duration | $lessons',
-                        style: TextStyle(
-                            color: Colors.grey[800], fontFamily: 'satoshi')),
-                    const SizedBox(height: 6),
-                    LinearProgressIndicator(
-                      value: progress,
-                      backgroundColor: Colors.grey[200],
-                      color: Constants().themeColor,
-                    )
+                    SizedBox(
+                      height: 5,
+                    ),
+                    const Icon(Icons.open_in_new, color: Colors.grey),
                   ],
                 ),
-              ),
-              const SizedBox(width: 10),
-              Column(
-                children: [
-                  Icon(
-                    isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : Colors.grey,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  const Icon(Icons.open_in_new, color: Colors.grey),
-                ],
-              ),
-              // Icon(
-              //   isFavorite ? Icons.favorite : Icons.favorite_border,
-              //   color: isFavorite ? Colors.red : Colors.grey,
-              // ),
-              // const Icon(Icons.open_in_new, color: Colors.grey),
-            ],
+                // Icon(
+                //   isFavorite ? Icons.favorite : Icons.favorite_border,
+                //   color: isFavorite ? Colors.red : Colors.grey,
+                // ),
+                // const Icon(Icons.open_in_new, color: Colors.grey),
+              ],
+            ),
           ),
         ),
       ),
