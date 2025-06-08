@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/Features/Resources/course_screen.dart';
 import 'package:readytogo/Features/Resources/reading_material_screen.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 import '../../widgets/boxDecorationWidget.dart';
@@ -48,6 +49,11 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         ReadingMaterialsScreen()));
+                          } else if (items[index].title == "Courses") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CourseScreen()));
                           }
                           print("Click ${items[index].title}");
                         },
