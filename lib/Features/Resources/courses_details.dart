@@ -20,9 +20,10 @@ class CourseDetailPage extends StatelessWidget {
                   ),
                   child: Image.asset(
                     'assets/coursesdetails.png',
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width *
+                        0.95, //double.infinity,
                     height: 220,
-                    fit: BoxFit.cover,
+                    // fit: BoxFit.cover,
                   ),
                 ),
                 // Positioned(
@@ -34,15 +35,16 @@ class CourseDetailPage extends StatelessWidget {
                 //   ),
                 // ),
                 Positioned(
-                  top: 16,
-                  right: 16,
+                  top: 18,
+                  right: 12,
+                  // bottom: 16,
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: Icon(Icons.share, color: Colors.black),
+                    child: Icon(Icons.favorite_border, color: Colors.black),
                   ),
                 ),
                 Positioned(
-                  bottom: 12,
+                  bottom: 16,
                   left: 16,
                   child: Container(
                     padding:
@@ -55,14 +57,15 @@ class CourseDetailPage extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.w500)),
                   ),
                 ),
-                Positioned(
-                  top: 170,
-                  right: 20,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.favorite_border, color: Colors.black),
-                  ),
-                ),
+                // Positioned(
+                //   top: 170,
+                //   right: 15,
+                //   bottom: 16,
+                //   child: CircleAvatar(
+                //     backgroundColor: Colors.white,
+                //     child: Icon(Icons.favorite_border, color: Colors.black),
+                //   ),
+                // ),
               ],
             ),
             const Padding(
@@ -71,16 +74,19 @@ class CourseDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Molecular Biology: Genomes, Genes & Beyond Scene",
+                    "Molecular Biology: Genomes, Genes & Beyond Scene.",
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'satoshi'),
                   ),
                   SizedBox(height: 10),
                   Text(
                     "At the heart of life lies the language of molecules. Our Molecular Biology department is dedicated to exploring the structure, function.",
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black87,
+                        fontFamily: 'satoshi'),
                   ),
                   SizedBox(height: 20),
                   Text(
@@ -166,18 +172,29 @@ class _LessonTileState extends State<LessonTile> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.play_circle_fill, color: Colors.blueAccent),
+            Image.asset(
+              "assets/playicon.png",
+              height: 20,
+              width: 20,
+            ),
+            //  Icon(Icons.play_circle_fill, color: Colors.blueAccent),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   widget.title,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      fontFamily: 'satoshi'),
                 ),
               ),
             ),
             Text(widget.duration,
-                style: const TextStyle(color: Colors.grey, fontSize: 13)),
+                style: const TextStyle(
+                    color: Colors.black87,
+                    fontSize: 14,
+                    fontFamily: 'satoshi')),
           ],
         ),
         children: widget.subLessons
@@ -190,11 +207,17 @@ class _LessonTileState extends State<LessonTile> {
                       Expanded(
                         child: Text(e.title,
                             style: const TextStyle(
-                                fontSize: 13, color: Colors.black87)),
+                                fontSize: 14,
+                                color: Colors.black87,
+                                fontFamily: 'satoshi',
+                                fontWeight: FontWeight.w500)),
                       ),
                       Text(e.duration,
                           style: const TextStyle(
-                              fontSize: 13, color: Colors.grey)),
+                              fontSize: 14,
+                              color: Colors.black87,
+                              fontFamily: 'satoshi',
+                              fontWeight: FontWeight.w500)),
                       SizedBox(width: 16),
                     ],
                   ),
