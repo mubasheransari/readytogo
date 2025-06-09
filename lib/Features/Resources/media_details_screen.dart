@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/widgets/customscfaffold_widget.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoDetailPage extends StatefulWidget {
@@ -41,166 +42,222 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF7F9FD),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Video Player with overlay controls
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.black,
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: _controller.value.isInitialized
-                          ? AspectRatio(
-                              aspectRatio: _controller.value.aspectRatio,
-                              child: VideoPlayer(_controller),
-                            )
-                          : const Center(child: CircularProgressIndicator()),
-                    ),
-                    Positioned(
-                      bottom: 10,
-                      left: 10,
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: _togglePlayPause,
-                            child: Icon(
-                              _isPlaying
-                                  ? Icons.pause_circle_filled
-                                  : Icons.play_circle_fill,
-                              color: Colors.white,
-                              size: 28,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          const Icon(Icons.volume_up, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                    const Positioned(
-                      bottom: 10,
-                      right: 10,
-                      child: Icon(Icons.fullscreen, color: Colors.white),
-                    ),
-                  ],
-                ),
+    return CustomScaffoldWidget(
+      appbartitle: 'Video',
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Colors.black,
               ),
-
-              // const SizedBox(height: 16),
-
-              // // Play Button (optional: you can remove it if you use center button)
-              // Center(
-              //   child: GestureDetector(
-              //     onTap: _togglePlayPause,
-              //     child: Container(
-              //       margin: const EdgeInsets.symmetric(horizontal: 40),
-              //       width: double.infinity,
-              //       height: 45,
-              //       decoration: BoxDecoration(
-              //         color: Colors.blueAccent,
-              //         borderRadius: BorderRadius.circular(30),
-              //       ),
-              //       child: const Center(
-              //         child: Text(
-              //           "Play ▶",
-              //           style: TextStyle(color: Colors.white, fontSize: 16),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
-              const SizedBox(height: 16),
-
-              // Video Title
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  "Understanding Chronic Illnesses",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: _controller.value.isInitialized
+                        ? AspectRatio(
+                            aspectRatio: _controller.value.aspectRatio,
+                            child: VideoPlayer(_controller),
+                          )
+                        : const Center(child: CircularProgressIndicator()),
                   ),
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              // Author Info
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 18,
-                      backgroundImage: AssetImage('assets/media.png'),
-                    ),
-                    const SizedBox(width: 10),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Positioned(
+                    bottom: 10,
+                    left: 10,
+                    child: Row(
                       children: [
-                        Text("John Dustin",
-                            style: TextStyle(fontWeight: FontWeight.w600)),
-                        Text("author",
-                            style: TextStyle(color: Colors.grey, fontSize: 12)),
+                        GestureDetector(
+                          onTap: _togglePlayPause,
+                          child: Icon(
+                            _isPlaying
+                                ? Icons.pause_circle_filled
+                                : Icons.play_circle_fill,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Icon(Icons.volume_up, color: Colors.white),
                       ],
                     ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.favorite_border),
-                      onPressed: () {},
+                  ),
+                  const Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: Icon(Icons.fullscreen, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+
+            // const SizedBox(height: 16),
+
+            // // Play Button (optional: you can remove it if you use center button)
+            // Center(
+            //   child: GestureDetector(
+            //     onTap: _togglePlayPause,
+            //     child: Container(
+            //       margin: const EdgeInsets.symmetric(horizontal: 40),
+            //       width: double.infinity,
+            //       height: 45,
+            //       decoration: BoxDecoration(
+            //         color: Colors.blueAccent,
+            //         borderRadius: BorderRadius.circular(30),
+            //       ),
+            //       child: const Center(
+            //         child: Text(
+            //           "Play ▶",
+            //           style: TextStyle(color: Colors.white, fontSize: 16),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+
+            const SizedBox(height: 16),
+
+            // Video Title
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                "Understanding Chronic Illnesses",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'satoshi'),
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            // Author Info
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 18,
+                    backgroundImage: AssetImage('assets/media.png'),
+                  ),
+                  const SizedBox(width: 10),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("John Dustin",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'satoshi')),
+                      Text("author",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              fontFamily: 'satoshi')),
+                    ],
+                  ),
+                  const Spacer(),
+
+                  InkWell(
+                    onTap: () {},
+                    child: SizedBox(
+                      width: 52,
+                      height: 36,
+                      child: const CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.favorite_border,
+                          color: Colors.black,
+                          size: 20,
+                        ),
+                      ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.share_outlined),
-                      onPressed: () {},
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: SizedBox(
+                      width: 52,
+                      height: 36,
+                      child: const CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.thumb_up_alt_outlined,
+                          color: Colors.black,
+                          size: 20,
+                        ),
+                      ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.thumb_down_alt_outlined),
-                      onPressed: () {},
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: SizedBox(
+                      width: 52,
+                      height: 36,
+                      child: const CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.thumb_down_alt_outlined,
+                          color: Colors.black,
+                          size: 20,
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
 
-              const SizedBox(height: 20),
-
-              // Top Videos Section
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  "Top Videos from John Justin",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                ),
+                  // IconButton(
+                  //   icon: const Icon(Icons.favorite_border),
+                  //   onPressed: () {},
+                  // ),
+                  // IconButton(
+                  //   icon: const Icon(Icons.share_outlined),
+                  //   onPressed: () {},
+                  // ),
+                  // IconButton(
+                  //   icon: const Icon(Icons.thumb_down_alt_outlined),
+                  //   onPressed: () {},
+                  // ),
+                ],
               ),
+            ),
 
-              const SizedBox(height: 12),
+            const SizedBox(height: 20),
 
-              const VideoCard(
-                thumbnail: 'assets/media.png',
-                title: 'The Immune System Explained',
-                author: 'John Dustin',
-                duration: '25 mins',
+            // Top Videos Section
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                "Top Videos from John Justin",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    fontFamily: 'satoshi'),
               ),
-              const VideoCard(
-                thumbnail: 'assets/media.png',
-                title: 'Healthy Eating for a Stronger Body',
-                author: 'John Dustin',
-                duration: '20 mins',
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 12),
+
+            const VideoCard(
+              thumbnail: 'assets/media.png',
+              title: 'The Immune System Explained',
+              author: 'John Dustin',
+              duration: '25 mins',
+            ),
+            const VideoCard(
+              thumbnail: 'assets/media.png',
+              title: 'Healthy Eating for a Stronger Body',
+              author: 'John Dustin',
+              duration: '20 mins',
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
@@ -242,12 +299,16 @@ class VideoCard extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+        title: Text(title,
+            style: const TextStyle(
+                fontWeight: FontWeight.w600, fontFamily: 'satoshi')),
         subtitle: Text(author),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(duration, style: const TextStyle(color: Colors.grey)),
+            Text(duration,
+                style:
+                    const TextStyle(color: Colors.grey, fontFamily: 'satoshi')),
             const SizedBox(height: 4),
             const Icon(Icons.favorite_border, size: 20),
           ],
