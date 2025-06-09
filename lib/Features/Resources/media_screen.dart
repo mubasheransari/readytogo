@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
+import 'media_details_screen.dart';
+
 class MediaScreen extends StatelessWidget {
   final List<Map<String, String>> mediaItems = [
     {
@@ -69,64 +71,72 @@ class MediaScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   itemBuilder: (context, index) {
                     final item = mediaItems[index];
-                    return Container(
-                      // height: 104,
-                      margin: EdgeInsets.symmetric(vertical: 8),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.grey.shade100,
-                      ),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              item['image']!,
-                              width: 60,
-                              height: 60,
-                              fit: BoxFit.cover,
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VideoDetailPage()));
+                      },
+                      child: Container(
+                        // height: 104,
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.grey.shade100,
+                        ),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                item['image']!,
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['title']!,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'satoshi'),
+                                  ),
+                                  SizedBox(height: 3),
+                                  Text(
+                                    item['author']!,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'satoshi'),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    item['duration']!,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'satoshi'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Column(
                               children: [
-                                Text(
-                                  item['title']!,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'satoshi'),
-                                ),
-                                SizedBox(height: 3),
-                                Text(
-                                  item['author']!,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'satoshi'),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  item['duration']!,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'satoshi'),
-                                ),
+                                Icon(Icons.favorite_border),
+                                SizedBox(height: 20),
+                                Image.asset("assets/playicon.png")
                               ],
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Icon(Icons.favorite_border),
-                              SizedBox(height: 20),
-                              Image.asset("assets/playicon.png")
-                            ],
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     );
                   },

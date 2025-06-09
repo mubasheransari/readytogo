@@ -43,6 +43,7 @@ dependencies:
   flutter_map: 
   latlong2: ^0.9.0
   google_maps_flutter: 
+  video_player:
 
 flutter_launcher_icons:
   android: "launcher_icon"
