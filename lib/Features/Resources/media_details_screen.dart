@@ -136,7 +136,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
             const SizedBox(height: 8),
 
-            // Author Info
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
@@ -151,13 +150,14 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                     children: [
                       Text("John Dustin",
                           style: TextStyle(
+                              fontSize: 16,
                               fontWeight: FontWeight.w700,
                               fontFamily: 'satoshi')),
                       Text("author",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
-                              fontSize: 12,
+                              fontSize: 13,
                               fontFamily: 'satoshi')),
                     ],
                   ),
