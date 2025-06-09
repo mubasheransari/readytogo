@@ -3,6 +3,7 @@ import 'package:readytogo/Features/Resources/course_screen.dart';
 import 'package:readytogo/Features/Resources/reading_material_screen.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 import '../../widgets/boxDecorationWidget.dart';
+import 'media_screen.dart';
 
 class ResourcesScreen extends StatefulWidget {
   @override
@@ -54,7 +55,13 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => CourseScreen()));
+                          } else if (items[index].title == "Youtube") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MediaScreen()));
                           }
+
                           print("Click ${items[index].title}");
                         },
                       ),
