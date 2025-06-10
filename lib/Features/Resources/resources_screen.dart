@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Features/Resources/course_screen.dart';
 import 'package:readytogo/Features/Resources/reading_material_screen.dart';
+import 'package:readytogo/Features/Resources/selfuploaded_screen.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import 'media_screen.dart';
@@ -60,6 +61,11 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => MediaScreen()));
+                          } else if (items[index].title == "Self Uploaded") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SelfUploadScreen()));
                           }
 
                           print("Click ${items[index].title}");
