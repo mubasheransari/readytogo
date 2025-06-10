@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
 class SelfUploadScreen extends StatelessWidget {
@@ -54,10 +55,17 @@ class SelfUploadScreen extends StatelessWidget {
             // Upcoming Seminars
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text('Upcoming Seminars',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('view all', style: TextStyle(color: Colors.blue)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'satoshi',
+                        fontSize: 20)),
+                Text('view all',
+                    style: TextStyle(
+                        color: Constants().themeColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16)),
               ],
             ),
             const SizedBox(height: 12),
@@ -69,10 +77,17 @@ class SelfUploadScreen extends StatelessWidget {
             // Videos Uploaded
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text('Videos Uploaded',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('view all', style: TextStyle(color: Colors.blue)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'satoshi',
+                        fontSize: 20)),
+                Text('view all',
+                    style: TextStyle(
+                        color: Constants().themeColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16)),
               ],
             ),
             const SizedBox(height: 12),
@@ -133,26 +148,45 @@ class SeminarCard extends StatelessWidget {
 
               //  Icon(Icons.school, color: Colors.blue),
               SizedBox(width: 8),
-              Text(
-                'General Health & Wellness',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+              Text('General Health & Wellness',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'satoshi',
+                      fontSize: 18)),
             ],
           ),
-          const SizedBox(height: 8),
-          const Text('Lorem Ipsum is simply dummy text for design'),
+          const SizedBox(height: 4),
+          const Text('Lorem Ipsum is simply dummy text for design',
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'satoshi',
+                  fontSize: 14)),
           const SizedBox(height: 8),
           Row(
-            children: const [
-              Icon(Icons.timer, size: 16),
+            children: [
+              Image.asset("assets/clock.png"),
+              //   Icon(Icons.timer, size: 16),
               SizedBox(width: 4),
-              Text('15 - 120 mins'),
+              Text('15 - 120 mins',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'satoshi',
+                      fontSize: 14)),
               SizedBox(width: 16),
-              Icon(Icons.calendar_today, size: 16),
+              Image.asset("assets/calendar.png"),
+              // Icon(Icons.calendar_today, size: 16),
               SizedBox(width: 4),
-              Text('15 - 120 mins'),
+              Text('15 - 120 mins',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'satoshi',
+                      fontSize: 14)),
               Spacer(),
-              Text('copy link', style: TextStyle(color: Colors.blue)),
+              Text('copy link',
+                  style: TextStyle(
+                      color: Constants().themeColor,
+                      fontFamily: 'satoshi',
+                      fontWeight: FontWeight.w700)),
             ],
           )
         ],
@@ -176,7 +210,7 @@ class VideoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 104,
+      height: 113,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -186,7 +220,10 @@ class VideoCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(image, height: 60, width: 80, fit: BoxFit.cover),
+            child: Image.asset(image,
+                height: MediaQuery.of(context).size.height * 0.90,
+                width: 80,
+                fit: BoxFit.cover),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -194,16 +231,28 @@ class VideoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title,
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 17,
+                        fontFamily: 'satoshi')),
                 const SizedBox(height: 4),
-                const Text('John Dustin'),
-                Text(duration),
+                const Text('John Dustin',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        fontFamily: 'satoshi')),
+                const SizedBox(height: 4),
+                Text(duration,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        fontFamily: 'satoshi')),
               ],
             ),
           ),
           // Text(duration),
           Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               // Text(duration),
 
