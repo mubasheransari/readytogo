@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
                               fontWeight: FontWeight.w700)),
                       const SizedBox(height: 40),
                       CustomTextFieldWidget(
-                        borderColor: Colors.black54,
+                        borderColor: Constants().themeColor,
                         controller: emailController,
                         hintText: 'peter.patrick454@gmail.com',
                         labelText: 'Email',
@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       CustomTextFieldWidget(
-                        borderColor: Colors.black54,
+                        borderColor: Constants().themeColor,
                         controller: passwordController,
                         hintText: 'peterpk454',
                         labelText: 'Password',
@@ -72,7 +72,7 @@ class LoginScreen extends StatelessWidget {
                                   color: Constants().themeColor,
                                   fontFamily: 'Satoshi',
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w500)),
+                                  fontWeight: FontWeight.w700)),
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -107,13 +107,13 @@ class LoginScreen extends StatelessWidget {
                                       color: Colors.white,
                                       fontFamily: 'Satoshi',
                                       fontSize: 20,
-                                      fontWeight: FontWeight.w500),
+                                      fontWeight: FontWeight.w700),
                                 ),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: 6),
                                 Image.asset(
                                   'assets/loginbuttonicon.png',
-                                  width: 20,
-                                  height: 20,
+                                  width: 23,
+                                  height: 23,
                                 ),
                               ],
                             ),
@@ -124,7 +124,11 @@ class LoginScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                          SizedBox(width: 120, child: Divider()),
+                          SizedBox(
+                              width: 120,
+                              child: Divider(
+                                color: Colors.black38,
+                              )),
                           Padding(
                             padding: EdgeInsets.only(left: 8.0),
                             child: Text('or',
@@ -132,12 +136,16 @@ class LoginScreen extends StatelessWidget {
                                     fontFamily: 'Satoshi',
                                     fontSize: 20,
                                     color: Color(0xff28363D),
-                                    fontWeight: FontWeight.w400)),
+                                    fontWeight: FontWeight.w600)),
                           ),
                           SizedBox(
                             width: 8,
                           ),
-                          SizedBox(width: 120, child: Divider()),
+                          SizedBox(
+                              width: 120,
+                              child: Divider(
+                                color: Colors.black38,
+                              )),
                         ],
                       ),
                       SizedBox(height: 20),
@@ -236,7 +244,7 @@ class LoginScreen extends StatelessWidget {
                                   fontFamily: 'Satoshi',
                                   fontSize: 20,
                                   color: Color(0xff323747),
-                                  fontWeight: FontWeight.w500)),
+                                  fontWeight: FontWeight.w700)),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -249,7 +257,7 @@ class LoginScreen extends StatelessWidget {
                                     fontFamily: 'Satoshi',
                                     fontSize: 20,
                                     color: Constants().themeColor,
-                                    fontWeight: FontWeight.w500)),
+                                    fontWeight: FontWeight.w700)),
                           ),
                         ],
                       ),
