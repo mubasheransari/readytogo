@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/signup_screen.dart';
-import '../widgets/boxDecorationWidget.dart';
-import '../widgets/textfeild_widget.dart';
-import 'home_screen.dart';
+import 'package:readytogo/Features/login/verification_screen.dart';
+import '../../widgets/boxDecorationWidget.dart';
+import '../../widgets/textfeild_widget.dart';
+import '../home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
@@ -85,8 +86,8 @@ class LoginScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomeScreen
-                                          // VerificationScreen
+                                      builder: (context) => //HomeScreen
+                                           VerificationScreen
                                           ()));
                             },
                             style: ElevatedButton.styleFrom(

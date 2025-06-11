@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:readytogo/Features/login_screen.dart';
+import 'package:readytogo/Features/login/login_screen.dart';
 import 'package:readytogo/Features/privacy_policy.dart';
 import 'package:readytogo/Features/release_of_information.dart';
 import 'package:readytogo/Features/terms_and_condition.dart';

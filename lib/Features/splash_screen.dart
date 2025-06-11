@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:readytogo/Features/login_screen.dart';
+import 'package:readytogo/Features/login/login_screen.dart';
 
 import '../widgets/boxDecorationWidget.dart';
 

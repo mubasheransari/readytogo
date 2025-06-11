@@ -3,8 +3,6 @@ import '../Features/navdrawer.dart';
 import '../Features/notification_screen.dart';
 import 'boxDecorationWidget.dart';
 
-//final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
 class CustomScaffoldWidget extends StatelessWidget {
   final Widget body;
   final PreferredSizeWidget? appBar;
@@ -12,6 +10,7 @@ class CustomScaffoldWidget extends StatelessWidget {
   final bool isDrawerRequired;
   final String appbartitle;
   final bool isAppBarContentRequired;
+  final bool showNotificationIcon; // <-- NEW PARAMETER
 
   const CustomScaffoldWidget({
     Key? key,
@@ -21,11 +20,13 @@ class CustomScaffoldWidget extends StatelessWidget {
     this.drawer,
     this.isDrawerRequired = false,
     this.isAppBarContentRequired = true,
+    this.showNotificationIcon = true, // <-- DEFAULT TO TRUE
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: isDrawerRequired ? CustomNavDrawer() : null,
@@ -36,64 +37,66 @@ class CustomScaffoldWidget extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              isAppBarContentRequired == true
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          isDrawerRequired
-                              ? InkWell(
-                                  onTap: () {
-                                    _scaffoldKey.currentState?.openDrawer();
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 22,
-                                    backgroundColor: Colors.white,
-                                    child: Image.asset("assets/menu-02.png"),
-                                  ),
-                                )
-                              : InkWell(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const CircleAvatar(
-                                    radius: 22,
-                                    backgroundColor: Colors.white,
-                                    child: Icon(Icons.arrow_back,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                          Text(
-                            appbartitle,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Satoshi',
+              if (isAppBarContentRequired)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      isDrawerRequired
+                          ? InkWell(
+                              onTap: () {
+                                _scaffoldKey.currentState?.openDrawer();
+                              },
+                              child:  CircleAvatar(
+                                radius: 22,
+                                backgroundColor: Colors.white,
+                                child: Image.asset("assets/menu-02.png"),
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const CircleAvatar(
+                                radius: 22,
+                                backgroundColor: Colors.white,
+                                child: Icon(Icons.arrow_back,
+                                    color: Colors.black),
+                              ),
                             ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const NotificationScreen(),
-                                ),
-                              );
-                            },
-                            child: CircleAvatar(
-                              radius: 22,
-                              backgroundColor: Colors.white,
-                              child: Image.asset("assets/notification.png"),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        appbartitle,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Satoshi',
+                        ),
                       ),
-                    )
-                  : SizedBox(),
+                      if (showNotificationIcon)
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const NotificationScreen(),
+                              ),
+                            );
+                          },
+                          child:  CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Colors.white,
+                            child: Image.asset("assets/notification.png"),
+                          ),
+                        )
+                      else
+                        const SizedBox(width: 44), // to maintain layout spacing
+                    ],
+                  ),
+                ),
               Expanded(child: body),
             ],
           ),
@@ -102,6 +105,107 @@ class CustomScaffoldWidget extends StatelessWidget {
     );
   }
 }
+
+
+//final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+// class CustomScaffoldWidget extends StatelessWidget {
+//   final Widget body;
+//   final PreferredSizeWidget? appBar;
+//   final Widget? drawer;
+//   final bool isDrawerRequired;
+//   final String appbartitle;
+//   final bool isAppBarContentRequired;
+
+//   const CustomScaffoldWidget({
+//     Key? key,
+//     required this.body,
+//     required this.appbartitle,
+//     this.appBar,
+//     this.drawer,
+//     this.isDrawerRequired = false,
+//     this.isAppBarContentRequired = true,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+//     return Scaffold(
+//       key: _scaffoldKey,
+//       drawer: isDrawerRequired ? CustomNavDrawer() : null,
+//       appBar: appBar,
+//       backgroundColor: const Color(0xFFF5F7FA),
+//       body: DecoratedBox(
+//         decoration: boxDecoration(),
+//         child: SafeArea(
+//           child: Column(
+//             children: [
+//               isAppBarContentRequired == true
+//                   ? Padding(
+//                       padding: const EdgeInsets.symmetric(
+//                           horizontal: 16, vertical: 12),
+//                       child: Row(
+//                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                         children: [
+//                           isDrawerRequired
+//                               ? InkWell(
+//                                   onTap: () {
+//                                     _scaffoldKey.currentState?.openDrawer();
+//                                   },
+//                                   child: CircleAvatar(
+//                                     radius: 22,
+//                                     backgroundColor: Colors.white,
+//                                     child: Image.asset("assets/menu-02.png"),
+//                                   ),
+//                                 )
+//                               : InkWell(
+//                                   onTap: () {
+//                                     Navigator.pop(context);
+//                                   },
+//                                   child: const CircleAvatar(
+//                                     radius: 22,
+//                                     backgroundColor: Colors.white,
+//                                     child: Icon(Icons.arrow_back,
+//                                         color: Colors.black),
+//                                   ),
+//                                 ),
+//                           Text(
+//                             appbartitle,
+//                             style: const TextStyle(
+//                               fontSize: 24,
+//                               color: Colors.black,
+//                               fontWeight: FontWeight.bold,
+//                               fontFamily: 'Satoshi',
+//                             ),
+//                           ),
+//                           InkWell(
+//                             onTap: () {
+//                               Navigator.push(
+//                                 context,
+//                                 MaterialPageRoute(
+//                                   builder: (context) =>
+//                                       const NotificationScreen(),
+//                                 ),
+//                               );
+//                             },
+//                             child: CircleAvatar(
+//                               radius: 22,
+//                               backgroundColor: Colors.white,
+//                               child: Image.asset("assets/notification.png"),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     )
+//                   : SizedBox(),
+//               Expanded(child: body),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 
 
