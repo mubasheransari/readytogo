@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/Features/Donate/add_new_card.dart';
 import 'package:readytogo/Features/home_screen.dart';
 import 'package:readytogo/Features/login/emergency_call_screen.dart';
+import 'package:readytogo/Features/login/invite_friend.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
 import '../../Constants/constants.dart';
@@ -187,7 +188,7 @@ class LoginSuccessScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginSuccessScreen()));
+                                builder: (context) => InviteFriendScreen()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Constants().themeColor,
