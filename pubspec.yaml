@@ -45,6 +45,7 @@ dependencies:
   google_maps_flutter: 
   video_player:
   chewie:
+  url_launcher:
 
 flutter_launcher_icons:
   android: "launcher_icon"

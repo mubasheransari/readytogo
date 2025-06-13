@@ -1,4 +1,4 @@
-package app.readytogo.com
+package readytogo.app.com
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Features/Donate/add_new_card.dart';
+import 'package:readytogo/Features/home_screen.dart';
+import 'package:readytogo/Features/login/emergency_call_screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
 import '../../Constants/constants.dart';
@@ -36,7 +38,7 @@ class LoginSuccessScreen extends StatelessWidget {
                     textSize: 35,
                     fontWeight: FontWeight.w500),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.01,
+                  height: MediaQuery.of(context).size.height * 0.025,
                 ),
                 SizedBox(
                   width: 342,
@@ -47,7 +49,7 @@ class LoginSuccessScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginSuccessScreen()));
+                                builder: (context) => HomeScreen()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Constants().themeColor,
@@ -69,7 +71,7 @@ class LoginSuccessScreen extends StatelessWidget {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          const SizedBox(width: 3),
+                          const SizedBox(width: 6),
                           Icon(Icons.north_east, size: 20, color: Colors.white)
                           // Image.asset(
                           //   'assets/loginbuttonicon.png',
@@ -115,7 +117,7 @@ class LoginSuccessScreen extends StatelessWidget {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          const SizedBox(width: 3),
+                          const SizedBox(width: 6),
                           Icon(Icons.north_east, size: 20, color: Colors.white)
                           // Image.asset(
                           //   'assets/loginbuttonicon.png',
@@ -139,7 +141,7 @@ class LoginSuccessScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginSuccessScreen()));
+                                builder: (context) => EmergencyCallScreen()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Constants().themeColor,
@@ -161,7 +163,7 @@ class LoginSuccessScreen extends StatelessWidget {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          const SizedBox(width: 3),
+                          const SizedBox(width: 6),
                           Icon(Icons.north_east, size: 20, color: Colors.white)
                           // Image.asset(
                           //   'assets/loginbuttonicon.png',
@@ -207,7 +209,7 @@ class LoginSuccessScreen extends StatelessWidget {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
-                          const SizedBox(width: 3),
+                          const SizedBox(width: 6),
                           Icon(Icons.north_east, size: 20, color: Colors.white)
                           // Image.asset(
                           //   'assets/loginbuttonicon.png',

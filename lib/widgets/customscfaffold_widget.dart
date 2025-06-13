@@ -10,7 +10,8 @@ class CustomScaffoldWidget extends StatelessWidget {
   final bool isDrawerRequired;
   final String appbartitle;
   final bool isAppBarContentRequired;
-  final bool showNotificationIcon; // <-- NEW PARAMETER
+  final bool showNotificationIcon;
+
 
   const CustomScaffoldWidget({
     Key? key,
@@ -20,7 +21,8 @@ class CustomScaffoldWidget extends StatelessWidget {
     this.drawer,
     this.isDrawerRequired = false,
     this.isAppBarContentRequired = true,
-    this.showNotificationIcon = true, // <-- DEFAULT TO TRUE
+    this.showNotificationIcon = true,
+
   }) : super(key: key);
 
   @override
