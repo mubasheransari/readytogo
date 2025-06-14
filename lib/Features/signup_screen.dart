@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:readytogo/Features/login/login_screen.dart';
 import 'package:readytogo/Features/privacy_policy.dart';
 import 'package:readytogo/Features/release_of_information.dart';
@@ -18,6 +21,18 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
+    File? _selectedImage;
+    final ImagePicker _picker = ImagePicker();
+
+    Future<void> _pickImage() async {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
+    }
+
     return Scaffold(
         body: Container(
       width: MediaQuery.of(context).size.width,
@@ -27,7 +42,7 @@ class _SignupScreenState extends State<SignupScreen> {
         child: SingleChildScrollView(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             SizedBox(
-              height: 40,
+              height: 30,
             ),
             const Text(
               'Signup & Improve Your Health Today',
@@ -40,13 +55,39 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
 
             SizedBox(height: 20),
-            Center(
-              child: Image.asset(
-                'assets/Frame.png',
+            GestureDetector(
+              onTap: _pickImage,
+              child: Container(
                 height: 120,
                 width: 120,
+                decoration: BoxDecoration(
+                  // border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: _selectedImage == null
+                    ? Center(
+                        child: Image.asset(
+                          'assets/Frame.png',
+                          height: 120,
+                          width: 120,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.file(
+                          _selectedImage!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
               ),
             ),
+            // Center(
+            //   child: Image.asset(
+            //     'assets/Frame.png',
+            //     height: 120,
+            //     width: 120,
+            //   ),
+            // ),
             SizedBox(height: 25),
             // Form fields with labels separated
             _buildTextField('First Name', 'Enter First Name'),

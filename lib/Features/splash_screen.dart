@@ -4,28 +4,26 @@ import 'package:readytogo/Features/login/login_screen.dart';
 
 import '../widgets/boxDecorationWidget.dart';
 
-
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-    @override
+  @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 6), () {
       Navigator.pushAndRemoveUntil(
-  context,
-  MaterialPageRoute(builder: (context) => LoginScreen()),
-  (Route<dynamic> route) => false, // This removes all previous routes
-);
-        });
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        (Route<dynamic> route) => false, // This removes all previous routes
+      );
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -48,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                   fontFamily: 'Satoshi',
                   fontSize: 20,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
