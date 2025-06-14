@@ -87,8 +87,7 @@ class LoginScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => //HomeScreen
-                                           VerificationScreen
-                                          ()));
+                                          VerificationScreen()));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Constants().themeColor,
@@ -110,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700),
                                 ),
-                                const SizedBox(width: 6),
+                                const SizedBox(width: 5),
                                 Image.asset(
                                   'assets/loginbuttonicon.png',
                                   width: 23,

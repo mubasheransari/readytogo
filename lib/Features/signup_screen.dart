@@ -27,7 +27,7 @@ class _SignupScreenState extends State<SignupScreen> {
         child: SingleChildScrollView(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             SizedBox(
-              height: 10,
+              height: 40,
             ),
             const Text(
               'Signup & Improve Your Health Today',
@@ -70,6 +70,8 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 Checkbox(
                   value: isChecked,
+                  activeColor: Constants().themeColor,
+                  checkColor: Colors.white,
                   onChanged: (bool? value) {
                     setState(() {
                       isChecked = value!;
@@ -208,13 +210,13 @@ class _SignupScreenState extends State<SignupScreen> {
                             color: Colors.white,
                             fontFamily: 'Satoshi',
                             fontSize: 20,
-                            fontWeight: FontWeight.w500),
+                            fontWeight: FontWeight.w700),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 5),
                       Image.asset(
                         'assets/loginbuttonicon.png',
-                        width: 20,
-                        height: 20,
+                        width: 23,
+                        height: 23,
                       ),
                     ],
                   ),
@@ -251,25 +253,31 @@ class _SignupScreenState extends State<SignupScreen> {
             ),*/
             SizedBox(height: 30),
 
-            // Google login button
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: 120, child: Divider()),
+              children: const [
+                SizedBox(
+                    width: 120,
+                    child: Divider(
+                      color: Colors.black38,
+                    )),
                 Padding(
                   padding: EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    'or',
-                    style: TextStyle(
-                      fontFamily: 'Satoshi',
-                      fontSize: 20,
-                      color: Color(0xff28363D),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  child: Text('or',
+                      style: TextStyle(
+                          fontFamily: 'Satoshi',
+                          fontSize: 20,
+                          color: Color(0xff28363D),
+                          fontWeight: FontWeight.w600)),
                 ),
-                SizedBox(width: 8),
-                SizedBox(width: 120, child: Divider()),
+                SizedBox(
+                  width: 8,
+                ),
+                SizedBox(
+                    width: 120,
+                    child: Divider(
+                      color: Colors.black38,
+                    )),
               ],
             ),
             SizedBox(height: 20),
@@ -337,7 +345,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         fontFamily: 'Satoshi',
                         fontSize: 20,
                         color: Color(0xff323747),
-                        fontWeight: FontWeight.w500)),
+                        fontWeight: FontWeight.w700)),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
@@ -348,7 +356,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           fontFamily: 'Satoshi',
                           fontSize: 20,
                           color: Constants().themeColor,
-                          fontWeight: FontWeight.w500)),
+                          fontWeight: FontWeight.w700)),
                 ),
               ],
             ),

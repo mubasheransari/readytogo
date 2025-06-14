@@ -60,147 +60,150 @@ class _VerificationScreenState extends State<VerificationScreen>
     return CustomScaffoldWidget(
       showNotificationIcon: false,
       appbartitle: 'Verification',
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 50),
-          Center(
-            child: Image.asset(
-              "assets/lock.png",
-              height: 120,
-              width: 120,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 50),
+            Center(
+              child: Image.asset(
+                "assets/lock.png",
+                height: 120,
+                width: 120,
+              ),
             ),
-          ),
-          Center(
-            child: Column(
-              children: [
-                const Text(
-                  "Verification Code",
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'satoshi'),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  "code has been sent to +923042727074",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
-                      fontFamily: 'satoshi'),
-                ),
-                const SizedBox(height: 32),
-                Container(
-                  height: 64,
-                  width: 284,
-                  child: PinFieldAutoFill(
-                    autoFocus: true,
-                    codeLength: 4,
-                    currentCode: codeValue,
-                    onCodeChanged: (code) {
-                      Future.microtask(() {
-                        if (mounted) {
-                          setState(() {
-                            codeValue = code ?? "";
-                          });
-                        }
-                      });
-                    },
-                    onCodeSubmitted: (code) {
-                      print('Submitted: $code');
-                    },
-                    keyboardType: TextInputType.number,
-                    decoration: BoxLooseDecoration(
-                      strokeColorBuilder:
-                          FixedColorBuilder(const Color(0xFF4C6FEE)),
-                      gapSpace: 10,
-                      bgColorBuilder: FixedColorBuilder(Colors.white),
-                      radius: const Radius.circular(16),
-                      textStyle: const TextStyle(
-                        fontSize: 24,
+            Center(
+              child: Column(
+                children: [
+                  const Text(
+                    "Verification Code",
+                    style: TextStyle(
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
+                        fontFamily: 'satoshi'),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  "00:00",
-                  style: TextStyle(
-                      color: Constants().themeColor,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'satoshi'),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Didn't get OTP code? ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'satoshi',
-                          fontSize: 16),
-                    ),
-                    Text(
-                      "Resend Code",
-                      style: TextStyle(
-                          color: Constants().themeColor,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'satoshi',
-                          fontSize: 16),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: 342,
-                  height: 60,
-                  child: Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginSuccessScreen()));
+                  const SizedBox(height: 8),
+                  const Text(
+                    "code has been sent to +923042727074",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                        fontFamily: 'satoshi'),
+                  ),
+                  const SizedBox(height: 32),
+                  Container(
+                    height: 64,
+                    width: 284,
+                    child: PinFieldAutoFill(
+                      autoFocus: false,
+                      codeLength: 4,
+                      currentCode: codeValue,
+                      onCodeChanged: (code) {
+                        Future.microtask(() {
+                          if (mounted) {
+                            setState(() {
+                              codeValue = code ?? "";
+                            });
+                          }
+                        });
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Constants().themeColor,
-                        minimumSize: const Size(200, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                      onCodeSubmitted: (code) {
+                        print('Submitted: $code');
+                      },
+                      keyboardType: TextInputType.number,
+                      decoration: BoxLooseDecoration(
+                        strokeColorBuilder:
+                            FixedColorBuilder(const Color(0xFF4C6FEE)),
+                        gapSpace: 10,
+                        bgColorBuilder: FixedColorBuilder(Colors.white),
+                        radius: const Radius.circular(16),
+                        textStyle: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Verify',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Satoshi',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(width: 3),
-                          Icon(Icons.north_east, size: 20, color: Colors.white)
-                          // Image.asset(
-                          //   'assets/loginbuttonicon.png',
-                          //   width: 23,
-                          //   height: 23,
-                          // ),
-                        ],
                       ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  Text(
+                    "00:00",
+                    style: TextStyle(
+                        color: Constants().themeColor,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'satoshi'),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Didn't get OTP code? ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'satoshi',
+                            fontSize: 16),
+                      ),
+                      Text(
+                        "Resend Code",
+                        style: TextStyle(
+                            color: Constants().themeColor,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'satoshi',
+                            fontSize: 16),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  SizedBox(
+                    width: 342,
+                    height: 60,
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginSuccessScreen()));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Constants().themeColor,
+                          minimumSize: const Size(200, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Verify',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Satoshi',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(width: 3),
+                            Icon(Icons.north_east,
+                                size: 20, color: Colors.white)
+                            // Image.asset(
+                            //   'assets/loginbuttonicon.png',
+                            //   width: 23,
+                            //   height: 23,
+                            // ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
