@@ -4,12 +4,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:readytogo/Features/login/login_screen.dart';
-import 'package:readytogo/Features/privacy_policy.dart';
-import 'package:readytogo/Features/release_of_information.dart';
-import 'package:readytogo/Features/terms_and_condition.dart';
+import 'package:readytogo/Features/Signup/privacy_policy.dart';
+import 'package:readytogo/Features/Signup/release_of_information.dart';
+import 'package:readytogo/Features/Signup/terms_and_condition.dart';
 
-import '../Constants/constants.dart';
-import '../widgets/boxDecorationWidget.dart';
+import '../../Constants/constants.dart';
+import '../../widgets/boxDecorationWidget.dart';
 
 bool isChecked = false;
 
@@ -386,7 +386,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         fontFamily: 'Satoshi',
                         fontSize: 20,
                         color: Color(0xff323747),
-                        fontWeight: FontWeight.w700)),
+                        fontWeight: FontWeight.w400)),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
@@ -397,7 +397,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           fontFamily: 'Satoshi',
                           fontSize: 20,
                           color: Constants().themeColor,
-                          fontWeight: FontWeight.w700)),
+                          fontWeight: FontWeight.w400)),
                 ),
               ],
             ),

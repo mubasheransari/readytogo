@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
-import 'package:readytogo/Features/signup_screen.dart';
+import 'package:readytogo/Features/Signup/signup_screen.dart';
 import 'package:readytogo/Features/login/verification_screen.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
@@ -244,7 +244,7 @@ class LoginScreen extends StatelessWidget {
                                   fontFamily: 'Satoshi',
                                   fontSize: 20,
                                   color: Color(0xff323747),
-                                  fontWeight: FontWeight.w700)),
+                                  fontWeight: FontWeight.w500)),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -257,7 +257,7 @@ class LoginScreen extends StatelessWidget {
                                     fontFamily: 'Satoshi',
                                     fontSize: 20,
                                     color: Constants().themeColor,
-                                    fontWeight: FontWeight.w700)),
+                                    fontWeight: FontWeight.w500)),
                           ),
                         ],
                       ),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/boxDecorationWidget.dart';
+import '../../widgets/boxDecorationWidget.dart';
 
-class PrivacyPolicyScreen extends StatefulWidget {
+class TermsAndConditionScreen extends StatefulWidget {
   @override
-  _PrivacyPolicyScreenState createState() => _PrivacyPolicyScreenState();
+  _TermsAndConditionScreenState createState() => _TermsAndConditionScreenState();
 }
 
-class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
+class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
   bool isChecked = false;
 
   @override
@@ -16,7 +16,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-   decoration: boxDecoration(),
+      decoration: boxDecoration(),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
@@ -42,7 +42,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                       width: 8,
                     ),
                     const Text(
-                      'Privacy Policy',
+                      'Terms & Conditions',
                       style: TextStyle(
                         fontSize: 20,
                         color: Color(0xff666F80),
@@ -54,7 +54,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                 ),
                 SizedBox(height: 40),
                 const Text(
-                  'At RRTG, your privacy is our priority. We are committed to protecting your personal data and providing transparency in how we collect, use, and safeguard your information.',
+                  'Effective Date: 04/04/2004',
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xff323747),
@@ -64,9 +64,19 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                 ),
                 SizedBox(height: 15),
 
-                // Section: Information We Collect
+                // Description
                 const Text(
-                  '1. Information We Collect',
+                  'By using the RRTG app, you agree to the following terms and conditions:',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xff323747),
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Satoshi',
+                  ),
+                ),
+                SizedBox(height: 20),
+                const Text(
+                  '1. Use of the App',
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xff323747),
@@ -75,7 +85,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                   ),
                 ),
                 const Text(
-                  '• Personal details (name, email, age, etc.)\n• Health and wellness preferences\n• App usage data for analytics and improvements\n',
+                  'RRTG is designed for personal wellness use only. You must be at least 16 years old to use the app.',
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xff666F80),
@@ -85,9 +95,8 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                 ),
                 SizedBox(height: 10),
 
-                // Section: How We Use Your Information
                 const Text(
-                  '2. How We Use Your Information',
+                  '2. User Responsibilities',
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xff323747),
@@ -96,7 +105,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                   ),
                 ),
                 const Text(
-                  '• To personalize your wellness experience\n• To improve app performance and functionality\n• To communicate updates, features, or offers\n',
+                  'You agree not to misuse the app, share false data, or interfere with its functionality or content.',
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xff666F80),
@@ -106,9 +115,8 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                 ),
                 SizedBox(height: 10),
 
-                // Section: Data Security
                 const Text(
-                  '3. Data Security',
+                  '3. Health Disclaimer',
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xff323747),
@@ -117,7 +125,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                   ),
                 ),
                 const Text(
-                  'We implement industry-standard security measures to ensure your data is safe and protected from unauthorized access.\n',
+                  'RRTG provides wellness guidance, not medical advice. Always consult a professional for medical concerns.',
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xff666F80),
@@ -127,9 +135,8 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                 ),
                 SizedBox(height: 10),
 
-                // Section: Third-Party Services
                 const Text(
-                  '4. Third-Party Services',
+                  '4. Account & Access',
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xff323747),
@@ -138,7 +145,27 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                   ),
                 ),
                 const Text(
-                  'RRTG may use trusted third-party services to support features. We ensure these parties also uphold your privacy.\n',
+                  'You are responsible for maintaining your account confidentiality and ensuring accurate information.',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xff666F80),
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Satoshi',
+                  ),
+                ),
+                SizedBox(height: 10),
+
+                const Text(
+                  '5. Changes to Terms',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xff323747),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Satoshi',
+                  ),
+                ),
+                const Text(
+                  'RRTG may update these terms periodically. Continued use of the app means you accept any changes.',
                   style: TextStyle(
                     fontSize: 20,
                     color: Color(0xff666F80),

@@ -93,7 +93,7 @@ class _VerificationScreenState extends State<VerificationScreen>
                   const SizedBox(height: 32),
                   Container(
                     height: 64,
-                    width: 284,
+                    width: 299,
                     child: PinFieldAutoFill(
                       autoFocus: false,
                       codeLength: 4,
