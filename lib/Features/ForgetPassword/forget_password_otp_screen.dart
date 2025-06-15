@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Features/ForgetPassword/update_password_screen.dart';
-import 'package:readytogo/widgets/customscfaffold_widget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../Constants/constants.dart';

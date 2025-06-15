@@ -69,11 +69,11 @@ class LoginScreen extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                                                         Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => 
-                                          ForgetPasswordScreen()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ForgetPasswordScreen()));
                           },
                           child: Text('Forgot Password?',
                               style: TextStyle(
@@ -94,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => //HomeScreen
-                                          VerificationScreen()));
+                                          VerificattionScreen()));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Constants().themeColor,
