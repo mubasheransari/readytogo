@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
+import 'package:readytogo/Features/ForgetPassword/forget_password_screen.dart';
 import 'package:readytogo/Features/Signup/signup_screen.dart';
 import 'package:readytogo/Features/login/verification_screen.dart';
 import '../../widgets/boxDecorationWidget.dart';
@@ -67,7 +68,13 @@ class LoginScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                                                         Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => 
+                                          ForgetPasswordScreen()));
+                          },
                           child: Text('Forgot Password?',
                               style: TextStyle(
                                   color: Constants().themeColor,
