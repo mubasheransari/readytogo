@@ -12,7 +12,6 @@ class CustomScaffoldWidget extends StatelessWidget {
   final bool isAppBarContentRequired;
   final bool showNotificationIcon;
 
-
   const CustomScaffoldWidget({
     Key? key,
     required this.body,
@@ -22,7 +21,6 @@ class CustomScaffoldWidget extends StatelessWidget {
     this.isDrawerRequired = false,
     this.isAppBarContentRequired = true,
     this.showNotificationIcon = true,
-
   }) : super(key: key);
 
   @override
@@ -51,7 +49,7 @@ class CustomScaffoldWidget extends StatelessWidget {
                               onTap: () {
                                 _scaffoldKey.currentState?.openDrawer();
                               },
-                              child:  CircleAvatar(
+                              child: CircleAvatar(
                                 radius: 22,
                                 backgroundColor: Colors.white,
                                 child: Image.asset("assets/menu-02.png"),
@@ -64,8 +62,8 @@ class CustomScaffoldWidget extends StatelessWidget {
                               child: const CircleAvatar(
                                 radius: 22,
                                 backgroundColor: Colors.white,
-                                child: Icon(Icons.arrow_back,
-                                    color: Colors.black),
+                                child:
+                                    Icon(Icons.arrow_back, color: Colors.black),
                               ),
                             ),
                       Text(
@@ -88,7 +86,7 @@ class CustomScaffoldWidget extends StatelessWidget {
                               ),
                             );
                           },
-                          child:  CircleAvatar(
+                          child: CircleAvatar(
                             radius: 22,
                             backgroundColor: Colors.white,
                             child: Image.asset("assets/notification.png"),
