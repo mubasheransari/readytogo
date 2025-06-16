@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
+import 'family_reuniting_family_aftercare_screen.dart';
 import 'housing1_assisment_screen.dart';
 
 class Step1Screen extends StatefulWidget {
@@ -209,7 +210,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                         ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.41,
+                        height: MediaQuery.of(context).size.height * 0.48,
                         child: RawScrollbar(
                           thumbVisibility: true,
                           trackVisibility: true,
@@ -223,6 +224,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                             itemCount: _domains.length,
                             itemBuilder: (context, index) {
                               final domain = _domains[index];
+                              print('print ${domain}');
 
                               return Padding(
                                 padding:
@@ -232,6 +234,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                                     Checkbox(
                                       value: _selectedDomains.contains(domain),
                                       onChanged: (value) {
+                                        //  print(_selectedDomains[0]);
                                         setState(() {
                                           if (value == true) {
                                             _selectedDomains.add(domain);
@@ -249,6 +252,16 @@ class _Step1ScreenState extends State<Step1Screen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     Housing1AssesmentScreen(),
+                                              ),
+                                            );
+                                          } else if (domain ==
+                                                  "Family/Reuniting, Family/Aftercare" &&
+                                              value == true) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    FamilyReunitingFamilyAftercareScreen(),
                                               ),
                                             );
                                           }
@@ -318,7 +331,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                 ),
               ),
               const SizedBox(height: 16),
-              Padding(
+              /* Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: SizedBox(
                   width: double.infinity,
@@ -342,7 +355,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
               SizedBox(height: MediaQuery.of(context).size.height),
             ],
           ),

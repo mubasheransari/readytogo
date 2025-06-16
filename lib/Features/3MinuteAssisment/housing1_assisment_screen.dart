@@ -119,7 +119,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                       minHeight: 6,
                       borderRadius: BorderRadius.circular(10),
                       stopIndicatorColor: Colors.white,
-                      value: 1 / 13,
+                      value: 2 / 13,
                       valueColor: AlwaysStoppedAnimation(
                         Constants().themeColor,
                       ),
