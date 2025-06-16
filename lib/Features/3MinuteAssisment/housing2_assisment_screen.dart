@@ -3,17 +3,15 @@ import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
-import 'housing2_assisment_screen.dart';
-
-class Housing1AssesmentScreen extends StatefulWidget {
-  const Housing1AssesmentScreen({Key? key}) : super(key: key);
+class Housing2AssesmentScreen extends StatefulWidget {
+  const Housing2AssesmentScreen({Key? key}) : super(key: key);
 
   @override
-  State<Housing1AssesmentScreen> createState() =>
-      _Housing1AssesmentScreenState();
+  State<Housing2AssesmentScreen> createState() =>
+      _Housing2AssesmentScreenState();
 }
 
-class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
+class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _domainScrollController = ScrollController();
   bool _isVeteran = true;
@@ -104,7 +102,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: const Text(
-                      'Question 2/13',
+                      'Question 3/13',
                       style: TextStyle(
                           color: Colors.black87,
                           fontFamily: 'satoshi',
@@ -149,7 +147,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                         child: const Padding(
                           padding: EdgeInsets.only(top: 12.0, left: 25),
                           child: Text(
-                            'Housing - 1',
+                            'Housing - 2',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -417,11 +415,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Housing2AssesmentScreen()));
+                        // Handle the next button
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF4C6FEE),

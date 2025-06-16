@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
+import 'housing1_assisment_screen.dart';
+
 class Step1Screen extends StatefulWidget {
   const Step1Screen({Key? key}) : super(key: key);
 
@@ -230,7 +232,6 @@ class _Step1ScreenState extends State<Step1Screen> {
                                     Checkbox(
                                       value: _selectedDomains.contains(domain),
                                       onChanged: (value) {
-                                        print("VALUE NEW ${_selectedDomains}");
                                         setState(() {
                                           if (value == true) {
                                             _selectedDomains.add(domain);
@@ -238,7 +239,43 @@ class _Step1ScreenState extends State<Step1Screen> {
                                             _selectedDomains.remove(domain);
                                           }
                                         });
+
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
+                                          if (domain == "Housing" &&
+                                              value == true) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Housing1AssesmentScreen(),
+                                              ),
+                                            );
+                                          }
+                                        });
                                       },
+
+                                      // onChanged: (value) {
+                                      //   print(
+                                      //       "VALUE NEW check ${_selectedDomains.contains("Housing")}");
+                                      //   if (_selectedDomains
+                                      //       .contains("Housing")) {
+                                      //     Navigator.push(
+                                      //       context,
+                                      //       MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             Housing1AssesmentScreen(),
+                                      //       ),
+                                      //     );
+                                      //   }
+                                      //   setState(() {
+                                      //     if (value == true) {
+                                      //       _selectedDomains.add(domain);
+                                      //     } else {
+                                      //       _selectedDomains.remove(domain);
+                                      //     }
+                                      //   });
+                                      // },
                                       activeColor: Constants().themeColor,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(4),
