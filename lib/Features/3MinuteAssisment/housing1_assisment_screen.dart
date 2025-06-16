@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
-class Step1Screen extends StatefulWidget {
-  const Step1Screen({Key? key}) : super(key: key);
+class Housing1AssesmentScreen extends StatefulWidget {
+  const Housing1AssesmentScreen({Key? key}) : super(key: key);
 
   @override
-  State<Step1Screen> createState() => _Step1ScreenState();
+  State<Housing1AssesmentScreen> createState() => _Housing1AssesmentScreenState();
 }
 
-class _Step1ScreenState extends State<Step1Screen> {
+class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _domainScrollController = ScrollController();
   bool _isVeteran = true;
@@ -89,7 +89,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: const Text(
-                      'Question 1/13',
+                      'Question 2/13',
                       style: TextStyle(
                           color: Colors.black87,
                           fontFamily: 'satoshi',
