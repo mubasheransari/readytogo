@@ -228,7 +228,7 @@ class _VerificattionScreenState
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                UpdatePasswordScreen()));
+                                                LoginSuccessScreen()));
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Constants().themeColor,

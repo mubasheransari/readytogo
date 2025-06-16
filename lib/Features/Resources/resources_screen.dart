@@ -40,7 +40,7 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     return SizedBox(
-                      height: 140,
+                      height: 148,
                       width: 376,
                       child: _ResourceCard(
                         item: items[index],
@@ -122,7 +122,7 @@ class _ResourceCard extends StatelessWidget {
                         item.title,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 24,
+                          fontSize: 22,
                           fontFamily: 'Satoshi',
                         ),
                       ),

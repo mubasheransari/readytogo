@@ -5,6 +5,7 @@ import 'package:readytogo/Features/Signup/signup_screen.dart';
 import 'package:readytogo/Features/login/verification_screen.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
+import '../3MinuteAssisment/Step1Screen.dart';
 import '../home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -94,7 +95,8 @@ class LoginScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => //HomeScreen
-                                          VerificattionScreen()));
+                                          VerificattionScreen() //VerificattionScreen()
+                                      ));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Constants().themeColor,

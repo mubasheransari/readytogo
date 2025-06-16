@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/Features/Donate/donate_navbar.dart';
 import 'package:readytogo/Features/Subscription/subscription_screen.dart';
 import 'package:readytogo/Features/howtouse_screen.dart';
@@ -183,10 +184,18 @@ class CustomNavDrawer extends StatelessWidget {
                             //     // Add sub menu items here if needed
                             //   ],
                             // ),
-                            _buildMenuItem(
-                              "assets/assesment.png",
-                              'Assessments',
-                              //  selected: true
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Step1Screen()));
+                              },
+                              child: _buildMenuItem(
+                                "assets/assesment.png",
+                                'Assessments',
+                                //  selected: true
+                              ),
                             ),
                             InkWell(
                               onTap: () {
