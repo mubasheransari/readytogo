@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
+import 'package:readytogo/Features/3MinuteAssisment/education_screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
 import 'family_reuniting_family_aftercare_screen.dart';
@@ -24,20 +25,11 @@ class _Step1ScreenState extends State<Step1Screen> {
     'Family/Reuniting, Family/Aftercare',
     'Employment',
     'Education',
-    'Clinical Treatment/Telehealth',
     'Allies, Advocates and Support',
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
+    'Recovery ASupport Services',
+    'Faith and Spiritually',
+    'Recovery Community',
+    'Legal/Criminal Justice',
   ];
 
   @override
@@ -262,6 +254,15 @@ class _Step1ScreenState extends State<Step1Screen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     FamilyReunitingFamilyAftercareScreen(),
+                                              ),
+                                            );
+                                          } else if (domain == "Education" &&
+                                              value == true) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EducationScreen(),
                                               ),
                                             );
                                           }

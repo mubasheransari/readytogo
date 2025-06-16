@@ -4,15 +4,14 @@ import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 import 'housing1_assisment_screen.dart';
 
-class Housing2AssesmentScreen extends StatefulWidget {
-  const Housing2AssesmentScreen({Key? key}) : super(key: key);
+class EducationScreen extends StatefulWidget {
+  const EducationScreen({Key? key}) : super(key: key);
 
   @override
-  State<Housing2AssesmentScreen> createState() =>
-      _Housing2AssesmentScreenState();
+  State<EducationScreen> createState() => _EducationScreenState();
 }
 
-class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
+class _EducationScreenState extends State<EducationScreen> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _domainScrollController = ScrollController();
   bool _isVeteran = true;
@@ -104,7 +103,7 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: const Text(
-                      'Question 3/13',
+                      'Question 5/13',
                       style: TextStyle(
                           color: Colors.black87,
                           fontFamily: 'satoshi',
@@ -119,7 +118,7 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                       minHeight: 6,
                       borderRadius: BorderRadius.circular(10),
                       stopIndicatorColor: Colors.white,
-                      value: 3 / 13,
+                      value: 5 / 13,
                       valueColor: AlwaysStoppedAnimation(
                         Constants().themeColor,
                       ),
@@ -149,7 +148,7 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                         child: const Padding(
                           padding: EdgeInsets.only(top: 12.0, left: 25),
                           child: Text(
-                            'Housing - 2',
+                            'Education',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -163,11 +162,23 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Location Preference',
+                          'Whats your education level?',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 14.0),
+                        child: Text(
+                          '(choose the highest level acvhieve)',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'satoshi',
                           ),
                         ),
                       ),
@@ -176,7 +187,7 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                       ),
                       RadioListTile<String>(
                         title: const Text(
-                          'Metropolitan',
+                          'Less than High School',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -195,7 +206,7 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                       RadioListTile<String>(
                         activeColor: Constants().themeColor,
                         title: const Text(
-                          'Suburban',
+                          'GED/HS',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -213,7 +224,7 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                       RadioListTile<String>(
                         activeColor: Constants().themeColor,
                         title: const Text(
-                          'Rural',
+                          'Some College',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -231,7 +242,7 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                       RadioListTile<String>(
                         activeColor: Constants().themeColor,
                         title: const Text(
-                          'Other',
+                          '2 year degree',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -246,13 +257,49 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                           });
                         },
                       ),
+                      RadioListTile<String>(
+                        activeColor: Constants().themeColor,
+                        title: const Text(
+                          '4 year degree',
+                          style: TextStyle(
+                            fontFamily: 'satoshi',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                        value: 'Option 5',
+                        groupValue: _selectedOption,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedOption = value!;
+                          });
+                        },
+                      ),
+                      RadioListTile<String>(
+                        activeColor: Constants().themeColor,
+                        title: const Text(
+                          'Masters or PHD',
+                          style: TextStyle(
+                            fontFamily: 'satoshi',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                        value: 'Option 6',
+                        groupValue: _selectedOption,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedOption = value!;
+                          });
+                        },
+                      ),
                       SizedBox(
                         height: 20,
                       ),
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Accommodation',
+                          'Are you currently in rolled in school or job training program?',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -260,22 +307,10 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          '(Select one)',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'satoshi',
-                          ),
-                        ),
-                      ),
                       RadioListTile<String>(
                         activeColor: Constants().themeColor,
                         title: const Text(
-                          'Live Independently',
+                          'Full Time',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -293,7 +328,7 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                       RadioListTile<String>(
                         activeColor: Constants().themeColor,
                         title: const Text(
-                          'Live with family',
+                          'Part Time',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -301,24 +336,6 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                           ),
                         ),
                         value: 'Option 5',
-                        groupValue: _accommodation,
-                        onChanged: (value) {
-                          setState(() {
-                            _accommodation = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Live with friends',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 6',
                         groupValue: _accommodation,
                         onChanged: (value) {
                           setState(() {
@@ -339,11 +356,12 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Housing1AssesmentScreen()));
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Step1Screen()),
+                          (Route<dynamic> route) => false,
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
