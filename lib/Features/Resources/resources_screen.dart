@@ -29,53 +29,46 @@ class _ResourcesScreenState extends State<ResourcesScreen> {
       appbartitle: 'Rescources',
       body: DecoratedBox(
         decoration: boxDecoration(),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0, left: 5, right: 5),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(16),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return SizedBox(
-                      height: 148,
-                      width: 376,
-                      child: _ResourceCard(
-                        item: items[index],
-                        onTap: () {
-                          if (items[index].title == "Reading Materials") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ReadingMaterialsScreen()));
-                          } else if (items[index].title == "Courses") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CourseScreen()));
-                          } else if (items[index].title == "Youtube") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MediaScreen()));
-                          } else if (items[index].title == "Self Uploaded") {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SelfUploadScreen()));
-                          }
+        child: Padding(
+          padding: const EdgeInsets.only(top: 5.0, left: 5, right: 5),
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(16),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return SizedBox(
+                height: 148,
+                width: 376,
+                child: _ResourceCard(
+                  item: items[index],
+                  onTap: () {
+                    if (items[index].title == "Reading Materials") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReadingMaterialsScreen()));
+                    } else if (items[index].title == "Courses") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CourseScreen()));
+                    } else if (items[index].title == "Youtube") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MediaScreen()));
+                    } else if (items[index].title == "Self Uploaded") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SelfUploadScreen()));
+                    }
 
-                          print("Click ${items[index].title}");
-                        },
-                      ),
-                    );
+                    print("Click ${items[index].title}");
                   },
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),

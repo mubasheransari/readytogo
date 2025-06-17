@@ -106,19 +106,51 @@ class _SignupScreenState extends State<SignupScreen> {
                 obscureText: true),
             SizedBox(height: 15),
             _buildTextField('Referral Code (optional)', 'Enter Referral Code'),
-            SizedBox(height: 40),
+            SizedBox(height: 20),
             Row(
               children: [
-                Checkbox(
-                  value: isChecked,
-                  activeColor: Constants().themeColor,
-                  checkColor: Colors.white,
-                  onChanged: (bool? value) {
+                GestureDetector(
+                  onTap: () {
                     setState(() {
-                      isChecked = value!;
+                      isChecked = !isChecked;
                     });
                   },
+                  child: Container(
+                    width: 18,
+                    height: 18,
+                    decoration: BoxDecoration(
+                      color: isChecked
+                          ? Constants().themeColor
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(6), // Circular border
+                      border: Border.all(
+                        color: Constants().themeColor,
+                        width: 2,
+                      ),
+                    ),
+                    child: isChecked
+                        ? Icon(
+                            Icons.check,
+                            size: 16,
+                            color: Colors.white,
+                          )
+                        : null,
+                  ),
                 ),
+                SizedBox(
+                  width: 12,
+                ),
+
+                // Checkbox(
+                //   value: isChecked,
+                //   activeColor: Constants().themeColor,
+                //   checkColor: Colors.white,
+                //   onChanged: (bool? value) {
+                //     setState(() {
+                //       isChecked = value!;
+                //     });
+                //   },
+                // ),
                 Expanded(
                   child: RichText(
                     text: TextSpan(
@@ -130,14 +162,18 @@ class _SignupScreenState extends State<SignupScreen> {
                       children: <TextSpan>[
                         TextSpan(
                           text: 'I have read & accept ',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'satoshi'),
                         ),
                         TextSpan(
                           text: 'Terms & Conditions',
                           style: TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
-                          ),
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'satoshi'),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.push(
@@ -153,9 +189,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         TextSpan(
                           text: 'release of information ',
                           style: TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
-                          ),
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'satoshi'),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.push(
@@ -166,14 +203,19 @@ class _SignupScreenState extends State<SignupScreen> {
                             },
                         ),
                         TextSpan(
-                          text: '& ',
+                          text: ' & ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'satoshi'),
                         ),
                         TextSpan(
-                          text: 'privacy policy',
+                          text: 'privacy policy.',
                           style: TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
-                          ),
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'satoshi'),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.push(

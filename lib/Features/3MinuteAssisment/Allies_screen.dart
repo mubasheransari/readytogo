@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
-import 'housing2_assisment_screen.dart';
+import 'housing1_assisment_screen.dart';
 
-class Housing1AssesmentScreen extends StatefulWidget {
-  const Housing1AssesmentScreen({Key? key}) : super(key: key);
+class AlliesScreen extends StatefulWidget {
+  const AlliesScreen({Key? key}) : super(key: key);
 
   @override
-  State<Housing1AssesmentScreen> createState() =>
-      _Housing1AssesmentScreenState();
+  State<AlliesScreen> createState() =>
+      _AlliesScreenState();
 }
 
-class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
+class _AlliesScreenState extends State<AlliesScreen> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _domainScrollController = ScrollController();
   bool _isVeteran = true;
@@ -41,6 +41,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
   ];
 
   String _selectedOption = '';
+  String _accommodation = '';
 
   final List<String> _options = [
     "Option 1",
@@ -64,6 +65,8 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
       body: DecoratedBox(
         decoration: boxDecoration(),
         child: SingleChildScrollView(
+          controller: _scrollController,
+          padding: const EdgeInsets.only(bottom: 20),
           child: Column(
             children: [
               const SizedBox(height: 76),
@@ -101,7 +104,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: const Text(
-                      'Question 2/13',
+                      'Question 3/13',
                       style: TextStyle(
                           color: Colors.black87,
                           fontFamily: 'satoshi',
@@ -116,7 +119,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                       minHeight: 6,
                       borderRadius: BorderRadius.circular(10),
                       stopIndicatorColor: Colors.white,
-                      value: 2 / 13,
+                      value: 3 / 13,
                       valueColor: AlwaysStoppedAnimation(
                         Constants().themeColor,
                       ),
@@ -146,7 +149,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                         child: const Padding(
                           padding: EdgeInsets.only(top: 12.0, left: 25),
                           child: Text(
-                            'Housing - 1',
+                            'Housing - 2',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -160,7 +163,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'In the past 30 days, where you have been living most of the time?',
+                          'Location Preference',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -171,21 +174,9 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                       SizedBox(
                         height: 5,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          '(choose one option that best applies)',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'satoshi',
-                          ),
-                        ),
-                      ),
                       RadioListTile<String>(
                         title: const Text(
-                          'My own home/apartment',
+                          'Metropolitan',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -204,7 +195,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                       RadioListTile<String>(
                         activeColor: Constants().themeColor,
                         title: const Text(
-                          'Someone else apartment/home',
+                          'Suburban',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -222,7 +213,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                       RadioListTile<String>(
                         activeColor: Constants().themeColor,
                         title: const Text(
-                          'In a medical, treatment or other recovery setting',
+                          'Rural',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -240,7 +231,7 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                       RadioListTile<String>(
                         activeColor: Constants().themeColor,
                         title: const Text(
-                          'In jail, prison or other correctional setting.',
+                          'Other',
                           style: TextStyle(
                             fontFamily: 'satoshi',
                             fontWeight: FontWeight.w700,
@@ -255,113 +246,8 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                           });
                         },
                       ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'In a shelter or temporary housing facility',
-                          style: const TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 5',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Outdoors or on the streets',
-                          style: const TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 6',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
-                        },
-                      ),
-
-                      /*  SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.41,
-                        child: RawScrollbar(
-                          thumbVisibility: true,
-                          trackVisibility: true,
-                          thickness: 10,
-                          radius: const Radius.circular(10),
-                          thumbColor: Constants().themeColor,
-                          controller: _domainScrollController,
-                          child: ListView.builder(
-                            controller: _domainScrollController,
-                            padding: EdgeInsets.zero,
-                            itemCount: _domains.length,
-                            itemBuilder: (context, index) {
-                              final domain = _domains[index];
-        
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
-                                child: Row(
-                                  children: [
-                                    Checkbox(
-                                      value: _selectedDomains.contains(domain),
-                                      onChanged: (value) {
-                                        print("VALUE NEW ${_selectedDomains}");
-                                        setState(() {
-                                          if (value == true) {
-                                            _selectedDomains.add(domain);
-                                          } else {
-                                            _selectedDomains.remove(domain);
-                                          }
-                                        });
-                                      },
-                                      activeColor: Constants().themeColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            domain,
-                                            style: const TextStyle(
-                                              fontFamily: 'satoshi',
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          if (domain ==
-                                              'Clinical Treatment/Telehealth')
-                                            Text(
-                                              'Primary Domain',
-                                              style: TextStyle(
-                                                color: Constants().themeColor,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),*/
+                     
+                     
                     ],
                   ),
                 ),
@@ -378,7 +264,8 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Step1Screen()));
+                                builder: (context) =>
+                                    Housing1AssesmentScreen()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -414,11 +301,12 @@ class _Housing1AssesmentScreenState extends State<Housing1AssesmentScreen> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Housing2AssesmentScreen()));
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Step1Screen()),
+                          (Route<dynamic> route) => false,
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF4C6FEE),
