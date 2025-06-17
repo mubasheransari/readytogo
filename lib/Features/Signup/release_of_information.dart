@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
 
 class ReleaseOfInformationScreen extends StatefulWidget {
@@ -38,10 +39,9 @@ class _ReleaseOfInformationScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  const SizedBox(height: 76),
+                const SizedBox(height: 76),
                 Row(
                   children: [
-  
                     InkWell(
                       onTap: () {
                         Navigator.of(context).pop();
@@ -55,7 +55,7 @@ class _ReleaseOfInformationScreenState
                     ),
                     const SizedBox(width: 17),
                     const Text(
-                      'Release Of Information',
+                      'Release of Information',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.black87,
@@ -65,7 +65,7 @@ class _ReleaseOfInformationScreenState
                     ),
                   ],
                 ),
-               /* Row(
+                /* Row(
                   children: [
                     InkWell(
                       onTap: () {
@@ -174,6 +174,50 @@ class _ReleaseOfInformationScreenState
                     fontWeight: FontWeight.w500,
                     fontFamily: 'Satoshi',
                   ),
+                ),
+                Row(
+                  children: [
+                    // SizedBox(
+                    //   width: 12,
+                    // ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isChecked = !isChecked;
+                        });
+                      },
+                      child: Container(
+                        width: 21,
+                        height: 21,
+                        decoration: BoxDecoration(
+                          color: isChecked
+                              ? Constants().themeColor
+                              : Colors.transparent,
+                          borderRadius:
+                              BorderRadius.circular(6), // Circular border
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 2,
+                          ),
+                        ),
+                        child: isChecked
+                            ? Icon(
+                                Icons.check,
+                                size: 16,
+                                color: Colors.white,
+                              )
+                            : null,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text('I agree to the Release of Information.',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'satoshi',
+                            fontWeight: FontWeight.w700)),
+                  ],
                 ),
                 // SizedBox(height: 20),
 

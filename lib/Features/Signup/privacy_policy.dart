@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
 
 class PrivacyPolicyScreen extends StatefulWidget {
@@ -147,24 +148,47 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
 
                 // I Agree Checkbox
                 Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Checkbox(
-                      value: isChecked,
-                      onChanged: (bool? value) {
+                    // SizedBox(
+                    //   width: 12,
+                    // ),
+                    GestureDetector(
+                      onTap: () {
                         setState(() {
-                          isChecked = value!;
+                          isChecked = !isChecked;
                         });
                       },
-                    ),
-                    const Text(
-                      'I Agree',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff666F80),
-                        fontWeight: FontWeight.w500,
+                      child: Container(
+                        width: 21,
+                        height: 21,
+                        decoration: BoxDecoration(
+                          color: isChecked
+                              ? Constants().themeColor
+                              : Colors.transparent,
+                          borderRadius:
+                              BorderRadius.circular(6), // Circular border
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 2,
+                          ),
+                        ),
+                        child: isChecked
+                            ? Icon(
+                                Icons.check,
+                                size: 16,
+                                color: Colors.white,
+                              )
+                            : null,
                       ),
                     ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text('I agree to the Privacy Policy.',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'satoshi',
+                            fontWeight: FontWeight.w700)),
                   ],
                 ),
                 SizedBox(height: 40),
