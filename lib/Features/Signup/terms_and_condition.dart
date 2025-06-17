@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../Constants/constants.dart';
+import '../../widgets/back_next_button_widget.dart';
 import '../../widgets/boxDecorationWidget.dart';
 
 class TermsAndConditionScreen extends StatefulWidget {
@@ -267,91 +268,13 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
                   ],
                 ),*/
                 SizedBox(height: 40),
-
-                // Back and Next buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: 156,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context); // Go back
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          minimumSize: Size(100, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // Image.asset(
-                            //   'assets/arrow-narrow-left.png',
-                            //   color: Color(0xff666F80),
-                            // ),
-                            Icon(Icons.arrow_back,
-                                color: Color(0xff666F80), size: 24),
-                            SizedBox(width: 10),
-                            Text(
-                              'Back',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xff666F80),
-                                fontFamily: 'Satoshi',
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                      width: 156,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Handle the next button
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF4C6FEE),
-                          minimumSize: Size(100, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Next',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                fontFamily: 'Satoshi',
-                                fontSize: 20,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Icon(Icons.arrow_forward,
-                                color: Colors.white, size: 24),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                BackAndNextButton(
+                  onBackPressed: () {
+                    Navigator.pop(context);
+                  },
+                  onNextPressed: () {},
                 ),
-                SizedBox(
-                  height: 30,
-                ),
+                SizedBox(height: 40),
               ],
             ),
           ),
