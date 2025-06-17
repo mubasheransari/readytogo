@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
 
 class TermsAndConditionScreen extends StatefulWidget {
@@ -198,9 +199,53 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
+                Row(
+                  children: [
+                    // SizedBox(
+                    //   width: 12,
+                    // ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isChecked = !isChecked;
+                        });
+                      },
+                      child: Container(
+                        width: 21,
+                        height: 21,
+                        decoration: BoxDecoration(
+                          color: isChecked
+                              ? Constants().themeColor
+                              : Colors.transparent,
+                          borderRadius:
+                              BorderRadius.circular(6), // Circular border
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 2,
+                          ),
+                        ),
+                        child: isChecked
+                            ? Icon(
+                                Icons.check,
+                                size: 16,
+                                color: Colors.white,
+                              )
+                            : null,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text('I agree to the Terms and Conditions.',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'satoshi',
+                            fontWeight: FontWeight.w700)),
+                  ],
+                ),
 
                 // I Agree Checkbox
-                Row(
+                /*  Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Checkbox(
@@ -220,12 +265,12 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
                       ),
                     ),
                   ],
-                ),
+                ),*/
                 SizedBox(height: 40),
 
                 // Back and Next buttons
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     SizedBox(
                       width: 156,
@@ -245,10 +290,12 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.arrow_back,
-                              color: Color(0xff666F80),
-                            ),
+                            // Image.asset(
+                            //   'assets/arrow-narrow-left.png',
+                            //   color: Color(0xff666F80),
+                            // ),
+                            Icon(Icons.arrow_back,
+                                color: Color(0xff666F80), size: 24),
                             SizedBox(width: 10),
                             Text(
                               'Back',
@@ -262,6 +309,9 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
                           ],
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      width: 10,
                     ),
                     SizedBox(
                       width: 156,
@@ -298,6 +348,9 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
                       ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 30,
                 ),
               ],
             ),
