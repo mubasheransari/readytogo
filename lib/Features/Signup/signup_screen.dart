@@ -431,7 +431,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         fontFamily: 'Satoshi',
                         fontSize: 20,
                         color: Color(0xff323747),
-                        fontWeight: FontWeight.w400)),
+                        fontWeight: FontWeight.w700)),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
@@ -442,7 +442,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           fontFamily: 'Satoshi',
                           fontSize: 20,
                           color: Constants().themeColor,
-                          fontWeight: FontWeight.w400)),
+                          fontWeight: FontWeight.w700)),
                 ),
               ],
             ),

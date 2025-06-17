@@ -253,7 +253,7 @@ class LoginScreen extends StatelessWidget {
                                   fontFamily: 'Satoshi',
                                   fontSize: 20,
                                   color: Color(0xff323747),
-                                  fontWeight: FontWeight.w500)),
+                                  fontWeight: FontWeight.w700)),
                           GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -266,7 +266,7 @@ class LoginScreen extends StatelessWidget {
                                     fontFamily: 'Satoshi',
                                     fontSize: 20,
                                     color: Constants().themeColor,
-                                    fontWeight: FontWeight.w500)),
+                                    fontWeight: FontWeight.w700)),
                           ),
                         ],
                       ),
