@@ -4,7 +4,8 @@ import '../../widgets/boxDecorationWidget.dart';
 
 class TermsAndConditionScreen extends StatefulWidget {
   @override
-  _TermsAndConditionScreenState createState() => _TermsAndConditionScreenState();
+  _TermsAndConditionScreenState createState() =>
+      _TermsAndConditionScreenState();
 }
 
 class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
@@ -16,17 +17,40 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-      decoration: boxDecoration(),
+        decoration: boxDecoration(),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 40,
-                ),
+                const SizedBox(height: 76),
                 Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const CircleAvatar(
+                        radius: 19,
+                        backgroundColor: Colors.white,
+                        child: Icon(Icons.arrow_back,
+                            color: Colors.black, size: 19),
+                      ),
+                    ),
+                    const SizedBox(width: 17),
+                    const Text(
+                      'Terms & Conditions',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Satoshi',
+                      ),
+                    ),
+                  ],
+                ),
+                /*  Row(
                   children: [
                     InkWell(
                       onTap: () {
@@ -51,7 +75,7 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
                       ),
                     ),
                   ],
-                ),
+                ),*/
                 SizedBox(height: 40),
                 const Text(
                   'Effective Date: 04/04/2004',

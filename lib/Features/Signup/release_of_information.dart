@@ -38,10 +38,34 @@ class _ReleaseOfInformationScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 40,
-                ),
+                  const SizedBox(height: 76),
                 Row(
+                  children: [
+  
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const CircleAvatar(
+                        radius: 19,
+                        backgroundColor: Colors.white,
+                        child: Icon(Icons.arrow_back,
+                            color: Colors.black, size: 19),
+                      ),
+                    ),
+                    const SizedBox(width: 17),
+                    const Text(
+                      'Release Of Information',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Satoshi',
+                      ),
+                    ),
+                  ],
+                ),
+               /* Row(
                   children: [
                     InkWell(
                       onTap: () {
@@ -69,7 +93,7 @@ class _ReleaseOfInformationScreenState
                       ),
                     ),
                   ],
-                ),
+                ),*/
                 SizedBox(height: 40),
                 const Text(
                   'Effective Date: 04/04/2004',

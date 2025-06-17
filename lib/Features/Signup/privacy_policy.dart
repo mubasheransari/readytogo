@@ -16,36 +16,33 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-   decoration: boxDecoration(),
+        decoration: boxDecoration(),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 40,
-                ),
+                const SizedBox(height: 76),
                 Row(
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                       },
-                      child: CircleAvatar(
-                        radius: 17,
+                      child: const CircleAvatar(
+                        radius: 19,
                         backgroundColor: Colors.white,
-                        child: Icon(Icons.arrow_back, color: Colors.black),
+                        child: Icon(Icons.arrow_back,
+                            color: Colors.black, size: 19),
                       ),
                     ),
-                    SizedBox(
-                      width: 8,
-                    ),
+                    const SizedBox(width: 17),
                     const Text(
                       'Privacy Policy',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Color(0xff666F80),
+                        color: Colors.black87,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'Satoshi',
                       ),

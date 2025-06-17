@@ -109,6 +109,9 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(height: 20),
             Row(
               children: [
+                SizedBox(
+                  width: 12,
+                ),
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -116,15 +119,15 @@ class _SignupScreenState extends State<SignupScreen> {
                     });
                   },
                   child: Container(
-                    width: 18,
-                    height: 18,
+                    width: 21,
+                    height: 21,
                     decoration: BoxDecoration(
                       color: isChecked
                           ? Constants().themeColor
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(6), // Circular border
                       border: Border.all(
-                        color: Constants().themeColor,
+                        color: Colors.grey,
                         width: 2,
                       ),
                     ),
@@ -210,7 +213,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               fontFamily: 'satoshi'),
                         ),
                         TextSpan(
-                          text: 'privacy policy.',
+                          text: ' privacy policy.',
                           style: TextStyle(
                               color: Colors.blue,
                               decoration: TextDecoration.underline,
