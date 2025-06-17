@@ -16,12 +16,11 @@ class VerificattionScreen extends StatefulWidget {
   const VerificattionScreen({super.key});
 
   @override
-  State<VerificattionScreen> createState() =>
-      _VerificattionScreenState();
+  State<VerificattionScreen> createState() => _VerificattionScreenState();
 }
 
-class _VerificattionScreenState
-    extends State<VerificattionScreen> with CodeAutoFill {
+class _VerificattionScreenState extends State<VerificattionScreen>
+    with CodeAutoFill {
   String codeValue = "";
 
   @override
@@ -219,8 +218,10 @@ class _VerificattionScreenState
                             ),
                             const SizedBox(height: 30),
                             SizedBox(
-                              width: 342,
+                              width: 376,
                               height: 60,
+                              // width: 342,
+                              // height: 60,
                               child: Center(
                                 child: ElevatedButton(
                                   onPressed: () {

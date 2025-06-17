@@ -43,8 +43,10 @@ class LoginSuccessScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.025,
                   ),
                   SizedBox(
-                    width: 342,
+                    width: 376,
                     height: 60,
+                    // width: 342,
+                    // height: 60,
                     child: Center(
                       child: ElevatedButton(
                         onPressed: () {
@@ -137,8 +139,10 @@ class LoginSuccessScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.01,
                   ),
                   SizedBox(
-                    width: 342,
+                    width: 376,
                     height: 60,
+                    // width: 342,
+                    // height: 60,
                     child: Center(
                       child: ElevatedButton(
                         onPressed: () {
@@ -184,8 +188,10 @@ class LoginSuccessScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.01,
                   ),
                   SizedBox(
-                    width: 342,
+                    width: 376,
                     height: 60,
+                    // width: 342,
+                    // height: 60,
                     child: Center(
                       child: ElevatedButton(
                         onPressed: () {
