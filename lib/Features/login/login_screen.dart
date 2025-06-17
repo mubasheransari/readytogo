@@ -80,14 +80,15 @@ class LoginScreen extends StatelessWidget {
                               style: TextStyle(
                                   color: Constants().themeColor,
                                   fontFamily: 'Satoshi',
-                                  fontSize: 16,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w700)),
                         ),
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
-                        width: 342,
-                        height: 60,
+                        width: 376,
+                        height: 60, // width: 342,
+                        // height: 60,
                         child: Center(
                           child: ElevatedButton(
                             onPressed: () {
