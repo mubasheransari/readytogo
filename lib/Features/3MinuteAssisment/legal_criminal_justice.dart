@@ -3,40 +3,30 @@ import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 import 'Allies_screen.dart';
-import 'housing1_assisment_screen.dart';
+import 'clinical_treatment_screen.dart';
 
-class AlliesAdvocateSupport extends StatefulWidget {
-  const AlliesAdvocateSupport({Key? key}) : super(key: key);
+class LegalCriminalJusticeScreen extends StatefulWidget {
+  const LegalCriminalJusticeScreen({Key? key}) : super(key: key);
 
   @override
-  State<AlliesAdvocateSupport> createState() => _AlliesAdvocateSupportState();
+  State<LegalCriminalJusticeScreen> createState() =>
+      _LegalCriminalJusticeScreenState();
 }
 
-class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
+class _LegalCriminalJusticeScreenState
+    extends State<LegalCriminalJusticeScreen> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _domainScrollController = ScrollController();
-  bool _isVeteran = true;
 
   List<String> _selectedDomains = [];
 
   final List<String> _domains = [
-    'Allies',
-    'Advocates',
-    'Direct Support Groups',
+    'Currently incarcerated',
+    'Outstanding Warrants',
+    'Mnadated Service',
+    'Ever been arrested,convicted or questioned for any violent or sexual crime?'
   ];
 
-  String _selectedOption = '';
-  String _accommodation = '';
-
-  final List<String> _options = [
-    "Option 1",
-    "Option 2",
-    "Option 3",
-    "Option 4",
-    "Option 5",
-    "Option 6",
-    "Option 7",
-  ];
   @override
   void dispose() {
     _scrollController.dispose();
@@ -89,7 +79,7 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: const Text(
-                      'Question 12/13',
+                      'Question 7/13',
                       style: TextStyle(
                           color: Colors.black87,
                           fontFamily: 'satoshi',
@@ -104,7 +94,7 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                       minHeight: 6,
                       borderRadius: BorderRadius.circular(10),
                       stopIndicatorColor: Colors.white,
-                      value: 12 / 13,
+                      value: 7 / 13,
                       valueColor: AlwaysStoppedAnimation(
                         Constants().themeColor,
                       ),
@@ -134,7 +124,7 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                         child: const Padding(
                           padding: EdgeInsets.only(top: 12.0, left: 25),
                           child: Text(
-                            'Recovery Oriented Peer Group',
+                            'Legal/Criminal Justice',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -148,7 +138,7 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'ROPG(Recovery Orientee Peer Group)',
+                          'Criminal Record',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -281,7 +271,7 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const AlliesScreen()),
+                              builder: (context) => const ClinicalTreatmentScreen()),
                           (Route<dynamic> route) => false,
                         );
                       },

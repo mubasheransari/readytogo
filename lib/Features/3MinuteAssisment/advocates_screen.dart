@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
-import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/widgets/back_next_button_widget.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
-import 'advocates_screen.dart';
-import 'housing1_assisment_screen.dart';
 
-class AlliesScreen extends StatefulWidget {
-  const AlliesScreen({Key? key}) : super(key: key);
+class AdvocateScreen extends StatefulWidget {
+  const AdvocateScreen({Key? key}) : super(key: key);
 
   @override
-  State<AlliesScreen> createState() => _AlliesScreenState();
+  State<AdvocateScreen> createState() => _AdvocateScreenState();
 }
 
-class _AlliesScreenState extends State<AlliesScreen> {
+class _AdvocateScreenState extends State<AdvocateScreen> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _domainScrollController = ScrollController();
   bool _isVeteran = true;
@@ -150,7 +147,7 @@ class _AlliesScreenState extends State<AlliesScreen> {
                         child: const Padding(
                           padding: EdgeInsets.only(top: 12.0, left: 25),
                           child: Text(
-                            'Allies',
+                            'Advocates',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -164,7 +161,7 @@ class _AlliesScreenState extends State<AlliesScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Any people intrested in or offer Support/Services to the Recovery Community.',
+                          'Please fill below answers',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -270,7 +267,7 @@ class _AlliesScreenState extends State<AlliesScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          '"For Now" Jobs',
+                          'Legal Advocates',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -293,7 +290,7 @@ class _AlliesScreenState extends State<AlliesScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Career Training(Academic)',
+                          'Civil Rights',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -316,7 +313,7 @@ class _AlliesScreenState extends State<AlliesScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Housing Providers',
+                          'Criminal Justice',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -339,7 +336,7 @@ class _AlliesScreenState extends State<AlliesScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Real State Investor/Operations',
+                          'CPS',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -362,7 +359,7 @@ class _AlliesScreenState extends State<AlliesScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Non Profit (501c3)',
+                          'Legal Assistance',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -385,7 +382,7 @@ class _AlliesScreenState extends State<AlliesScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Grant Providers/Writers',
+                          'EBOA (Evidence Based Outcomes Advocates)',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -405,88 +402,12 @@ class _AlliesScreenState extends State<AlliesScreen> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Research Community',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Faith Based & Spiritual Care',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Evidence Based',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 22),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              BackAndNextButton(
-                  onBackPressed: () {},
-                  onNextPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AdvocateScreen()));
-                  }),
+              BackAndNextButton(onBackPressed: () {}, onNextPressed: () {}),
               SizedBox(height: MediaQuery.of(context).size.height),
             ],
           ),
