@@ -118,7 +118,7 @@ class _EmploymentScreenState extends State<EmploymentScreen> {
                         child: const Padding(
                           padding: EdgeInsets.only(top: 12.0, left: 25),
                           child: Text(
-                            'Education',
+                            'Employment',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,

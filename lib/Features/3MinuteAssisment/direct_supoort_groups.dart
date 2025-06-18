@@ -1,34 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
-import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
+import 'package:readytogo/widgets/back_next_button_widget.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
-import 'allies_screen.dart';
-import 'housing1_assisment_screen.dart';
 
-class AlliesAdvocateSupport extends StatefulWidget {
-  const AlliesAdvocateSupport({Key? key}) : super(key: key);
+class DirectSupportGroupsScreen extends StatefulWidget {
+  const DirectSupportGroupsScreen({Key? key}) : super(key: key);
 
   @override
-  State<AlliesAdvocateSupport> createState() => _AlliesAdvocateSupportState();
+  State<DirectSupportGroupsScreen> createState() =>
+      _DirectSupportGroupsScreenState();
 }
 
-class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
+class _DirectSupportGroupsScreenState extends State<DirectSupportGroupsScreen> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _domainScrollController = ScrollController();
   bool _isVeteran = true;
 
   List<String> _selectedDomains = [];
 
-  final List<String> _domains = [
-    'Allies',
-    'Advocates',
-    'Direct Support Groups',
+  final List<String> _advocates = [
+    'Local',
+    'State',
+    'National',
+    'Virtual',
+    'Legal Advocates',
+    'Civil Rights',
+    'Criminal Justice',
+    'CPS',
+    'Legal Assistance',
+    'EBOA (Evidence Based Outcomes Advocate)',
   ];
 
   String _selectedOption = '';
   String _accommodation = '';
 
- 
+  final List<String> _options = [
+    "Option 1",
+    "Option 2",
+    "Option 3",
+    "Option 4",
+    "Option 5",
+    "Option 6",
+    "Option 7",
+  ];
   @override
   void dispose() {
     _scrollController.dispose();
@@ -126,7 +140,7 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                         child: const Padding(
                           padding: EdgeInsets.only(top: 12.0, left: 25),
                           child: Text(
-                            'Recovery Oriented Peer Group',
+                            'Direct Support Group',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -140,7 +154,7 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'ROPG (Recovery Orientee Peer Group)',
+                          'Please fill below answers',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -148,21 +162,12 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          '(check all that applies)',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'satoshi',
-                          ),
-                        ),
+                      SizedBox(
+                        height: 5,
                       ),
                       Column(
-                        children: List.generate(_domains.length, (index) {
-                          final domain = _domains[index];
+                        children: List.generate(_advocates.length, (index) {
+                          final domain = _advocates[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4.0),
                             child: Row(
@@ -196,15 +201,6 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                                           fontSize: 18,
                                         ),
                                       ),
-                                      if (domain ==
-                                          'Clinical Treatment/Telehealth')
-                                        Text(
-                                          'Primary Domain',
-                                          style: TextStyle(
-                                            color: Constants().themeColor,
-                                            fontSize: 12,
-                                          ),
-                                        ),
                                     ],
                                   ),
                                 ),
@@ -213,99 +209,13 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                           );
                         }),
                       ),
+                      const SizedBox(height: 12),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: 156,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Step1Screen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        minimumSize: Size(100, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.arrow_back,
-                            color: Color(0xff666F80),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            'Back',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xff666F80),
-                              fontFamily: 'Satoshi',
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 156,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Navigator.push(
-                        //     context,
-
-                        //     MaterialPageRoute(
-                        //         builder: (context) => Step1Screen(),maintainState: false));
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AlliesScreen()),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF4C6FEE),
-                        minimumSize: Size(100, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Next',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontFamily: 'Satoshi',
-                              fontSize: 20,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Icon(Icons.arrow_forward,
-                              color: Colors.white, size: 24),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              BackAndNextButton(onBackPressed: () {}, onNextPressed: () {}),
               SizedBox(height: MediaQuery.of(context).size.height),
             ],
           ),

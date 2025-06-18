@@ -17,25 +17,17 @@ class _AdvocateScreenState extends State<AdvocateScreen> {
 
   List<String> _selectedDomains = [];
 
-  final List<String> _domains = [
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
+  final List<String> _advocates = [
+    'Local',
+    'State',
+    'National',
+    'Virtual',
+    'Legal Advocates',
+    'Civil Rights',
+    'Criminal Justice',
+    'CPS',
+    'Legal Assistance',
+    'EBOA (Evidence Based Outcomes Advocate)',
   ];
 
   String _selectedOption = '';
@@ -170,236 +162,52 @@ class _AdvocateScreenState extends State<AdvocateScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 5,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Local',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'State',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'National',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Virtual',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Legal Advocates',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Civil Rights',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Criminal Justice',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'CPS',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Legal Assistance',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'EBOA (Evidence Based Outcomes Advocates)',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'type here',
-                              hintStyle: TextStyle(
-                                  fontFamily: 'satoshi',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700)),
-                        ),
+                      Column(
+                        children: List.generate(_advocates.length, (index) {
+                          final domain = _advocates[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: _selectedDomains.contains(domain),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value == true) {
+                                        _selectedDomains.add(domain);
+                                      } else {
+                                        _selectedDomains.remove(domain);
+                                      }
+                                    });
+                                  },
+                                  activeColor: Constants().themeColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        domain,
+                                        style: const TextStyle(
+                                          fontFamily: 'satoshi',
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
                       ),
                       const SizedBox(height: 12),
                     ],
