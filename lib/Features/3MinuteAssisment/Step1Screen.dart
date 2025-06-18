@@ -5,6 +5,7 @@ import 'package:readytogo/Features/3MinuteAssisment/education_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/employment_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/legal_criminal_justice.dart';
 import 'package:readytogo/Features/Resources/resources_screen.dart';
+import 'package:readytogo/Features/home_screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
 import 'family_reuniting_family_aftercare_screen.dart';
@@ -60,7 +61,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ResourcesScreen())),
+                            builder: (context) =>   HomeScreen())),
                     child: const CircleAvatar(
                       radius: 19,
                       backgroundColor: Colors.white,
