@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
+import 'package:readytogo/Features/3MinuteAssisment/telehealth_screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
-import 'Allies_screen.dart';
+import 'allies_screen.dart';
 
 class ClinicalTreatmentScreen extends StatefulWidget {
   const ClinicalTreatmentScreen({Key? key}) : super(key: key);
@@ -261,15 +262,10 @@ class _ClinicalTreatmentScreenState extends State<ClinicalTreatmentScreen> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Navigator.push(
-                        //     context,
-
-                        //     MaterialPageRoute(
-                        //         builder: (context) => Step1Screen(),maintainState: false));
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const AlliesScreen()),
+                              builder: (context) => const TelehealthScreen()),
                           (Route<dynamic> route) => false,
                         );
                       },

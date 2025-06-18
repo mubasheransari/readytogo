@@ -3,13 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:readytogo/Constants/constants.dart';
 import '../widgets/boxDecorationWidget.dart';
 import '../widgets/customscfaffold_widget.dart';
-
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import 'filters_search_screen.dart';
 
 class FindProvidersScreen extends StatefulWidget {

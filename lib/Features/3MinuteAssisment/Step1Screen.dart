@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
-import 'package:readytogo/Features/3MinuteAssisment/AlliesAdvocateSupport.dart';
+import 'package:readytogo/Features/3MinuteAssisment/allies_advocate_support_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/education_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/employment_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/legal_criminal_justice.dart';

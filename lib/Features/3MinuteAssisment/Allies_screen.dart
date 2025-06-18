@@ -76,7 +76,10 @@ class _AlliesScreenState extends State<AlliesScreen> {
                   const SizedBox(width: 10),
                   InkWell(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Step1Screen()));
                     },
                     child: const CircleAvatar(
                       radius: 19,
