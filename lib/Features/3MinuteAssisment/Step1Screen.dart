@@ -77,24 +77,10 @@ class _Step1ScreenState extends State<Step1Screen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 48,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Constants().themeColor,
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.only(top: 12.0, left: 25),
-                        child: const Text(
-                          'Domains',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'satoshi',
-                          ),
-                        ),
+                      TitleHeading3minAssesment(
+                        title: 'Domains',
                       ),
+          
                       const SizedBox(height: 12),
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),

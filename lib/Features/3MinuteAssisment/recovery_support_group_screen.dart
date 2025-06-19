@@ -66,63 +66,7 @@ class _RecoverySupportServicesScreenState
                 questionNumber: 2,
                 totalQuestions: 13,
               ),
-              // Row(
-              //   children: [
-              //     const SizedBox(width: 10),
-              //     InkWell(
-              //       onTap: () {
-              //         Navigator.pop(context);
-              //       },
-              //       child: const CircleAvatar(
-              //         radius: 19,
-              //         backgroundColor: Colors.white,
-              //         child:
-              //             Icon(Icons.arrow_back, color: Colors.black, size: 19),
-              //       ),
-              //     ),
-              //     const SizedBox(width: 17),
-              //     const Text(
-              //       'Recovery Wellness Plan',
-              //       style: TextStyle(
-              //         fontSize: 20,
-              //         color: Colors.black87,
-              //         fontWeight: FontWeight.w700,
-              //         fontFamily: 'Satoshi',
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // const SizedBox(height: 15),
-              // Column(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.only(left: 20.0),
-              //       child: const Text(
-              //         'Question 12/13',
-              //         style: TextStyle(
-              //             color: Colors.black87,
-              //             fontFamily: 'satoshi',
-              //             fontWeight: FontWeight.w800),
-              //       ),
-              //     ),
-              //     SizedBox(height: 5),
-              //     Padding(
-              //       padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-              //       child: LinearProgressIndicator(
-              //         backgroundColor: Colors.white,
-              //         minHeight: 6,
-              //         borderRadius: BorderRadius.circular(10),
-              //         stopIndicatorColor: Colors.white,
-              //         value: 12 / 13,
-              //         valueColor: AlwaysStoppedAnimation(
-              //           Constants().themeColor,
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+            
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
@@ -135,26 +79,11 @@ class _RecoverySupportServicesScreenState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 48,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Constants().themeColor,
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        child: const Padding(
-                          padding: EdgeInsets.only(top: 12.0, left: 25),
-                          child: Text(
-                            'Recovery Support Services',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'satoshi',
-                            ),
-                          ),
-                        ),
+                        TitleHeading3minAssesment(
+                        title: 'Recovery Support Services',
                       ),
+          
+                    
                       const SizedBox(height: 12),
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),

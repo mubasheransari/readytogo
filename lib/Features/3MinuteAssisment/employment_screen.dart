@@ -41,7 +41,7 @@ class _EmploymentScreenState extends State<EmploymentScreen> {
           child: Column(
             children: [
               const SizedBox(height: 76),
-             BackHeader(
+              BackHeader(
                 onTap: (context) {
                   Navigator.pop(context);
                 },
@@ -60,26 +60,7 @@ class _EmploymentScreenState extends State<EmploymentScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 48,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Constants().themeColor,
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        child: const Padding(
-                          padding: EdgeInsets.only(top: 12.0, left: 25),
-                          child: Text(
-                            'Employment',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'satoshi',
-                            ),
-                          ),
-                        ),
-                      ),
+                      TitleHeading3minAssesment(title: "Employment"),
                       const SizedBox(height: 12),
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
@@ -273,7 +254,7 @@ class _EmploymentScreenState extends State<EmploymentScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-               BackAndNextButton(onBackPressed: () {
+              BackAndNextButton(onBackPressed: () {
                 Navigator.of(context).pop();
               }, onNextPressed: () {
                 Navigator.of(context).pop();

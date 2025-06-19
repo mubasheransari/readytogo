@@ -7,14 +7,12 @@ class BackHeader extends StatelessWidget {
   final int questionNumber;
   final int totalQuestions;
 
-
   const BackHeader({
     Key? key,
     required this.onTap,
     this.title = 'Recovery Wellness Plan',
     this.questionNumber = 1,
     this.totalQuestions = 13,
-
   }) : super(key: key);
 
   @override
@@ -72,6 +70,35 @@ class BackHeader extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class TitleHeading3minAssesment extends StatelessWidget {
+  String title;
+  TitleHeading3minAssesment({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 48,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        color: Constants().themeColor,
+      ),
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: EdgeInsets.only(top: 12.0, left: 25),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'satoshi',
+          ),
+        ),
+      ),
     );
   }
 }

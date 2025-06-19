@@ -67,26 +67,8 @@ class _AlliesAdvocateSupportState extends State<AlliesAdvocateSupport> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 48,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Constants().themeColor,
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        child: const Padding(
-                          padding: EdgeInsets.only(top: 12.0, left: 25),
-                          child: Text(
-                            'Recovery Oriented Peer Group',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'satoshi',
-                            ),
-                          ),
-                        ),
-                      ),
+                      TitleHeading3minAssesment(title:'Recovery Oriented Peer Group',),
+                      
                       const SizedBox(height: 12),
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
