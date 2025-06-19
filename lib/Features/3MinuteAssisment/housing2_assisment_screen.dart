@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
+import '../../widgets/back_next_button_widget.dart';
 import 'housing1_assisment_screen.dart';
 
 class Housing2AssesmentScreen extends StatefulWidget {
@@ -331,89 +332,14 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: 156,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Housing1AssesmentScreen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        minimumSize: Size(100, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.arrow_back,
-                            color: Color(0xff666F80),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            'Back',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xff666F80),
-                              fontFamily: 'Satoshi',
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 156,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Step1Screen()),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF4C6FEE),
-                        minimumSize: Size(100, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Next',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontFamily: 'Satoshi',
-                              fontSize: 20,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Icon(Icons.arrow_forward,
-                              color: Colors.white, size: 24),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              BackAndNextButton(
+                onBackPressed: () {
+                  Navigator.of(context).pop();
+                },
+                onNextPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Step1Screen()));
+                },
               ),
               SizedBox(height: MediaQuery.of(context).size.height),
             ],
