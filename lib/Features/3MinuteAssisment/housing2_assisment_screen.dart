@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
+import 'package:readytogo/Features/3MinuteAssisment/widget_recoverywellnessplan.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 import '../../widgets/back_next_button_widget.dart';
 import 'housing1_assisment_screen.dart';
@@ -44,15 +45,7 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
   String _selectedOption = '';
   String _accommodation = '';
 
-  final List<String> _options = [
-    "Option 1",
-    "Option 2",
-    "Option 3",
-    "Option 4",
-    "Option 5",
-    "Option 6",
-    "Option 7",
-  ];
+ 
   @override
   void dispose() {
     _scrollController.dispose();
@@ -71,62 +64,12 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
           child: Column(
             children: [
               const SizedBox(height: 76),
-              Row(
-                children: [
-                  const SizedBox(width: 10),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const CircleAvatar(
-                      radius: 19,
-                      backgroundColor: Colors.white,
-                      child:
-                          Icon(Icons.arrow_back, color: Colors.black, size: 19),
-                    ),
-                  ),
-                  const SizedBox(width: 17),
-                  const Text(
-                    'Recovery Wellness Plan',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Satoshi',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: const Text(
-                      'Question 3/13',
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontFamily: 'satoshi',
-                          fontWeight: FontWeight.w800),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    child: LinearProgressIndicator(
-                      backgroundColor: Colors.white,
-                      minHeight: 6,
-                      borderRadius: BorderRadius.circular(10),
-                      stopIndicatorColor: Colors.white,
-                      value: 3 / 13,
-                      valueColor: AlwaysStoppedAnimation(
-                        Constants().themeColor,
-                      ),
-                    ),
-                  ),
-                ],
+                 BackHeader(
+                onTap: (context) {
+                  Navigator.pop(context);
+                },
+                questionNumber: 2,
+                totalQuestions: 13,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -337,8 +280,10 @@ class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
                   Navigator.of(context).pop();
                 },
                 onNextPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Step1Screen()));
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => Step1Screen()));
                 },
               ),
               SizedBox(height: MediaQuery.of(context).size.height),

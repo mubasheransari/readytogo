@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
+import 'package:readytogo/Features/3MinuteAssisment/widget_recoverywellnessplan.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
+import '../../widgets/back_next_button_widget.dart';
 import 'housing1_assisment_screen.dart';
 
 class EducationScreen extends StatefulWidget {
@@ -69,62 +71,12 @@ class _EducationScreenState extends State<EducationScreen> {
           child: Column(
             children: [
               const SizedBox(height: 76),
-              Row(
-                children: [
-                  const SizedBox(width: 10),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const CircleAvatar(
-                      radius: 19,
-                      backgroundColor: Colors.white,
-                      child:
-                          Icon(Icons.arrow_back, color: Colors.black, size: 19),
-                    ),
-                  ),
-                  const SizedBox(width: 17),
-                  const Text(
-                    'Recovery Wellness Plan',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Satoshi',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: const Text(
-                      'Question 5/13',
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontFamily: 'satoshi',
-                          fontWeight: FontWeight.w800),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    child: LinearProgressIndicator(
-                      backgroundColor: Colors.white,
-                      minHeight: 6,
-                      borderRadius: BorderRadius.circular(10),
-                      stopIndicatorColor: Colors.white,
-                      value: 5 / 13,
-                      valueColor: AlwaysStoppedAnimation(
-                        Constants().themeColor,
-                      ),
-                    ),
-                  ),
-                ],
+              BackHeader(
+                onTap: (context) {
+                  Navigator.pop(context);
+                },
+                questionNumber: 2,
+                totalQuestions: 13,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -348,91 +300,11 @@ class _EducationScreenState extends State<EducationScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: 156,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Step1Screen()),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        minimumSize: Size(100, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.arrow_back,
-                            color: Color(0xff666F80),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            'Back',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xff666F80),
-                              fontFamily: 'Satoshi',
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 156,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Step1Screen()),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF4C6FEE),
-                        minimumSize: Size(100, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Next',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontFamily: 'Satoshi',
-                              fontSize: 20,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Icon(Icons.arrow_forward,
-                              color: Colors.white, size: 24),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+               BackAndNextButton(onBackPressed: () {
+                Navigator.of(context).pop();
+              }, onNextPressed: () {
+                Navigator.of(context).pop();
+              }),
               SizedBox(height: MediaQuery.of(context).size.height),
             ],
           ),

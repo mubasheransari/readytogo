@@ -6,6 +6,7 @@ import 'package:readytogo/Features/3MinuteAssisment/employment_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/faith_spiritual_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/legal_criminal_justice.dart';
 import 'package:readytogo/Features/3MinuteAssisment/recovery_support_group_screen.dart';
+import 'package:readytogo/Features/3MinuteAssisment/widget_recoverywellnessplan.dart';
 import 'package:readytogo/Features/Resources/resources_screen.dart';
 import 'package:readytogo/Features/home_screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
@@ -56,56 +57,13 @@ class _Step1ScreenState extends State<Step1Screen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 76),
-              Row(
-                children: [
-                  const SizedBox(width: 10),
-                  InkWell(
-                    onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen())),
-                    child: const CircleAvatar(
-                      radius: 19,
-                      backgroundColor: Colors.white,
-                      child:
-                          Icon(Icons.arrow_back, color: Colors.black, size: 19),
-                    ),
-                  ),
-                  const SizedBox(width: 17),
-                  const Text(
-                    'Recovery Wellness Plan',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Satoshi',
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Question 1/13',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontFamily: 'satoshi',
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    LinearProgressIndicator(
-                      backgroundColor: Colors.white,
-                      minHeight: 6,
-                      borderRadius: BorderRadius.circular(10),
-                      value: 1 / 13,
-                      valueColor:
-                          AlwaysStoppedAnimation(Constants().themeColor),
-                    ),
-                  ],
-                ),
+              BackHeader(
+                onTap: (context) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                },
+                questionNumber: 1,
+                totalQuestions: 13,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
