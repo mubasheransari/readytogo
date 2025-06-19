@@ -3,6 +3,8 @@ import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/widgets/back_next_button_widget.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
+import 'direct_supoort_groups.dart';
+
 class AdvocateScreen extends StatefulWidget {
   const AdvocateScreen({Key? key}) : super(key: key);
 
@@ -153,7 +155,7 @@ class _AdvocateScreenState extends State<AdvocateScreen> {
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Please fill below answers',
+                          'Check all that applies',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -200,7 +202,6 @@ class _AdvocateScreenState extends State<AdvocateScreen> {
                                           fontSize: 18,
                                         ),
                                       ),
-                                      
                                     ],
                                   ),
                                 ),
@@ -215,7 +216,16 @@ class _AdvocateScreenState extends State<AdvocateScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              BackAndNextButton(onBackPressed: () {}, onNextPressed: () {}),
+              BackAndNextButton(
+                  onBackPressed: () {
+                      Navigator.pop(context);
+                  },
+                  onNextPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DirectSupportGroupsScreen()));
+                  }),
               SizedBox(height: MediaQuery.of(context).size.height),
             ],
           ),

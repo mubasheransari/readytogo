@@ -3,7 +3,9 @@ import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/allies_advocate_support_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/education_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/employment_screen.dart';
+import 'package:readytogo/Features/3MinuteAssisment/faith_spiritual_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/legal_criminal_justice.dart';
+import 'package:readytogo/Features/3MinuteAssisment/recovery_support_group_screen.dart';
 import 'package:readytogo/Features/Resources/resources_screen.dart';
 import 'package:readytogo/Features/home_screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
@@ -58,10 +60,8 @@ class _Step1ScreenState extends State<Step1Screen> {
                 children: [
                   const SizedBox(width: 10),
                   InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>   HomeScreen())),
+                    onTap: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomeScreen())),
                     child: const CircleAvatar(
                       radius: 19,
                       backgroundColor: Colors.white,
@@ -149,12 +149,15 @@ class _Step1ScreenState extends State<Step1Screen> {
                           ),
                         ),
                       ),
-                      const Padding(
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          '(check all that apply)',
+                          '(Check all that apply)',
                           style: TextStyle(
-                            color: Colors.grey,
+                            color: Constants().greyColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             fontFamily: 'satoshi',
@@ -287,6 +290,26 @@ class _Step1ScreenState extends State<Step1Screen> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 LegalCriminalJusticeScreen(),
+                                          ),
+                                        );
+                                      } else if (domain ==
+                                              "Recovery Support Services" &&
+                                          value == true) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RecoverySupportServicesScreen(),
+                                          ),
+                                        );
+                                      } else if (domain ==
+                                              "Faith and Spiritually" &&
+                                          value == true) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                FaithSpiritualScreen(),
                                           ),
                                         );
                                       }

@@ -3,6 +3,8 @@ import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/widgets/back_next_button_widget.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
+import 'Step1Screen.dart';
+
 class DirectSupportGroupsScreen extends StatefulWidget {
   const DirectSupportGroupsScreen({Key? key}) : super(key: key);
 
@@ -23,12 +25,17 @@ class _DirectSupportGroupsScreenState extends State<DirectSupportGroupsScreen> {
     'State',
     'National',
     'Virtual',
-    'Legal Advocates',
-    'Civil Rights',
-    'Criminal Justice',
-    'CPS',
-    'Legal Assistance',
-    'EBOA (Evidence Based Outcomes Advocate)',
+    'Veterans',
+    'Social Events & Calendar',
+    'Veterans Only',
+    'My Coummunity',
+    '12 step',
+    'Male Only',
+    'Peer Support',
+    'Spiritual Support',
+    'Female Only',
+    'Family',
+    'Friends'
   ];
 
   String _selectedOption = '';
@@ -138,23 +145,22 @@ class _DirectSupportGroupsScreenState extends State<DirectSupportGroupsScreen> {
                         ),
                         width: MediaQuery.of(context).size.width,
                         child: const Padding(
-                          padding: EdgeInsets.only(top: 12.0, left: 25),
-                          child: Text(
-                            'Direct Support Group',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'satoshi',
-                            ),
-                          ),
-                        ),
+                            padding: EdgeInsets.only(top: 12.0, left: 25),
+                            child: Text(
+                              'Direct Support Group',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'satoshi',
+                              ),
+                            )),
                       ),
                       const SizedBox(height: 12),
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
                         child: Text(
-                          'Please fill below answers',
+                          'Check all that applies',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'satoshi',
@@ -215,7 +221,12 @@ class _DirectSupportGroupsScreenState extends State<DirectSupportGroupsScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              BackAndNextButton(onBackPressed: () {}, onNextPressed: () {}),
+              BackAndNextButton(onBackPressed: () {
+                Navigator.pop(context);
+              }, onNextPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Step1Screen()));
+              }),
               SizedBox(height: MediaQuery.of(context).size.height),
             ],
           ),
