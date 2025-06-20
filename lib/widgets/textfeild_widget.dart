@@ -7,16 +7,18 @@ class CustomTextFieldWidget extends StatelessWidget {
   final String labelText;
   final Color borderColor;
   final Color hintTextColor;
+  final String? Function(String?)? validator;
 
-  const CustomTextFieldWidget({
-    Key? key,
-    required this.controller,
-    required this.textWidgetText,
-    required this.hintText,
-    required this.labelText,
-    required this.borderColor,
-    required this.hintTextColor,
-  }) : super(key: key);
+  CustomTextFieldWidget(
+      {Key? key,
+      required this.controller,
+      required this.textWidgetText,
+      required this.hintText,
+      required this.labelText,
+      required this.borderColor,
+      required this.hintTextColor,
+      this.validator})
+      : super(key: key);
 
   OutlineInputBorder _buildBorder(Color color, double width) {
     return OutlineInputBorder(
@@ -45,8 +47,9 @@ class CustomTextFieldWidget extends StatelessWidget {
         const SizedBox(height: 7),
         SizedBox(
           width: 376,
-          height: 60,
-          child: TextField(
+          height: 80,
+          child: TextFormField(
+            validator: validator,
             controller: controller,
             style: TextStyle(
               fontSize: 20,
@@ -54,6 +57,7 @@ class CustomTextFieldWidget extends StatelessWidget {
               fontFamily: 'Satoshi',
             ),
             decoration: InputDecoration(
+              helperText: ' ',
               hintText: hintText,
               hintStyle: TextStyle(
                 color: hintTextColor,
