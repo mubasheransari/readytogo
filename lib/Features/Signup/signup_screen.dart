@@ -9,6 +9,7 @@ import 'package:readytogo/Features/Signup/release_of_information.dart';
 import 'package:readytogo/Features/Signup/terms_and_condition.dart';
 
 import '../../Constants/constants.dart';
+import '../../Repositories/signup_repositoy.dart';
 import '../../widgets/boxDecorationWidget.dart';
 
 bool isChecked = false;
@@ -277,31 +278,32 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
-                        setState(
+                        SignUpRepository().signUpRepository();
+                        /*    setState(
                             () => _showImageError = _selectedImage == null);
                         if (_formKey.currentState?.validate() == true &&
                             _selectedImage != null &&
                             isChecked) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                                  const Text("User Registered Successfully"),
-                              backgroundColor: Constants().themeColor,
-                              behavior: SnackBarBehavior.floating,
-                              margin: const EdgeInsets.all(16),
-                            ),
-                          );
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => LoginScreen()));
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   SnackBar(
+                          //     content:
+                          //         const Text("User Registered Successfully"),
+                          //     backgroundColor: Constants().themeColor,
+                          //     behavior: SnackBarBehavior.floating,
+                          //     margin: const EdgeInsets.all(16),
+                          //   ),
+                          // );
+                          // Navigator.push(context,
+                          //     MaterialPageRoute(builder: (_) => LoginScreen()));
                         } else if (!isChecked) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  "Please accept the terms and conditions."),
-                              backgroundColor: Colors.redAccent,
-                            ),
-                          );
-                        }
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(
+                          //       content: Text(
+                          //           "Please accept the terms and conditions."),
+                          //       backgroundColor: Colors.redAccent,
+                          //     ),
+                          //   );
+                        }*/
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Constants().themeColor,
