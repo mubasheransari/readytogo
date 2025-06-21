@@ -1,0 +1,32 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:readytogo/Features/Signup/bloc/signup_event.dart';
+import 'package:readytogo/Features/Signup/bloc/signup_state.dart';
+import 'package:readytogo/Repositories/signup_repositoy.dart';
+
+class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
+  SignUpBloc() : super(SignUpState()) {
+    on<SignupEvent>(signup);
+    // on<EmailValidationEvent>((event, emit) => _onEmailChanged(event, emit));
+    //on<OnSubmitButtonPressed>((event, emit) => _onSubmitted(event, emit));
+  }
+  SignUpRepository signUpRepository = SignUpRepository();
+
+  signup(SignUpEvent event, state) {
+    signUpRepository.signUpRepository();
+  }
+
+  // _onEmailChanged(event, emit) {
+  //   emit(ForgotPasswordState().copyWith(email: Email.dirty(event.email)));
+  // }
+
+  // Future<void> _onSubmitted(event, emit) async {
+  //   emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+  //   Map response = await repo.requestPasswordReset(state.email.value);
+  //   bool isVerified = response['success'];
+  //   emit(state.copyWith(
+  //       status: isVerified ? FormzSubmissionStatus.success : FormzSubmissionStatus.failure,
+  //       response: isVerified ? '' : response['message']));
+  // }
+
+}

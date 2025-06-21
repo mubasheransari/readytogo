@@ -1,15 +1,17 @@
 import 'dart:io';
-
+import 'package:readytogo/Features/Signup/bloc/signup_event.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:readytogo/Features/Signup/bloc/signup_bloc.dart';
 import 'package:readytogo/Features/login/login_screen.dart';
 import 'package:readytogo/Features/Signup/privacy_policy.dart';
 import 'package:readytogo/Features/Signup/release_of_information.dart';
 import 'package:readytogo/Features/Signup/terms_and_condition.dart';
 
 import '../../Constants/constants.dart';
-import '../../Repositories/signup_repositoy.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../widgets/boxDecorationWidget.dart';
 
 bool isChecked = false;
@@ -278,7 +280,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
-                        SignUpRepository().signUpRepository();
+                        context.read<SignUpBloc>().add(SignupEvent(email: confirmPasswordController.text));
+                       // SignUpRepository().signUpRepository();
                         /*    setState(
                             () => _showImageError = _selectedImage == null);
                         if (_formKey.currentState?.validate() == true &&
