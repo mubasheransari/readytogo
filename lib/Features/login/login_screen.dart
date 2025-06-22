@@ -104,11 +104,11 @@ class LoginScreen extends StatelessWidget {
                                 style: TextStyle(
                                     color: Constants().themeColor,
                                     fontFamily: 'Satoshi',
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w700)),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         SizedBox(
                           width: 376,
                           height: 60,
