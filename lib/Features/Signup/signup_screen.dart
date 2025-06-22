@@ -16,11 +16,6 @@ import '../../widgets/boxDecorationWidget.dart';
 
 bool isChecked = false;
 
-
-
-
-
-
 class SignupScreen extends StatefulWidget {
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -41,7 +36,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController zipController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final TextEditingController referralCodeController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
 
@@ -100,8 +96,6 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +123,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   GestureDetector(
                     onTap: _pickImage,
                     child: Container(
-                      height: 120,
+                      height: 148,
                       width: 120,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
@@ -142,10 +136,33 @@ class _SignupScreenState extends State<SignupScreen> {
                                 width: 120,
                               ),
                             )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.file(_selectedImage!,
-                                  fit: BoxFit.cover),
+                          : Column(
+                              children: [
+                                SizedBox(
+                                  height: 120,
+                                  width: 130,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.file(_selectedImage!,
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                SizedBox(
+                                  height: 23,
+                                  width: 90,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        color: Constants().themeColor,
+                                        child: Text('change',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                      )),
+                                ),
+                              ],
                             ),
                     ),
                   ),
@@ -294,7 +311,6 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ],
                   ),
-
                   if (_showTermsError)
                     const Padding(
                       padding: EdgeInsets.only(top: 8.0, left: 12),
@@ -306,7 +322,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                     ),
-
                   const SizedBox(height: 40),
                   SizedBox(
                     width: 376,
