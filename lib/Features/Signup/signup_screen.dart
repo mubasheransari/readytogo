@@ -135,8 +135,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         ? Center(
                             child: Image.asset(
                               'assets/Frame.png',
-                              height: 120,
-                              width: 120,
+                              height: 145,
+                              width: 145,
                             ),
                           )
                         : Column(
