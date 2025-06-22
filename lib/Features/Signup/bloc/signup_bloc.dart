@@ -6,14 +6,30 @@ import 'package:readytogo/Repositories/signup_repositoy.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc() : super(SignUpState()) {
-    on<SignupEvent>(signup);
+    on<SignupEvent>(signUpEvent);
     // on<EmailValidationEvent>((event, emit) => _onEmailChanged(event, emit));
     //on<OnSubmitButtonPressed>((event, emit) => _onSubmitted(event, emit));
   }
   SignUpRepository signUpRepository = SignUpRepository();
 
-  signup(SignUpEvent event, state) {
-    signUpRepository.signUpRepository();
+  // signup(SignUpEvent event, state) {
+
+  //   signUpRepository.signUpRepository();
+  // }
+
+  signUpEvent(SignUpEvent event, Emitter<SignUpState> emit) async {
+    if (event is SignupEvent) {
+      await signUpRepository.signUpRepository(
+          event.firstName!,
+          event.lastName!,
+          event.email!,
+          event.userName!,
+          event.password!,
+          event.confirmPassword!,
+          event.phoneNumber!,
+          event.zipCode!,
+          event.referralCode!);
+    }
   }
 
   // _onEmailChanged(event, emit) {

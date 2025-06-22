@@ -280,8 +280,18 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
-                        context.read<SignUpBloc>().add(SignupEvent(email: confirmPasswordController.text));
-                       // SignUpRepository().signUpRepository();
+                        context.read<SignUpBloc>().add(SignupEvent(
+                              confirmPassword: confirmPasswordController.text,
+                              email: emailController.text,
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              password: passwordController.text,
+                              phoneNumber: phoneController.text,
+                              referralCode: referralCodeController.text,
+                              userName: 'testingabcdd',
+                              zipCode: zipController.text,
+                            ));
+                        // SignUpRepository().signUpRepository();
                         /*    setState(
                             () => _showImageError = _selectedImage == null);
                         if (_formKey.currentState?.validate() == true &&
