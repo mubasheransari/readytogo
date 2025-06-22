@@ -16,6 +16,11 @@ import '../../widgets/boxDecorationWidget.dart';
 
 bool isChecked = false;
 
+
+
+
+
+
 class SignupScreen extends StatefulWidget {
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -24,8 +29,10 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
+
   File? _selectedImage;
   bool _showImageError = false;
+  bool _showTermsError = false;
   bool isChecked = false;
 
   final TextEditingController firstNameController = TextEditingController();
@@ -34,8 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController zipController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController referralCodeController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
 
@@ -93,6 +99,8 @@ class _SignupScreenState extends State<SignupScreen> {
       ],
     );
   }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -200,10 +208,16 @@ class _SignupScreenState extends State<SignupScreen> {
                       controller: referralCodeController),
                   const SizedBox(height: 20),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(width: 12),
                       GestureDetector(
-                        onTap: () => setState(() => isChecked = !isChecked),
+                        onTap: () {
+                          setState(() {
+                            isChecked = !isChecked;
+                            if (isChecked) _showTermsError = false;
+                          });
+                        },
                         child: Container(
                           width: 21,
                           height: 21,
@@ -280,64 +294,39 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ],
                   ),
+
+                  if (_showTermsError)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 8.0, left: 12),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Please accept the terms and conditions',
+                          style: TextStyle(color: Colors.red, fontSize: 14),
+                        ),
+                      ),
+                    ),
+
                   const SizedBox(height: 40),
                   SizedBox(
                     width: 376,
                     height: 55,
                     child: ElevatedButton(
                       onPressed: () {
-                        // context.read<SignUpBloc>().add(SignupEvent(
-                        //       confirmPassword: confirmPasswordController.text,
-                        //       email: emailController.text,
-                        //       firstName: firstNameController.text,
-                        //       lastName: lastNameController.text,
-                        //       password: passwordController.text,
-                        //       phoneNumber: phoneController.text,
-                        //       referralCode: referralCodeController.text,
-                        //       userName: 'testingabcdd',
-                        //       zipCode: zipController.text,
-                        //     ));
-                        // SignUpRepository().signUpRepository();
-                        setState(
-                            () => _showImageError = _selectedImage == null);
+                        setState(() {
+                          _showImageError = _selectedImage == null;
+                          _showTermsError = !isChecked;
+                        });
+
                         if (_formKey.currentState?.validate() == true &&
                             _selectedImage != null &&
                             isChecked) {
-                          context.read<SignUpBloc>().add(SignupEvent(
-                                confirmPassword: confirmPasswordController.text,
-                                email: emailController.text,
-                                firstName: firstNameController.text,
-                                lastName: lastNameController.text,
-                                password: passwordController.text,
-                                phoneNumber: phoneController.text,
-                                referralCode: referralCodeController.text,
-                                userName: 'testingabcdd',
-                                zipCode: zipController.text,
-                              ));
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   SnackBar(
-                          //     content:
-                          //         const Text("User Registered Successfully"),
-                          //     backgroundColor: Constants().themeColor,
-                          //     behavior: SnackBarBehavior.floating,
-                          //     margin: const EdgeInsets.all(16),
-                          //   ),
-                          // );
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (_) => LoginScreen()));
-                        } else if (!isChecked) {
-                          //   ScaffoldMessenger.of(context).showSnackBar(
-                          //     const SnackBar(
-                          //       content: Text(
-                          //           "Please accept the terms and conditions."),
-                          //       backgroundColor: Colors.redAccent,
-                          //     ),
-                          //   );
+                          // Submit to Bloc or API
+                          print("Proceed with signup");
                         }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Constants().themeColor,
-                        minimumSize: const Size(200, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -350,7 +339,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           const Text(
                             'Register',
                             style: TextStyle(
-                                letterSpacing: 0.5,
                                 color: Colors.white,
                                 fontFamily: 'Satoshi',
                                 fontSize: 20,
@@ -397,497 +385,3 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
-
-
-
-// class SignupScreen extends StatefulWidget {
-//   @override
-//   State<SignupScreen> createState() => _SignupScreenState();
-// }
-
-// class _SignupScreenState extends State<SignupScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     File? _selectedImage;
-//     final ImagePicker _picker = ImagePicker();
-
-//     Future<void> _pickImage() async {
-//       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-//       if (image != null) {
-//         setState(() {
-//           _selectedImage = File(image.path);
-//         });
-//       }
-//     }
-
-//     return Scaffold(
-//         body: Container(
-//       width: MediaQuery.of(context).size.width,
-//       decoration: boxDecoration(),
-//       child: Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
-//         child: SingleChildScrollView(
-//           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            // SizedBox(
-            //   height: 30,
-            // ),
-//             const Text(
-//               'Signup & Improve Your Health Today',
-//               textAlign: TextAlign.center,
-//               style: TextStyle(
-//                 fontSize: 32,
-//                 fontWeight: FontWeight.w700,
-//                 fontFamily: 'Satoshi',
-//               ),
-//             ),
-
-//             SizedBox(height: 20),
-//             GestureDetector(
-//               onTap: _pickImage,
-//               child: Container(
-//                 height: 120,
-//                 width: 120,
-//                 decoration: BoxDecoration(
-//                   // border: Border.all(color: Colors.grey),
-//                   borderRadius: BorderRadius.circular(8),
-//                 ),
-//                 child: _selectedImage == null
-//                     ? Center(
-//                         child: Image.asset(
-//                           'assets/Frame.png',
-//                           height: 120,
-//                           width: 120,
-//                         ),
-//                       )
-//                     : ClipRRect(
-//                         borderRadius: BorderRadius.circular(8),
-//                         child: Image.file(
-//                           _selectedImage!,
-//                           fit: BoxFit.cover,
-//                         ),
-//                       ),
-//               ),
-//             ),
-//             // Center(
-//             //   child: Image.asset(
-//             //     'assets/Frame.png',
-//             //     height: 120,
-//             //     width: 120,
-//             //   ),
-//             // ),
-//             SizedBox(height: 25),
-//             // Form fields with labels separated
-//             _buildTextField('First Name', 'Enter First Name'),
-//             SizedBox(height: 15),
-//             _buildTextField('Last Name', 'Enter Last Name'),
-//             SizedBox(height: 15),
-//             _buildTextField('Email', 'Enter Email'),
-//             SizedBox(height: 15),
-//             _buildTextField('Phone Number', 'Enter Phone Number'),
-//             SizedBox(height: 15),
-//             _buildTextField('Zip Code', 'Enter Zip Code'),
-//             SizedBox(height: 15),
-//             _buildTextField('Password', 'min. 8 characters', obscureText: true),
-//             SizedBox(height: 15),
-//             _buildTextField('Confirm Password', 'Type again',
-//                 obscureText: true),
-//             SizedBox(height: 15),
-//             _buildTextField('Referral Code (optional)', 'Enter Referral Code'),
-//             SizedBox(height: 20),
-//             Row(
-//               children: [
-//                 SizedBox(
-//                   width: 12,
-//                 ),
-//                 GestureDetector(
-//                   onTap: () {
-//                     setState(() {
-//                       isChecked = !isChecked;
-//                     });
-//                   },
-//                   child: Container(
-//                     width: 21,
-//                     height: 21,
-//                     decoration: BoxDecoration(
-//                       color: isChecked
-//                           ? Constants().themeColor
-//                           : Colors.transparent,
-//                       borderRadius: BorderRadius.circular(6), // Circular border
-//                       border: Border.all(
-//                         color: Colors.grey,
-//                         width: 2,
-//                       ),
-//                     ),
-//                     child: isChecked
-//                         ? Icon(
-//                             Icons.check,
-//                             size: 16,
-//                             color: Colors.white,
-//                           )
-//                         : null,
-//                   ),
-//                 ),
-//                 SizedBox(
-//                   width: 12,
-//                 ),
-
-//                 // Checkbox(
-//                 //   value: isChecked,
-//                 //   activeColor: Constants().themeColor,
-//                 //   checkColor: Colors.white,
-//                 //   onChanged: (bool? value) {
-//                 //     setState(() {
-//                 //       isChecked = value!;
-//                 //     });
-//                 //   },
-//                 // ),
-//                 Expanded(
-//                   child: RichText(
-//                     text: TextSpan(
-//                       style: TextStyle(
-//                         fontSize: 16,
-//                         color: Colors.black,
-//                         fontFamily: 'Satoshi',
-//                       ),
-//                       children: <TextSpan>[
-//                         TextSpan(
-//                           text: 'I have read & accept ',
-//                           style: TextStyle(
-//                               color: Colors.black,
-//                               fontWeight: FontWeight.w700,
-//                               fontFamily: 'satoshi'),
-//                         ),
-//                         TextSpan(
-//                           text: 'Terms & Conditions',
-//                           style: TextStyle(
-//                               color: Colors.blue,
-//                               decoration: TextDecoration.underline,
-//                               fontWeight: FontWeight.w700,
-//                               fontFamily: 'satoshi'),
-//                           recognizer: TapGestureRecognizer()
-//                             ..onTap = () {
-//                               Navigator.push(
-//                                   context,
-//                                   MaterialPageRoute(
-//                                       builder: (context) =>
-//                                           TermsAndConditionScreen()));
-//                             },
-//                         ),
-//                         TextSpan(
-//                           text: ', ',
-//                         ),
-//                         TextSpan(
-//                           text: 'release of information ',
-//                           style: TextStyle(
-//                               color: Colors.blue,
-//                               decoration: TextDecoration.underline,
-//                               fontWeight: FontWeight.w700,
-//                               fontFamily: 'satoshi'),
-//                           recognizer: TapGestureRecognizer()
-//                             ..onTap = () {
-//                               Navigator.push(
-//                                   context,
-//                                   MaterialPageRoute(
-//                                       builder: (context) =>
-//                                           ReleaseOfInformationScreen()));
-//                             },
-//                         ),
-//                         TextSpan(
-//                           text: ' & ',
-//                           style: TextStyle(
-//                               color: Colors.black,
-//                               fontWeight: FontWeight.w700,
-//                               fontFamily: 'satoshi'),
-//                         ),
-//                         TextSpan(
-//                           text: ' privacy policy.',
-//                           style: TextStyle(
-//                               color: Colors.blue,
-//                               decoration: TextDecoration.underline,
-//                               fontWeight: FontWeight.w700,
-//                               fontFamily: 'satoshi'),
-//                           recognizer: TapGestureRecognizer()
-//                             ..onTap = () {
-//                               Navigator.push(
-//                                   context,
-//                                   MaterialPageRoute(
-//                                       builder: (context) =>
-//                                           PrivacyPolicyScreen()));
-//                             },
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-
-//             SizedBox(height: 40),
-//             SizedBox(
-//               width: 376,
-//               height: 60,
-//               child: Center(
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     ScaffoldMessenger.of(context).showSnackBar(
-//                       SnackBar(
-//                         content: Text(
-//                           "User Registered Successuly",
-//                           style: TextStyle(
-//                             fontSize: 16, // Customize text size
-//                             fontWeight:
-//                                 FontWeight.bold, // Customize text weight
-//                           ),
-//                         ),
-//                         duration: Duration(
-//                             seconds:
-//                                 2), // Duration for how long the snackbar will be shown
-//                         backgroundColor: Constants()
-//                             .themeColor, // Customize background color
-//                         shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(
-//                               10), // Customize the corners of the snackbar
-//                         ),
-//                         behavior: SnackBarBehavior
-//                             .floating, // Floating snackbar instead of normal
-//                         margin:
-//                             EdgeInsets.all(16), // Custom margin for positioning
-//                         // action: SnackBarAction(
-//                         //   label: 'Undo',  // Action label text
-//                         //   textColor: Colors.white, // Customize action text color
-//                         //   onPressed: () {
-//                         //     // Define the action when the user taps the 'Undo' button
-//                         //     print("Undo action pressed!");
-//                         //   },
-//                         // ),
-//                       ),
-//                     );
-//                     Navigator.push(context,
-//                         MaterialPageRoute(builder: (context) => LoginScreen()));
-//                   },
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: Constants().themeColor,
-//                     minimumSize: const Size(200, 50),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(30),
-//                     ),
-//                     padding: const EdgeInsets.symmetric(
-//                         horizontal: 20, vertical: 10),
-//                   ),
-//                   child: Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       const Text(
-//                         'Register',
-//                         style: TextStyle(
-//                             color: Colors.white,
-//                             fontFamily: 'Satoshi',
-//                             fontSize: 20,
-//                             fontWeight: FontWeight.w700),
-//                       ),
-//                       const SizedBox(width: 5),
-//                       Image.asset(
-//                         'assets/loginbuttonicon.png',
-//                         width: 23,
-//                         height: 23,
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ),
-
-//             // Register button
-//             /*   ElevatedButton(
-//               onPressed: () {},
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: Color(0xFF4C6FEE),
-//                 minimumSize: Size(200, 50),
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(30),
-//                 ),
-//                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-//               ),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   const Text(
-//                     'Register',
-//                     style: TextStyle(
-//                       color: Colors.white,
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.w500,
-//                     ),
-//                   ),
-//                   SizedBox(width: 10),
-//                   Icon(Icons.arrow_forward, color: Colors.white),
-//                 ],
-//               ),
-//             ),*/
-//             SizedBox(height: 30),
-
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: const [
-//                 SizedBox(
-//                     width: 120,
-//                     child: Divider(
-//                       color: Colors.black38,
-//                     )),
-//                 Padding(
-//                   padding: EdgeInsets.only(left: 8.0),
-//                   child: Text('or',
-//                       style: TextStyle(
-//                           fontFamily: 'Satoshi',
-//                           fontSize: 20,
-//                           color: Color(0xff28363D),
-//                           fontWeight: FontWeight.w600)),
-//                 ),
-//                 SizedBox(
-//                   width: 8,
-//                 ),
-//                 SizedBox(
-//                     width: 120,
-//                     child: Divider(
-//                       color: Colors.black38,
-//                     )),
-//               ],
-//             ),
-//             SizedBox(height: 20),
-//             SizedBox(
-//               width: 376,
-//               height: 60,
-//               child: OutlinedButton.icon(
-//                 onPressed: () {},
-//                 icon: Image.asset(
-//                   'assets/Google.png',
-//                   width: 32,
-//                   height: 32,
-//                 ),
-//                 label: Text(
-//                   'Join with Google',
-//                   style: TextStyle(
-//                       fontWeight: FontWeight.w400,
-//                       fontFamily: 'Satoshi',
-//                       fontSize: 20,
-//                       color: Color(0xff323747)),
-//                 ),
-//                 style: OutlinedButton.styleFrom(
-//                   backgroundColor: Colors.white,
-//                   side: BorderSide(color: Color(0xFFDB4437)),
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(30),
-//                   ),
-//                   padding: EdgeInsets.symmetric(vertical: 15),
-//                 ),
-//               ),
-//             ),
-
-//             // OutlinedButton.icon(
-//             //   onPressed: () {},
-//             //   icon: Image.asset(
-//             //     'assets/google_logo.png', // Add Google logo in your assets
-//             //     width: 32,
-//             //     height: 32,
-//             //   ),
-//             //   label: Text(
-//             //     'Join with Google',
-//             //     style: TextStyle(
-//             //       fontWeight: FontWeight.w400,
-//             //       fontFamily: 'Satoshi',
-//             //       fontSize: 20,
-//             //       color: Color(0xff323747),
-//             //     ),
-//             //   ),
-//             //   style: OutlinedButton.styleFrom(
-//             //     backgroundColor: Colors.white,
-//             //     side: BorderSide(color: Color(0xFFDB4437)),
-//             //     shape: RoundedRectangleBorder(
-//             //       borderRadius: BorderRadius.circular(30),
-//             //     ),
-//             //     padding: EdgeInsets.symmetric(vertical: 15),
-//             //   ),
-//             // ),
-//             SizedBox(height: 30),
-
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 Text("Already have an account?",
-//                     style: TextStyle(
-//                         fontFamily: 'Satoshi',
-//                         fontSize: 20,
-//                         color: Color(0xff323747),
-//                         fontWeight: FontWeight.w700)),
-//                 GestureDetector(
-//                   onTap: () {
-//                     Navigator.push(context,
-//                         MaterialPageRoute(builder: (context) => LoginScreen()));
-//                   },
-//                   child: Text(" Login",
-//                       style: TextStyle(
-//                           fontFamily: 'Satoshi',
-//                           fontSize: 20,
-//                           color: Constants().themeColor,
-//                           fontWeight: FontWeight.w700)),
-//                 ),
-//               ],
-//             ),
-//           ]),
-//         ),
-//       ),
-//     ));
-//   }
-
-//   Widget _buildTextField(String label, String hint,
-//       {bool obscureText = false}) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         // Label Text
-//         Text(
-//           label,
-//           style: TextStyle(
-//             fontSize: 18,
-//             fontWeight: FontWeight.w900,
-//             fontFamily: 'Satoshi',
-//             color: Color(0xff323747),
-//           ),
-//         ),
-//         SizedBox(height: 5),
-//         // TextField
-//         SizedBox(
-//           width: 376,
-//           height: 60,
-//           child: TextField(
-//             obscureText: obscureText,
-//             decoration: InputDecoration(
-//               hintText: hint,
-//               hintStyle: TextStyle(
-//                 color: Color(0xff666F80),
-//                 fontSize: 18,
-//                 fontFamily: 'Satoshi',
-//                 fontWeight: FontWeight.w500,
-//               ),
-//               filled: true,
-//               fillColor: Colors.white,
-//               // Circular border with no color (transparent)
-//               border: OutlineInputBorder(
-//                 borderRadius: BorderRadius.circular(16), // Circular border
-//                 borderSide: BorderSide.none, // No border color
-//               ),
-//               focusedBorder: OutlineInputBorder(
-//                 borderRadius: BorderRadius.circular(16), // Circular border
-//                 borderSide: BorderSide.none, // No border color on focus
-//               ),
-//               enabledBorder: OutlineInputBorder(
-//                 borderRadius: BorderRadius.circular(16), // Circular border
-//                 borderSide: BorderSide.none, // No border color when enabled
-//               ),
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
