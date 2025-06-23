@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
+import 'package:readytogo/widgets/toast_widget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import '../../Constants/constants.dart';
 import 'login_success_screen.dart';
@@ -231,10 +232,16 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                       });
                                       _startTimer();
                                       context.read<LoginBloc>().add(
-                                      LoginWithEmailPassword(
-                                          email: "mubashera38@yopmail.com",
-                                          password: "Testing1234@"));
+                                          LoginWithEmailPassword(
+                                              email: "mubashera38@yopmail.com",
+                                              password: "Testing1234@"));
+                                      toastWidget("OTP code resent",
+                                          Constants().themeColor);
+
                                       // You can add resend logic here if needed (like re-trigger OTP send)
+                                    } else {
+                                      toastWidget("${getResendText(timerText)}",
+                                          Colors.red);
                                     }
                                   },
                                   child: Text(
@@ -308,6 +315,20 @@ class _VerificattionScreenState extends State<VerificattionScreen>
     );
   }
 }
+
+String getResendText(String timerText) {
+  final parts = timerText.split(':');
+  final minutes = int.parse(parts[0]);
+  final seconds = int.parse(parts[1]);
+
+  if (minutes > 0) {
+    return 'You can resend the code in $minutes minute${minutes > 1 ? 's' : ''} '
+        '${seconds > 0 ? '$seconds second${seconds > 1 ? 's' : ''}' : ''}.';
+  } else {
+    return 'You can resend the code in $seconds second${seconds > 1 ? 's' : ''}.';
+  }
+}
+
 
 
 // class VerificattionScreen extends StatefulWidget {
