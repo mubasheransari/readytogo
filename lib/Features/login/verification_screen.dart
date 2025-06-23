@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import '../../Constants/constants.dart';
 import 'login_success_screen.dart';
 import '../../widgets/boxDecorationWidget.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/login_event.dart';
+import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -222,6 +225,17 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                 InkWell(
                                   onTap: () {
                                     print(timerText);
+                                    if (_remainingSeconds == 0) {
+                                      setState(() {
+                                        _remainingSeconds = 120;
+                                      });
+                                      _startTimer();
+                                      context.read<LoginBloc>().add(
+                                      LoginWithEmailPassword(
+                                          email: "mubashera38@yopmail.com",
+                                          password: "Testing1234@"));
+                                      // You can add resend logic here if needed (like re-trigger OTP send)
+                                    }
                                   },
                                   child: Text(
                                     "Resend Code",
