@@ -4,6 +4,7 @@ import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/telehealth_screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/widget_recoverywellnessplan.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
+import '../../widgets/back_next_button_widget.dart';
 import 'allies_screen.dart';
 
 class ClinicalTreatmentScreen extends StatefulWidget {
@@ -37,15 +38,16 @@ class _ClinicalTreatmentScreenState extends State<ClinicalTreatmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DecoratedBox(
+      body: Container(
         decoration: boxDecoration(),
+        height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           controller: _scrollController,
           padding: const EdgeInsets.only(bottom: 20),
           child: Column(
             children: [
               const SizedBox(height: 76),
-                 BackHeader(
+              BackHeader(
                 onTap: (context) {
                   Navigator.pop(context);
                 },
@@ -65,7 +67,6 @@ class _ClinicalTreatmentScreenState extends State<ClinicalTreatmentScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TitleHeading3minAssesment(title: "Clinical Treatment"),
-                   
                       const SizedBox(height: 12),
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
@@ -148,7 +149,19 @@ class _ClinicalTreatmentScreenState extends State<ClinicalTreatmentScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
+              BackAndNextButton(
+                onBackPressed: () {
+                  Navigator.of(context).pop();
+                },
+                onNextPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TelehealthScreen()),
+                  );
+                },
+              ),
+              /*  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(
@@ -231,7 +244,7 @@ class _ClinicalTreatmentScreenState extends State<ClinicalTreatmentScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: MediaQuery.of(context).size.height),
+              SizedBox(height: MediaQuery.of(context).size.height),*/
             ],
           ),
         ),

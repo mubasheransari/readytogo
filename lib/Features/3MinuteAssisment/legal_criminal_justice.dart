@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/Features/3MinuteAssisment/widget_recoverywellnessplan.dart';
+import 'package:readytogo/widgets/back_next_button_widget.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 import 'allies_screen.dart';
 import 'clinical_treatment_screen.dart';
@@ -38,8 +39,9 @@ class _LegalCriminalJusticeScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DecoratedBox(
+      body: Container(
         decoration: boxDecoration(),
+        height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           controller: _scrollController,
           padding: const EdgeInsets.only(bottom: 20),
@@ -95,7 +97,8 @@ class _LegalCriminalJusticeScreenState
                         children: List.generate(_domains.length, (index) {
                           final domain = _domains[index];
                           return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            padding:
+                                const EdgeInsets.symmetric(vertical: 4.0),
                             child: Row(
                               children: [
                                 Checkbox(
@@ -149,96 +152,20 @@ class _LegalCriminalJusticeScreenState
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    width: 156,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Step1Screen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        minimumSize: Size(100, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.arrow_back,
-                            color: Color(0xff666F80),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            'Back',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xff666F80),
-                              fontFamily: 'Satoshi',
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 156,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Navigator.push(
-                        //     context,
-
-                        //     MaterialPageRoute(
-                        //         builder: (context) => Step1Screen(),maintainState: false));
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ClinicalTreatmentScreen()),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF4C6FEE),
-                        minimumSize: Size(100, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Next',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontFamily: 'Satoshi',
-                              fontSize: 20,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Icon(Icons.arrow_forward,
-                              color: Colors.white, size: 24),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              BackAndNextButton(
+                onBackPressed: () {
+                  Navigator.of(context).pop();
+                },
+                onNextPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const ClinicalTreatmentScreen()),
+                  );
+                },
               ),
-              SizedBox(height: MediaQuery.of(context).size.height),
+              //  SizedBox(height: MediaQuery.of(context).size.height),
             ],
           ),
         ),
