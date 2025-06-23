@@ -15,262 +15,231 @@ class Housing2AssesmentScreen extends StatefulWidget {
 }
 
 class _Housing2AssesmentScreenState extends State<Housing2AssesmentScreen> {
-  final ScrollController _scrollController = ScrollController();
-  final ScrollController _domainScrollController = ScrollController();
-  bool _isVeteran = true;
-
-  List<String> _selectedDomains = [];
-
-  final List<String> _domains = [
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
-  ];
-
   String _selectedOption = '';
   String _accommodation = '';
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    _domainScrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DecoratedBox(
-        decoration: boxDecoration(),
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Column(
-            children: [
-              const SizedBox(height: 76),
-              BackHeader(
-                onTap: (context) {
-                  Navigator.pop(context);
-                },
-                questionNumber: 2,
-                totalQuestions: 13,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  margin: const EdgeInsets.only(top: 16),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(18),
-                  ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: 20),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: DecoratedBox(
+                  decoration: boxDecoration(),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TitleHeading3minAssesment(title: "Housing - 2"),
-                    
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Location Preference',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      RadioListTile<String>(
-                        title: const Text(
-                          'Metropolitan',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 1',
-                        activeColor: Constants().themeColor,
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
+                      const SizedBox(height: 76),
+                      BackHeader(
+                        onTap: (context) {
+                          Navigator.pop(context);
                         },
+                        questionNumber: 2,
+                        totalQuestions: 13,
                       ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Suburban',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitleHeading3minAssesment(title: "Housing - 2"),
+                              const SizedBox(height: 12),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 14.0),
+                                child: Text(
+                                  'Location Preference',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              RadioListTile<String>(
+                                title: const Text(
+                                  'Metropolitan',
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                value: 'Option 1',
+                                activeColor: Constants().themeColor,
+                                groupValue: _selectedOption,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedOption = value!;
+                                  });
+                                },
+                              ),
+                              RadioListTile<String>(
+                                activeColor: Constants().themeColor,
+                                title: const Text(
+                                  'Suburban',
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                value: 'Option 2',
+                                groupValue: _selectedOption,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedOption = value!;
+                                  });
+                                },
+                              ),
+                              RadioListTile<String>(
+                                activeColor: Constants().themeColor,
+                                title: const Text(
+                                  'Rural',
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                value: 'Option 3',
+                                groupValue: _selectedOption,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedOption = value!;
+                                  });
+                                },
+                              ),
+                              RadioListTile<String>(
+                                activeColor: Constants().themeColor,
+                                title: const Text(
+                                  'Other',
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                value: 'Option 4',
+                                groupValue: _selectedOption,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedOption = value!;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 14.0),
+                                child: Text(
+                                  'Accommodation',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 14.0),
+                                child: Text(
+                                  '(Select one)',
+                                  style: TextStyle(
+                                    color: Constants().greyColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'satoshi',
+                                  ),
+                                ),
+                              ),
+                              RadioListTile<String>(
+                                activeColor: Constants().themeColor,
+                                title: const Text(
+                                  'Live Independently',
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                value: 'Option 4',
+                                groupValue: _accommodation,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _accommodation = value!;
+                                  });
+                                },
+                              ),
+                              RadioListTile<String>(
+                                activeColor: Constants().themeColor,
+                                title: const Text(
+                                  'Live with family',
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                value: 'Option 5',
+                                groupValue: _accommodation,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _accommodation = value!;
+                                  });
+                                },
+                              ),
+                              RadioListTile<String>(
+                                activeColor: Constants().themeColor,
+                                title: const Text(
+                                  'Live with friends',
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                value: 'Option 6',
+                                groupValue: _accommodation,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _accommodation = value!;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                        value: 'Option 2',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
+                      ),
+                      const SizedBox(height: 16),
+                      BackAndNextButton(
+                        onBackPressed: () {
+                          Navigator.of(context).pop();
                         },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Rural',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 3',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Other',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 4',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Accommodation',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          '(Select one)',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'satoshi',
-                          ),
-                        ),
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Live Independently',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 4',
-                        groupValue: _accommodation,
-                        onChanged: (value) {
-                          setState(() {
-                            _accommodation = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Live with family',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 5',
-                        groupValue: _accommodation,
-                        onChanged: (value) {
-                          setState(() {
-                            _accommodation = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Live with friends',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 6',
-                        groupValue: _accommodation,
-                        onChanged: (value) {
-                          setState(() {
-                            _accommodation = value!;
-                          });
+                        onNextPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                          // Or push to another screen if needed
+                          // Navigator.push(context, MaterialPageRoute(builder: (_) => Step1Screen()));
                         },
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              BackAndNextButton(
-                onBackPressed: () {
-                  Navigator.of(context).pop();
-                },
-                onNextPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => Step1Screen()));
-                },
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
