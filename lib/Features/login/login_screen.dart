@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/ForgetPassword/forget_password_screen.dart';
 import 'package:readytogo/Features/Signup/signup_screen.dart';
+import 'package:readytogo/Features/login/verification_screen.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -116,13 +117,13 @@ class LoginScreen extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  //   Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           VerificattionScreen(),
-                                  //     ),
-                                  //   );
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            VerificattionScreen(),
+                                      ),
+                                    );
 
                                   context.read<LoginBloc>().add(
                                       LoginWithEmailPassword(
