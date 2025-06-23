@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/ForgetPassword/forget_password_screen.dart';
 import 'package:readytogo/Features/Signup/signup_screen.dart';
-import 'package:readytogo/Features/login/verification_screen.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
-import '../3MinuteAssisment/Step1Screen.dart';
-import '../home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/login_event.dart';
+import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -116,14 +116,20 @@ class LoginScreen extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          VerificattionScreen(),
-                                    ),
-                                  );
+                                  //   Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           VerificattionScreen(),
+                                  //     ),
+                                  //   );
+
+                                  context.read<LoginBloc>().add(
+                                      LoginWithEmailPassword(
+                                          email: "mubashera38@yopmail.com",
+                                          password: "Testing1234@"));
                                 }
+
                                 // else {
                                 //   ScaffoldMessenger.of(context).showSnackBar(
                                 //     SnackBar(

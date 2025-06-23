@@ -6,6 +6,7 @@ import 'package:readytogo/Features/splash_screen.dart';
 
 import 'Features/Signup/release_of_information.dart';
 import 'Features/Signup/signup_screen.dart';
+import 'Features/login/bloc/login_bloc.dart';
 import 'Features/welcome_screen.dart';
 
 // void main() {
@@ -13,21 +14,41 @@ import 'Features/welcome_screen.dart';
 //   runApp(MyApp());
 // }
 
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+
+//   runApp(
+//     BlocProvider<SignUpBloc>(
+//       lazy: false,
+//       create: (context) {
+//         final signUpBloc = SignUpBloc();
+//         // signUpBloc.add(SignupEvent());
+//         //    categoriesBloc.add(GetCategories());
+//         //  categoriesBloc.add(GetCategoriesBeauty());
+//         return signUpBloc;
+//       },
+//       child: MyApp(),
+//     ),//Testing1122@
+//   );
+// }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
-    BlocProvider<SignUpBloc>(
-      lazy: false,
-      create: (context) {
-        final signUpBloc = SignUpBloc();
-        // signUpBloc.add(SignupEvent());
-        //    categoriesBloc.add(GetCategories());
-        //  categoriesBloc.add(GetCategoriesBeauty());
-        return signUpBloc;
-      },
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<SignUpBloc>(
+          lazy: false,
+          create: (context) => SignUpBloc(),
+        ),
+        BlocProvider<LoginBloc>(
+          lazy: false,
+          create: (context) => LoginBloc(),
+        ),
+      ],
       child: MyApp(),
-    ),//Testing1122@
+    ),
   );
 }
 

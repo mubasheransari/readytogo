@@ -157,7 +157,7 @@ class _ClinicalTreatmentScreenState extends State<ClinicalTreatmentScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const TelehealthScreen()),
+                        builder: (context) =>  TelehealthScreen()),
                   );
                 },
               ),
