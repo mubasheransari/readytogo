@@ -14,282 +14,167 @@ class EducationScreen extends StatefulWidget {
 }
 
 class _EducationScreenState extends State<EducationScreen> {
-  final ScrollController _scrollController = ScrollController();
-  final ScrollController _domainScrollController = ScrollController();
-  bool _isVeteran = true;
-
-  List<String> _selectedDomains = [];
-
-  final List<String> _domains = [
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
-    'Housing',
-    'Family/Reuniting, Family/Aftercare',
-    'Employment',
-    'Education',
-    'Clinical Treatment/Telehealth',
-    'Allies, Advocates and Support',
-  ];
-
-  String _selectedOption = '';
-  String _accommodation = '';
-
-  final List<String> _options = [
-    "Option 1",
-    "Option 2",
-    "Option 3",
-    "Option 4",
-    "Option 5",
-    "Option 6",
-    "Option 7",
-  ];
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    _domainScrollController.dispose();
-    super.dispose();
-  }
+  String _educationLevel = '';
+  String _trainingProgram = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DecoratedBox(
-        decoration: boxDecoration(),
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Column(
-            children: [
-              const SizedBox(height: 76),
-              BackHeader(
-                onTap: (context) {
-                  Navigator.pop(context);
-                },
-                questionNumber: 2,
-                totalQuestions: 13,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  margin: const EdgeInsets.only(top: 16),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(18),
-                  ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: DecoratedBox(
+                  decoration: boxDecoration(),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                   TitleHeading3minAssesment(title: "Education"),
-                      const SizedBox(height: 12),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Whats your education level?',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
+                      const SizedBox(height: 76),
+                      BackHeader(
+                        onTap: (context) {
+                          Navigator.pop(context);
+                        },
+                        questionNumber: 2,
+                        totalQuestions: 13,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitleHeading3minAssesment(title: "Education"),
+                              const SizedBox(height: 12),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 14.0),
+                                child: Text(
+                                  'What\'s your education level?',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 14.0),
+                                child: Text(
+                                  '(choose the highest level achieved)',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'satoshi',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              ...[
+                                'Less than High School',
+                                'GED/HS',
+                                'Some College',
+                                '2 year degree',
+                                '4 year degree',
+                                'Masters or PHD',
+                              ].asMap().entries.map((entry) {
+                                final index = entry.key + 1;
+                                final text = entry.value;
+                                return RadioListTile<String>(
+                                  title: Text(
+                                    text,
+                                    style: const TextStyle(
+                                      fontFamily: 'satoshi',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  value: 'Option $index',
+                                  groupValue: _educationLevel,
+                                  activeColor: Constants().themeColor,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _educationLevel = value!;
+                                    });
+                                  },
+                                );
+                              }).toList(),
+                              const SizedBox(height: 20),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 14.0),
+                                child: Text(
+                                  'Are you currently enrolled in school or a job training program?',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              RadioListTile<String>(
+                                activeColor: Constants().themeColor,
+                                title: const Text(
+                                  'Full Time',
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                value: 'Option 4',
+                                groupValue: _trainingProgram,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _trainingProgram = value!;
+                                  });
+                                },
+                              ),
+                              RadioListTile<String>(
+                                activeColor: Constants().themeColor,
+                                title: const Text(
+                                  'Part Time',
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                value: 'Option 5',
+                                groupValue: _trainingProgram,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _trainingProgram = value!;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          '(choose the highest level acvhieve)',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'satoshi',
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      RadioListTile<String>(
-                        title: const Text(
-                          'Less than High School',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 1',
-                        activeColor: Constants().themeColor,
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
+                      const SizedBox(height: 16),
+                      BackAndNextButton(
+                        onBackPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        onNextPressed: () {
+                          Navigator.of(context).pop();
                         },
                       ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'GED/HS',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 2',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Some College',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 3',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          '2 year degree',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 4',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          '4 year degree',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 5',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Masters or PHD',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 6',
-                        groupValue: _selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedOption = value!;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 14.0),
-                        child: Text(
-                          'Are you currently in rolled in school or job training program?',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Full Time',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 4',
-                        groupValue: _accommodation,
-                        onChanged: (value) {
-                          setState(() {
-                            _accommodation = value!;
-                          });
-                        },
-                      ),
-                      RadioListTile<String>(
-                        activeColor: Constants().themeColor,
-                        title: const Text(
-                          'Part Time',
-                          style: TextStyle(
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                        value: 'Option 5',
-                        groupValue: _accommodation,
-                        onChanged: (value) {
-                          setState(() {
-                            _accommodation = value!;
-                          });
-                        },
-                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-               BackAndNextButton(onBackPressed: () {
-                Navigator.of(context).pop();
-              }, onNextPressed: () {
-                Navigator.of(context).pop();
-              }),
-              SizedBox(height: MediaQuery.of(context).size.height),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -21,13 +21,13 @@ void main() async {
       lazy: false,
       create: (context) {
         final signUpBloc = SignUpBloc();
-        signUpBloc.add(SignupEvent());
-    //    categoriesBloc.add(GetCategories());
-      //  categoriesBloc.add(GetCategoriesBeauty());
+        // signUpBloc.add(SignupEvent());
+        //    categoriesBloc.add(GetCategories());
+        //  categoriesBloc.add(GetCategoriesBeauty());
         return signUpBloc;
       },
       child: MyApp(),
-    ),
+    ),//Testing1122@
   );
 }
 
@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter App',
         debugShowCheckedModeBanner: false,
-        home: SplashScreen() 
-        );
+        home: SplashScreen());
   }
 }

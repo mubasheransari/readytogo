@@ -20,15 +20,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   signUpEvent(SignUpEvent event, Emitter<SignUpState> emit) async {
     if (event is SignupEvent) {
       await signUpRepository.signUpRepository(
-          event.firstName!,
-          event.lastName!,
-          event.email!,
-          event.userName!,
-          event.password!,
-          event.confirmPassword!,
-          event.phoneNumber!,
-          event.zipCode!,
-          event.referralCode!);
+          event.firstName??"",
+          event.lastName??"",
+          event.email??"",
+          event.userName??"",
+          event.password??"",
+          event.confirmPassword??"",
+          event.phoneNumber??"",
+          event.zipCode??"",
+          event.referralCode??"",);
     }
   }
 
