@@ -3,17 +3,29 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../Constants/api_constants.dart';
 import 'api_exception.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
 
 class ApiBaseHelper {
-  get({
+  Future<dynamic> get({
     required String url,
     required String path,
     Map<String, dynamic>? queryParam,
   }) async {
-    print('Api Get, url $path');
+    print('Api Get, url: $path');
     var responseJson;
+
+    if (!await _hasInternet()) {
+      _showNoInternetToast();
+      throw FetchDataException('No Internet connection');
+    }
+
     try {
-      final fullUrl = Uri.https(url, path, queryParam); // Combine URL and path
+      final fullUrl = Uri.https(url, path, queryParam);
       final response = await http.get(
         fullUrl,
         headers: {
@@ -22,31 +34,15 @@ class ApiBaseHelper {
       );
       responseJson = _returnResponse(response);
     } on SocketException {
-      print('No net');
+      print('No Internet (SocketException)');
+      _showNoInternetToast();
       throw FetchDataException('No Internet connection');
     }
+
     return responseJson;
   }
 
-  dynamic _returnResponse(http.Response response) {
-    switch (response.statusCode) {
-      case 200:
-        var responseJson = json.decode(response.body.toString());
-        print(responseJson);
-        return responseJson;
-      case 400:
-        throw BadRequestException(response.body.toString());
-      case 401:
-      case 403:
-        throw UnauthorisedException(response.body.toString());
-      case 500:
-        throw InternalServerException('Internal server error');
-      default:
-        throw FetchDataException(
-            'Error occurred while Communication with Server with StatusCode : ${response.statusCode}');
-    }
-  }
-    Future<dynamic> post({
+  Future<dynamic> post({
     String? baseUrl,
     required String path,
     Map<String, dynamic>? body,
@@ -55,6 +51,11 @@ class ApiBaseHelper {
   }) async {
     print('Api Post, url: $path');
     var responseJson;
+
+    if (!await _hasInternet()) {
+      _showNoInternetToast();
+      throw FetchDataException('No Internet connection');
+    }
 
     try {
       final uri = Uri.http(
@@ -76,38 +77,61 @@ class ApiBaseHelper {
       print('API Response: ${response.statusCode}');
       responseJson = _returnResponse(response);
     } on SocketException {
-      print('No Internet connection');
+      print('No Internet (SocketException)');
+      _showNoInternetToast();
       throw FetchDataException('No Internet connection');
     }
 
     return responseJson;
   }
 
-  // Future<dynamic> post(
-  //     {String? baseUrl,
-  //     required String path,
-  //     Map<String, dynamic>? body,
-  //     String? token,
-  //     Map<String, dynamic>? queryParam}) async {
-  //   print('Api Post, url $path');
-  //   var responseJson;
+  dynamic _returnResponse(http.Response response) {
+    switch (response.statusCode) {
+      case 200:
+        var responseJson = json.decode(response.body.toString());
+        print(responseJson);
+        return responseJson;
+      case 400:
+        throw BadRequestException(response.body.toString());
+      case 401:
+      case 403:
+        throw UnauthorisedException(response.body.toString());
+      case 500:
+        throw InternalServerException('Internal server error');
+      default:
+        throw FetchDataException(
+          'Error occurred while communicating with server: ${response.statusCode}',
+        );
+    }
+  }
+
+  Future<bool> _hasInternet() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult == ConnectivityResult.none;
+  }
+
+  // Future<bool> _hasInternet() async {
+  //   var connectivityResult = await Connectivity().checkConnectivity();
+  //   if (connectivityResult == ConnectivityResult.none) return false;
+
   //   try {
-  //     final response = await http.post(
-  //       Uri.https(baseUrl ?? ApiConstants.baseUrl, path, queryParam),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'X-Request-For': '::1',
-  //         'Authorization': token ?? "",
-  //       },
-  //       body: json.encode(body),
-  //     );
-  //     print('REWPONSEEFKEWNKLFN $response');
-  //     responseJson = _returnResponse(response);
+  //     final result = await InternetAddress.lookup('google.com');
+  //     return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
   //   } on SocketException {
-  //     print('No net');
-  //     throw FetchDataException('No Internet connection');
+  //     return false;
   //   }
-  //   print('api post received!');
-  //   return responseJson;
   // }
+
+  void _showNoInternetToast() {
+    Fluttertoast.showToast(
+      msg: "No internet connection available",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.redAccent,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 }
+
+//Testing1234@

@@ -117,13 +117,13 @@ class LoginScreen extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            VerificattionScreen(),
-                                      ),
-                                    );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          VerificattionScreen(),
+                                    ),
+                                  );
 
                                   context.read<LoginBloc>().add(
                                       LoginWithEmailPassword(
@@ -155,7 +155,7 @@ class LoginScreen extends StatelessWidget {
                                   const Text(
                                     'Continue',
                                     style: TextStyle(
-                                        letterSpacing: 0.5,
+                                        letterSpacing: 1,
                                         color: Colors.white,
                                         fontFamily: 'Satoshi',
                                         fontSize: 20,

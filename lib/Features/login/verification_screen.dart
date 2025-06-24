@@ -154,11 +154,12 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                               ),
                             ),
                             const SizedBox(height: 8),
-                            const Text(
-                              "code has been sent to +923042727074",
+                            Text(
+                              "Code has been sent to +923042727074",
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.black54,
+                                fontWeight: FontWeight.w700,
+                                color: Constants().greyColor,
                                 fontFamily: 'satoshi',
                               ),
                             ),
