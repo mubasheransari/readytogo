@@ -45,51 +45,95 @@ class ApiBaseHelper {
     return responseJson;
   }
 
-  Future<dynamic> post({
-    String? baseUrl,
-    required String path,
-    Map<String, dynamic>? body,
-    String? token,
-    Map<String, dynamic>? queryParam,
-  }) async {
-    print('Api Post, url: $path');
-    var responseJson;
+  Future<http.Response> post({
+  String? baseUrl,
+  required String path,
+  Map<String, dynamic>? body,
+  String? token,
+  Map<String, dynamic>? queryParam,
+}) async {
+  print('Api Post, url: $path');
 
-    final hasInternet = await _hasInternet();
-    if (!hasInternet) {
-      _showNoInternetToast();
-      throw FetchDataException('No Internet connection');
-    }
-
-    try {
-      final uri = Uri.http(
-        baseUrl ?? ApiConstants.baseDomain,
-        '${ApiConstants.apiPrefix}$path',
-        queryParam,
-      );
-
-      final response = await http.post(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Request-For': '::1',
-          if (token != null && token.isNotEmpty) 'Authorization': token,
-        },
-        body: json.encode(body),
-      );
-
-      print('API Response: ${response.statusCode}');
-      responseJson = _returnResponse(response);
-    } on SocketException catch (e) {
-      print('SocketException: $e');
-      if (!await _hasInternet()) {
-        _showNoInternetToast();
-      }
-      throw FetchDataException('No Internet connection');
-    }
-
-    return responseJson;
+  final hasInternet = await _hasInternet();
+  if (!hasInternet) {
+    _showNoInternetToast();
+    throw FetchDataException('No Internet connection');
   }
+
+  try {
+    final uri = Uri.http(
+      baseUrl ?? ApiConstants.baseDomain,
+      '${ApiConstants.apiPrefix}$path',
+      queryParam,
+    );
+
+    final response = await http.post(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Request-For': '::1',
+        if (token != null && token.isNotEmpty) 'Authorization': token,
+      },
+      body: json.encode(body),
+    );
+
+    print('API Response: ${response.statusCode}');
+    return response; // <-- Return full response now
+  } on SocketException catch (e) {
+    print('SocketException: $e');
+    if (!await _hasInternet()) {
+      _showNoInternetToast();
+    }
+    throw FetchDataException('No Internet connection');
+  }
+}
+
+
+  // Future<dynamic> post({
+  //   String? baseUrl,
+  //   required String path,
+  //   Map<String, dynamic>? body,
+  //   String? token,
+  //   Map<String, dynamic>? queryParam,
+  // }) async {
+  //   print('Api Post, url: $path');
+  //   var responseJson;
+
+  //   final hasInternet = await _hasInternet();
+  //   if (!hasInternet) {
+  //     _showNoInternetToast();
+  //     throw FetchDataException('No Internet connection');
+  //   }
+
+  //   try {
+  //     final uri = Uri.http(
+  //       baseUrl ?? ApiConstants.baseDomain,
+  //       '${ApiConstants.apiPrefix}$path',
+  //       queryParam,
+  //     );
+
+  //     final response = await http.post(
+  //       uri,
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'X-Request-For': '::1',
+  //         if (token != null && token.isNotEmpty) 'Authorization': token,
+  //       },
+  //       body: json.encode(body),
+  //     );
+
+  //     print('API Response: ${response.statusCode}');
+  //     responseJson = _returnResponse(response);
+  //   } on SocketException catch (e) {
+  //     print('SocketException: $e');
+  //     if (!await _hasInternet()) {
+  //       _showNoInternetToast();
+  //     }
+  //     throw FetchDataException('No Internet connection');
+  //   }
+
+  //   return responseJson;
+  // }
 
   Future<bool> _hasInternet() async {
     var connectivityResult = await Connectivity().checkConnectivity();

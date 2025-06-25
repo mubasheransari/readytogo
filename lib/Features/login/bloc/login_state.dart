@@ -1,20 +1,36 @@
-import 'package:equatable/equatable.dart';
+ class LoginState {}
 
-enum LoginStateStates { loading, loaded, initial }
+class LoginInitial extends LoginState {}
 
-// ignore: must_be_immutable
-class LoginState extends Equatable {
-  LoginStateStates loginStateStates = LoginStateStates.initial;
+class LoginLoading extends LoginState {}
 
-  LoginState({
-    this.loginStateStates = LoginStateStates.initial,
-  });
+class LoginSuccess extends LoginState {}
 
-  LoginState copyWith(
-      {LoginStateStates loginStateStates = LoginStateStates.initial}) {
-    return LoginState(loginStateStates: loginStateStates);
-  }
+class LoginFailure extends LoginState {
+  final String error;
 
-  @override
-  List<Object> get props => [loginStateStates];
+  LoginFailure(this.error);
 }
+
+
+
+// import 'package:equatable/equatable.dart';
+
+// enum LoginStateStates { initial, success , failure }
+
+// // ignore: must_be_immutable
+// class LoginState extends Equatable {
+//   LoginStateStates loginStateStates = LoginStateStates.initial;
+
+//   LoginState({
+//     this.loginStateStates = LoginStateStates.initial,
+//   });
+
+//   LoginState copyWith(
+//       {LoginStateStates loginStateStates = LoginStateStates.initial}) {
+//     return LoginState(loginStateStates: loginStateStates);
+//   }
+
+//   @override
+//   List<Object> get props => [loginStateStates];
+// }

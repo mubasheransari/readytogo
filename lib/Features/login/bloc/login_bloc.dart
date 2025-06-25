@@ -9,11 +9,64 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
   LoginRepository loginRepository = LoginRepository();
 
+  // loginWithEmailPassword(
+  //     LoginWithEmailPassword event, Emitter<LoginState> emit) async {
+  //   await loginRepository.loginWithEmailPassword(
+  //     event.email ?? "",
+  //     event.password ?? "",
+  //   );
+  // }
+
+  /*loginWithEmailPassword(
+    LoginWithEmailPassword event,
+    Emitter<LoginState> emit,
+  ) async {
+    try {
+      final response = await loginRepository.loginWithEmailPassword(
+        event.email ?? "",
+        event.password ?? "",
+      );
+
+      print("Status Code: ${response.statusCode}");
+      print("Status Code: ${response.statusCode}");
+      print("Status Code: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        // parse response.body if needed
+        emit(state.copyWith(loginStateStates: LoginStateStates.success));
+      } else {
+        emit(state.copyWith(loginStateStates: LoginStateStates.failure));
+        //  emit(LoginFailure("Login failed with status ${response.statusCode}"));
+      }
+    } catch (e) {
+      print("Error in login: $e");
+      emit(state.copyWith(loginStateStates: LoginStateStates.failure));
+      // emit(LoginFailure("An error occurred: ${e.toString()}"));
+    }
+  }*/
+
   loginWithEmailPassword(
-      LoginWithEmailPassword event, Emitter<LoginState> emit) async {
-    await loginRepository.loginWithEmailPassword(
+  LoginWithEmailPassword event,
+  Emitter<LoginState> emit,
+) async {
+  try {
+    final response = await loginRepository.loginWithEmailPassword(
       event.email ?? "",
       event.password ?? "",
     );
+
+    print("Status Code: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      // parse response.body if needed
+      emit(LoginSuccess());
+    } else {
+      emit(LoginFailure("Login failed with status ${response.statusCode}"));
+    }
+  } catch (e) {
+    print("Error in login: $e");
+    emit(LoginFailure("An error occurred: ${e.toString()}"));
   }
+}
+
 }
