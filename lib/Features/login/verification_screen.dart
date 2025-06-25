@@ -9,11 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:sms_autofill/sms_autofill.dart';
+
 
 class VerificattionScreen extends StatefulWidget {
-  const VerificattionScreen({super.key});
+  String email,password;
+   VerificattionScreen({super.key,required this.email,required this.password});
 
   @override
   State<VerificattionScreen> createState() => _VerificattionScreenState();
@@ -155,7 +155,7 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              "Code has been sent to +923042727074",
+                              "Code has been sent to ${widget.email}",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
@@ -223,7 +223,7 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                     fontFamily: 'satoshi',
                                     fontSize: 16,
                                   ),
-                                ),
+                                ),//Testing1234#
                                 InkWell(
                                   onTap: () {
                                     print(timerText);

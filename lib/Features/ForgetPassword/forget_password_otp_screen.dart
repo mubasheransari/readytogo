@@ -145,7 +145,7 @@ class _ForgetPasswordOtpVerificationScreenState
                               child: PinFieldAutoFill(
                                 autoFocus: true,
                                 codeLength: 4,
-                                currentCode: codeValue,
+                               currentCode: codeValue,
                                 onCodeChanged: (code) {
                                   Future.microtask(() {
                                     if (mounted) {

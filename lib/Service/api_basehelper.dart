@@ -1,14 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../Constants/api_constants.dart';
 import 'api_exception.dart';
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
+
+
 
 class ApiBaseHelper {
   Future<dynamic> get({
@@ -19,7 +19,8 @@ class ApiBaseHelper {
     print('Api Get, url: $path');
     var responseJson;
 
-    if (!await _hasInternet()) {
+    final hasInternet = await _hasInternet();
+    if (!hasInternet) {
       _showNoInternetToast();
       throw FetchDataException('No Internet connection');
     }
@@ -33,9 +34,11 @@ class ApiBaseHelper {
         },
       );
       responseJson = _returnResponse(response);
-    } on SocketException {
-      print('No Internet (SocketException)');
-      _showNoInternetToast();
+    } on SocketException catch (e) {
+      print('SocketException: $e');
+      if (!await _hasInternet()) {
+        _showNoInternetToast();
+      }
       throw FetchDataException('No Internet connection');
     }
 
@@ -52,7 +55,8 @@ class ApiBaseHelper {
     print('Api Post, url: $path');
     var responseJson;
 
-    if (!await _hasInternet()) {
+    final hasInternet = await _hasInternet();
+    if (!hasInternet) {
       _showNoInternetToast();
       throw FetchDataException('No Internet connection');
     }
@@ -76,13 +80,39 @@ class ApiBaseHelper {
 
       print('API Response: ${response.statusCode}');
       responseJson = _returnResponse(response);
-    } on SocketException {
-      print('No Internet (SocketException)');
-      _showNoInternetToast();
+    } on SocketException catch (e) {
+      print('SocketException: $e');
+      if (!await _hasInternet()) {
+        _showNoInternetToast();
+      }
       throw FetchDataException('No Internet connection');
     }
 
     return responseJson;
+  }
+
+  Future<bool> _hasInternet() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      return false;
+    }
+
+    try {
+      final result = await InternetAddress.lookup('example.com')
+          .timeout(const Duration(seconds: 3));
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return true;
+      }
+    } catch (_) {}
+
+    try {
+      final response = await http.get(
+        Uri.parse('https://www.google.com'),
+      ).timeout(const Duration(seconds: 5));
+      return response.statusCode == 200;
+    } catch (_) {
+      return false;
+    }
   }
 
   dynamic _returnResponse(http.Response response) {
@@ -100,27 +130,9 @@ class ApiBaseHelper {
         throw InternalServerException('Internal server error');
       default:
         throw FetchDataException(
-          'Error occurred while communicating with server: ${response.statusCode}',
-        );
+            'Error while communicating with server: ${response.statusCode}');
     }
   }
-
-  Future<bool> _hasInternet() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    return connectivityResult == ConnectivityResult.none;
-  }
-
-  // Future<bool> _hasInternet() async {
-  //   var connectivityResult = await Connectivity().checkConnectivity();
-  //   if (connectivityResult == ConnectivityResult.none) return false;
-
-  //   try {
-  //     final result = await InternetAddress.lookup('google.com');
-  //     return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-  //   } on SocketException {
-  //     return false;
-  //   }
-  // }
 
   void _showNoInternetToast() {
     Fluttertoast.showToast(
@@ -133,5 +145,3 @@ class ApiBaseHelper {
     );
   }
 }
-
-//Testing1234@

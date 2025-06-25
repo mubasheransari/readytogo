@@ -121,7 +121,10 @@ class LoginScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          VerificattionScreen(),
+                                          VerificattionScreen(
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                          ),
                                     ),
                                   );
 
