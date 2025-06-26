@@ -239,7 +239,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 3),
                         GestureDetector(
                           onTap: () {
                             setState(() {
@@ -267,7 +267,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 9),
                         Expanded(
                           child: Text.rich(
                             TextSpan(
@@ -288,14 +288,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                     decoration: TextDecoration.underline,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 17,
+                                    decorationColor: Constants().themeColor,
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  TermsAndConditionScreen()),
-                                        ),
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                TermsAndConditionScreen())),
                                 ),
                                 const TextSpan(text: ', '),
                                 TextSpan(
@@ -305,16 +305,20 @@ class _SignupScreenState extends State<SignupScreen> {
                                     decoration: TextDecoration.underline,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 17,
+                                    decorationColor: Constants().themeColor,
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  ReleaseOfInformationScreen()),
-                                        ),
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                ReleaseOfInformationScreen())),
                                 ),
-                                const TextSpan(text: ' & '),
+                                const TextSpan(
+                                    text: ' & ',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 17)),
                                 TextSpan(
                                   text: 'privacy policy.',
                                   style: TextStyle(
@@ -322,19 +326,87 @@ class _SignupScreenState extends State<SignupScreen> {
                                     decoration: TextDecoration.underline,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 17,
+                                    decorationColor: Constants().themeColor,
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  PrivacyPolicyScreen()),
-                                        ),
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                PrivacyPolicyScreen())),
                                 ),
                               ],
                             ),
                           ),
                         ),
+
+                        // Expanded(
+                        //   child: Text.rich(
+                        //     TextSpan(
+                        //       style: const TextStyle(
+                        //           fontSize: 16,
+                        //           color: Colors.black,
+                        //           fontFamily: 'Satoshi'),
+                        //       children: [
+                        //         const TextSpan(
+                        //             text: 'I have read & accept ',
+                        //             style: TextStyle(
+                        //                 fontWeight: FontWeight.w700,
+                        //                 fontSize: 17)),
+                        //         TextSpan(
+                        //           text: 'Terms & Conditions',
+                        //           style: TextStyle(
+                        //             color: Constants().themeColor,
+                        //             decoration: TextDecoration.underline,
+                        //             fontWeight: FontWeight.w700,
+                        //             fontSize: 17,
+                        //           ),
+                        //           recognizer: TapGestureRecognizer()
+                        //             ..onTap = () => Navigator.push(
+                        //                   context,
+                        //                   MaterialPageRoute(
+                        //                       builder: (_) =>
+                        //                           TermsAndConditionScreen()),
+                        //                 ),
+                        //         ),
+                        //         const TextSpan(text: ', '),
+                        //         TextSpan(
+                        //           text: 'release of information ',
+                        //           style: TextStyle(
+                        //             color: Constants().themeColor,
+                        //             decoration: TextDecoration.underline,
+                        //             fontWeight: FontWeight.w700,
+                        //             fontSize: 17,
+                        //           ),
+                        //           recognizer: TapGestureRecognizer()
+                        //             ..onTap = () => Navigator.push(
+                        //                   context,
+                        //                   MaterialPageRoute(
+                        //                       builder: (_) =>
+                        //                           ReleaseOfInformationScreen()),
+                        //                 ),
+                        //         ),
+                        //         const TextSpan(text: ' & '),
+                        //         TextSpan(
+                        //           text: 'privacy policy.',
+                        //           style: TextStyle(
+                        //             color: Constants().themeColor,
+                        //             decoration: TextDecoration.underline,
+                        //             fontWeight: FontWeight.w700,
+                        //             fontSize: 17,
+                        //           ),
+                        //           recognizer: TapGestureRecognizer()
+                        //             ..onTap = () => Navigator.push(
+                        //                   context,
+                        //                   MaterialPageRoute(
+                        //                       builder: (_) =>
+                        //                           PrivacyPolicyScreen()),
+                        //                 ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),*/
                       ],
                     ),
                     if (_showTermsError)
