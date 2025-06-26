@@ -246,7 +246,8 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                       BlocConsumer<LoginBloc, LoginState>(
                         listener: (context, state) {
                           if (state is LoginOtpSuccess) {
-                            toastWidget("Logged-in Successfully", Colors.red);
+                            print("TOKEN: ${state.token}");
+                            toastWidget("Logged-in Successfully", Colors.green);
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => LoginSuccessScreen()),

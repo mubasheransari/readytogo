@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
@@ -71,27 +73,59 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   _onVerifyOtpSubmitted(
-    VerifyOtpSubmitted event,
-    Emitter<LoginState> emit,
-  ) async {
-    emit(LoginOtpLoading());
-    try {
-      final response = await loginRepository.verifyOTP(
-        event.email,
-        event.password,
-        event.otp,
-      );
+  VerifyOtpSubmitted event,
+  Emitter<LoginState> emit,
+) async {
+  emit(LoginOtpLoading());
 
-      if (response.statusCode == 200) {
-        // print("RESPONSE ${response["token"]}");
-        // print("RESPONSE ${response["token"]}");
-        emit(LoginOtpSuccess());
+  try {
+    final response = await loginRepository.verifyOTP(
+      event.email,
+      event.password,
+      event.otp,
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = json.decode(response.body);
+
+      final token = responseBody['token'];
+      if (token != null) {
+        emit(LoginOtpSuccess(token));
       } else {
-        emit(LoginOtpFailure(
-            "OTP verification failed with status ${response.statusCode}"));
+        emit(LoginOtpFailure("Token not found in response"));
       }
-    } catch (e) {
-      emit(LoginOtpFailure("OTP verification error: ${e.toString()}"));
+    } else {
+      emit(LoginOtpFailure(
+          "OTP verification failed with status ${response.statusCode}"));
     }
+  } catch (e) {
+    emit(LoginOtpFailure("OTP verification error: ${e.toString()}"));
   }
+}
+
+
+  // _onVerifyOtpSubmitted(
+  //   VerifyOtpSubmitted event,
+  //   Emitter<LoginState> emit,
+  // ) async {
+  //   emit(LoginOtpLoading());
+  //   try {
+  //     final response = await loginRepository.verifyOTP(
+  //       event.email,
+  //       event.password,
+  //       event.otp,
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       // print("RESPONSE ${response["token"]}");
+  //       // print("RESPONSE ${response["token"]}");
+  //       emit(LoginOtpSuccess());
+  //     } else {
+  //       emit(LoginOtpFailure(
+  //           "OTP verification failed with status ${response.statusCode}"));
+  //     }
+  //   } catch (e) {
+  //     emit(LoginOtpFailure("OTP verification error: ${e.toString()}"));
+  //   }
+  // }
 }

@@ -14,7 +14,14 @@ class LoginFailure extends LoginState {
 
 class LoginOtpLoading extends LoginState {}
 
-class LoginOtpSuccess extends LoginState {}
+class LoginOtpSuccess extends LoginState {
+  final String token;
+
+  LoginOtpSuccess(this.token);
+}
+
+
+// class LoginOtpSuccess extends LoginState {}
 
 class LoginOtpFailure extends LoginState {
   final String error;
