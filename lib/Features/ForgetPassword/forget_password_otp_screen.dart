@@ -10,11 +10,10 @@ import '../login/verification_screen.dart';
 import 'bloc/forget_password_bloc.dart';
 import 'bloc/forget_password_event.dart';
 import 'bloc/forget_password_state.dart';
-import 'package:get_storage/get_storage.dart';
 
 class ForgetPasswordOtpVerificationScreen extends StatefulWidget {
   final String email;
-  // final String password;
+  // final String password; Testing1234@
 
   ForgetPasswordOtpVerificationScreen({
     //  Key? key,

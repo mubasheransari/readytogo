@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Repositories/forget_password_repository.dart';
+import 'package:readytogo/widgets/toast_widget.dart';
 
 import 'forget_password_event.dart';
 import 'forget_password_state.dart';
@@ -116,7 +118,8 @@ resetForgetPassword(
       final data = jsonDecode(response.body);
       print("RESET PASSWORD $data");
       print("RESET PASSWORD $data");
-      print("RESET PASSWORD $data");//Testing1234@
+      print("RESET PASSWORD $data"); //Testing1234@
+      toastWidget("Password has been reset.", Colors.green);
       
 
       emit(ResetForgetPasswordSuccess());
