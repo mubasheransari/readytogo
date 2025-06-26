@@ -13,6 +13,7 @@ class ForgetPasswordBloc
     on<RequestForgetPasswordOtp>(_onRequestOtp);
     on<SubmitForgetPasswordOtp>(submitForgetPasswordOtp);
     on<ForgetPasswordToken>(forgetPasswordToken);
+    on<ResetForgetPassword>(resetForgetPassword);
   }
 }
 // ForgetPasswordBloc()
@@ -61,11 +62,6 @@ forgetPasswordToken(
 
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
-      print("FORGET PASSSWORD TOKEN ${decoded['token']}");
-      print("FORGET PASSSWORD TOKEN ${decoded['token']}");
-      print("FORGET PASSSWORD TOKEN ${decoded['token']}");
-      print("FORGET PASSSWORD TOKEN ${decoded}");
-      print("FORGET PASSSWORD TOKEN ${decoded}");
 
       final box = GetStorage();
       box.write("token-forgetPassword", decoded['token']);
@@ -104,5 +100,31 @@ submitForgetPasswordOtp(
   } catch (e) {
     emit(ForgetPasswordOtpVerifiedFailure(
         "Verification error: ${e.toString()}"));
+  }
+}
+
+resetForgetPassword(
+  ResetForgetPassword event,
+  Emitter<ForgetPasswordState> emit,
+) async {
+  emit(ResetForgetPasswordLoading());
+  try {
+    final response = await forgetPasswordRepository.resetForgetPassword(
+        event.email, event.password, event.confirmPassword);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print("RESET PASSWORD $data");
+      print("RESET PASSWORD $data");
+      print("RESET PASSWORD $data");//Testing1234@
+      
+
+      emit(ResetForgetPasswordSuccess());
+    } else {
+      emit(ResetForgetPasswordFailure(
+          "Verification failed: ${response.statusCode}"));
+    }
+  } catch (e) {
+    emit(ResetForgetPasswordFailure("Verification error: ${e.toString()}"));
   }
 }

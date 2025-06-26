@@ -248,7 +248,7 @@ class _ForgetPasswordOtpVerificationScreenState
 
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => UpdatePasswordScreen(),
+                                builder: (_) => UpdatePasswordScreen(email: widget.email),
                               ),
                             );
                           } else if (state

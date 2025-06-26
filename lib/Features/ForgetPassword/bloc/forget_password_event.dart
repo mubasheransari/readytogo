@@ -42,3 +42,12 @@ class ForgetPasswordToken extends ForgetPasswordEvent {
   @override
   List<Object?> get props => [email];
 }
+
+class ResetForgetPassword extends ForgetPasswordEvent {
+  final String email,password,confirmPassword;
+
+  ResetForgetPassword({required this.email,required this.password,required this.confirmPassword});
+
+  @override
+  List<Object?> get props => [email,password,confirmPassword];
+}

@@ -7,4 +7,6 @@ class ApiConstants {
   static const String forgetPasswordForToken = "account/forgot-password";
   static const String forgetPasswordOTPApi = "account/forgot-password-request-otp";
   static const String forgetPasswordverifyOTP = "account/forgot-password-verify-otp";
+  static const String resetforgetPassword= "account/reset-password";
+
 }

@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/Features/ForgetPassword/bloc/forget_password_bloc.dart';
 import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
+import 'bloc/forget_password_event.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 class UpdatePasswordScreen extends StatelessWidget {
-  TextEditingController emailController = TextEditingController();
+  String email;
+  UpdatePasswordScreen({required this.email});
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +94,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                       ),
                       CustomTextFieldWidget(
                         borderColor: Constants().themeColor,
-                        controller: passwordController,
+                        controller: confirmPasswordController,
                         hintText: 'Confirm Password',
                         labelText: 'Confirm Password',
                         textWidgetText: 'Confirm Password',
@@ -100,6 +107,14 @@ class UpdatePasswordScreen extends StatelessWidget {
                         child: Center(
                           child: ElevatedButton(
                             onPressed: () {
+                              context
+                                  .read<ForgetPasswordBloc>()
+                                  .add(ResetForgetPassword(
+                                    email: email,
+                                    password: passwordController.text.trim(),
+                                    confirmPassword: confirmPasswordController.text.trim(),
+                                  ));
+
                               // Navigator.push(
                               //     context,
                               //     MaterialPageRoute(
