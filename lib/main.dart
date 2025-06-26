@@ -4,6 +4,7 @@ import 'package:readytogo/Features/Signup/bloc/signup_bloc.dart';
 import 'package:readytogo/Features/Signup/bloc/signup_event.dart';
 import 'package:readytogo/Features/splash_screen.dart';
 
+import 'Features/ForgetPassword/bloc/forget_password_bloc.dart';
 import 'Features/Signup/release_of_information.dart';
 import 'Features/Signup/signup_screen.dart';
 import 'Features/login/bloc/login_bloc.dart';
@@ -47,6 +48,10 @@ void main() async {
         BlocProvider<LoginBloc>(
           lazy: false,
           create: (context) => LoginBloc(),
+        ),
+         BlocProvider<ForgetPasswordBloc>(
+          lazy: false,
+          create: (context) => ForgetPasswordBloc(),
         ),
       ],
       child: MyApp(),
