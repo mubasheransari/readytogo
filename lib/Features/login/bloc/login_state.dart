@@ -12,25 +12,12 @@ class LoginFailure extends LoginState {
   LoginFailure(this.error);
 }
 
+class LoginOtpLoading extends LoginState {}
 
+class LoginOtpSuccess extends LoginState {}
 
-// import 'package:equatable/equatable.dart';
+class LoginOtpFailure extends LoginState {
+  final String error;
 
-// enum LoginStateStates { initial, success , failure }
-
-// // ignore: must_be_immutable
-// class LoginState extends Equatable {
-//   LoginStateStates loginStateStates = LoginStateStates.initial;
-
-//   LoginState({
-//     this.loginStateStates = LoginStateStates.initial,
-//   });
-
-//   LoginState copyWith(
-//       {LoginStateStates loginStateStates = LoginStateStates.initial}) {
-//     return LoginState(loginStateStates: loginStateStates);
-//   }
-
-//   @override
-//   List<Object> get props => [loginStateStates];
-// }
+  LoginOtpFailure(this.error);
+}

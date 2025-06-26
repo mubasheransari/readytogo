@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (_formKey.currentState!.validate()) {
                                     context.read<LoginBloc>().add(
                                           LoginWithEmailPassword(
-                                            email: "testuser1q@yopmail.com",
+                                            email: "testuser1@yopmail.com",
                                             password: "10@Testing",
                                           ),
                                         );

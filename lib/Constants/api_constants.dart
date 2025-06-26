@@ -3,4 +3,5 @@ class ApiConstants {
   static const String apiPrefix = "api/";
   static const String registerApi = "account/register";
   static const String loginApi = "account/login/request-otp";
+  static const String verifyOTPApi = "account/login/verify-otp";
 }

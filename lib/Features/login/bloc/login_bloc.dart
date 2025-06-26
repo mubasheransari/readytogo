@@ -6,6 +6,7 @@ import 'package:readytogo/Repositories/login_repository.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginState()) {
     on<LoginWithEmailPassword>(loginWithEmailPassword);
+    on<VerifyOtpSubmitted>(_onVerifyOtpSubmitted);
   }
   LoginRepository loginRepository = LoginRepository();
 
@@ -46,27 +47,51 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }*/
 
   loginWithEmailPassword(
-  LoginWithEmailPassword event,
-  Emitter<LoginState> emit,
-) async {
-  try {
-    final response = await loginRepository.loginWithEmailPassword(
-      event.email ?? "",
-      event.password ?? "",
-    );
+    LoginWithEmailPassword event,
+    Emitter<LoginState> emit,
+  ) async {
+    try {
+      final response = await loginRepository.loginWithEmailPassword(
+        event.email ?? "",
+        event.password ?? "",
+      );
 
-    print("Status Code: ${response.statusCode}");
+      print("Status Code: ${response.statusCode}");
 
-    if (response.statusCode == 200) {
-      // parse response.body if needed
-      emit(LoginSuccess());
-    } else {
-      emit(LoginFailure("Login failed with status ${response.statusCode}"));
+      if (response.statusCode == 200) {
+        // parse response.body if needed
+        emit(LoginSuccess());
+      } else {
+        emit(LoginFailure("Login failed with status ${response.statusCode}"));
+      }
+    } catch (e) {
+      print("Error in login: $e");
+      emit(LoginFailure("An error occurred: ${e.toString()}"));
     }
-  } catch (e) {
-    print("Error in login: $e");
-    emit(LoginFailure("An error occurred: ${e.toString()}"));
   }
-}
 
+  _onVerifyOtpSubmitted(
+    VerifyOtpSubmitted event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(LoginOtpLoading());
+    try {
+      final response = await loginRepository.verifyOTP(
+        event.email,
+        event.password,
+        event.otp,
+      );
+
+      if (response.statusCode == 200) {
+        // print("RESPONSE ${response["token"]}");
+        // print("RESPONSE ${response["token"]}");
+        emit(LoginOtpSuccess());
+      } else {
+        emit(LoginOtpFailure(
+            "OTP verification failed with status ${response.statusCode}"));
+      }
+    } catch (e) {
+      emit(LoginOtpFailure("OTP verification error: ${e.toString()}"));
+    }
+  }
 }

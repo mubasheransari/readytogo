@@ -16,6 +16,18 @@ class LoginRepository {
     );
   }
 
+    Future<http.Response> verifyOTP(
+      String email, String password, String otp) async {
+    return await _apiBaseHelper.post(
+      path: ApiConstants.verifyOTPApi,
+      body: {
+        "email": email,
+        "password": password,
+        "otp": otp,
+      },
+    );
+  }
+
   // loginWithEmailPassword(String email, String password) async {
   //   await _apiBaseHelper.post(
   //     path: ApiConstants.loginApi,

@@ -22,3 +22,15 @@ class LoginWithEmailPassword extends LoginEvent {
         password!,
       ];
 }
+
+class VerifyOtpSubmitted extends LoginEvent {
+  final String email;
+  final String password;
+  final String otp;
+
+  const VerifyOtpSubmitted({
+    required this.email,
+    required this.password,
+    required this.otp,
+  });
+}
