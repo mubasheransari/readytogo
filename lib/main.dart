@@ -7,8 +7,9 @@ import 'package:readytogo/Features/splash_screen.dart';
 import 'Features/Signup/release_of_information.dart';
 import 'Features/Signup/signup_screen.dart';
 import 'Features/login/bloc/login_bloc.dart';
+import 'Features/login/login_success_screen.dart';
 import 'Features/welcome_screen.dart';
-
+import 'package:get_storage/get_storage.dart';
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();
 //   runApp(MyApp());
@@ -33,6 +34,7 @@ import 'Features/welcome_screen.dart';
 // }
 
 void main() async {
+  await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
@@ -55,9 +57,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
+    var token = box.read("token");
     return MaterialApp(
         title: 'Flutter App',
         debugShowCheckedModeBanner: false,
-        home: SplashScreen());
+        home:token != null ? LoginSuccessScreen(): SplashScreen()
+        );
   }
 }

@@ -3,9 +3,11 @@ import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/Features/Donate/donate_navbar.dart';
 import 'package:readytogo/Features/Subscription/subscription_screen.dart';
 import 'package:readytogo/Features/howtouse_screen.dart';
-
+import 'package:get_storage/get_storage.dart';
+import 'package:readytogo/widgets/toast_widget.dart';
 import 'Settings/settings_screen.dart';
 import 'aboutus_screen.dart';
+import 'login/login_screen.dart';
 import 'manage_my_geo_navbar.dart';
 
 class CustomNavDrawer extends StatelessWidget {
@@ -253,7 +255,14 @@ class CustomNavDrawer extends StatelessWidget {
                                     fontSize: 18),
                               ),
                               onTap: () {
-                                // Logout action
+                                final box = GetStorage();
+                                box.remove("token");
+                                toastWidget("Logout", Colors.red);
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginScreen()),
+                                  (Route<dynamic> route) => false,
+                                );
                               },
                             ),
                           ],

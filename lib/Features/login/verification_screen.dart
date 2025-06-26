@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -247,6 +248,9 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                         listener: (context, state) {
                           if (state is LoginOtpSuccess) {
                             print("TOKEN: ${state.token}");
+                            final box = GetStorage();
+                            box.write("token", state.token);
+
                             toastWidget("Logged-in Successfully", Colors.green);
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
