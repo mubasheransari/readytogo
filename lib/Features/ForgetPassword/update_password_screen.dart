@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:readytogo/widgets/customscfaffold_widget.dart';
-
 import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
-import 'forget_password_otp_screen.dart';
 
 class UpdatePasswordScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
@@ -29,7 +26,6 @@ class UpdatePasswordScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 10.0),
                   child: Column(
-                    //  mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(
                         children: [

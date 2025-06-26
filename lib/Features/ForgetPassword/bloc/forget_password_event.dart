@@ -14,6 +14,15 @@ class RequestForgetPasswordOtp extends ForgetPasswordEvent {
   List<Object?> get props => [email];
 }
 
+class ForgetPasswordOTP extends ForgetPasswordEvent {
+  final String email;
+
+  ForgetPasswordOTP({required this.email});
+
+  @override
+  List<Object?> get props => [email];
+}
+
 class SubmitForgetPasswordOtp extends ForgetPasswordEvent {
   final String email;
   final String otp;
@@ -23,4 +32,13 @@ class SubmitForgetPasswordOtp extends ForgetPasswordEvent {
     required this.email,
     required this.otp,
   });
+}
+
+class ForgetPasswordToken extends ForgetPasswordEvent {
+  final String email;
+
+  ForgetPasswordToken({required this.email});
+
+  @override
+  List<Object?> get props => [email];
 }

@@ -15,6 +15,16 @@ class ForgetPasswordRepository{
     );
   }
 
+   Future<http.Response> forgetPasswordToken(
+      String email) async {
+    return await _apiBaseHelper.post(
+      path: ApiConstants.forgetPasswordForToken,
+      body: {
+        "email": email,
+      },
+    );
+  }
+
    Future<http.Response> verifyOTPForgetPassword(
       String email,String otp) async {
     return await _apiBaseHelper.post(

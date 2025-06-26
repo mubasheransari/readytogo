@@ -19,7 +19,6 @@ class ForgetPasswordOtpVerificationScreen extends StatefulWidget {
   ForgetPasswordOtpVerificationScreen({
     //  Key? key,
     required this.email,
-    //required this.password,
   });
 
   @override
@@ -247,11 +246,10 @@ class _ForgetPasswordOtpVerificationScreenState
                                 "Verification successful. You can now change your password.",
                                 Colors.green);
 
-                            Navigator.of(context).pushAndRemoveUntil(
+                            Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => UpdatePasswordScreen(),
                               ),
-                              (route) => false,
                             );
                           } else if (state
                               is ForgetPasswordOtpVerifiedFailure) {

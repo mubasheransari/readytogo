@@ -112,6 +112,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         BlocConsumer<ForgetPasswordBloc, ForgetPasswordState>(
                           listener: (context, state) {
                             if (state is ForgetPasswordSuccess) {
+
+                              context.read<ForgetPasswordBloc>().add(
+                                          ForgetPasswordToken(
+                                            email: emailController.text.trim(),
+                                          ),
+                                        );
+                              
                               toastWidget("OTP Sent Successfully",
                                   Colors.green);
                               Navigator.push(
