@@ -17,11 +17,10 @@ class RequestForgetPasswordOtp extends ForgetPasswordEvent {
 class SubmitForgetPasswordOtp extends ForgetPasswordEvent {
   final String email;
   final String otp;
-  final String password;
+
 
   SubmitForgetPasswordOtp({
     required this.email,
     required this.otp,
-    required this.password,
   });
 }

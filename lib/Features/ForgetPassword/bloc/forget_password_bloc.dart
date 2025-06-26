@@ -10,7 +10,7 @@ class ForgetPasswordBloc
     extends Bloc<ForgetPasswordEvent, ForgetPasswordState> {
   ForgetPasswordBloc() : super(ForgetPasswordState()) {
     on<RequestForgetPasswordOtp>(_onRequestOtp);
-    on<SubmitForgetPasswordOtp>(_onVerifyOtp);
+    on<SubmitForgetPasswordOtp>(submitForgetPasswordOtp);
   }
 }
 // ForgetPasswordBloc()
@@ -43,7 +43,7 @@ _onRequestOtp(
   }
 }
 
- _onVerifyOtp(
+ submitForgetPasswordOtp(
   SubmitForgetPasswordOtp event,
   Emitter<ForgetPasswordState> emit,
 ) async {
@@ -52,13 +52,12 @@ _onRequestOtp(
     final response = await forgetPasswordRepository.verifyOTPForgetPassword(
       event.email,
       event.otp,
-      event.password,
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final token = data['token'];
-      emit(ForgetPasswordOtpVerifiedSuccess(token));
+      emit(ForgetPasswordOtpVerifiedSuccess());
     } else {
       emit(ForgetPasswordOtpVerifiedFailure("Verification failed: ${response.statusCode}"));
     }

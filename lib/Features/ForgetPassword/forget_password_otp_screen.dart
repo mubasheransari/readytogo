@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readytogo/Features/ForgetPassword/update_password_screen.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/toast_widget.dart';
+import '../login/verification_screen.dart';
 import 'bloc/forget_password_bloc.dart';
 import 'bloc/forget_password_event.dart';
 import 'bloc/forget_password_state.dart';
@@ -208,10 +210,15 @@ class _ForgetPasswordOtpVerificationScreenState
                               if (_remainingSeconds == 0) {
                                 setState(() => _remainingSeconds = 120);
                                 _startTimer();
+                                context.read<ForgetPasswordBloc>().add(
+                                      RequestForgetPasswordOtp(
+                                        email: widget.email,
+                                      ),
+                                    );
                                 toastWidget("OTP code resent", Colors.green);
                               } else {
                                 toastWidget(
-                                    "Please wait $timerText", Colors.red);
+                                    getResendText(timerText), Colors.red);
                               }
                             },
                             child: Text(
@@ -232,19 +239,20 @@ class _ForgetPasswordOtpVerificationScreenState
                       BlocConsumer<ForgetPasswordBloc, ForgetPasswordState>(
                         listener: (context, state) {
                           if (state is ForgetPasswordOtpVerifiedSuccess) {
-                            print("OTP Verified Token: ${state.token}");
-                            final box = GetStorage();
-                            box.write("token", state.token);
+                            // print("OTP Verified Token: ${state.token}");
+                            // final box = GetStorage();
+                            // box.write("token", state.token);
 
                             toastWidget(
-                                "Password reset successfully", Colors.green);
+                                "Verification successful. You can now change your password.",
+                                Colors.green);
 
-                            // Navigator.of(context).pushAndRemoveUntil(
-                            //   MaterialPageRoute(
-                            //     builder: (_) => const LoginSuccessScreen(),
-                            //   ),
-                            //   (route) => false,
-                            // );
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (_) => UpdatePasswordScreen(),
+                              ),
+                              (route) => false,
+                            );
                           } else if (state
                               is ForgetPasswordOtpVerifiedFailure) {
                             toastWidget(state.error, Colors.red);
@@ -258,13 +266,13 @@ class _ForgetPasswordOtpVerificationScreenState
                               onPressed: (codeValue.length == 4 &&
                                       state is! ForgetPasswordLoading)
                                   ? () {
-                                      context.read<ForgetPasswordBloc>().add(
-                                          SubmitForgetPasswordOtp(
-                                              email:
-                                                  "testuser1@yopmail.com", //widget.email,
-                                              otp: codeValue,
-                                              password: "" //widget.password,
-                                              ));
+                                      context
+                                          .read<ForgetPasswordBloc>()
+                                          .add(SubmitForgetPasswordOtp(
+                                            email:
+                                                "testuser1@yopmail.com", //widget.email,
+                                            otp: codeValue,
+                                          ));
                                     }
                                   : null,
                               style: ElevatedButton.styleFrom(

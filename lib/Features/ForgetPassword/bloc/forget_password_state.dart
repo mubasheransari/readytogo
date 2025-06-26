@@ -32,8 +32,8 @@ class ForgetPasswordFailure extends ForgetPasswordState {
 
 
 class ForgetPasswordOtpVerifiedSuccess extends ForgetPasswordState {
-  final String token;
-  ForgetPasswordOtpVerifiedSuccess(this.token);
+  //final String token;
+  ForgetPasswordOtpVerifiedSuccess();
 }
 
 class ForgetPasswordOtpVerifiedFailure extends ForgetPasswordState {

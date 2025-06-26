@@ -16,13 +16,13 @@ class ForgetPasswordRepository{
   }
 
    Future<http.Response> verifyOTPForgetPassword(
-      String email,String otp,String password) async {
+      String email,String otp) async {
     return await _apiBaseHelper.post(
       path: ApiConstants.forgetPasswordverifyOTP,
       body: {
         "email": email,
         "otp":otp,
-        "password":password
+        "password":""
       },
     );
   }

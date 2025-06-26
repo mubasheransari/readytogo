@@ -112,8 +112,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         BlocConsumer<ForgetPasswordBloc, ForgetPasswordState>(
                           listener: (context, state) {
                             if (state is ForgetPasswordSuccess) {
-                              toastWidget("OTP sent successfully",
-                                  Constants().themeColor);
+                              toastWidget("OTP Sent Successfully",
+                                  Colors.green);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

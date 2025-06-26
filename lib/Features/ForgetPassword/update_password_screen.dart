@@ -87,7 +87,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                         hintTextColor: Constants().themeColor,
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       CustomTextFieldWidget(
                         borderColor: Constants().themeColor,
@@ -97,7 +97,7 @@ class UpdatePasswordScreen extends StatelessWidget {
                         textWidgetText: 'Confirm Password',
                         hintTextColor: Constants().themeColor,
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: 342,
                         height: 60,
