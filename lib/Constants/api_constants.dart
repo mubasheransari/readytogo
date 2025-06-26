@@ -4,6 +4,6 @@ class ApiConstants {
   static const String registerApi = "account/register";
   static const String loginApi = "account/login/request-otp";
   static const String verifyOTPApi = "account/login/verify-otp";
-    static const String forgetPasswordOTPApi = "account/forgot-password-request-otp";
-
+  static const String forgetPasswordOTPApi = "account/forgot-password-request-otp";
+  static const String forgetPasswordverifyOTP = "account/forgot-password-verify-otp";
 }

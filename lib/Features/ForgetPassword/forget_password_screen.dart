@@ -118,7 +118,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) =>
-                                      ForgetPasswordOtpVerificationScreen(),
+                                      ForgetPasswordOtpVerificationScreen(
+                                        email: emailController.text,
+                                      ),
                                 ),
                               );
                             } else if (state is ForgetPasswordFailure) {
