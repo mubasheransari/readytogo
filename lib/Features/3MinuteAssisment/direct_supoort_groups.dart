@@ -138,11 +138,15 @@ class _DirectSupportGroupsScreenState extends State<DirectSupportGroupsScreen> {
                           Navigator.pop(context);
                         },
                         onNextPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Step1Screen()),
-                          );
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => Step1Screen()),
+                          // );
                         },
                       ),
                       const SizedBox(height: 40),

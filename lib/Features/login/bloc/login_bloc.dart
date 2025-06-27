@@ -62,7 +62,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print("Status Code: ${response.statusCode}");
 
       if (response.statusCode == 200) {
-        // parse response.body if needed
         emit(LoginSuccess());
       } else {
         emit(LoginFailure("Login failed with status ${response.statusCode}"));
