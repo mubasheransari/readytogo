@@ -15,8 +15,6 @@ class AlliesScreen extends StatefulWidget {
 }
 
 class _AlliesScreenState extends State<AlliesScreen> {
- 
-
   List<String> _selectedAllias = [];
 
   final List<String> _allias = [
@@ -34,10 +32,6 @@ class _AlliesScreenState extends State<AlliesScreen> {
     'Faith Based and Spiritual Care',
     'Evidence Based',
   ];
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +52,7 @@ class _AlliesScreenState extends State<AlliesScreen> {
                         onTap: (context) {
                           Navigator.pop(context);
                         },
-                        questionNumber: 2,
+                        questionNumber: 5,
                         totalQuestions: 13,
                       ),
                       Padding(

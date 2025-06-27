@@ -36,7 +36,7 @@ class _EducationScreenState extends State<EducationScreen> {
                         onTap: (context) {
                           Navigator.pop(context);
                         },
-                        questionNumber: 2,
+                        questionNumber: 4,
                         totalQuestions: 13,
                       ),
                       Padding(

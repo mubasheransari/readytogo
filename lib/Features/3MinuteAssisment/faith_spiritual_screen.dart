@@ -66,7 +66,7 @@ class _FaithSpiritualScreenState extends State<FaithSpiritualScreen> {
                 onTap: (context) {
                   Navigator.pop(context);
                 },
-                questionNumber: 2,
+                questionNumber: 7,
                 totalQuestions: 13,
               ),
               Padding(

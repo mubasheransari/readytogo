@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/3MinuteAssisment/widget_recoverywellnessplan.dart';
+import 'package:readytogo/Features/home_screen.dart';
+import 'package:readytogo/Features/login/login_success_screen.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
+import 'package:readytogo/widgets/toast_widget.dart';
 import '../../widgets/back_next_button_widget.dart';
+import '../Donate/payment_sucess.dart';
+import '../Subscription/subscription_success_screen.dart';
 
 class TelehealthScreen extends StatefulWidget {
-   TelehealthScreen({Key? key}) : super(key: key);
+  TelehealthScreen({Key? key}) : super(key: key);
 
   @override
   State<TelehealthScreen> createState() => _TelehealthScreenState();
@@ -45,7 +51,7 @@ class _TelehealthScreenState extends State<TelehealthScreen> {
                 onTap: (context) {
                   Navigator.pop(context);
                 },
-                questionNumber: 2,
+                questionNumber: 8,
                 totalQuestions: 13,
               ),
               Padding(
@@ -150,17 +156,19 @@ class _TelehealthScreenState extends State<TelehealthScreen> {
                   Navigator.of(context).pop();
                 },
                 onNextPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => const Step1Screen()),
-                  // );
+                  // Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                  var box = GetStorage();
+                  box.write("assessment", "1");
+                  toastWidget("Assessment Completed", Colors.green);
                 },
               ),
-
             ],
           ),
         ),

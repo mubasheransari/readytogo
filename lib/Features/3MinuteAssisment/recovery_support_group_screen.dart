@@ -35,8 +35,6 @@ class _RecoverySupportServicesScreenState
     'State Funded'
   ];
 
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +54,7 @@ class _RecoverySupportServicesScreenState
                         onTap: (context) {
                           Navigator.pop(context);
                         },
-                        questionNumber: 2,
+                        questionNumber: 6,
                         totalQuestions: 13,
                       ),
                       Padding(
@@ -80,7 +78,7 @@ class _RecoverySupportServicesScreenState
                                 child: Text(
                                   'Type of Payment Assistance Available',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     fontFamily: 'satoshi',
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -148,7 +146,7 @@ class _RecoverySupportServicesScreenState
                                 child: Text(
                                   'Payments Options',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     fontFamily: 'satoshi',
                                     fontWeight: FontWeight.w600,
                                   ),

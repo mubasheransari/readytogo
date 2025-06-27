@@ -43,7 +43,7 @@ class LoginSuccessScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.025,
                   ),
                   SizedBox(
-                    width: 376,
+                    width: MediaQuery.of(context).size.width * 0.85,
                     height: 60,
                     // width: 342,
                     // height: 60,
@@ -139,7 +139,7 @@ class LoginSuccessScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.01,
                   ),
                   SizedBox(
-                    width: 376,
+                    width: MediaQuery.of(context).size.width * 0.85, //376,
                     height: 60,
                     // width: 342,
                     // height: 60,
@@ -188,7 +188,8 @@ class LoginSuccessScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.01,
                   ),
                   SizedBox(
-                    width: 376,
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    //  width: 376,
                     height: 60,
                     // width: 342,
                     // height: 60,

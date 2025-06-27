@@ -51,7 +51,7 @@ class _ClinicalTreatmentScreenState extends State<ClinicalTreatmentScreen> {
                 onTap: (context) {
                   Navigator.pop(context);
                 },
-                questionNumber: 2,
+                questionNumber: 8,
                 totalQuestions: 13,
               ),
               Padding(
@@ -156,8 +156,7 @@ class _ClinicalTreatmentScreenState extends State<ClinicalTreatmentScreen> {
                 onNextPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) =>  TelehealthScreen()),
+                    MaterialPageRoute(builder: (context) => TelehealthScreen()),
                   );
                 },
               ),

@@ -188,10 +188,21 @@ class CustomNavDrawer extends StatelessWidget {
                             // ),
                             InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Step1Screen()));
+                                var box = GetStorage();
+                                var value = box.read("assessment");
+                                if (value == "1") {
+                                  toastWidget(
+                                      "Assessment Completed", Colors.green);
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Step1Screen()));
+                                }
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => Step1Screen()));
                               },
                               child: _buildMenuItem(
                                 "assets/assesment.png",

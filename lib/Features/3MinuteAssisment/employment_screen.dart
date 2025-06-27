@@ -27,7 +27,7 @@ class _EmploymentScreenState extends State<EmploymentScreen> {
                 onTap: (context) {
                   Navigator.pop(context);
                 },
-                questionNumber: 2,
+                questionNumber: 3,
                 totalQuestions: 13,
               ),
               Padding(

@@ -265,7 +265,7 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                             //       builder: (_) => const LoginSuccessScreen()),
                             // );
                           } else if (state is LoginOtpFailure) {
-                            toastWidget(state.error, Colors.green);
+                            toastWidget("OTP Verification Failed!", Colors.red);
                           }
                         },
                         builder: (context, state) {

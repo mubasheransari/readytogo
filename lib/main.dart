@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
     final box = GetStorage();
     var token = box.read("token");
     return MaterialApp(
-        title: 'Flutter App',
+        title: 'Ready to go',
         debugShowCheckedModeBanner: false,
         home:token != null ? LoginSuccessScreen(): SplashScreen()
         );

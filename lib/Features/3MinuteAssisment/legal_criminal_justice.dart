@@ -52,7 +52,7 @@ class _LegalCriminalJusticeScreenState
                 onTap: (context) {
                   Navigator.pop(context);
                 },
-                questionNumber: 2,
+                questionNumber: 8,
                 totalQuestions: 13,
               ),
               Padding(
@@ -97,8 +97,7 @@ class _LegalCriminalJusticeScreenState
                         children: List.generate(_domains.length, (index) {
                           final domain = _domains[index];
                           return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 4.0),
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
                             child: Row(
                               children: [
                                 Checkbox(
@@ -160,8 +159,7 @@ class _LegalCriminalJusticeScreenState
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const ClinicalTreatmentScreen()),
+                        builder: (context) => const ClinicalTreatmentScreen()),
                   );
                 },
               ),

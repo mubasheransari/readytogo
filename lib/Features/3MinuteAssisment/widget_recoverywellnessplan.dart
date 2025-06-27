@@ -12,7 +12,7 @@ class BackHeader extends StatelessWidget {
     required this.onTap,
     this.title = 'Recovery Wellness Plan',
     this.questionNumber = 1,
-    this.totalQuestions = 13,
+    this.totalQuestions = 8,
   }) : super(key: key);
 
   @override
@@ -50,7 +50,7 @@ class BackHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Question $questionNumber/$totalQuestions',
+                'Question $questionNumber/8',
                 style: const TextStyle(
                   color: Colors.black87,
                   fontFamily: 'Satoshi',

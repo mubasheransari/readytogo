@@ -48,7 +48,7 @@ class _AdvocateScreenState extends State<AdvocateScreen> {
                         onTap: (context) {
                           Navigator.pop(context);
                         },
-                        questionNumber: 2,
+                        questionNumber: 5,
                         totalQuestions: 13,
                       ),
                       Padding(

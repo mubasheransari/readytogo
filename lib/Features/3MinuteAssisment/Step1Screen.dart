@@ -35,7 +35,7 @@ class _Step1ScreenState extends State<Step1Screen> {
     'Allies, Advocates and Support',
     'Recovery Support Services',
     'Faith and Spiritually',
-    'Recovery Community',
+    //'Recovery Community',
     'Legal/Criminal Justice',
   ];
 
@@ -80,7 +80,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                       TitleHeading3minAssesment(
                         title: 'Domains',
                       ),
-          
+
                       const SizedBox(height: 12),
                       const Padding(
                         padding: EdgeInsets.only(left: 14.0),
