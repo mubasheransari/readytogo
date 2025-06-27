@@ -52,6 +52,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWithEmailPassword event,
     Emitter<LoginState> emit,
   ) async {
+        emit(LoginLoading());
     try {
       final response = await loginRepository.loginWithEmailPassword(
         event.email ?? "",

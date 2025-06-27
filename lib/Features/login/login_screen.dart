@@ -132,6 +132,91 @@ class _LoginScreenState extends State<LoginScreen> {
                         BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
                             if (state is LoginSuccess) {
+                              // Let the loader show briefly before navigating
+                              Future.microtask(() {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => VerificattionScreen(
+                                      email: emailController.text.trim(),
+                                      password: passwordController.text.trim(),
+                                    ),
+                                  ),
+                                );
+                              });
+                            } else if (state is LoginFailure) {
+                              toastWidget(
+                                "Login Failed! Incorrect Email or Password",
+                                Colors.red,
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            final isLoading = state is LoginLoading;
+
+                            return SizedBox(
+                              width: 376,
+                              height: 60,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate() &&
+                                      !isLoading) {
+                                    context.read<LoginBloc>().add(
+                                          LoginWithEmailPassword(
+                                            email: emailController.text.trim(),
+                                            password:
+                                                passwordController.text.trim(),
+                                          ),
+                                        );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Constants().themeColor,
+                                  disabledBackgroundColor: Colors.grey.shade400,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                ),
+                                child: isLoading
+                                    ? const SizedBox(
+                                        height: 25,
+                                        width: 25,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2.5,
+                                        ),
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            'Continue',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: 'Satoshi',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 5),
+                                          Image.asset(
+                                            'assets/loginbuttonicon.png',
+                                            width: 23,
+                                            height: 23,
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        /* BlocConsumer<LoginBloc, LoginState>(
+                          listener: (context, state) {
+                            if (state is LoginSuccess) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -210,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           },
-                        ),
+                        ),*/
 
                         /*BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
