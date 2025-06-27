@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readytogo/Features/ForgetPassword/bloc/forget_password_bloc.dart';
+import 'package:readytogo/widgets/toast_widget.dart';
 import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
@@ -8,9 +9,6 @@ import 'bloc/forget_password_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/forget_password_state.dart';
-
-
-
 
 class UpdatePasswordScreen extends StatefulWidget {
   final String email;
@@ -22,7 +20,8 @@ class UpdatePasswordScreen extends StatefulWidget {
 
 class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   bool isButtonEnabled = false;
@@ -70,9 +69,12 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (_) => LoginScreen()));
         } else if (state is ResetForgetPasswordFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error)),
-          );
+          toastWidget(
+              "Password must have capital letters,small letters & numbers.",
+              Colors.red);
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(content: Text(state.error)),
+          // );
         }
       },
       builder: (context, state) {
@@ -91,7 +93,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   ),
                   child: IntrinsicHeight(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -104,7 +107,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                   child: const CircleAvatar(
                                     radius: 19,
                                     backgroundColor: Colors.white,
-                                    child: Icon(Icons.arrow_back, color: Colors.black, size: 19),
+                                    child: Icon(Icons.arrow_back,
+                                        color: Colors.black, size: 19),
                                   ),
                                 ),
                                 const SizedBox(width: 17),
@@ -122,7 +126,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                             const SizedBox(height: 60),
 
                             // Logo & title
-                            Image.asset('assets/logo.png', height: 120, width: 115),
+                            Image.asset('assets/logo.png',
+                                height: 120, width: 115),
                             const SizedBox(height: 20),
                             const Text('Update Your Password',
                                 style: TextStyle(
@@ -166,7 +171,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                 padding: const EdgeInsets.only(top: 10.0),
                                 child: Text(
                                   generalError!,
-                                  style: const TextStyle(color: Colors.red, fontSize: 14),
+                                  style: const TextStyle(
+                                      color: Colors.red, fontSize: 14),
                                 ),
                               ),
 
@@ -182,9 +188,13 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                         context.read<ForgetPasswordBloc>().add(
                                               ResetForgetPassword(
                                                 email: widget.email,
-                                                password: passwordController.text.trim(),
+                                                password: passwordController
+                                                    .text
+                                                    .trim(),
                                                 confirmPassword:
-                                                    confirmPasswordController.text.trim(),
+                                                    confirmPasswordController
+                                                        .text
+                                                        .trim(),
                                               ),
                                             );
                                       }
@@ -196,7 +206,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -219,6 +230,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 40),
                           ],
                         ),
                       ),

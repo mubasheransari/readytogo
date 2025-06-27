@@ -148,6 +148,7 @@ class _ForgetPasswordOtpVerificationScreenState
                       const SizedBox(height: 8),
                       Text(
                         "Code has been sent to ${widget.email}",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -247,7 +248,8 @@ class _ForgetPasswordOtpVerificationScreenState
 
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => UpdatePasswordScreen(email: widget.email),
+                                builder: (_) =>
+                                    UpdatePasswordScreen(email: widget.email),
                               ),
                             );
                           } else if (state
@@ -266,8 +268,7 @@ class _ForgetPasswordOtpVerificationScreenState
                                       context
                                           .read<ForgetPasswordBloc>()
                                           .add(SubmitForgetPasswordOtp(
-                                            email:
-                                                "testuser1@yopmail.com", //widget.email,
+                                            email: widget.email,
                                             otp: codeValue,
                                           ));
                                     }

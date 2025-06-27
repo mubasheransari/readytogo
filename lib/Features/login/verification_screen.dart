@@ -148,6 +148,7 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                       const SizedBox(height: 8),
                       Text(
                         "Code has been sent to ${widget.email}",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -217,11 +218,11 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                 _startTimer();
                                 context.read<LoginBloc>().add(
                                       LoginWithEmailPassword(
-                                        email: "testuser1@yopmail.com",
-                                        password: "10@Testing",
-                                        // email: widget.email,
-                                        // password: widget.password,
-                                      ),
+                                          email: widget.email,
+                                          password: widget.password
+                                          // email: widget.email,
+                                          // password: widget.password,
+                                          ),
                                     );
                                 toastWidget("OTP code resent", Colors.green);
                               } else {
@@ -278,8 +279,8 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                       print(codeValue);
                                       context.read<LoginBloc>().add(
                                             VerifyOtpSubmitted(
-                                              email: "testuser1@yopmail.com",
-                                              password: "10@Testing",
+                                              email: widget.email,
+                                              password: widget.password,
                                               otp: codeValue,
                                             ),
                                           );

@@ -142,6 +142,89 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               );
                             } else if (state is LoginFailure) {
+                              toastWidget(
+                                "Login Failed! Incorrect Email or Password",
+                                Colors.red,
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            final isLoading = state is LoginLoading;
+
+                            return SizedBox(
+                              width: 376,
+                              height: 60,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (!isLoading &&
+                                      _formKey.currentState!.validate()) {
+                                    context.read<LoginBloc>().add(
+                                          LoginWithEmailPassword(
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                          ),
+                                        );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Constants().themeColor,
+                                  minimumSize: const Size(200, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (isLoading)
+                                      const SizedBox(
+                                        height: 25,
+                                        width: 25,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    else ...[
+                                      const Text(
+                                        'Continue',
+                                        style: TextStyle(
+                                          letterSpacing: 1,
+                                          color: Colors.white,
+                                          fontFamily: 'Satoshi',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Image.asset(
+                                        'assets/loginbuttonicon.png',
+                                        width: 23,
+                                        height: 23,
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        /*BlocConsumer<LoginBloc, LoginState>(
+                          listener: (context, state) {
+                            if (state is LoginSuccess) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => VerificattionScreen(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  ),
+                                ),
+                              );
+                            } else if (state is LoginFailure) {
                               //state.error
                               toastWidget(
                                   "Login Failed! Incorrect Email or Password",
@@ -157,8 +240,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (_formKey.currentState!.validate()) {
                                     context.read<LoginBloc>().add(
                                           LoginWithEmailPassword(
-                                            email: "testuser1@yopmail.com",
-                                            password: "10@Testing",
+                                            email: emailController.text,
+                                            password:passwordController.text
                                           ),
                                         );
                                   }
@@ -207,7 +290,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           },
-                        ),
+                        ),*/
                         const SizedBox(height: 30),
                         _buildDividerWithOrText(),
                         const SizedBox(height: 20),
