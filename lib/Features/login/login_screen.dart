@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
               constraints: BoxConstraints(
                 minHeight: MediaQuery.of(context).size.height -
                     MediaQuery.of(context).padding.vertical,
-              ),
+              ), //Test12@
               child: IntrinsicHeight(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -154,8 +154,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             final isLoading = state is LoginLoading;
 
                             return SizedBox(
-                              width: 376,
-                              height: 60,
+                              width:MediaQuery.of(context).size.width*0.85, //376,
+                              height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate() &&
@@ -212,8 +212,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           },
                         ),
-
-                       
                         const SizedBox(height: 30),
                         _buildDividerWithOrText(),
                         const SizedBox(height: 20),

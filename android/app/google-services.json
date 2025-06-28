@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "849390676878",
+    "project_id": "readytogo-fd1f4",
+    "storage_bucket": "readytogo-fd1f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849390676878:android:dc3592d195cf28c49492df",
+        "android_client_info": {
+          "package_name": "app.newreadytogo.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdsp025BZ6Y8aFNyn47ndHNbovv2-5-40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

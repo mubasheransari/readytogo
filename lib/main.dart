@@ -34,9 +34,37 @@ import 'package:get_storage/get_storage.dart';
 //   );
 // }
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  // Handle background message
+  print('Handling a background message: ${message.messageId}');
+}
+
 void main() async {
-  await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await GetStorage.init();
+
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  FirebaseMessaging.instance.getToken().then((token) {
+    print('FCM Token: $token');
+  });
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Foreground message: ${message.notification?.title}');
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    print('Notification clicked!');
+  });
 
   runApp(
     MultiBlocProvider(
@@ -49,7 +77,7 @@ void main() async {
           lazy: false,
           create: (context) => LoginBloc(),
         ),
-         BlocProvider<ForgetPasswordBloc>(
+        BlocProvider<ForgetPasswordBloc>(
           lazy: false,
           create: (context) => ForgetPasswordBloc(),
         ),
@@ -67,7 +95,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Ready to go',
         debugShowCheckedModeBanner: false,
-        home:token != null ? LoginSuccessScreen(): SplashScreen()
-        );
+        home: token != null ? LoginSuccessScreen() : SplashScreen());
   }
 }
