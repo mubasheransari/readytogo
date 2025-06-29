@@ -49,7 +49,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> initializeLocalNotifications() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher'); // make sure this icon exists
+      AndroidInitializationSettings('@drawable/ic_stat_notification'); // make sure this icon exists
 
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
