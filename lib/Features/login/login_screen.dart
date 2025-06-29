@@ -3,6 +3,7 @@ import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/ForgetPassword/forget_password_screen.dart';
 import 'package:readytogo/Features/Signup/signup_screen.dart';
 import 'package:readytogo/Features/login/verification_screen.dart';
+import 'package:readytogo/Repositories/fcm_repository.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
@@ -154,7 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             final isLoading = state is LoginLoading;
 
                             return SizedBox(
-                              width:MediaQuery.of(context).size.width*0.85, //376,
+                              width: MediaQuery.of(context).size.width *
+                                  0.85, //376,
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
@@ -215,10 +217,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 30),
                         _buildDividerWithOrText(),
                         const SizedBox(height: 20),
-                        _buildSocialLoginButton(
-                          iconPath: 'assets/facebook.png',
-                          label: 'Login with Facebook',
-                          borderColor: const Color(0xFF1877F2),
+                        InkWell(
+                          onTap: () {
+                            FcmRepository().updateFcmToken(
+                                "c2WCZGtnSn2slrILgrdGyu:APA91bHQOSQa79hOTiHAkFp2PDofxLVSDlguwDFYZKQzJb9aRhMPZErbTuKrNp6LKQjknocc3DBlbhI_2d4u-s9D3JtJTRkG2bBhkUPeBkvUhuxnwAXOnDU");
+                          },
+                          child: _buildSocialLoginButton(
+                            iconPath: 'assets/facebook.png',
+                            label: 'Login with Facebook',
+                            borderColor: const Color(0xFF1877F2),
+                          ),
                         ),
                         const SizedBox(height: 20),
                         _buildSocialLoginButton(

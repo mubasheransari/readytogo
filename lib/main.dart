@@ -38,7 +38,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -49,7 +48,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> initializeLocalNotifications() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@drawable/ic_stat_notification'); // make sure this icon exists
+      AndroidInitializationSettings(
+          '@drawable/ic_stat_notification'); // make sure this icon exists
 
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
@@ -95,6 +95,8 @@ void main() async {
 
   // Print FCM token
   FirebaseMessaging.instance.getToken().then((token) {
+    var storage = GetStorage();
+    storage.write("fcm_token", token);
     print('FCM Token: $token');
   });
 
