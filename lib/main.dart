@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:readytogo/Features/Signup/bloc/signup_bloc.dart';
 import 'package:readytogo/Features/Signup/bloc/signup_event.dart';
+import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Features/splash_screen.dart';
 
 import 'Features/ForgetPassword/bloc/forget_password_bloc.dart';
@@ -113,6 +114,8 @@ void main() async {
     print('Notification clicked!');
     // Navigate or handle tap here
   });
+  var storage = GetStorage();
+  var value = storage.read("id");
 
   runApp(
     MultiBlocProvider(
@@ -121,9 +124,14 @@ void main() async {
           lazy: false,
           create: (context) => SignUpBloc(),
         ),
-        BlocProvider<LoginBloc>(
+      value != null ?  BlocProvider<LoginBloc>(
           lazy: false,
-          create: (context) => LoginBloc(),
+          create: (context) =>
+              LoginBloc()..add(GetIndividualProfile(userId: value)),
+        ):BlocProvider<LoginBloc>(
+          lazy: false,
+          create: (context) =>
+              LoginBloc(),
         ),
         BlocProvider<ForgetPasswordBloc>(
           lazy: false,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readytogo/Features/Donate/add_new_card.dart';
 import 'package:readytogo/Features/home_screen.dart';
 import 'package:readytogo/Features/login/emergency_call_screen.dart';
@@ -6,6 +7,8 @@ import 'package:readytogo/Features/login/invite_friend.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
 
 import '../../Constants/constants.dart';
+import 'bloc/login_bloc.dart';
+import 'bloc/login_state.dart';
 
 class LoginSuccessScreen extends StatelessWidget {
   const LoginSuccessScreen({super.key});
@@ -34,11 +37,41 @@ class LoginSuccessScreen extends StatelessWidget {
                       color: Colors.black87,
                       textSize: 30,
                       fontWeight: FontWeight.w500),
-                  CustomTextWidget(
-                      text: "Peter Patrick",
-                      color: Constants().themeColor,
-                      textSize: 35,
-                      fontWeight: FontWeight.w500),
+                  BlocBuilder<LoginBloc, LoginState>(
+                    builder: (context, state) {
+                      if (state.status == LoginStatus.profileLoaded &&
+                          state.profile != null) {
+                        final profile = state.profile!;
+                        return CustomTextWidget(
+                            text: '${profile.firstname} ${profile.lastname}',
+                            color: Constants().themeColor,
+                            textSize: 35,
+                            fontWeight: FontWeight.w500);
+                      } else if (state.status == LoginStatus.profileLoading) {
+                        return const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: Colors.white),
+                        );
+                      } else {
+                        return const Text(
+                          'Loading...',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+
+                  // CustomTextWidget(
+                  //     text: "Peter Patrick",
+                  //     color: Constants().themeColor,
+                  //     textSize: 35,
+                  //     fontWeight: FontWeight.w500),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.025,
                   ),

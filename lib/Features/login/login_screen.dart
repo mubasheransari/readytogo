@@ -13,6 +13,8 @@ import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 
 import 'bloc/login_state.dart';
 
+
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -26,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
 
   bool isValidEmail(String email) {
-    return RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$").hasMatch(email);
+    return RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2,4}").hasMatch(email);
   }
 
   String? validateEmail(String value) {
@@ -55,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
               constraints: BoxConstraints(
                 minHeight: MediaQuery.of(context).size.height -
                     MediaQuery.of(context).padding.vertical,
-              ), //Test12@
+              ),
               child: IntrinsicHeight(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -132,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 10),
                         BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
-                            if (state is LoginSuccess) {
+                            if (state.status == LoginStatus.success) {
                               Future.microtask(() {
                                 Navigator.push(
                                   context,
@@ -144,19 +146,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 );
                               });
-                            } else if (state is LoginFailure) {
+                            } else if (state.status == LoginStatus.failure) {
                               toastWidget(
-                                "Login Failed! Incorrect Email or Password",
+                                state.errorMessage ??
+                                    "Login Failed! Incorrect Email or Password",
                                 Colors.red,
                               );
                             }
                           },
                           builder: (context, state) {
-                            final isLoading = state is LoginLoading;
+                            final isLoading =
+                                state.status == LoginStatus.loading;
 
                             return SizedBox(
-                              width: MediaQuery.of(context).size.width *
-                                  0.85, //376,
+                              width:
+                                  MediaQuery.of(context).size.width * 0.85,
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
@@ -164,16 +168,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                       !isLoading) {
                                     context.read<LoginBloc>().add(
                                           LoginWithEmailPassword(
-                                            email: emailController.text.trim(),
-                                            password:
-                                                passwordController.text.trim(),
+                                            email:
+                                                emailController.text.trim(),
+                                            password: passwordController.text
+                                                .trim(),
                                           ),
                                         );
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Constants().themeColor,
-                                  disabledBackgroundColor: Colors.grey.shade400,
+                                  disabledBackgroundColor:
+                                      Colors.grey.shade400,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   ),
@@ -220,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         InkWell(
                           onTap: () {
                             FcmRepository().updateFcmToken(
-                                "c2WCZGtnSn2slrILgrdGyu:APA91bHQOSQa79hOTiHAkFp2PDofxLVSDlguwDFYZKQzJb9aRhMPZErbTuKrNp6LKQjknocc3DBlbhI_2d4u-s9D3JtJTRkG2bBhkUPeBkvUhuxnwAXOnDU");
+                                "YOUR_TEST_TOKEN_HERE");
                           },
                           child: _buildSocialLoginButton(
                             iconPath: 'assets/facebook.png',
