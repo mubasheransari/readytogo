@@ -4,46 +4,61 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:readytogo/Features/Signup/bloc/signup_event.dart';
 import 'package:readytogo/Features/Signup/bloc/signup_state.dart';
+import 'package:readytogo/Repositories/fcm_repository.dart';
 import 'package:readytogo/Repositories/signup_repositoy.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc() : super(SignUpState()) {
-    on<SignupSubmitted>((event, emit) async {
-      emit(SignUpLoading());
-      try {
-        final response = await SignUpRepository().registerUser(
-          firstName: event.firstName,
-          lastName: event.lastName,
-          email: event.email,
-          userName: event.userName,
-          password: event.password,
-          confirmPassword: event.confirmPassword,
-          phoneNumber: event.phoneNumber,
-          zipCode: event.zipCode,
-          referralCode: event.referralCode,
-          profileImage: event.profileImage,
-        );
-        final jsonnew = jsonDecode(response.body);
-
-        print("SIGNUP $jsonnew");
-        print("SIGNUP $jsonnew");
-        print("SIGNUP $jsonnew");
-
-        if (response.statusCode == 200) {
-          final json = jsonDecode(response.body);
-          emit(SignUpSuccess(json["message"] ?? "Registration successful."));
-        } else {
-          final json = jsonDecode(response.body);
-          emit(SignUpFailure(json["message"] ?? "Something went wrong."));
-        }
-      } catch (e) {
-        emit(SignUpFailure("An error occurred: ${e.toString()}"));
-      }
-    });
+    on<SignupSubmitted>(signup);
   }
 }
 
-SignUpRepository signUpRepository = SignUpRepository();
+signup(SignupSubmitted event, emit) async {
+  {
+    emit(SignUpLoading());
+    try {
+      final response = await SignUpRepository().registerUser(
+        firstName: event.firstName,
+        lastName: event.lastName,
+        email: event.email,
+        userName: event.userName,
+        password: event.password,
+        confirmPassword: event.confirmPassword,
+        phoneNumber: event.phoneNumber,
+        zipCode: event.zipCode,
+        referralCode: event.referralCode,
+        profileImage: event.profileImage,
+      );
+      final jsonnew = jsonDecode(response.body);
+
+      // print("SIGNUP $jsonnew");
+      // print("SIGNUP $jsonnew");
+      // print("SIGNUP $jsonnew");
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        emit(SignUpSuccess(json["message"] ?? "Registration successful."));
+      } else {
+        final json = jsonDecode(response.body);
+        print("REGISTER JSON DECODE ${json['id']}");
+        print("REGISTER JSON DECODE $json");
+        print("REGISTER JSON DECODE $json");
+        FcmRepository().updateFcmToken(json['id']);
+         FcmRepository().sendPushNotification(json['id']);
+
+        emit(SignUpFailure(json["message"] ?? "Something went wrong."));
+      }
+    } catch (e) {
+      emit(SignUpFailure("An error occurred: ${e.toString()}"));
+    }
+  }
+}
+
+updateFcm(UpdateFcmToken event, emit) {}
+
+sendPushNotification(SendPushNotification event, emit) {}
+
 
 
 

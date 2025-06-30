@@ -12,4 +12,6 @@ class ApiConstants {
   static const String resetforgetPassword = "account/reset-password";
   static const String updateFcmToken = "account/update-fcm-token";
   static const String sendPushNotification = "notification/send-notification";
+  static const String getIndividualProfileData = "profile/individual/";
+
 }

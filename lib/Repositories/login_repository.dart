@@ -1,4 +1,5 @@
 import '../Constants/api_constants.dart';
+import '../Model/individual_profile_model.dart';
 import '../Service/api_basehelper.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,6 +28,17 @@ class LoginRepository {
       },
     );
   }
+Future<IndividualProfileModel> individualProfile(String userId) async {
+  final jsonResponse = await _apiBaseHelper.get(
+    url: ApiConstants.baseDomain,
+    path: "${ApiConstants.apiPrefix}${ApiConstants.getIndividualProfileData}$userId",
+    queryParam: {},
+  );
+
+  return IndividualProfileModel.fromJson(jsonResponse);
+}
+
+
 
   // loginWithEmailPassword(String email, String password) async {
   //   await _apiBaseHelper.post(

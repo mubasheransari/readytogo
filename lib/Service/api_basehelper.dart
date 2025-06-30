@@ -8,10 +8,43 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
-
-
 class ApiBaseHelper {
   Future<dynamic> get({
+    required String url,
+    required String path,
+    Map<String, dynamic>? queryParam,
+  }) async {
+    print('Api GET -> url: $url, path: $path');
+
+    final hasInternet = await _hasInternet();
+    if (!hasInternet) {
+      _showNoInternetToast();
+      throw FetchDataException('No Internet connection');
+    }
+
+    try {
+      final uri =
+          Uri.parse("http://$url/$path").replace(queryParameters: queryParam);
+      print("Final URI: $uri");
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      return _returnResponse(response);
+    } on SocketException catch (e) {
+      print('SocketException: $e');
+      if (!await _hasInternet()) {
+        _showNoInternetToast();
+      }
+      throw FetchDataException('No Internet connection');
+    }
+  }
+
+/*  Future<dynamic> get({
     required String url,
     required String path,
     Map<String, dynamic>? queryParam,
@@ -43,51 +76,50 @@ class ApiBaseHelper {
     }
 
     return responseJson;
-  }
+  }*/
 
   Future<http.Response> post({
-  String? baseUrl,
-  required String path,
-  Map<String, dynamic>? body,
-  String? token,
-  Map<String, dynamic>? queryParam,
-}) async {
-  print('Api Post, url: $path');
+    String? baseUrl,
+    required String path,
+    Map<String, dynamic>? body,
+    String? token,
+    Map<String, dynamic>? queryParam,
+  }) async {
+    print('Api Post, url: $path');
 
-  final hasInternet = await _hasInternet();
-  if (!hasInternet) {
-    _showNoInternetToast();
-    throw FetchDataException('No Internet connection');
-  }
-
-  try {
-    final uri = Uri.http(
-      baseUrl ?? ApiConstants.baseDomain,
-      '${ApiConstants.apiPrefix}$path',
-      queryParam,
-    );
-
-    final response = await http.post(
-      uri,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Request-For': '::1',
-        if (token != null && token.isNotEmpty) 'Authorization': token,
-      },
-      body: json.encode(body),
-    );
-
-    print('API Response: ${response.statusCode}');
-    return response; // <-- Return full response now
-  } on SocketException catch (e) {
-    print('SocketException: $e');
-    if (!await _hasInternet()) {
+    final hasInternet = await _hasInternet();
+    if (!hasInternet) {
       _showNoInternetToast();
+      throw FetchDataException('No Internet connection');
     }
-    throw FetchDataException('No Internet connection');
-  }
-}
 
+    try {
+      final uri = Uri.http(
+        baseUrl ?? ApiConstants.baseDomain,
+        '${ApiConstants.apiPrefix}$path',
+        queryParam,
+      );
+
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Request-For': '::1',
+          if (token != null && token.isNotEmpty) 'Authorization': token,
+        },
+        body: json.encode(body),
+      );
+
+      print('API Response: ${response.statusCode}');
+      return response; // <-- Return full response now
+    } on SocketException catch (e) {
+      print('SocketException: $e');
+      if (!await _hasInternet()) {
+        _showNoInternetToast();
+      }
+      throw FetchDataException('No Internet connection');
+    }
+  }
 
   // Future<dynamic> post({
   //   String? baseUrl,
@@ -150,9 +182,11 @@ class ApiBaseHelper {
     } catch (_) {}
 
     try {
-      final response = await http.get(
-        Uri.parse('https://www.google.com'),
-      ).timeout(const Duration(seconds: 5));
+      final response = await http
+          .get(
+            Uri.parse('https://www.google.com'),
+          )
+          .timeout(const Duration(seconds: 5));
       return response.statusCode == 200;
     } catch (_) {
       return false;

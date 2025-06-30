@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 
 abstract class SignUpEvent extends Equatable {
@@ -46,6 +45,23 @@ class SignupSubmitted extends SignUpEvent {
         profileImage,
       ];
 }
+
+class UpdateFcmToken extends SignUpEvent {
+  final String userId;
+  UpdateFcmToken({
+    required this.userId,
+  });
+}
+
+class SendPushNotification extends SignUpEvent {
+  final String userId;
+
+  SendPushNotification({
+    required this.userId,
+  });
+}
+
+
 
 
 // abstract class SignUpEvent extends Equatable {

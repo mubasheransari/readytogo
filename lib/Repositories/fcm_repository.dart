@@ -1,35 +1,30 @@
-import 'dart:convert';
-
 import 'package:get_storage/get_storage.dart';
 import "package:http/http.dart" as http;
-
 import '../Constants/api_constants.dart';
 import '../Service/api_basehelper.dart';
 
 class FcmRepository {
   ApiBaseHelper _apiBaseHelper = ApiBaseHelper();
 
-  
-
   Future<http.Response> updateFcmToken(String userId) async {
-   var box = GetStorage();
-  var value = box.read("fcm_token");
+    var box = GetStorage();
+    var value = box.read("fcm_token");
     return await _apiBaseHelper.post(
         path: ApiConstants.updateFcmToken,
         body: {"userId": userId, "fcmToken": value});
   }
-   Future<http.Response>  sendPushNotification(String userId) async {
-   var box = GetStorage();
-  var value = box.read("fcm_token");
+
+  Future<http.Response> sendPushNotification(String userId) async {
+    var box = GetStorage();
+    var value = box.read("fcm_token");
     return await _apiBaseHelper.post(
         path: ApiConstants.sendPushNotification,
         body: {
-  "userId": userId,
-  "title": "Test",
-  "message": "testing",
-  "iconType": "dsvdsvd"
-}
-        );
+          "userId": userId,
+          "title": "Test",
+          "message": "testing",
+          "iconType": "dsvdsvd"
+        });
   }
 
   // Future<void> sendPushNotification(String targetToken) async {
