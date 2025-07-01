@@ -8,9 +8,9 @@ import 'mygeo_screen.dart';
 import 'navdrawer.dart';
 
 final Key mapKey = UniqueKey();
-    var st = GetStorage();
+var st = GetStorage();
 
-  var role = st.read("role");
+var role = st.read("role");
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -18,7 +18,44 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
+
 class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    final role = GetStorage().read("role");
+
+    final List<Widget> screens = [
+      const MyGeoScreen(),
+      ResourcesScreen(),
+      FindProvidersScreen(),
+      role == "Individual"
+          ? const IndividualProfileScreen()
+          : role == "Professional"
+              ? const ProfessionalProfileScreen()
+              : const Center(child: Text("Unknown role")),
+    ];
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: IndexedStack(
+        index: _currentIndex,
+        children: screens,
+      ),
+      bottomNavigationBar: BottomNavBarExact(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
+    );
+  }
+}
+
+/*class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1;
 
 
@@ -58,7 +95,7 @@ role == "Individual"
       ),
     );
   }
-}
+}*/
 
 /*class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1; // Default to Resources tab

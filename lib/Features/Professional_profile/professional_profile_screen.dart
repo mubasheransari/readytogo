@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
 import '../../widgets/boxDecorationWidget.dart';
 import '../login/bloc/login_bloc.dart';
+import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
 
-class ProfessionalProfileScreen extends StatelessWidget {
+class ProfessionalProfileScreen extends StatefulWidget {
   const ProfessionalProfileScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ProfessionalProfileScreen> createState() => _ProfessionalProfileScreenState();
+}
+
+class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
+    @override
+  void initState() {
+    super.initState();
+    final userId = GetStorage().read("id");
+    if (userId != null) {
+      context.read<LoginBloc>().add(GetProfessionalProfile(userId: userId));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final Color primaryBlue = Color(0xFF5D6EFF);

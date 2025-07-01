@@ -1,15 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
 import '../../widgets/boxDecorationWidget.dart';
 import '../login/bloc/login_bloc.dart';
+import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
 import '../notification_screen.dart';
 import 'edit_individual_profile_screen.dart';
 
-class IndividualProfileScreen extends StatelessWidget {
+class IndividualProfileScreen extends StatefulWidget {
   const IndividualProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<IndividualProfileScreen> createState() => _IndividualProfileScreenState();
+}
+
+class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
+    @override
+  void initState() {
+    super.initState();
+    final userId = GetStorage().read("id");
+    if (userId != null) {
+      context.read<LoginBloc>().add(GetIndividualProfile(userId: userId));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
