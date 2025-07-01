@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/individual_profile/individual_profile_screen.dart';
 import 'package:readytogo/Features/Resources/resources_screen.dart';
 import 'package:readytogo/Features/search_screen.dart'; // This is FindProvidersScreen
+import 'Professional_profile/professional_profile_screen.dart';
 import 'mygeo_screen.dart';
 import 'navdrawer.dart';
 
 final Key mapKey = UniqueKey();
+    var st = GetStorage();
+
+  var role = st.read("role");
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -16,13 +21,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1;
 
+
     final List<Widget> _screens = [
     const MyGeoScreen(),
     ResourcesScreen(),
-    FindProvidersScreen(
-    ),
-    const IndividualProfileScreen(),
-  ];
+    FindProvidersScreen(),
+role == "Individual"
+    ? IndividualProfileScreen()
+    : role == "Professional"
+        ? ProfessionalProfileScreen()
+        : Container() 
+        ];
 
   // final List<Widget> _screens = const [
   //   MyGeoScreen(),

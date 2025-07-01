@@ -1,4 +1,6 @@
-  import '../../../Model/individual_profile_model.dart';
+import 'package:readytogo/Model/professional_profile_model.dart';
+
+import '../../../Model/individual_profile_model.dart';
 
 import 'package:equatable/equatable.dart';
 
@@ -15,6 +17,9 @@ enum LoginStatus {
   profileLoaded,
   profileError,
   otpAndProfileSuccess,
+  professionalProfileLoading,
+  professionalProfileLoaded,
+  professionalProfileError,
 }
 
 /// A unified state class for Login & Profile operations
@@ -23,13 +28,14 @@ class LoginState extends Equatable {
   final String? errorMessage;
   final String? token;
   final IndividualProfileModel? profile;
+  final ProfessionalProfileModel? professionalProfileModel;
 
-  const LoginState({
-    this.status = LoginStatus.initial,
-    this.errorMessage,
-    this.token,
-    this.profile,
-  });
+  const LoginState(
+      {this.status = LoginStatus.initial,
+      this.errorMessage,
+      this.token,
+      this.profile,
+      this.professionalProfileModel});
 
   /// Copy the state with updated fields
   LoginState copyWith({
@@ -37,17 +43,20 @@ class LoginState extends Equatable {
     String? errorMessage,
     String? token,
     IndividualProfileModel? profile,
+    ProfessionalProfileModel? professionalProfileModel,
   }) {
     return LoginState(
-      status: status ?? this.status,
-      errorMessage: errorMessage ?? this.errorMessage,
-      token: token ?? this.token,
-      profile: profile ?? this.profile,
-    );
+        status: status ?? this.status,
+        errorMessage: errorMessage ?? this.errorMessage,
+        token: token ?? this.token,
+        profile: profile ?? this.profile,
+        professionalProfileModel:
+            professionalProfileModel ?? this.professionalProfileModel);
   }
 
   @override
-  List<Object?> get props => [status, errorMessage, token, profile];
+  List<Object?> get props =>
+      [status, errorMessage, token, profile, professionalProfileModel];
 
   @override
   String toString() {

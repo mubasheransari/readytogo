@@ -11,6 +11,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginWithEmailPassword>(_loginWithEmailPassword);
     on<VerifyOtpSubmitted>(_onVerifyOtpSubmitted);
     on<GetIndividualProfile>(_getIndividualProfile);
+    on<GetProfessionalProfile>(_getProfessionalProfile);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -66,7 +67,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final responseBody = json.decode(response.body);
         final token = responseBody['token'];
         final userId = responseBody['id'];
-        // Extract role (assuming it's a list of strings)
+
         List<dynamic> roles = responseBody['role'];
         String userRole = roles.isNotEmpty ? roles[0] : '';
 
@@ -74,6 +75,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         var storage = GetStorage();
         storage.write("id", userId);
+        storage.write("role", userRole);
 
         if (token != null && userId != null) {
           _tempToken = token;
@@ -83,12 +85,32 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             token: token,
           ));
 
-          if(userRole == "Individual"){
-             add(GetIndividualProfile(userId: userId));
-          }
+          // if (userRole == "Individual") {
+          //   add(GetIndividualProfile(userId: userId));
+          // } else if (userRole == "Professional") {
+          //   add(GetProfessionalProfile(userId: userId));
+          // }
+          if (userRole == "Individual") {
+  emit(state.copyWith(status: LoginStatus.profileLoading));
+
+  final profile = await loginRepository.individualProfile(userId);
+  emit(state.copyWith(
+    status: LoginStatus.profileLoaded,
+    profile: profile,
+  ));
+} else if (userRole == "Professional") {
+  emit(state.copyWith(status: LoginStatus.profileLoading));
+
+  final profile = await loginRepository.professionalProfile(userId);
+  emit(state.copyWith(
+    status: LoginStatus.professionalProfileLoaded,
+    professionalProfileModel: profile,
+  ));
+}
+
 
           // Fetch profile next
-       //   add(GetIndividualProfile(userId: userId));
+          //   add(GetIndividualProfile(userId: userId));
         } else {
           emit(state.copyWith(
             status: LoginStatus.otpFailure,
@@ -122,6 +144,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else {
       emit(state.copyWith(
         status: LoginStatus.profileError,
+        //errorMessage: "Failed to fetch profile: ${e.toString()}",
+      ));
+    }
+  }
+
+  _getProfessionalProfile(
+    GetProfessionalProfile event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.professionalProfileLoading));
+
+    final profile = await loginRepository.professionalProfile(event.userId);
+
+    if (profile != null) {
+      emit(state.copyWith(
+          professionalProfileModel: profile,
+          status: LoginStatus.professionalProfileLoaded));
+    } else {
+      emit(state.copyWith(
+        status: LoginStatus.professionalProfileError,
         //errorMessage: "Failed to fetch profile: ${e.toString()}",
       ));
     }

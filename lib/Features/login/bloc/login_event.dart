@@ -34,12 +34,17 @@ class VerifyOtpSubmitted extends LoginEvent {
     required this.otp,
   });
 }
+
 class GetIndividualProfile extends LoginEvent {
   final String userId;
- 
-
   const GetIndividualProfile({
     required this.userId,
-   
+  });
+}
+
+class GetProfessionalProfile extends LoginEvent {
+  final String userId;
+  const GetProfessionalProfile({
+    required this.userId,
   });
 }

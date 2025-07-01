@@ -5,6 +5,7 @@ import 'package:readytogo/Features/Signup/bloc/signup_bloc.dart';
 import 'package:readytogo/Features/Signup/bloc/signup_event.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Features/splash_screen.dart';
+import 'package:readytogo/Model/professional_profile_model.dart';
 
 import 'Features/ForgetPassword/bloc/forget_password_bloc.dart';
 import 'Features/Signup/release_of_information.dart';
@@ -116,6 +117,7 @@ void main() async {
   });
   var storage = GetStorage();
   var value = storage.read("id");
+  var role = storage.read("role");
 
   runApp(
     MultiBlocProvider(
@@ -124,15 +126,21 @@ void main() async {
           lazy: false,
           create: (context) => SignUpBloc(),
         ),
-      value != null ?  BlocProvider<LoginBloc>(
-          lazy: false,
-          create: (context) =>
-              LoginBloc()..add(GetIndividualProfile(userId: value)),
-        ):BlocProvider<LoginBloc>(
-          lazy: false,
-          create: (context) =>
-              LoginBloc(),
-        ),
+       role == "Individual"
+            ? BlocProvider<LoginBloc>(
+                lazy: false,
+                create: (context) =>
+                    LoginBloc()..add(GetIndividualProfile(userId: value)),
+              ):role == "Professional"
+            ? BlocProvider<LoginBloc>(
+                lazy: false,
+                create: (context) =>
+                    LoginBloc()..add(GetProfessionalProfile(userId: value)),
+              )
+            : BlocProvider<LoginBloc>(
+                lazy: false,
+                create: (context) => LoginBloc(),
+              ),
         BlocProvider<ForgetPasswordBloc>(
           lazy: false,
           create: (context) => ForgetPasswordBloc(),

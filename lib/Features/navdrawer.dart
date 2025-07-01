@@ -268,6 +268,8 @@ class CustomNavDrawer extends StatelessWidget {
                               onTap: () {
                                 final box = GetStorage();
                                 box.remove("token");
+                                box.remove("id");
+                                box.remove("role");
                                 toastWidget("Logout", Colors.red);
                                 Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(

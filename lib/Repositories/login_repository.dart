@@ -1,3 +1,5 @@
+import 'package:readytogo/Model/professional_profile_model.dart';
+
 import '../Constants/api_constants.dart';
 import '../Model/individual_profile_model.dart';
 import '../Service/api_basehelper.dart';
@@ -36,6 +38,16 @@ Future<IndividualProfileModel> individualProfile(String userId) async {
   );
 
   return IndividualProfileModel.fromJson(jsonResponse);
+}
+
+Future<ProfessionalProfileModel> professionalProfile(String userId) async {
+  final jsonResponse = await _apiBaseHelper.get(
+    url: ApiConstants.baseDomain,
+    path: "${ApiConstants.apiPrefix}${ApiConstants.getProfessionalProfileData}$userId",
+    queryParam: {},
+  );
+
+  return ProfessionalProfileModel.fromJson(jsonResponse);
 }
 
 

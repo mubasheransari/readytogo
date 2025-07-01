@@ -52,7 +52,7 @@ class _EditIndividualProfileScreenState
     _loadStateCityData();
   }
 
-  Future<void> _loadStateCityData() async {
+  _loadStateCityData() async {
     final jsonStr = await rootBundle.loadString('assets/data.json');
     final data = json.decode(jsonStr) as Map<String, dynamic>;
     setState(() {
@@ -64,7 +64,7 @@ class _EditIndividualProfileScreenState
   List<String> get citiesForSelectedState =>
       selectedState != null ? stateCityMap[selectedState!] ?? [] : [];
 
-  Future<void> _pickImage() async {
+  _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {

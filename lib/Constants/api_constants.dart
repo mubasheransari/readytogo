@@ -13,5 +13,6 @@ class ApiConstants {
   static const String updateFcmToken = "account/update-fcm-token";
   static const String sendPushNotification = "notification/send-notification";
   static const String getIndividualProfileData = "profile/individual/";
+  static const String getProfessionalProfileData = "profile/professional/";
 
 }
