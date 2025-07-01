@@ -66,6 +66,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final responseBody = json.decode(response.body);
         final token = responseBody['token'];
         final userId = responseBody['id'];
+        // Extract role (assuming it's a list of strings)
+        List<dynamic> roles = responseBody['role'];
+        String userRole = roles.isNotEmpty ? roles[0] : '';
+
+        print('User Role: $userRole');
 
         var storage = GetStorage();
         storage.write("id", userId);
@@ -78,8 +83,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             token: token,
           ));
 
+          if(userRole == "Individual"){
+             add(GetIndividualProfile(userId: userId));
+          }
+
           // Fetch profile next
-          add(GetIndividualProfile(userId: userId));
+       //   add(GetIndividualProfile(userId: userId));
         } else {
           emit(state.copyWith(
             status: LoginStatus.otpFailure,

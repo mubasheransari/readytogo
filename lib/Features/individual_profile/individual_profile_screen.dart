@@ -152,18 +152,30 @@ class IndividualProfileScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16),
+                  ...profile.groupAssociations.map<Widget>((group) {
+                    return Column(
+                      children: [
+                        _groupCard(
+                          context: context,
+                          title: group['groupName'],
+                          memberCount: group['memberCount'],
+                        ),
+                        SizedBox(height: 12),
+                      ],
+                    );
+                  }).toList(),
 
-                  _groupCard(
-                    context: context,
-                    title: 'National Association of General Practitioners',
-                    memberCount: 22,
-                  ),
-                  SizedBox(height: 12),
-                  _groupCard(
-                    context: context,
-                    title: 'Diabetes Management Support Group',
-                    memberCount: 22,
-                  ),
+                  // _groupCard(
+                  //   context: context,
+                  //   title: 'National Association of General Practitioners',
+                  //   memberCount: 22,
+                  // ),
+                  // SizedBox(height: 12),
+                  // _groupCard(
+                  //   context: context,
+                  //   title: 'Diabetes Management Support Group',
+                  //   memberCount: 22,
+                  // ),
                 ],
               ),
             ),
