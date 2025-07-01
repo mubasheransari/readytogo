@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
-import '../widgets/boxDecorationWidget.dart';
-import 'login/bloc/login_bloc.dart';
-import 'login/bloc/login_state.dart';
-import 'notification_screen.dart';
+import '../../widgets/boxDecorationWidget.dart';
+import '../login/bloc/login_bloc.dart';
+import '../login/bloc/login_state.dart';
+import '../notification_screen.dart';
+import 'edit_individual_profile_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class IndividualProfileScreen extends StatelessWidget {
+  const IndividualProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,8 @@ class ProfileScreen extends StatelessWidget {
       builder: (context, state) {
         if (state.status == LoginStatus.profileLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state.status == LoginStatus.profileLoaded && state.profile != null) {
+        } else if (state.status == LoginStatus.profileLoaded &&
+            state.profile != null) {
           final profile = state.profile!;
           return CustomScaffoldWidget(
             isDrawerRequired: true,
@@ -29,7 +31,8 @@ class ProfileScreen extends StatelessWidget {
             body: DecoratedBox(
               decoration: boxDecoration(),
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 children: [
                   Container(
                     decoration: BoxDecoration(
@@ -53,8 +56,7 @@ class ProfileScreen extends StatelessWidget {
                         CircleAvatar(
                           radius: 38,
                           backgroundImage: NetworkImage(
-                            
-                                'https://randomuser.me/api/portraits/women/65.jpg',
+                            'https://randomuser.me/api/portraits/women/65.jpg',
                           ),
                         ),
                         SizedBox(width: 16),
@@ -88,7 +90,13 @@ class ProfileScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          EditIndividualProfileScreen()));
+                            },
                             icon: Icon(
                               Icons.edit,
                               color: Colors.white,
@@ -132,7 +140,7 @@ class ProfileScreen extends StatelessWidget {
 
                   SizedBox(height: 28),
 
-               //   profile.groupAssociations.length != 
+                  //   profile.groupAssociations.length !=
 
                   Text(
                     'Groups/Association',
@@ -144,7 +152,6 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16),
-                  
 
                   _groupCard(
                     context: context,
@@ -292,7 +299,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-
 
 // class ProfileScreen extends StatelessWidget {
 //   const ProfileScreen({Key? key}) : super(key: key);

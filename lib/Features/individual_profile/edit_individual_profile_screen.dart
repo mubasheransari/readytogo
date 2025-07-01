@@ -1,0 +1,431 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../Constants/constants.dart';
+import '../../widgets/boxDecorationWidget.dart';
+
+class EditIndividualProfileScreen extends StatefulWidget {
+  @override
+  State<EditIndividualProfileScreen> createState() =>
+      _EditIndividualProfileScreenState();
+}
+
+class _EditIndividualProfileScreenState
+    extends State<EditIndividualProfileScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
+  bool _showImageError = false;
+  bool _showTermsError = false;
+  bool _submitted = false;
+  bool isChecked = false;
+
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController zipController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final TextEditingController referralCodeController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+
+  _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+        _showImageError = false;
+      });
+    }
+  }
+
+  Widget _buildTextField(String label, String hint,
+      {bool obscureText = false,
+      required TextEditingController controller,
+      String? Function(String?)? validator}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label,
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+                fontFamily: 'Satoshi',
+                color: Color(0xff323747))),
+        const SizedBox(height: 5),
+        Container(
+          width: 376,
+          height: 60,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFFE6DCFD),
+                Color(0xFFD8E7FF),
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: TextFormField(
+            controller: controller,
+            obscureText: obscureText,
+            validator: validator,
+            autovalidateMode: _submitted
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: const TextStyle(
+                color: Color(0xff666F80),
+                fontSize: 18,
+                fontFamily: 'Satoshi',
+                fontWeight: FontWeight.w500,
+              ),
+              filled: true,
+              fillColor:
+                  Colors.transparent, // Make fill transparent to show gradient
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /* Widget _buildTextField(String label, String hint,
+      {bool obscureText = false,
+      required TextEditingController controller,
+      String? Function(String?)? validator}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label,
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+                fontFamily: 'Satoshi',
+                color: Color(0xff323747))),
+        const SizedBox(height: 5),
+        SizedBox(
+          width: 376,
+          height: 80,
+          child: TextFormField(
+            controller: controller,
+            obscureText: obscureText,
+            validator: validator,
+            autovalidateMode: _submitted
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: const TextStyle(
+                color: Color(0xff666F80),
+                fontSize: 18,
+                fontFamily: 'Satoshi',
+                fontWeight: FontWeight.w500,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.grey[200],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              // const SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.only(top: 60.0),
+                child: Container(
+                  color: Colors.grey[200],
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.arrow_back,
+                              color: Colors.black, size: 19),
+                        ),
+                      ),
+                      const SizedBox(width: 17),
+                      const Text(
+                        'Edit Profile',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Satoshi',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                decoration:
+                    BoxDecoration(color: Colors.grey[200]), //boxDecoration(),
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 30.0, left: 10, right: 10),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        // gradient: LinearGradient(
+                        //   colors: [
+                        //     Color(0xFFE6DCFD),
+                        //     Color(0xFFD8E7FF),
+                        //   ],
+                        //   begin: Alignment.centerLeft,
+                        //   end: Alignment.centerRight,
+                        // ),
+                      ), //boxDecoration(),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 30.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            GestureDetector(
+                              onTap: _pickImage,
+                              child: Container(
+                                height: 148,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: _selectedImage == null
+                                    ? Center(
+                                        child: Image.asset('assets/Frame.png',
+                                            height: 130, width: 130),
+                                      )
+                                    : Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 120,
+                                            width: 130,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: Image.file(_selectedImage!,
+                                                  fit: BoxFit.cover),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Container(
+                                            height: 23,
+                                            width: 80,
+                                            decoration: BoxDecoration(
+                                              color: Constants().themeColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: const Text(
+                                              'change',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                            ),
+                            if (_showImageError)
+                              const Padding(
+                                padding: EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  'Please upload a profile image',
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 14),
+                                ),
+                              ),
+
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  right:
+                                      MediaQuery.of(context).size.width * 0.25),
+                              child: SizedBox(
+                                //width: MediaQuery.of(context).size.width * 0.75,
+                                child: Text("Personal Information",
+                                    // textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.w900,
+                                        fontFamily: 'Satoshi',
+                                        color: Color(0xff323747))),
+                              ),
+                            ),
+                            const SizedBox(height: 25),
+                            _buildTextField('First Name', 'Enter First Name',
+                                controller: firstNameController,
+                                validator: (val) => val == null || val.isEmpty
+                                    ? 'Required'
+                                    : null),
+                            const SizedBox(height: 15),
+                            _buildTextField('Last Name', 'Enter Last Name',
+                                controller: lastNameController,
+                                validator: (val) => val == null || val.isEmpty
+                                    ? 'Required'
+                                    : null),
+                            const SizedBox(height: 15),
+                            _buildTextField('Email', 'Enter Email',
+                                controller: emailController,
+                                validator: (val) =>
+                                    val == null || !val.contains('@')
+                                        ? 'Enter valid email'
+                                        : null),
+                            // const SizedBox(height: 15),
+                            // _buildTextField('Username', 'Enter Username',
+                            //     controller: usernameController,
+                            //     validator: (val) =>
+                            //         val == null || val.isEmpty ? 'Required' : null),
+                            const SizedBox(height: 15),
+                            _buildTextField(
+                                'Phone Number', 'Enter Phone Number',
+                                controller: phoneController,
+                                validator: (val) => val == null || val.isEmpty
+                                    ? 'Required'
+                                    : null),
+                            const SizedBox(height: 15),
+
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  right:
+                                      MediaQuery.of(context).size.width * 0.40),
+                              child: SizedBox(
+                                //width: MediaQuery.of(context).size.width * 0.75,
+                                child: Text("Address Details",
+                                    // textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.w900,
+                                        fontFamily: 'Satoshi',
+                                        color: Color(0xff323747))),
+                              ),
+                            ),
+
+                            /* _buildTextField('Zip Code', 'Enter Zip Code',
+                                controller: zipController,
+                                validator: (val) => val == null || val.isEmpty
+                                    ? 'Required'
+                                    : null),
+                            const SizedBox(height: 15),
+                            _buildTextField('Password', 'min. 8 characters',
+                                obscureText: true,
+                                controller: passwordController,
+                                validator: (val) =>
+                                    val != null && val.length >= 8
+                                        ? null
+                                        : 'Minimum 8 characters'),
+                            const SizedBox(height: 15),
+                            _buildTextField('Confirm Password', 'Type again',
+                                obscureText: true,
+                                controller: confirmPasswordController,
+                                validator: (val) =>
+                                    val == passwordController.text
+                                        ? null
+                                        : 'Passwords do not match'),
+                            const SizedBox(height: 15),
+                            _buildTextField('Referral Code (optional)',
+                                'Enter Referral Code',
+                                controller: referralCodeController),
+                            const SizedBox(height: 20),*/
+                            const SizedBox(height: 40),
+                            SizedBox(
+                              width: 376,
+                              height: 55,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _submitted = true;
+                                    _showImageError = _selectedImage == null;
+                                    _showTermsError = !isChecked;
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Constants().themeColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      'Register',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Satoshi',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w800),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Image.asset('assets/loginbuttonicon.png',
+                                        width: 23, height: 23),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text("Already have an account?",
+                                    style: TextStyle(
+                                        fontFamily: 'Satoshi',
+                                        fontSize: 20,
+                                        color: Color(0xff323747),
+                                        fontWeight: FontWeight.w700)),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Text(" Login",
+                                      style: TextStyle(
+                                          fontFamily: 'Satoshi',
+                                          fontSize: 20,
+                                          color: Constants().themeColor,
+                                          fontWeight: FontWeight.w700)),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 30),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+}

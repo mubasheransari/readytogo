@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:readytogo/Features/profile_screen.dart';
+import 'package:readytogo/Features/individual_profile/individual_profile_screen.dart';
 import 'package:readytogo/Features/Resources/resources_screen.dart';
 import 'package:readytogo/Features/search_screen.dart'; // This is FindProvidersScreen
 import 'mygeo_screen.dart';
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ResourcesScreen(),
     FindProvidersScreen(
     ),
-    const ProfileScreen(),
+    const IndividualProfileScreen(),
   ];
 
   // final List<Widget> _screens = const [
