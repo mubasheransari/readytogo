@@ -152,7 +152,6 @@ class _EditIndividualProfileScreenState
         body: SingleChildScrollView(
           child: Column(
             children: [
-              // const SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.only(top: 60.0),
                 child: Container(
@@ -266,7 +265,6 @@ class _EditIndividualProfileScreenState
                                       color: Colors.red, fontSize: 14),
                                 ),
                               ),
-
                             Padding(
                               padding: EdgeInsets.only(
                                   right:
@@ -301,11 +299,6 @@ class _EditIndividualProfileScreenState
                                     val == null || !val.contains('@')
                                         ? 'Enter valid email'
                                         : null),
-                            // const SizedBox(height: 15),
-                            // _buildTextField('Username', 'Enter Username',
-                            //     controller: usernameController,
-                            //     validator: (val) =>
-                            //         val == null || val.isEmpty ? 'Required' : null),
                             const SizedBox(height: 15),
                             _buildTextField(
                                 'Phone Number', 'Enter Phone Number',
@@ -314,7 +307,6 @@ class _EditIndividualProfileScreenState
                                     ? 'Required'
                                     : null),
                             const SizedBox(height: 15),
-
                             Padding(
                               padding: EdgeInsets.only(
                                   right:
@@ -330,33 +322,83 @@ class _EditIndividualProfileScreenState
                                         color: Color(0xff323747))),
                               ),
                             ),
-
-                            /* _buildTextField('Zip Code', 'Enter Zip Code',
-                                controller: zipController,
+                            const SizedBox(height: 15),
+                            _buildTextField(
+                                'Street Address', 'Enter Street Address',
+                                controller: phoneController,
                                 validator: (val) => val == null || val.isEmpty
                                     ? 'Required'
                                     : null),
                             const SizedBox(height: 15),
-                            _buildTextField('Password', 'min. 8 characters',
-                                obscureText: true,
-                                controller: passwordController,
-                                validator: (val) =>
-                                    val != null && val.length >= 8
-                                        ? null
-                                        : 'Minimum 8 characters'),
-                            const SizedBox(height: 15),
-                            _buildTextField('Confirm Password', 'Type again',
-                                obscureText: true,
-                                controller: confirmPasswordController,
-                                validator: (val) =>
-                                    val == passwordController.text
-                                        ? null
-                                        : 'Passwords do not match'),
-                            const SizedBox(height: 15),
-                            _buildTextField('Referral Code (optional)',
-                                'Enter Referral Code',
-                                controller: referralCodeController),
-                            const SizedBox(height: 20),*/
+
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Area #',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'Satoshi',
+                                            color: Color(0xff323747))),
+                                    Text('(Optional)',
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: 'Satoshi',
+                                            color: Colors.black54)),
+                                  ],
+                                ),
+                                const SizedBox(height: 5),
+                                Container(
+                                  width: 376,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Color(0xFFE6DCFD),
+                                        Color(0xFFD8E7FF),
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: TextFormField(
+                                    controller: phoneController,
+                                    // obscureText: obscureText,
+                                    validator: (val) =>
+                                        val == null || val.isEmpty
+                                            ? 'Required'
+                                            : null,
+                                    autovalidateMode: _submitted
+                                        ? AutovalidateMode.always
+                                        : AutovalidateMode.disabled,
+                                    decoration: InputDecoration(
+                                      hintText: "Area #",
+                                      hintStyle: const TextStyle(
+                                        color: Color(0xff666F80),
+                                        fontSize: 18,
+                                        fontFamily: 'Satoshi',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors
+                                          .transparent, // Make fill transparent to show gradient
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+             
                             const SizedBox(height: 40),
                             SizedBox(
                               width: 376,
