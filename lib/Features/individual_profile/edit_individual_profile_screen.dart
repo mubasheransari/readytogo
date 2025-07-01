@@ -22,6 +22,81 @@ class _EditIndividualProfileScreenState
   bool _submitted = false;
   bool isChecked = false;
 
+  String? selectedCity;
+
+  final List<String> cities = [
+    "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia",
+    "San Antonio", "San Diego", "Dallas", "San Jose", "Austin", "Jacksonville",
+    "Fort Worth", "Columbus", "San Francisco", "Charlotte", "Indianapolis",
+    "Seattle", "Denver", "Washington", "Boston", "El Paso", "Nashville",
+    "Detroit", "Oklahoma City", "Portland", "Las Vegas", "Memphis",
+    "Louisville",
+    "Baltimore", "Milwaukee", "Albuquerque", "Tucson", "Fresno", "Mesa",
+    "Sacramento",
+    "Atlanta", "Kansas City", "Colorado Springs", "Miami", "Raleigh", "Omaha",
+    "Long Beach", "Virginia Beach", "Oakland", "Minneapolis", "Tulsa",
+    "Arlington",
+    "Tampa", "New Orleans", "Wichita", "Cleveland", "Bakersfield", "Aurora",
+    "Anaheim", "Honolulu", "Santa Ana", "Riverside", "Corpus Christi",
+    "Lexington",
+    // You can add more cities if needed
+  ];
+
+  String? selectedState;
+
+  final List<String> states = [
+    'Alabama',
+    'Alaska',
+    'Arizona',
+    'Arkansas',
+    'California',
+    'Colorado',
+    'Connecticut',
+    'Delaware',
+    'Florida',
+    'Georgia',
+    'Hawaii',
+    'Idaho',
+    'Illinois',
+    'Indiana',
+    'Iowa',
+    'Kansas',
+    'Kentucky',
+    'Louisiana',
+    'Maine',
+    'Maryland',
+    'Massachusetts',
+    'Michigan',
+    'Minnesota',
+    'Mississippi',
+    'Missouri',
+    'Montana',
+    'Nebraska',
+    'Nevada',
+    'New Hampshire',
+    'New Jersey',
+    'New Mexico',
+    'New York',
+    'North Carolina',
+    'North Dakota',
+    'Ohio',
+    'Oklahoma',
+    'Oregon',
+    'Pennsylvania',
+    'Rhode Island',
+    'South Carolina',
+    'South Dakota',
+    'Tennessee',
+    'Texas',
+    'Utah',
+    'Vermont',
+    'Virginia',
+    'Washington',
+    'West Virginia',
+    'Wisconsin',
+    'Wyoming',
+  ];
+
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -330,7 +405,6 @@ class _EditIndividualProfileScreenState
                                     ? 'Required'
                                     : null),
                             const SizedBox(height: 15),
-
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -397,8 +471,157 @@ class _EditIndividualProfileScreenState
                                 ),
                               ],
                             ),
-
-             
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Select City',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'Satoshi',
+                                    color: Color(0xff323747),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Container(
+                                  width: 376,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Color(0xFFE6DCFD),
+                                        Color(0xFFD8E7FF),
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: DropdownButtonFormField<String>(
+                                    value: selectedCity,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedCity = value;
+                                      });
+                                    },
+                                    items: cities.map((city) {
+                                      return DropdownMenuItem<String>(
+                                        value: city,
+                                        child: Text(
+                                          city,
+                                          style: const TextStyle(
+                                            color: Color(0xff666F80),
+                                            fontSize: 18,
+                                            fontFamily: 'Satoshi',
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16)),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors
+                                          .transparent, // allow gradient to show through
+                                      hintText: "Choose City",
+                                      hintStyle: TextStyle(
+                                        color: Color(0xff666F80),
+                                        fontSize: 18,
+                                        fontFamily: 'Satoshi',
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                    icon: const Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        color: Color(0xff323747)),
+                                    dropdownColor: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Select State',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'Satoshi',
+                                    color: Color(0xff323747),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Container(
+                                  width: 376,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Color(0xFFE6DCFD),
+                                        Color(0xFFD8E7FF),
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: DropdownButtonFormField<String>(
+                                    value: selectedState,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedState = value;
+                                      });
+                                    },
+                                    items: states.map((state) {
+                                      return DropdownMenuItem<String>(
+                                        value: state,
+                                        child: Text(
+                                          state,
+                                          style: const TextStyle(
+                                            color: Colors.black45,
+                                            fontSize: 18,
+                                            fontFamily: 'Satoshi',
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16)),
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.transparent,
+                                      hintText: "Choose State",
+                                      hintStyle: TextStyle(
+                                        color: Colors.black45,
+                                        fontSize: 18,
+                                        fontFamily: 'Satoshi',
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                    icon: const Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        color: Color(0xff323747)),
+                                    dropdownColor: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
                             const SizedBox(height: 40),
                             SizedBox(
                               width: 376,
@@ -436,27 +659,6 @@ class _EditIndividualProfileScreenState
                                   ],
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 30),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("Already have an account?",
-                                    style: TextStyle(
-                                        fontFamily: 'Satoshi',
-                                        fontSize: 20,
-                                        color: Color(0xff323747),
-                                        fontWeight: FontWeight.w700)),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Text(" Login",
-                                      style: TextStyle(
-                                          fontFamily: 'Satoshi',
-                                          fontSize: 20,
-                                          color: Constants().themeColor,
-                                          fontWeight: FontWeight.w700)),
-                                ),
-                              ],
                             ),
                             const SizedBox(height: 30),
                           ],
