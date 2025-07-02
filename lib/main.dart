@@ -37,7 +37,7 @@ import 'package:get_storage/get_storage.dart';
 //   );
 // }
 
-import 'package:firebase_core/firebase_core.dart';
+/*import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -78,11 +78,12 @@ void showLocalNotification(RemoteMessage message) async {
     message.notification?.body ?? '',
     notificationDetails,
   );
-}
+}*/
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+    await GetStorage.init();
+  /*await Firebase.initializeApp();
 
   await initializeLocalNotifications();
   await GetStorage.init();
@@ -92,7 +93,7 @@ void main() async {
   await FirebaseMessaging.instance.requestPermission(
     alert: true,
     badge: true,
-    sound: true,
+    sound: true,10@Testing
   );
 
   // Print FCM token
@@ -114,7 +115,7 @@ void main() async {
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     print('Notification clicked!');
     // Navigate or handle tap here
-  });
+  });*/
   var storage = GetStorage();
   var value = storage.read("id");
   var role = storage.read("role");

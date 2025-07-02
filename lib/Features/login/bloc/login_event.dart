@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
+
+import '../../../Model/individual_profile_model.dart';
 
 abstract class LoginEvent extends Equatable {
   const LoginEvent();
@@ -46,5 +50,16 @@ class GetProfessionalProfile extends LoginEvent {
   final String userId;
   const GetProfessionalProfile({
     required this.userId,
+  });
+}
+class UpdateIndividualProfile extends LoginEvent {
+  final String userId;
+  final IndividualProfileModel profile;
+  final File? profileImage;
+
+  UpdateIndividualProfile({
+    required this.userId,
+    required this.profile,
+    this.profileImage,
   });
 }

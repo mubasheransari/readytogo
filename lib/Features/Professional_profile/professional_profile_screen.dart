@@ -12,11 +12,12 @@ class ProfessionalProfileScreen extends StatefulWidget {
   const ProfessionalProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProfessionalProfileScreen> createState() => _ProfessionalProfileScreenState();
+  State<ProfessionalProfileScreen> createState() =>
+      _ProfessionalProfileScreenState();
 }
 
 class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
-    @override
+  @override
   void initState() {
     super.initState();
     final userId = GetStorage().read("id");
@@ -24,6 +25,7 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
       context.read<LoginBloc>().add(GetProfessionalProfile(userId: userId));
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final Color primaryBlue = Color(0xFF5D6EFF);
@@ -69,7 +71,7 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                         CircleAvatar(
                           radius: 38,
                           backgroundImage: NetworkImage(
-                            'https://randomuser.me/api/portraits/women/65.jpg',
+                            'http://173.249.27.4:343/${profile.profileImageUrl}',
                           ),
                         ),
                         SizedBox(width: 16),

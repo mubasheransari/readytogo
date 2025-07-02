@@ -12,6 +12,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<VerifyOtpSubmitted>(_onVerifyOtpSubmitted);
     on<GetIndividualProfile>(_getIndividualProfile);
     on<GetProfessionalProfile>(_getProfessionalProfile);
+    on<UpdateIndividualProfile>(updateIndividualProfile);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -91,23 +92,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           //   add(GetProfessionalProfile(userId: userId));
           // }
           if (userRole == "Individual") {
-  emit(state.copyWith(status: LoginStatus.profileLoading));
+            emit(state.copyWith(status: LoginStatus.profileLoading));
 
-  final profile = await loginRepository.individualProfile(userId);
-  emit(state.copyWith(
-    status: LoginStatus.profileLoaded,
-    profile: profile,
-  ));
-} else if (userRole == "Professional") {
-  emit(state.copyWith(status: LoginStatus.profileLoading));
+            final profile = await loginRepository.individualProfile(userId);
+            emit(state.copyWith(
+              status: LoginStatus.profileLoaded,
+              profile: profile,
+            ));
+          } else if (userRole == "Professional") {
+            emit(state.copyWith(status: LoginStatus.profileLoading));
 
-  final profile = await loginRepository.professionalProfile(userId);
-  emit(state.copyWith(
-    status: LoginStatus.professionalProfileLoaded,
-    professionalProfileModel: profile,
-  ));
-}
-
+            final profile = await loginRepository.professionalProfile(userId);
+            emit(state.copyWith(
+              status: LoginStatus.professionalProfileLoaded,
+              professionalProfileModel: profile,
+            ));
+          }
 
           // Fetch profile next
           //   add(GetIndividualProfile(userId: userId));
@@ -168,4 +168,151 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       ));
     }
   }
+
+  updateIndividualProfile(
+  UpdateIndividualProfile event,
+  Emitter<LoginState> emit,
+) async {
+  emit(state.copyWith(status: LoginStatus.updateProfileLoading));
+  try {
+    final response = await loginRepository.updateIndividualProfile(
+      id: event.userId,
+      profile: event.profile,
+      profileImage: event.profileImage,
+    );
+
+    if (response.statusCode == 200) {
+      // ✅ Refetch profile from server after update
+      final refreshedProfile = await loginRepository.individualProfile(event.userId);
+
+      emit(state.copyWith(
+        status: LoginStatus.profileLoaded,
+        profile: refreshedProfile,
+      ));
+    } else {
+      emit(state.copyWith(
+        status: LoginStatus.updateProfileError,
+        errorMessage: response.body,
+      ));
+    }
+  } catch (e) {
+    emit(state.copyWith(
+      status: LoginStatus.updateProfileError,
+      errorMessage: e.toString(),
+    ));
+  }
+}
+
+
+  /*updateIndividualProfile(
+    UpdateIndividualProfile event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.updateProfileLoading));
+
+    try {
+      final response = await loginRepository.updateIndividualProfile(
+        id: event.userId,
+        profile: event.profile,
+        profileImage: event.profileImage,
+      );
+
+      if (response.statusCode == 200) {
+        // ✅ API call succeeded
+        emit(state.copyWith(status: LoginStatus.updateProfileSuccess));
+      } else {
+        // ❌ Server responded with error
+        emit(state.copyWith(
+          status: LoginStatus.updateProfileError,
+          errorMessage: response.body.isNotEmpty
+              ? response.body
+              : 'Failed to update profile.',
+        ));
+      }
+    } catch (e) {
+      // ❌ Request threw an exception
+      emit(state.copyWith(
+        status: LoginStatus.updateProfileError,
+        errorMessage: 'Exception: ${e.toString()}',
+      ));
+    }
+  }*/
+
+//   updateIndividualProfile(
+//     UpdateIndividualProfile event, Emitter<LoginState> emit) async {
+//   emit(state.copyWith(status: LoginStatus.updateProfileLoading));
+//   try {
+//     final response = await loginRepository.updateIndividualProfile(
+//       id: event.userId,
+//       profile: event.profile,
+//       profileImage: event.profileImage,
+//     );
+
+//     if (response.statusCode == 200) {
+//       emit(state.copyWith(status: LoginStatus.updateProfileSuccess));
+//     } else {
+//       emit(state.copyWith(
+//         status: LoginStatus.updateProfileError,
+//         errorMessage: response.body,
+//       ));
+//     }
+//   } catch (e) {
+//     emit(state.copyWith(
+//       status: LoginStatus.updateProfileError,
+//       errorMessage: e.toString(),
+//     ));
+//   }
+// }
+
+  /* updateIndividualProfile(
+    UpdateIndividualProfile event, Emitter<LoginState> emit) async {
+  emit(state.copyWith(status: LoginStatus.updateProfileLoading));
+  try {
+    final updatedProfile = await loginRepository.updateIndividualProfile(
+      id: event.userId,
+      profile: event.profile,
+      profileImage: event.profileImage,
+    );
+
+    emit(state.copyWith(
+      status: LoginStatus.updateProfileSuccess,
+      profile: updatedProfile,
+    ));
+  } catch (e) {
+    emit(state.copyWith(
+      status: LoginStatus.updateProfileError,
+      errorMessage: e.toString(),
+    ));
+  }
+}*/
+
+  /* updateIndividualProfile(
+      UpdateIndividualProfile event, Emitter<LoginState> emit) async {
+    emit(state.copyWith(status: LoginStatus.updateProfileLoading));
+    try {
+      final response = await loginRepository.updateIndividualProfile(
+        id: event.userId,
+        profile: event.profile,
+        profileImage: event.profileImage,
+      );
+
+      print("RESPONSE ${response}");
+      print("RESPONSE $response");
+      print("RESPONSE $response");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        emit(LoginState(status: LoginStatus.updateProfileSuccess));
+      } else {
+        emit(LoginState(
+          status: LoginStatus.updateProfileError,
+          errorMessage: response.body,
+        ));
+      }
+    } catch (e) {
+      emit(LoginState(
+        status: LoginStatus.updateProfileError,
+        errorMessage: e.toString(),
+      ));
+    }
+  }*/
 }

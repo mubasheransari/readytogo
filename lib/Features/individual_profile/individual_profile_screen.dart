@@ -10,6 +10,13 @@ import '../login/bloc/login_state.dart';
 import '../notification_screen.dart';
 import 'edit_individual_profile_screen.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:readytogo/Features/login/bloc/login_bloc.dart';
+import 'package:readytogo/Model/individual_profile_model.dart';
+import 'edit_individual_profile_screen.dart';
+
 class IndividualProfileScreen extends StatefulWidget {
   const IndividualProfileScreen({Key? key}) : super(key: key);
 
@@ -18,7 +25,324 @@ class IndividualProfileScreen extends StatefulWidget {
 }
 
 class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
-    @override
+  @override
+  void initState() {
+    super.initState();
+    final userId = GetStorage().read("id");
+    if (userId != null) {
+      context.read<LoginBloc>().add(GetIndividualProfile(userId: userId));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Color primaryBlue = Color(0xFF5D6EFF);
+    final Color lightBlue = Color(0xFF8A97FF);
+
+    return BlocConsumer<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.status == LoginStatus.updateProfileError && state.errorMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.errorMessage!)),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state.status == LoginStatus.profileLoading || state.status == LoginStatus.updateProfileLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state.status == LoginStatus.profileLoaded && state.profile != null) {
+          final profile = state.profile!;
+          return CustomScaffoldWidget(
+            isDrawerRequired: true,
+            appbartitle: 'Profile',
+            body: DecoratedBox(
+              decoration: BoxDecoration(color: Color(0xFFF6F7FF)),
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [primaryBlue, lightBlue],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: primaryBlue.withOpacity(0.3),
+                          blurRadius: 12,
+                          offset: Offset(0, 6),
+                        )
+                      ],
+                    ),
+                    padding: EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 38,
+                          backgroundImage: NetworkImage(
+                            'http://173.249.27.4:343/${profile.profileImageUrl}',
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${profile.firstname} ${profile.lastname}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                profile.role,
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            onPressed: () async {
+                              final shouldRefresh = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditIndividualProfileScreen(profile: profile),
+                                ),
+                              );
+                              if (shouldRefresh == true) {
+                                final userId = GetStorage().read("id");
+                                if (userId != null) {
+                                  context.read<LoginBloc>().add(GetIndividualProfile(userId: userId));
+                                }
+                              }
+                            },
+                            icon: Icon(Icons.edit, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  _buildDetailsCard(profile),
+                  SizedBox(height: 28),
+                  Text(
+                    'Groups/Association',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: Colors.black87,
+                      fontFamily: 'Satoshi',
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  ...profile.groupAssociations.map<Widget>((group) {
+                    return Column(
+                      children: [
+                        _groupCard(
+                          context: context,
+                          title: group['groupName'],
+                          memberCount: group['memberCount'],
+                        ),
+                        SizedBox(height: 12),
+                      ],
+                    );
+                  }).toList(),
+                ],
+              ),
+            ),
+          );
+        } else if (state.status == LoginStatus.profileError) {
+          return Center(
+            child: Text('Error: ${state.errorMessage ?? "Unknown error"}'),
+          );
+        } else {
+          return Center(child: Text('No profile data available.'));
+        }
+      },
+    );
+  }
+
+  Widget _buildDetailsCard(IndividualProfileModel profile) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black12.withOpacity(0.05),
+              blurRadius: 6,
+              offset: Offset(0, 3))
+        ],
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _detailRow(label: 'DM:', value: '@${profile.userName}'),
+          _detailRow(label: 'Email:', value: profile.email),
+          _detailRow(label: 'Phone:', value: profile.phoneNumber),
+          _detailRow(
+            label: 'Location:',
+            value: profile.locations.isNotEmpty
+                ? '${profile.locations[0]["streetAddress"] ?? ""}, ${profile.locations[0]["city"] ?? ""}'
+                : 'No Address Provided',
+            isMultiline: true,
+          ),
+          _detailRow(
+            label: 'Zip Code:',
+            value: profile.locations.isNotEmpty ? profile.locations[0]["zipCode"] ?? "N/A" : "N/A",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _detailRow({
+    required String label,
+    required String value,
+    bool isMultiline = false,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: RichText(
+        text: TextSpan(
+          text: '$label ',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+            fontSize: 14,
+          ),
+          children: [
+            TextSpan(
+              text: value,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Colors.grey.shade700,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+        maxLines: isMultiline ? null : 1,
+        overflow: isMultiline ? TextOverflow.visible : TextOverflow.ellipsis,
+      ),
+    );
+  }
+
+  Widget _groupCard({
+    required BuildContext context,
+    required String title,
+    required int memberCount,
+  }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: screenWidth * 0.35,
+      width: screenWidth * 0.92,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12.withOpacity(0.05),
+            blurRadius: 6,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.05,
+        vertical: screenWidth * 0.045,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                height: screenWidth * 0.12,
+                width: screenWidth * 0.12,
+                decoration: BoxDecoration(
+                  color: Color(0xffDBE4FF),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(screenWidth * 0.03),
+                  child: Image.asset(
+                    "assets/users-02.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              SizedBox(width: screenWidth * 0.04),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: screenWidth * 0.05,
+                    color: Colors.black87,
+                    fontFamily: 'Satoshi',
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: screenWidth * 0.01),
+          Row(
+            children: [
+              Image.asset(
+                "assets/framegroup.png",
+                height: screenWidth * 0.1,
+                width: screenWidth * 0.15,
+                fit: BoxFit.contain,
+              ),
+              SizedBox(width: screenWidth * 0.02),
+              Text(
+                '$memberCount other doctors',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.03,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+              Spacer(),
+              Icon(
+                Icons.open_in_new,
+                color: Colors.grey.shade400,
+                size: screenWidth * 0.05,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+/*class IndividualProfileScreen extends StatefulWidget {
+  const IndividualProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<IndividualProfileScreen> createState() =>
+      _IndividualProfileScreenState();
+}
+
+class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
+  @override
   void initState() {
     super.initState();
     final userId = GetStorage().read("id");
@@ -72,7 +396,7 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
                         CircleAvatar(
                           radius: 38,
                           backgroundImage: NetworkImage(
-                            'https://randomuser.me/api/portraits/women/65.jpg',
+                            'http://173.249.27.4:343/${profile.profileImageUrl}',
                           ),
                         ),
                         SizedBox(width: 16),
@@ -106,12 +430,37 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          EditIndividualProfileScreen()));
+                            onPressed: () async {
+                              final shouldRefresh = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditIndividualProfileScreen(
+                                          profile: profile),
+                                ),
+                              );
+
+                              if (shouldRefresh == true) {
+                                final userId = GetStorage().read("id");
+                                if (userId != null) {
+                                  context.read<LoginBloc>().add(
+                                      GetIndividualProfile(userId: userId));
+                                }
+                              }
+
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) =>
+                              //         EditIndividualProfileScreen(
+                              //             profile: profile),
+                              //   ),
+                              // );
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             EditIndividualProfileScreen()));
                             },
                             icon: Icon(
                               Icons.edit,
@@ -326,7 +675,7 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
       ),
     );
   }
-}
+}*/
 
 // class ProfileScreen extends StatelessWidget {
 //   const ProfileScreen({Key? key}) : super(key: key);

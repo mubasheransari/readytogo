@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../Constants/constants.dart';
+import '../../Model/individual_profile_model.dart';
 import '../../widgets/boxDecorationWidget.dart';
 
 import 'dart:convert';
@@ -12,7 +15,683 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:image_picker/image_picker.dart';
 
+import '../login/bloc/login_bloc.dart';
+import '../login/bloc/login_event.dart';
+import '../login/bloc/login_state.dart';
+
 class EditIndividualProfileScreen extends StatefulWidget {
+  final IndividualProfileModel profile;
+  EditIndividualProfileScreen({super.key, required this.profile});
+
+  @override
+  State<EditIndividualProfileScreen> createState() =>
+      _EditIndividualProfileScreenState();
+}
+
+class _EditIndividualProfileScreenState
+    extends State<EditIndividualProfileScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
+  bool _submitted = false;
+
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController emailController;
+  late TextEditingController phoneController;
+  late TextEditingController streetController;
+  late TextEditingController areaController;
+  late TextEditingController cityController;
+  late TextEditingController stateController;
+  late TextEditingController zipController;
+
+  @override
+  void initState() {
+    super.initState();
+    final p = widget.profile;
+    firstNameController = TextEditingController(text: p.firstname);
+    lastNameController = TextEditingController(text: p.lastname);
+    emailController = TextEditingController(text: p.email);
+    phoneController = TextEditingController(text: p.phoneNumber);
+    streetController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['streetAddress'] ?? '' : '');
+    areaController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['area'] ?? '' : '');
+    cityController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['city'] ?? '' : '');
+    stateController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['state'] ?? '' : '');
+    zipController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
+  }
+
+  _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() => _selectedImage = File(image.path));
+    }
+  }
+
+  void _submit() {
+    setState(() => _submitted = true);
+    if (_formKey.currentState!.validate()) {
+      final updatedProfile = widget.profile.copyWith(
+        firstname: firstNameController.text,
+        lastname: lastNameController.text,
+        email: emailController.text,
+        phoneNumber: phoneController.text,
+        locations: [
+          {
+            "streetAddress": streetController.text,
+            "area": areaController.text,
+            "city": cityController.text,
+            "state": stateController.text,
+            "zipCode": zipController.text,
+          }
+        ],
+      );
+
+      final userId = GetStorage().read("id");
+
+      if (userId != null) {
+        context.read<LoginBloc>().add(UpdateIndividualProfile(
+              userId: userId,
+              profile: updatedProfile,
+              profileImage: _selectedImage,
+            ));
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Edit Profile")),
+      body: BlocConsumer<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state.status == LoginStatus.profileLoaded && state.profile != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Profile updated successfully", style: TextStyle(color: Colors.white)),
+                backgroundColor: Colors.green,
+              ),
+            );
+            Navigator.pop(context);
+          } else if (state.status == LoginStatus.updateProfileError) {
+            print("UPDATE FAILED ${state.errorMessage}");
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage ?? "Update failed"),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: _selectedImage != null
+                          ? FileImage(_selectedImage!)
+                          : NetworkImage("http://173.249.27.4:343/${widget.profile.profileImageUrl}")
+                              as ImageProvider,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildField(firstNameController, "First Name"),
+                  _buildField(lastNameController, "Last Name"),
+                  _buildField(emailController, "Email"),
+                  _buildField(phoneController, "Phone Number"),
+                  _buildField(streetController, "Street Address"),
+                  _buildField(areaController, "Area"),
+                  _buildField(cityController, "City"),
+                  _buildField(stateController, "State"),
+                  _buildField(zipController, "Zip Code"),
+                  const SizedBox(height: 20),
+                  state.status == LoginStatus.updateProfileLoading
+                      ? CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: _submit,
+                          child: Text("Save Changes"),
+                        ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildField(TextEditingController controller, String label) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+        ),
+        validator: (value) =>
+            value == null || value.isEmpty ? 'Required' : null,
+      ),
+    );
+  }
+}
+
+
+/*class EditIndividualProfileScreen extends StatefulWidget {
+  final IndividualProfileModel profile;
+  EditIndividualProfileScreen({super.key, required this.profile});
+
+  @override
+  State<EditIndividualProfileScreen> createState() =>
+      _EditIndividualProfileScreenState();
+}
+
+class _EditIndividualProfileScreenState
+    extends State<EditIndividualProfileScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
+  bool _submitted = false;
+
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController emailController;
+  late TextEditingController phoneController;
+  late TextEditingController streetController;
+  late TextEditingController areaController;
+  late TextEditingController cityController;
+  late TextEditingController stateController;
+  late TextEditingController zipController;
+
+  @override
+  void initState() {
+    super.initState();
+    final p = widget.profile;
+    firstNameController = TextEditingController(text: p.firstname);
+    lastNameController = TextEditingController(text: p.lastname);
+    emailController = TextEditingController(text: p.email);
+    phoneController = TextEditingController(text: p.phoneNumber);
+    streetController = TextEditingController(
+        text: p.locations.isNotEmpty
+            ? p.locations[0]['streetAddress'] ?? ''
+            : '');
+    areaController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['area'] ?? '' : '');
+    cityController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['city'] ?? '' : '');
+    stateController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['state'] ?? '' : '');
+    zipController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
+  }
+
+  _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() => _selectedImage = File(image.path));
+    }
+  }
+
+  void _submit() {
+    setState(() => _submitted = true);
+    if (_formKey.currentState!.validate()) {
+      final updatedProfile = widget.profile.copyWith(
+        firstname: firstNameController.text,
+        lastname: lastNameController.text,
+        email: emailController.text,
+        phoneNumber: phoneController.text,
+        locations: [
+          {
+            "streetAddress": streetController.text,
+            "area": areaController.text,
+            "city": cityController.text,
+            "state": stateController.text,
+            "zipCode": zipController.text,
+          }
+        ],
+      );
+
+      final userId = GetStorage().read("id");
+
+      if (userId != null) {
+        context.read<LoginBloc>().add(UpdateIndividualProfile(
+              userId: userId,
+              profile: updatedProfile,
+              profileImage: _selectedImage,
+            ));
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Edit Profile")),
+      body: BlocConsumer<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state.status == LoginStatus.updateProfileSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text("Profile updated successfully",
+                      style: TextStyle(color: Colors.white))),
+            );
+            Navigator.pop(context);
+          } else if (state.status == LoginStatus.updateProfileError) {
+            print("UPDATE FAILED ${state.errorMessage}");
+            print("UPDATE FAILED ${state.errorMessage}");
+            print("UPDATE FAILED ${state.errorMessage}");
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.errorMessage ?? "Update failed")),
+            );
+          }
+        },
+        builder: (context, state) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: _selectedImage != null
+                          ? FileImage(_selectedImage!)
+                          : NetworkImage(
+                                  "http://173.249.27.4:343/${widget.profile.profileImageUrl}")
+                              as ImageProvider,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildField(firstNameController, "First Name"),
+                  _buildField(lastNameController, "Last Name"),
+                  _buildField(emailController, "Email"),
+                  _buildField(phoneController, "Phone Number"),
+                  _buildField(streetController, "Street Address"),
+                  _buildField(areaController, "Area"),
+                  _buildField(cityController, "City"),
+                  _buildField(stateController, "State"),
+                  _buildField(zipController, "Zip Code"),
+                  const SizedBox(height: 20),
+                  state.status == LoginStatus.updateProfileLoading
+                      ? CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: _submit,
+                          child: Text("Save Changes"),
+                        ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildField(TextEditingController controller, String label) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextFormField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+        ),
+        validator: (value) =>
+            value == null || value.isEmpty ? 'Required' : null,
+      ),
+    );
+  }
+}*/
+
+
+/*class EditIndividualProfileScreen extends StatefulWidget {
+  const EditIndividualProfileScreen({super.key});
+
+  @override
+  State<EditIndividualProfileScreen> createState() =>
+      _EditIndividualProfileScreenState();
+}
+
+class _EditIndividualProfileScreenState
+    extends State<EditIndividualProfileScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final zipController = TextEditingController();
+  final streetController = TextEditingController();
+
+  File? _selectedImage;
+  bool _submitted = false;
+  bool _showImageError = false;
+  bool _showTermsError = false;
+  bool isChecked = true;
+
+  String? selectedState;
+  String? selectedCity;
+  Map<String, List<String>> stateCityMap = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStateCityData();
+  }
+
+  Future<void> _loadStateCityData() async {
+    final jsonStr = await rootBundle.loadString('assets/data.json');
+    final data = json.decode(jsonStr) as Map<String, dynamic>;
+    setState(() {
+      stateCityMap =
+          data.map((k, v) => MapEntry(k, List<String>.from(v as List)));
+    });
+  }
+
+  List<String> get citiesForSelectedState =>
+      selectedState != null ? stateCityMap[selectedState!] ?? [] : [];
+
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+        _showImageError = false;
+      });
+    }
+  }
+
+  Widget _buildTextField(String label, String hint,
+      {required TextEditingController controller,
+      String? Function(String?)? validator,
+      bool obscureText = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label,
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+                fontFamily: 'Satoshi',
+                color: Color(0xff323747))),
+        const SizedBox(height: 5),
+        Container(
+          height: 60,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFFE6DCFD), Color(0xFFD8E7FF)],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: TextFormField(
+            controller: controller,
+            obscureText: obscureText,
+            validator: validator,
+            autovalidateMode: _submitted
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: const TextStyle(
+                color: Color(0xff666F80),
+                fontSize: 18,
+                fontFamily: 'Satoshi',
+                fontWeight: FontWeight.w500,
+              ),
+              filled: true,
+              fillColor: Colors.transparent,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        if (state.status == LoginStatus.profileLoading ||
+            state.profile == null) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final profile = state.profile!;
+
+        // Pre-fill only once
+        firstNameController.text = profile.firstname;
+        lastNameController.text = profile.lastname;
+        emailController.text = profile.email;
+        phoneController.text = profile.phoneNumber;
+        selectedState ??= profile.locations.isNotEmpty
+            ? profile.locations[0]['state']
+            : null;
+        selectedCity ??= profile.locations.isNotEmpty
+            ? profile.locations[0]['city']
+            : null;
+        streetController.text = profile.locations.isNotEmpty
+            ? profile.locations[0]['street'] ?? ''
+            : '';
+
+        return Scaffold(
+          backgroundColor: Colors.grey[200],
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  // Header
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.arrow_back,
+                              color: Colors.black, size: 19),
+                        ),
+                      ),
+                      const SizedBox(width: 17),
+                      const Text('Edit Profile',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Satoshi')),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+
+                  // Image Picker
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      height: 148,
+                      width: 120,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8)),
+                      child: _selectedImage == null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                'http://173.249.27.4:343/${profile.profileImageUrl}',
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(_selectedImage!,
+                                  height: 120,
+                                  width: 130,
+                                  fit: BoxFit.cover),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Form Fields
+                  _buildTextField('First Name', 'Enter First Name',
+                      controller: firstNameController,
+                      validator: (val) =>
+                          val == null || val.isEmpty ? 'Required' : null),
+                  const SizedBox(height: 15),
+                  _buildTextField('Last Name', 'Enter Last Name',
+                      controller: lastNameController,
+                      validator: (val) =>
+                          val == null || val.isEmpty ? 'Required' : null),
+                  const SizedBox(height: 15),
+                  _buildTextField('Email', 'Enter Email',
+                      controller: emailController,
+                      validator: (val) =>
+                          val == null || !val.contains('@')
+                              ? 'Enter valid email'
+                              : null),
+                  const SizedBox(height: 15),
+                  _buildTextField('Phone Number', 'Enter Phone Number',
+                      controller: phoneController,
+                      validator: (val) =>
+                          val == null || val.isEmpty ? 'Required' : null),
+                  const SizedBox(height: 15),
+                  _buildTextField('Street', 'Enter Street',
+                      controller: streetController,
+                      validator: (val) =>
+                          val == null || val.isEmpty ? 'Required' : null),
+                  const SizedBox(height: 20),
+
+                  // State Dropdown
+                  DropdownButtonFormField<String>(
+                    value: selectedState,
+                    items: stateCityMap.keys
+                        .map((state) => DropdownMenuItem<String>(
+                              value: state,
+                              child: Text(state),
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      setState(() {
+                        selectedState = val;
+                        selectedCity = null;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Select State',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
+                  // City Dropdown
+                  DropdownButtonFormField<String>(
+                    value: selectedCity,
+                    items: citiesForSelectedState
+                        .map((city) => DropdownMenuItem<String>(
+                              value: city,
+                              child: Text(city),
+                            ))
+                        .toList(),
+                    onChanged: (val) {
+                      setState(() {
+                        selectedCity = val;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Select City',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+
+                  // Submit Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() => _submitted = true);
+
+                        if (_formKey.currentState!.validate()) {
+                          final updatedProfile = IndividualProfileModel(
+                            firstname: firstNameController.text,
+                            lastname: lastNameController.text,
+                            email: emailController.text,
+                            phoneNumber: phoneController.text,
+                            role: profile.role,
+                            userName: profile.userName,
+                            profileImageUrl: profile.profileImageUrl,
+                            organizationName: profile.organizationName,
+                            organizationJoiningDate:
+                                profile.organizationJoiningDate,
+                            groupAssociations: profile.groupAssociations,
+                            specializations: profile.specializations,
+                            locations: [
+                              {
+                                "state": selectedState,
+                                "city": selectedCity,
+                                "street": streetController.text,
+                              }
+                            ],
+                            organizationProfessionals:
+                                profile.organizationProfessionals,
+                          );
+
+                          final userId = GetStorage().read("id");
+                          context.read<LoginBloc>().add(
+                                UpdateIndividualProfile(
+                                  userId: userId,
+                                  profile: updatedProfile,
+                                  profileImage: _selectedImage,
+                                ),
+                              );
+
+                          Navigator.pop(context);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
+                      child: const Text('Update Profile',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Satoshi',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w800)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}*/
+
+
+/*class EditIndividualProfileScreen extends StatefulWidget {
   @override
   State<EditIndividualProfileScreen> createState() =>
       _EditIndividualProfileScreenState();
@@ -406,7 +1085,7 @@ class _EditIndividualProfileScreenState
       ),
     );
   }
-}
+}*/
 
 // class EditIndividualProfileScreen extends StatefulWidget {
 //   @override

@@ -99,7 +99,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               validateEmail(value?.trim() ?? ''),
                         ),
                         const SizedBox(height: 5),
-                        CustomTextFieldWidget(
+                        CustomTextFieldWidget(//10@Testing
+                          obscureText: true,
                           borderColor: Constants().themeColor,
                           controller: passwordController,
                           hintText: 'peterpk454',
