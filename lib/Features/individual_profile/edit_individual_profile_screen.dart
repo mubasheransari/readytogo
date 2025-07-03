@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:readytogo/widgets/back_next_button_widget.dart';
 import '../../Constants/constants.dart';
 import '../../Model/individual_profile_model.dart';
 import '../login/bloc/login_bloc.dart';
@@ -135,11 +136,11 @@ class _EditIndividualProfileScreenState
                       color: Colors.grey[200],
                       child: Row(
                         children: [
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 5),
                           InkWell(
                             onTap: () => Navigator.pop(context),
                             child: const CircleAvatar(
-                              radius: 16,
+                              radius: 19,
                               backgroundColor: Colors.white,
                               child: Icon(Icons.arrow_back,
                                   color: Colors.black, size: 19),
@@ -180,6 +181,9 @@ class _EditIndividualProfileScreenState
                         borderRadius: BorderRadius.circular(30)),
                     child: Column(
                       children: [
+                        SizedBox(
+                          height: 10,
+                        ),
                         GestureDetector(
                           onTap: _pickImage,
                           child: Container(
@@ -273,16 +277,19 @@ class _EditIndividualProfileScreenState
                           padding: const EdgeInsets.only(left: 8.0),
                           child: _buildField(zipController, "Zip Code"),
                         ),
-                        const SizedBox(height: 20),
-                        state.status == LoginStatus.updateProfileLoading
-                            ? CircularProgressIndicator()
-                            : ElevatedButton(
-                                onPressed: _submit,
-                                child: Text("Save Changes"),
-                              ),
+                        // const SizedBox(height: 5),
+                        // state.status == LoginStatus.updateProfileLoading
+                        //     ? CircularProgressIndicator()
+                        //     : ElevatedButton(
+                        //         onPressed: _submit,
+                        //         child: Text("Save Changes"),
+                        //       ),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 25),
+                  BackAndNextButton(onBackPressed: () {}, onNextPressed: () {}),
+                  const SizedBox(height: 25),
                 ],
               ),
             ),
