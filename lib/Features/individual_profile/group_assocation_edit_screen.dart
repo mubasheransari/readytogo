@@ -10,19 +10,19 @@ import '../../Model/individual_profile_model.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
-import 'group_assocation_edit_screen.dart';
 
-class EditIndividualProfileScreen extends StatefulWidget {
-  final IndividualProfileModel profile;
-  EditIndividualProfileScreen({super.key, required this.profile});
+class GroupAssociationEditIndividual extends StatefulWidget {
+  GroupAssociationEditIndividual({
+    super.key,
+  });
 
   @override
-  State<EditIndividualProfileScreen> createState() =>
-      _EditIndividualProfileScreenState();
+  State<GroupAssociationEditIndividual> createState() =>
+      _GroupAssociationEditIndividualState();
 }
 
-class _EditIndividualProfileScreenState
-    extends State<EditIndividualProfileScreen> {
+class _GroupAssociationEditIndividualState
+    extends State<GroupAssociationEditIndividual> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
@@ -41,33 +41,26 @@ class _EditIndividualProfileScreenState
   @override
   void initState() {
     super.initState();
-    final p = widget.profile;
-    firstNameController = TextEditingController(text: p.firstname);
-    lastNameController = TextEditingController(text: p.lastname);
-    emailController = TextEditingController(text: p.email);
-    phoneController = TextEditingController(text: p.phoneNumber);
-    streetController = TextEditingController(
-        text: p.locations.isNotEmpty
-            ? p.locations[0]['streetAddress'] ?? ''
-            : '');
-    areaController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['area'] ?? '' : '');
-    cityController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['city'] ?? '' : '');
-    stateController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['state'] ?? '' : '');
-    zipController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
+    // final p = widget.profile;
+    // firstNameController = TextEditingController(text: p.firstname);
+    // lastNameController = TextEditingController(text: p.lastname);
+    // emailController = TextEditingController(text: p.email);
+    // phoneController = TextEditingController(text: p.phoneNumber);
+    // streetController = TextEditingController(
+    //     text: p.locations.isNotEmpty
+    //         ? p.locations[0]['streetAddress'] ?? ''
+    //         : '');
+    // areaController = TextEditingController(
+    //     text: p.locations.isNotEmpty ? p.locations[0]['area'] ?? '' : '');
+    // cityController = TextEditingController(
+    //     text: p.locations.isNotEmpty ? p.locations[0]['city'] ?? '' : '');
+    // stateController = TextEditingController(
+    //     text: p.locations.isNotEmpty ? p.locations[0]['state'] ?? '' : '');
+    // zipController = TextEditingController(
+    //     text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
   }
 
-  _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() => _selectedImage = File(image.path));
-    }
-  }
-
-  void _submit() {
+  /* void _submit() {
     setState(() => _submitted = true);
     if (_formKey.currentState!.validate()) {
       final updatedProfile = widget.profile.copyWith(
@@ -96,7 +89,7 @@ class _EditIndividualProfileScreenState
             ));
       }
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +153,7 @@ class _EditIndividualProfileScreenState
                           SizedBox(
                               width: MediaQuery.of(context).size.width * 0.37),
                           const Text(
-                            '1 of 2 page',
+                            '2 of 2 page',
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.black87,
@@ -185,67 +178,11 @@ class _EditIndividualProfileScreenState
                         SizedBox(
                           height: 10,
                         ),
-                        GestureDetector(
-                          onTap: _pickImage,
-                          child: Container(
-                            height: 148,
-                            width: 120,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: _selectedImage == null
-                                ? Center(
-                                    child: SizedBox(
-                                      height: 120,
-                                      width: 130,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          'http://173.249.27.4:343/${widget.profile.profileImageUrl}',
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 120,
-                                        width: 130,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.file(
-                                            _selectedImage!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Container(
-                                        height: 23,
-                                        width: 80,
-                                        decoration: BoxDecoration(
-                                          color: Constants().themeColor,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          'change',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
                         Padding(
                           padding: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width * 0.43),
+                              right: MediaQuery.of(context).size.width * 0.40),
                           child: Text(
-                            'Personal Information',
+                            'Group/Assocation',
                             style: TextStyle(
                               fontSize: 22,
                               color: Colors.black87,
@@ -254,84 +191,49 @@ class _EditIndividualProfileScreenState
                             ),
                           ),
                         ),
-                        const SizedBox(height: 30),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: _buildField(firstNameController, "First Name"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: _buildField(lastNameController, "Last Name"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: _buildField(emailController, "Email"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: _buildField(phoneController, "Phone Number"),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width * 0.55),
-                          child: Text(
-                            'Address Details',
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'Satoshi',
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child:
-                              _buildField(streetController, "Street Address"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: _buildField(areaController, "Area"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: _buildField(cityController, "City"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: _buildField(stateController, "State"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: _buildField(zipController, "Zip Code"),
-                        ),
-                        // const SizedBox(height: 5),
-                        // state.status == LoginStatus.updateProfileLoading
-                        //     ? CircularProgressIndicator()
-                        //     : ElevatedButton(
-                        //         onPressed: _submit,
-                        //         child: Text("Save Changes"),
-                        //       ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 25),
-                  BackAndNextButton(onBackPressed: () {
-                    Navigator.of(context).pop();
-                  }, onNextPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                GroupAssociationEditIndividual()));
-                  }),
-                  const SizedBox(height: 25),
+                  SizedBox(
+                    width: 342,
+                    height: 60,
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Constants().themeColor,
+                          minimumSize: const Size(200, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Save Changes',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Satoshi',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(width: 10),
+                            Image.asset(
+                              'assets/update_check.png',
+                              width: 20,
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // const SizedBox(height: 25),
                 ],
               ),
             ),

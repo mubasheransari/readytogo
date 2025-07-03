@@ -21,7 +21,8 @@ class IndividualProfileScreen extends StatefulWidget {
   const IndividualProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<IndividualProfileScreen> createState() => _IndividualProfileScreenState();
+  State<IndividualProfileScreen> createState() =>
+      _IndividualProfileScreenState();
 }
 
 class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
@@ -41,16 +42,19 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
 
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state.status == LoginStatus.updateProfileError && state.errorMessage != null) {
+        if (state.status == LoginStatus.updateProfileError &&
+            state.errorMessage != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errorMessage!)),
           );
         }
       },
       builder: (context, state) {
-        if (state.status == LoginStatus.profileLoading || state.status == LoginStatus.updateProfileLoading) {
+        if (state.status == LoginStatus.profileLoading ||
+            state.status == LoginStatus.updateProfileLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state.status == LoginStatus.profileLoaded && state.profile != null) {
+        } else if (state.status == LoginStatus.profileLoaded &&
+            state.profile != null) {
           final profile = state.profile!;
           return CustomScaffoldWidget(
             isDrawerRequired: true,
@@ -58,7 +62,8 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
             body: DecoratedBox(
               decoration: BoxDecoration(color: Color(0xFFF6F7FF)),
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 children: [
                   Container(
                     decoration: BoxDecoration(
@@ -120,13 +125,16 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
                               final shouldRefresh = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditIndividualProfileScreen(profile: profile),
+                                  builder: (context) =>
+                                      EditIndividualProfileScreen(
+                                          profile: profile),
                                 ),
                               );
                               if (shouldRefresh == true) {
                                 final userId = GetStorage().read("id");
                                 if (userId != null) {
-                                  context.read<LoginBloc>().add(GetIndividualProfile(userId: userId));
+                                  context.read<LoginBloc>().add(
+                                      GetIndividualProfile(userId: userId));
                                 }
                               }
                             },
@@ -143,7 +151,7 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
                     'Groups/Association',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 16,
+                      fontSize: 19,
                       color: Colors.black87,
                       fontFamily: 'Satoshi',
                     ),
@@ -204,7 +212,9 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
           ),
           _detailRow(
             label: 'Zip Code:',
-            value: profile.locations.isNotEmpty ? profile.locations[0]["zipCode"] ?? "N/A" : "N/A",
+            value: profile.locations.isNotEmpty
+                ? profile.locations[0]["zipCode"] ?? "N/A"
+                : "N/A",
           ),
         ],
       ),
@@ -251,7 +261,7 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      height: screenWidth * 0.35,
+      height: screenWidth * 0.30,
       width: screenWidth * 0.92,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -273,8 +283,8 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
           Row(
             children: [
               Container(
-                height: screenWidth * 0.12,
-                width: screenWidth * 0.12,
+                height: screenWidth * 0.10,
+                width: screenWidth * 0.10,
                 decoration: BoxDecoration(
                   color: Color(0xffDBE4FF),
                   borderRadius: BorderRadius.circular(12),
@@ -283,17 +293,18 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
                   padding: EdgeInsets.all(screenWidth * 0.03),
                   child: Image.asset(
                     "assets/users-02.png",
+                    //  height: 48,width:48
                     fit: BoxFit.contain,
                   ),
                 ),
               ),
-              SizedBox(width: screenWidth * 0.04),
+              SizedBox(width: screenWidth * 0.02),
               Expanded(
                 child: Text(
                   title,
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    fontSize: screenWidth * 0.05,
+                    fontSize: screenWidth * 0.04,
                     color: Colors.black87,
                     fontFamily: 'Satoshi',
                   ),
