@@ -63,3 +63,7 @@ class UpdateIndividualProfile extends LoginEvent {
     this.profileImage,
   });
 }
+
+class GetAllAssociatedGroups extends LoginEvent {
+}
+

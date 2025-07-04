@@ -82,7 +82,7 @@ void showLocalNotification(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    await GetStorage.init();
+  await GetStorage.init();
   /*await Firebase.initializeApp();
 
   await initializeLocalNotifications();
@@ -127,21 +127,25 @@ void main() async {
           lazy: false,
           create: (context) => SignUpBloc(),
         ),
-       role == "Individual"
+        role == "Individual"
             ? BlocProvider<LoginBloc>(
                 lazy: false,
-                create: (context) =>
-                    LoginBloc()..add(GetIndividualProfile(userId: value)),
-              ):role == "Professional"
-            ? BlocProvider<LoginBloc>(
-                lazy: false,
-                create: (context) =>
-                    LoginBloc()..add(GetProfessionalProfile(userId: value)),
+                create: (context) => LoginBloc()
+                  ..add(GetIndividualProfile(userId: value))
+                  ..add(GetAllAssociatedGroups()),
               )
-            : BlocProvider<LoginBloc>(
-                lazy: false,
-                create: (context) => LoginBloc(),
-              ),
+            : role == "Professional"
+                ? BlocProvider<LoginBloc>(
+                    lazy: false,
+                    create: (context) => LoginBloc()
+                      ..add(GetProfessionalProfile(userId: value))
+                      ..add(GetAllAssociatedGroups()),
+                  )
+                : BlocProvider<LoginBloc>(
+                    lazy: false,
+                    create: (context) =>
+                        LoginBloc()..add(GetAllAssociatedGroups()),
+                  ),
         BlocProvider<ForgetPasswordBloc>(
           lazy: false,
           create: (context) => ForgetPasswordBloc(),

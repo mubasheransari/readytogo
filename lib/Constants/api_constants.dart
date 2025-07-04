@@ -14,5 +14,6 @@ class ApiConstants {
   static const String sendPushNotification = "notification/send-notification";
   static const String getIndividualProfileData = "profile/individual/";
   static const String getProfessionalProfileData = "profile/professional/";
+  static const String getAllAssociatedGroups = "api/profile/groups";
 
 }

@@ -13,6 +13,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetIndividualProfile>(_getIndividualProfile);
     on<GetProfessionalProfile>(_getProfessionalProfile);
     on<UpdateIndividualProfile>(updateIndividualProfile);
+    on<GetAllAssociatedGroups>(getAllAssociatedGroups);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -131,6 +132,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+   getAllAssociatedGroups(
+    GetAllAssociatedGroups event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.getAllGroupsLoading));
+
+    final getallgroups = await loginRepository.getAllAssociatedGroup();
+    
+
+    if (getallgroups != null) {
+      emit(state.copyWith(getAllAssociatedGroupModel: getallgroups, status: LoginStatus.getAllGroupsSuccess));
+    } else {
+      emit(state.copyWith(
+        status: LoginStatus.getAllGroupsError,
+        //errorMessage: "Failed to fetch profile: ${e.toString()}",
+      ));
+    }
+  }
+
   _getIndividualProfile(
     GetIndividualProfile event,
     Emitter<LoginState> emit,
@@ -184,7 +204,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (response.statusCode == 200) {
       // ✅ Refetch profile from server after update
       final refreshedProfile = await loginRepository.individualProfile(event.userId);
-      
+
 
       emit(state.copyWith(
         status: LoginStatus.profileLoaded,
