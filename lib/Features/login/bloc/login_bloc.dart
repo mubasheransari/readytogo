@@ -184,6 +184,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (response.statusCode == 200) {
       // ✅ Refetch profile from server after update
       final refreshedProfile = await loginRepository.individualProfile(event.userId);
+      
 
       emit(state.copyWith(
         status: LoginStatus.profileLoaded,

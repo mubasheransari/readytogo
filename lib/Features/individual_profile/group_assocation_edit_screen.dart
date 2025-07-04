@@ -12,8 +12,37 @@ import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
 
 class GroupAssociationEditIndividual extends StatefulWidget {
-  GroupAssociationEditIndividual({
+  final IndividualProfileModel profile;
+  final File? selectedImageFile;
+  final String? imageUrl;
+  final String userid,
+      firstName,
+      lastName,
+      phone,
+      street,
+      area,
+      city,
+      states,
+      zip,
+      email;
+  final bool isAddressChanged;
+
+  const GroupAssociationEditIndividual({
     super.key,
+    required this.profile,
+    this.selectedImageFile,
+    this.imageUrl,
+    required this.userid,
+    required this.firstName,
+    required this.lastName,
+    required this.phone,
+    required this.street,
+    required this.area,
+    required this.city,
+    required this.states,
+    required this.zip,
+    required this.email,
+    required this.isAddressChanged,
   });
 
   @override
@@ -28,15 +57,343 @@ class _GroupAssociationEditIndividualState
   File? _selectedImage;
   bool _submitted = false;
 
-  late TextEditingController firstNameController;
-  late TextEditingController lastNameController;
-  late TextEditingController emailController;
-  late TextEditingController phoneController;
-  late TextEditingController streetController;
-  late TextEditingController areaController;
-  late TextEditingController cityController;
-  late TextEditingController stateController;
-  late TextEditingController zipController;
+  @override
+  void initState() {
+    super.initState();
+    _selectedImage = widget.selectedImageFile; // ✅ FIX
+  }
+
+  void _submit() {
+    if (_formKey.currentState!.validate()) {
+      final updatedProfile = widget.profile.copyWith(
+          firstname: widget.firstName,
+          lastname: widget.lastName,
+          email: widget.email,
+          phoneNumber: widget.phone,
+          locations: [
+            {
+              "id": widget.userid,
+              "streetAddress": "samar",
+              "area": "vewvwevew",
+              "city": "wvevewvewv",
+              "state": "ewkhfkjhewiufhew",
+              "zipCode": "34796983",
+              "latitude": 0,
+              "longitude": 0
+            }
+          ]
+          // widget.isAddressChanged
+          //     ?
+          // [
+          //     {
+          //       "id": widget.userid,
+          //       "streetAddress": widget.street,
+          //       "area": widget.area,
+          //       "city": widget.city,
+          //       "state": widget.states,
+          //       "zipCode": widget.zip,
+          //       "latitude": 0,
+          //       "longitude": 0
+          //     }
+          //   ]
+          //     : widget.profile.locations,
+          );
+      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
+      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
+      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
+      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
+
+      context.read<LoginBloc>().add(UpdateIndividualProfile(
+            userId: widget.userid,
+            profile: updatedProfile,
+            profileImage: _selectedImage,
+          ));
+    }
+  }
+
+  Widget _buildProfileImage() {
+    return GestureDetector(
+      onTap: () async {
+        final XFile? image =
+            await _picker.pickImage(source: ImageSource.gallery);
+        if (image != null) {
+          setState(() => _selectedImage = File(image.path));
+        }
+      },
+      child: Container(
+        height: 148,
+        width: 120,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+        child: _selectedImage != null
+            ? Column(
+                children: [
+                  SizedBox(
+                    height: 120,
+                    width: 130,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(
+                        _selectedImage!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Container(
+                    height: 23,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Constants().themeColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Change',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              )
+            : Center(
+                child: SizedBox(
+                  height: 120,
+                  width: 130,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      'http://173.249.27.4:343/${widget.imageUrl}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      body: BlocConsumer<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state.status == LoginStatus.profileLoaded &&
+              state.profile != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Profile updated successfully",
+                    style: TextStyle(color: Colors.white)),
+                backgroundColor: Colors.green,
+              ),
+            );
+            Navigator.pop(context);
+          } else if (state.status == LoginStatus.updateProfileError) {
+            print("UPDATE FAILED ${state.errorMessage}");
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage ?? "Update failed"),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const SizedBox(height: 60),
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const CircleAvatar(
+                          radius: 19,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.arrow_back,
+                              color: Colors.black, size: 19),
+                        ),
+                      ),
+                      const SizedBox(width: 17),
+                      const Text(
+                        'Edit Profile',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Satoshi',
+                        ),
+                      ),
+                      const Spacer(),
+                      const Text(
+                        '2 of 2 page',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Satoshi',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: MediaQuery.of(context).size.width * 0.40),
+                          child: const Text(
+                            'Group/Association',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Satoshi',
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Column(
+                            children: List.generate(
+                              widget.profile.groupAssociations.length,
+                              (index) => ListTile(
+                                trailing: IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    print(
+                                        "ID ${widget.profile.groupAssociations[index]['id']}");
+                                  },
+                                ),
+                                title: Text(widget.profile
+                                    .groupAssociations[index]['groupName']),
+                              ),
+                            ),
+                          ),
+                        )
+                        // const SizedBox(height: 20),
+                        // _buildProfileImage(),
+                        // ListView.builder(
+                        //     physics: NeverScrollableScrollPhysics(),
+                        //     shrinkWrap: true,
+                        //     itemCount: widget.profile.groupAssociations.length,
+                        //     itemBuilder: (context, index) {
+                        //       return ListTile(
+                        //           title: Text(widget.profile
+                        //               .groupAssociations[index]['groupName']));
+                        //     })
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  SizedBox(
+                    width: 342,
+                    height: 60,
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: _submit,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Constants().themeColor,
+                          minimumSize: const Size(200, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Save Changes',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Satoshi',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Image.asset(
+                              'assets/update_check.png',
+                              width: 20,
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/*class GroupAssociationEditIndividual extends StatefulWidget {
+  final IndividualProfileModel profile;
+ // File? selectedImage;
+ final File? selectedImageFile;
+final String? imageUrl;
+  String userid,
+      firstName,
+      lastName,
+      phone,
+      street,
+      area,
+      city,
+      states,
+      zip,
+      email;
+
+  GroupAssociationEditIndividual(
+      {super.key,
+      required this.profile,
+      this.selectedImageFile,
+      this.imageUrl,
+      required this.userid,
+      required this.firstName,
+      required this.lastName,
+      required this.phone,
+      required this.street,
+      required this.area,
+      required this.city,
+      required this.states,
+      required this.zip,
+      required this.email});
+
+  @override
+  State<GroupAssociationEditIndividual> createState() =>
+      _GroupAssociationEditIndividualState();
+}
+
+class _GroupAssociationEditIndividualState
+    extends State<GroupAssociationEditIndividual> {
+  final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
+  bool _submitted = false;
+
+  // late TextEditingController firstNameController;
+  // late TextEditingController lastNameController;
+  // late TextEditingController emailController;
+  // late TextEditingController phoneController;
+  // late TextEditingController streetController;
+  // late TextEditingController areaController;
+  // late TextEditingController cityController;
+  // late TextEditingController stateController;
+  // late TextEditingController zipController;
 
   @override
   void initState() {
@@ -60,21 +417,21 @@ class _GroupAssociationEditIndividualState
     //     text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
   }
 
-  /* void _submit() {
+  void _submit() {
     setState(() => _submitted = true);
     if (_formKey.currentState!.validate()) {
       final updatedProfile = widget.profile.copyWith(
-        firstname: firstNameController.text,
-        lastname: lastNameController.text,
-        email: emailController.text,
-        phoneNumber: phoneController.text,
+        firstname: widget.firstName,
+        lastname: widget.lastName,
+        email: widget.email,
+        phoneNumber: widget.phone,
         locations: [
           {
-            "streetAddress": streetController.text,
-            "area": areaController.text,
-            "city": cityController.text,
-            "state": stateController.text,
-            "zipCode": zipController.text,
+            "streetAddress": widget.street,
+            "area": widget.area,
+            "city": widget.city,
+            "state": widget.states,
+            "zipCode": widget.zip,
           }
         ],
       );
@@ -89,7 +446,7 @@ class _GroupAssociationEditIndividualState
             ));
       }
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +535,7 @@ class _GroupAssociationEditIndividualState
                         SizedBox(
                           height: 10,
                         ),
-                        Padding(
+                        Padding(//Testing
                           padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width * 0.40),
                           child: Text(
@@ -200,7 +557,9 @@ class _GroupAssociationEditIndividualState
                     height: 60,
                     child: Center(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _submit();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Constants().themeColor,
                           minimumSize: const Size(200, 50),
@@ -384,3 +743,4 @@ class _GroupAssociationEditIndividualState
   //   );
   // }
 }
+*/

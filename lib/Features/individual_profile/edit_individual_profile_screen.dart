@@ -25,8 +25,9 @@ class _EditIndividualProfileScreenState
     extends State<EditIndividualProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-  File? _selectedImage;
+  File? selectedImage;
   bool _submitted = false;
+  final userId = GetStorage().read("id");
 
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
@@ -60,10 +61,42 @@ class _EditIndividualProfileScreenState
         text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
   }
 
+  bool _isAddressChanged() {
+    final location =
+        widget.profile.locations.isNotEmpty ? widget.profile.locations[0] : {};
+    return streetController.text != (location['streetAddress'] ?? '') ||
+        areaController.text != (location['area'] ?? '') ||
+        cityController.text != (location['city'] ?? '') ||
+        stateController.text != (location['state'] ?? '') ||
+        zipController.text != (location['zipCode'] ?? '');
+  }
+
+  /*@override
+  void initState() {
+    super.initState();
+    final p = widget.profile;
+    firstNameController = TextEditingController(text: p.firstname);
+    lastNameController = TextEditingController(text: p.lastname);
+    emailController = TextEditingController(text: p.email);
+    phoneController = TextEditingController(text: p.phoneNumber);
+    streetController = TextEditingController(
+        text: p.locations.isNotEmpty
+            ? p.locations[0]['streetAddress'] ?? ''
+            : '');
+    areaController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['area'] ?? '' : '');
+    cityController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['city'] ?? '' : '');
+    stateController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['state'] ?? '' : '');
+    zipController = TextEditingController(
+        text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
+  }*/
+
   _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      setState(() => _selectedImage = File(image.path));
+      setState(() => selectedImage = File(image.path));
     }
   }
 
@@ -92,7 +125,7 @@ class _EditIndividualProfileScreenState
         context.read<LoginBloc>().add(UpdateIndividualProfile(
               userId: userId,
               profile: updatedProfile,
-              profileImage: _selectedImage,
+              profileImage: selectedImage,
             ));
       }
     }
@@ -193,7 +226,7 @@ class _EditIndividualProfileScreenState
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: _selectedImage == null
+                            child: selectedImage == null
                                 ? Center(
                                     child: SizedBox(
                                       height: 120,
@@ -216,7 +249,7 @@ class _EditIndividualProfileScreenState
                                           borderRadius:
                                               BorderRadius.circular(8),
                                           child: Image.file(
-                                            _selectedImage!,
+                                            selectedImage!,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -325,11 +358,49 @@ class _EditIndividualProfileScreenState
                   BackAndNextButton(onBackPressed: () {
                     Navigator.of(context).pop();
                   }, onNextPressed: () {
+                    // No change required — your code is already correct in this file
+
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                GroupAssociationEditIndividual()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GroupAssociationEditIndividual(
+                          profile: widget.profile,
+                          area: areaController.text,
+                          city: cityController.text,
+                          firstName: firstNameController.text,
+                          lastName: lastNameController.text,
+                          phone: phoneController.text,
+                          selectedImageFile: selectedImage,
+                          imageUrl: widget.profile.profileImageUrl,
+                          states: stateController.text,
+                          street: streetController.text,
+                          userid: userId,
+                          zip: zipController.text,
+                          email: widget.profile.email,
+                          isAddressChanged: _isAddressChanged(),
+                        ),
+                      ),
+                    );
+
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) =>
+                    //             GroupAssociationEditIndividual(
+                    //               profile: widget.profile,
+                    //               area: areaController.text,
+                    //               city: cityController.text,
+                    //               firstName: firstNameController.text,
+                    //               lastName: lastNameController.text,
+                    //               phone: phoneController.text,
+                    //               selectedImageFile: selectedImage,
+                    //               imageUrl: widget.profile.profileImageUrl,
+                    //               states: stateController.text,
+                    //               street: streetController.text,
+                    //               userid: userId,
+                    //               zip: zipController.text,
+                    //               email: widget.profile.email,
+                    //             )));
                   }),
                   const SizedBox(height: 25),
                 ],
@@ -410,75 +481,4 @@ class _EditIndividualProfileScreenState
       ),
     );
   }
-
-/*  Widget _buildField(TextEditingController controller, String label,
-      {bool obscureText = false}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w900,
-            fontFamily: 'Satoshi',
-            color: Color(0xff323747),
-          ),
-        ),
-        const SizedBox(height: 5),
-        Container(
-          width: 376,
-          height: 60,
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [
-                Color(0xFFE6DCFD),
-                Color(0xFFD8E7FF),
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: TextFormField(
-            controller: controller,
-            obscureText: obscureText,
-            validator: (value) =>
-                value == null || value.isEmpty ? 'Required' : null,
-            decoration: InputDecoration(
-              hintText: 'Enter $label',
-              hintStyle: const TextStyle(
-                color: Color(0xff666F80),
-                fontSize: 18,
-                fontFamily: 'Satoshi',
-                fontWeight: FontWeight.w500,
-              ),
-              filled: true,
-              fillColor: Colors.transparent, // shows gradient background
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide.none,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-      ],
-    );
-  }*/
-
-  // Widget _buildField(TextEditingController controller, String label) {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(bottom: 12),
-  //     child: TextFormField(
-  //       controller: controller,
-  //       decoration: InputDecoration(
-  //         labelText: label,
-  //         border: OutlineInputBorder(),
-  //       ),
-  //       validator: (value) =>
-  //           value == null || value.isEmpty ? 'Required' : null,
-  //     ),
-  //   );
-  // }
 }
