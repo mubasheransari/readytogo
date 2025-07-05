@@ -84,12 +84,12 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 18,
+                                  fontSize: 22,
                                 ),
                               ),
-                              SizedBox(height: 4),
+                              // SizedBox(height: 4),
                               Text(
-                                profile.role,
+                                "(${profile.role})",
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontWeight: FontWeight.w500,
@@ -100,23 +100,30 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                           ),
                         ),
                         Container(
+                          height: 45,
+                          width: 45,
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
                             color: Colors.white.withOpacity(0.3),
-                            shape: BoxShape.circle,
+                            // shape: BoxShape.circle,
                           ),
                           child: IconButton(
-                            onPressed: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             EditIndividualProfileScreen()));
-                            },
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
-                          ),
+                              onPressed: () {
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             EditIndividualProfileScreen()));
+                              },
+                              icon: Image.asset(
+                                "assets/icon_edit.png",
+                                color: Colors.black,
+                              )
+                              // Icon(
+                              //   Icons.edit,
+                              //   color: Colors.white,
+                              // ),
+                              ),
                         ),
                       ],
                     ),
@@ -178,7 +185,7 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "No Description",
+                          profile.description,
                           style: TextStyle(fontFamily: 'satoshi', fontSize: 13),
                         ),
                       ],

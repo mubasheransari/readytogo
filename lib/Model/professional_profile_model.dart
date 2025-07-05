@@ -15,6 +15,7 @@ class ProfessionalProfileModel {
   final String userName;
   final String profileImageUrl;
   final String organizationName;
+  final String description;
   final dynamic organizationJoiningDate;
   final List<GroupAssociation> groupAssociations;
   final List<String> specializations;
@@ -30,6 +31,7 @@ class ProfessionalProfileModel {
     required this.userName,
     required this.profileImageUrl,
     required this.organizationName,
+    required this.description,
     required this.organizationJoiningDate,
     required this.groupAssociations,
     required this.specializations,
@@ -47,6 +49,7 @@ class ProfessionalProfileModel {
       userName: json["userName"] ?? '',
       profileImageUrl: json["profileImageUrl"] ?? '',
       organizationName: json["organizationName"] ?? '',
+      description : json["description"]?? '',
       organizationJoiningDate: json["organizationJoiningDate"],
       groupAssociations: (json["groupAssociations"] ?? [])
           .map<GroupAssociation>((x) => GroupAssociation.fromJson(x))
@@ -67,6 +70,7 @@ class ProfessionalProfileModel {
       "userName": userName,
       "profileImageUrl": profileImageUrl,
       "organizationName": organizationName,
+      "description":description,
       "organizationJoiningDate": organizationJoiningDate,
       "groupAssociations": groupAssociations.map((x) => x.toJson()).toList(),
       "specializations": specializations,

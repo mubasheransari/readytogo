@@ -45,6 +45,10 @@ class LoginSuccessScreen extends StatelessWidget {
                     // final role = state.role;
                     final storage = GetStorage();
                     final String? role = storage.read("role");
+                    print("ROLE ::::: $role");
+                    print("ROLE ::::: $role");
+                    print("ROLE ::::: $role");
+                    print("ROLE ::::: $role");
 
                     if (role == "Individual") {
                       if (state.status == LoginStatus.profileLoaded &&
@@ -56,8 +60,7 @@ class LoginSuccessScreen extends StatelessWidget {
                           textSize: 35,
                           fontWeight: FontWeight.w500,
                         );
-                      } 
-                      else if (state.status == LoginStatus.profileLoading) {
+                      } else if (state.status == LoginStatus.profileLoading) {
                         return const SizedBox(
                           width: 20,
                           height: 20,
@@ -65,8 +68,7 @@ class LoginSuccessScreen extends StatelessWidget {
                               strokeWidth: 2, color: Colors.white),
                         );
                       }
-                    } 
-                    else if (role == "Professional") {
+                    } else if (role == "Professional") {
                       if (state.status ==
                               LoginStatus.professionalProfileLoaded &&
                           state.professionalProfileModel != null) {
@@ -77,7 +79,8 @@ class LoginSuccessScreen extends StatelessWidget {
                           textSize: 35,
                           fontWeight: FontWeight.w500,
                         );
-                      } else if (state.status == LoginStatus.professionalProfileLoading) {
+                      } else if (state.status ==
+                          LoginStatus.professionalProfileLoading) {
                         return const SizedBox(
                           width: 20,
                           height: 20,

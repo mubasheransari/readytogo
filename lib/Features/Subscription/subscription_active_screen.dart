@@ -110,7 +110,8 @@ class _SubscriptionActiveScreenState extends State<SubscriptionActiveScreen> {
                         height: 51,
                         child: OutlinedButton(
                           onPressed: () {
-                            showCancelSubscriptionDialog(context);
+               
+                             showCancelSubscriptionDialog(context);
                           },
                           style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -136,8 +137,8 @@ class _SubscriptionActiveScreenState extends State<SubscriptionActiveScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        SubscriptionSuccess(image: widget.imageAsset)));
+                                    builder: (context) => SubscriptionSuccess(
+                                        image: widget.imageAsset)));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Constants().themeColor,
