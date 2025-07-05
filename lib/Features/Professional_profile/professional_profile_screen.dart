@@ -472,6 +472,7 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                     return Column(
                       children: [
                         _groupCard(
+                         // doctorImageUrls: 'assets/users-02.png',
                           context: context,
                           title: group.groupName,
                           memberCount: group.memberCount,
@@ -539,59 +540,7 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
     );
   }
 
-  Widget _detailRow({
-    required String label,
-    required String value,
-    bool isMultiline = false,
-  }) {
-    return Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: Row(
-          //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              '$label ',
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                  fontSize: 14,
-                  fontFamily: 'satoshi'),
-            ),
-            Text(
-              value,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontFamily: 'satoshi'),
-            ),
-          ],
-        )
 
-        /*RichText(
-        text: TextSpan(
-          text: '$label ',
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-              fontSize: 14,
-              fontFamily: 'satoshi'),
-          children: [
-            TextSpan(
-              text: value,
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontFamily: 'satoshi'),
-            ),
-          ],
-        ),
-        maxLines: isMultiline ? null : 1,
-        overflow: isMultiline ? TextOverflow.visible : TextOverflow.ellipsis,
-      ),*/
-        );
-  }
 
   Widget _groupCard({
     required BuildContext context,
