@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       role == "Individual"
           ? const IndividualProfileScreen()
           : role == "Professional"
-              ? const ProfessionalProfileScreen()
+              ?  ProfessionalProfileScreen()
               : const Center(child: Text("Unknown role")),
     ];
 
