@@ -69,11 +69,12 @@ class _GroupAssociationEditIndividualState
   void _submit() {
     if (_formKey.currentState!.validate()) {
       final updatedProfile = widget.profile.copyWith(
-          firstname: widget.firstName,
-          lastname: widget.lastName,
-          email: widget.email,
-          phoneNumber: widget.phone,
-          locations: [
+        firstname: widget.firstName,
+        lastname: widget.lastName,
+        email: widget.email,
+        phoneNumber: widget.phone,
+        locations:
+            /* [
             {
               "id": widget.userid,
               "streetAddress": "samar",
@@ -84,23 +85,22 @@ class _GroupAssociationEditIndividualState
               "latitude": 0,
               "longitude": 0
             }
-          ]
-          // widget.isAddressChanged
-          //     ?
-          // [
-          //     {
-          //       "id": widget.userid,
-          //       "streetAddress": widget.street,
-          //       "area": widget.area,
-          //       "city": widget.city,
-          //       "state": widget.states,
-          //       "zipCode": widget.zip,
-          //       "latitude": 0,
-          //       "longitude": 0
-          //     }
-          //   ]
-          //     : widget.profile.locations,
-          );
+          ]*/
+            widget.isAddressChanged
+                ? [
+                    {
+                      "id": widget.userid,
+                      "streetAddress": widget.street,
+                      "area": widget.area,
+                      "city": widget.city,
+                      "state": widget.states,
+                      "zipCode": widget.zip,
+                      "latitude": 0,
+                      "longitude": 0
+                    }
+                  ]
+                : widget.profile.locations,
+      );
       print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
       print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
       print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
