@@ -150,6 +150,27 @@ Future<List<GetAllAssociatedGroupModel>> getAllAssociatedGroup() async {
   );
 }
 
+  Future<http.Response> removeAffiliationsGroups(
+      String userId, String groupId) async {
+    return await _apiBaseHelper.post(
+      path: ApiConstants.removeAffiliationsGroups,
+      body: {
+        "userId": userId,
+        "groupId": groupId,
+      },
+    );
+  }
+  Future<http.Response> addAffiliationsGroups(
+      String userId, String groupId) async {
+    return await _apiBaseHelper.post(
+      path: ApiConstants.addAffiliationsGroups,
+      body: {
+        "userId": userId,
+        "groupId": groupId,
+      },
+    );
+  }
+
 
   /*Future<http.Response> updateIndividualProfile({
     required String id,

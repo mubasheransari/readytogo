@@ -210,39 +210,81 @@ class _GroupAssociationEditIndividualState
               child: Column(
                 children: [
                   const SizedBox(height: 60),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: const CircleAvatar(
-                          radius: 19,
-                          backgroundColor: Colors.white,
-                          child: Icon(Icons.arrow_back,
-                              color: Colors.black, size: 19),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () => Navigator.pop(context),
+                              child: const CircleAvatar(
+                                radius: 20,
+                                backgroundColor: Colors.white,
+                                child:
+                                    Icon(Icons.arrow_back, color: Colors.black),
+                              ),
+                            ),
+                            const SizedBox(
+                                width:
+                                    12), // 👈 Gap between back button and title
+                            const Text(
+                              'Edit Profile',
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: 'Satoshi',
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(width: 17),
-                      const Text(
-                        'Edit Profile',
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'Satoshi',
+                        const Text(
+                          '2 of 2 page',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Satoshi',
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      const Text(
-                        '2 of 2 page',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'Satoshi',
-                        ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  // Row(
+                  //   children: [
+                  //     InkWell(
+                  //       onTap: () => Navigator.pop(context),
+                  //       child: const CircleAvatar(
+                  //         radius: 19,
+                  //         backgroundColor: Colors.white,
+                  //         child: Icon(Icons.arrow_back,
+                  //             color: Colors.black, size: 19),
+                  //       ),
+                  //     ),
+                  //     const SizedBox(width: 17),
+                  //     const Text(
+                  //       'Edit Profile',
+                  //       style: TextStyle(
+                  //         fontSize: 22,
+                  //         color: Colors.black87,
+                  //         fontWeight: FontWeight.w700,
+                  //         fontFamily: 'Satoshi',
+                  //       ),
+                  //     ),
+                  //     const Spacer(),
+                  //     const Text(
+                  //       '2 of 2 page',
+                  //       style: TextStyle(
+                  //         fontSize: 15,
+                  //         color: Colors.black87,
+                  //         fontWeight: FontWeight.w700,
+                  //         fontFamily: 'Satoshi',
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: 20),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.95,
@@ -252,7 +294,7 @@ class _GroupAssociationEditIndividualState
                     ),
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         Padding(
                           padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width * 0.40),
@@ -272,13 +314,19 @@ class _GroupAssociationEditIndividualState
                             children: List.generate(
                               widget.profile.groupAssociations.length,
                               (index) => ListTile(
-                                trailing: IconButton(
+                                trailing: Image.asset("assets/icon_delete.png"),
+                                /*IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () {
+                                    context.read<LoginBloc>().add(//10@Testing
+                                        RemoveAffiliations(
+                                            userId: widget.userid,
+                                            groupId:
+                                                "a1111111-1111-1111-1111-111111111111"));
                                     print(
                                         "ID ${widget.profile.groupAssociations[index]['id']}");
                                   },
-                                ),
+                                ),*/
                                 title: Text(
                                   widget.profile.groupAssociations[index]
                                       ['groupName'],
@@ -370,9 +418,9 @@ class _GroupAssociationEditIndividualState
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
 
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
@@ -395,12 +443,12 @@ class _GroupAssociationEditIndividualState
                                     elevation: 0,
                                     decoration: InputDecoration(
                                       hintText: "Select group",
-                                      hintStyle: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black87,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: 'Satoshi',
-                                      ),
+                                      hintStyle:  TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Satoshi',
+                                  ),
                                       contentPadding:
                                           const EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 12),

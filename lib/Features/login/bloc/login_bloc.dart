@@ -14,6 +14,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetProfessionalProfile>(_getProfessionalProfile);
     on<UpdateIndividualProfile>(updateIndividualProfile);
     on<GetAllAssociatedGroups>(getAllAssociatedGroups);
+    on<RemoveAffiliations>(removeAffiliations);
+    on<AddAffiliations>(addAffiliations);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -223,6 +225,68 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     ));
   }
 }
+
+  removeAffiliations(
+    RemoveAffiliations event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.removeAffilicationGroupsLoading));
+
+    try {
+      final response = await loginRepository.removeAffiliationsGroups(
+        event.userId,
+        event.groupId,
+      );
+
+      print("Status Code: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        emit(state.copyWith(status: LoginStatus.removeAffilicationGroupsSuccess));
+      } else {
+        emit(state.copyWith(
+          status: LoginStatus.failure,
+          errorMessage: "Login failed with status ${response.statusCode}",
+        ));
+      }
+    } catch (e) {
+      print("Error in login: $e");
+      emit(state.copyWith(
+        status: LoginStatus.removeAffilicationGroupsError,
+        errorMessage: "An error occurred: ${e.toString()}",
+      ));
+    }
+  }
+
+   addAffiliations(
+    AddAffiliations event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.addAffilicationGroupsLoading));
+
+    try {
+      final response = await loginRepository.addAffiliationsGroups(
+        event.userId,
+        event.groupId,
+      );
+
+      print("Status Code: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        emit(state.copyWith(status: LoginStatus.addAffilicationGroupsSuccess));
+      } else {
+        emit(state.copyWith(
+          status: LoginStatus.failure,
+          errorMessage: "Login failed with status ${response.statusCode}",
+        ));
+      }
+    } catch (e) {
+      print("Error in login: $e");
+      emit(state.copyWith(
+        status: LoginStatus.addAffilicationGroupsError,
+        errorMessage: "An error occurred: ${e.toString()}",
+      ));
+    }
+  }
 
 
   /*updateIndividualProfile(

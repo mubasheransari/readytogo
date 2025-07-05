@@ -52,6 +52,7 @@ class GetProfessionalProfile extends LoginEvent {
     required this.userId,
   });
 }
+
 class UpdateIndividualProfile extends LoginEvent {
   final String userId;
   final IndividualProfileModel profile;
@@ -64,6 +65,19 @@ class UpdateIndividualProfile extends LoginEvent {
   });
 }
 
-class GetAllAssociatedGroups extends LoginEvent {
+class GetAllAssociatedGroups extends LoginEvent {}
+
+class AddAffiliations extends LoginEvent {
+  final String userId;
+  final String groupId;
+
+  AddAffiliations({required this.userId, required this.groupId});
+}
+
+class RemoveAffiliations extends LoginEvent {
+  final String userId;
+  final String groupId;
+
+  RemoveAffiliations({required this.userId, required this.groupId});
 }
 

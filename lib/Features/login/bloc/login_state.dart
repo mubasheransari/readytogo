@@ -27,6 +27,12 @@ enum LoginStatus {
   getAllGroupsLoading,
   getAllGroupsSuccess,
   getAllGroupsError,
+  removeAffilicationGroupsLoading,
+  removeAffilicationGroupsSuccess,
+  removeAffilicationGroupsError,
+  addAffilicationGroupsLoading,
+  addAffilicationGroupsSuccess,
+  addAffilicationGroupsError,
 }
 
 /// A unified state class for Login & Profile operations
