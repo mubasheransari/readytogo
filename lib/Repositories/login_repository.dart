@@ -137,15 +137,19 @@ class LoginRepository {
     return null;
   }
 
-  Future<GetAllAssociatedGroupModel> getAllAssociatedGroup() async {
-    final jsonResponse = await _apiBaseHelper.get(
-      url: ApiConstants.baseDomain,
-      path: ApiConstants.getAllAssociatedGroups,
-    );
-    print(jsonResponse);
+Future<List<GetAllAssociatedGroupModel>> getAllAssociatedGroup() async {
+  final jsonResponse = await _apiBaseHelper.get(
+    url: ApiConstants.baseDomain,
+    path: ApiConstants.getAllAssociatedGroups,
+  );
 
-    return GetAllAssociatedGroupModel.fromJson(jsonResponse);
-  }
+  print(jsonResponse); // Should print a List of maps
+
+  return List<GetAllAssociatedGroupModel>.from(
+    jsonResponse.map((x) => GetAllAssociatedGroupModel.fromJson(x)),
+  );
+}
+
 
   /*Future<http.Response> updateIndividualProfile({
     required String id,

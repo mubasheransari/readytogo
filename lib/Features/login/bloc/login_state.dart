@@ -36,7 +36,7 @@ class LoginState extends Equatable {
   final String? token;
   final IndividualProfileModel? profile;
   final ProfessionalProfileModel? professionalProfileModel;
-  final GetAllAssociatedGroupModel? getAllAssociatedGroupModel;
+final List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel;
 
   const LoginState(
       {this.status = LoginStatus.initial,
@@ -54,7 +54,7 @@ class LoginState extends Equatable {
     String? token,
     IndividualProfileModel? profile,
     ProfessionalProfileModel? professionalProfileModel,
-    GetAllAssociatedGroupModel? getAllAssociatedGroupModel
+ List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel,
   }) {
     return LoginState(
         status: status ?? this.status,

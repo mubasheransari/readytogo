@@ -5,8 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:readytogo/widgets/back_next_button_widget.dart';
+import '../../Constants/api_constants.dart';
 import '../../Constants/constants.dart';
+import '../../Model/get_all_associated_groups_model.dart';
 import '../../Model/individual_profile_model.dart';
+import '../../widgets/custom_dropdown_widget.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
@@ -173,6 +176,8 @@ class _GroupAssociationEditIndividualState
 
   @override
   Widget build(BuildContext context) {
+    final List<GetAllAssociatedGroupModel> selectedGroups = [];
+    GetAllAssociatedGroupModel? _dropdownValue;
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: BlocConsumer<LoginBloc, LoginState>(
@@ -274,12 +279,240 @@ class _GroupAssociationEditIndividualState
                                         "ID ${widget.profile.groupAssociations[index]['id']}");
                                   },
                                 ),
-                                title: Text(widget.profile
-                                    .groupAssociations[index]['groupName']),
+                                title: Text(
+                                  widget.profile.groupAssociations[index]
+                                      ['groupName'],
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Satoshi',
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        )
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        /* CustomDropdown(//10@Testing
+                          hint: "Select Group",
+                          onChanged: (value) {},
+                          items: selectedGroups
+                              .map<DropdownMenuItem<String>>((value) {
+                            return DropdownMenuItem<String>(
+                              value: value.name,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  value.name,
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 16),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),*/
+                        //  SizedBox(
+                        //   width: MediaQuery.of(context).size.width * 0.84,
+                        //   child: DropdownButtonFormField<
+                        //       GetAllAssociatedGroupModel>(
+                        //     //  isExpanded: true,
+                        //     decoration: InputDecoration(
+                        //       hintText: "Select group",
+                        //       contentPadding: const EdgeInsets.symmetric(
+                        //           horizontal: 12, vertical: 12),
+                        //       border: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.circular(16),
+                        //       ),
+                        //       enabledBorder: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.circular(16),
+                        //         borderSide:
+                        //             const BorderSide(color: Colors.grey),
+                        //       ),
+                        //       focusedBorder: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.circular(16),
+                        //         borderSide:
+                        //             const BorderSide(color: Colors.purple),
+                        //       ),
+                        //     ),
+                        //     value: _dropdownValue,
+                        //     items: selectedGroups.map((group) {
+                        //       return DropdownMenuItem<
+                        //           GetAllAssociatedGroupModel>(
+                        //         value: group,
+                        //         child: Text(group.name),
+                        //       );
+                        //     }).toList(),
+                        //     onChanged: (group) {
+                        //       if (group != null &&
+                        //           !selectedGroups.contains(group)) {
+                        //         setState(() {
+                        //           _dropdownValue = group;
+                        //           selectedGroups.add(group);
+                        //         });
+                        //       }
+                        //     },
+                        //   ),
+                        // ),10@Testing
+
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: MediaQuery.of(context).size.width * 0.53),
+                          child: const Text(
+                            'Select Group',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Satoshi',
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: BlocBuilder<LoginBloc, LoginState>(
+                            builder: (context, state) {
+                              final allGroups =
+                                  state.getAllAssociatedGroupModel ??
+                                      []; // full API list
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.83,
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    canvasColor: Colors.white,
+                                    dropdownMenuTheme: DropdownMenuThemeData(
+                                        //elevation: 0, // ✅ Set elevation to 0
+                                        ),
+                                  ),
+                                  child: DropdownButtonFormField<
+                                      GetAllAssociatedGroupModel>(
+                                    elevation: 0,
+                                    decoration: InputDecoration(
+                                      hintText: "Select group",
+                                      hintStyle: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Satoshi',
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 12),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        borderSide: const BorderSide(
+                                            color: Colors.white),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        borderSide: const BorderSide(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    value: _dropdownValue,
+                                    items: allGroups.map((group) {
+                                      return DropdownMenuItem<
+                                          GetAllAssociatedGroupModel>(
+                                        value: group,
+                                        child: Text(
+                                          group.name,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: 'Satoshi',
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (group) {
+                                      if (group != null &&
+                                          !selectedGroups.contains(group)) {
+                                        setState(() {
+                                          _dropdownValue = group;
+                                          selectedGroups.add(group);
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 20,
+                        ),
+
+                        /*  BlocBuilder<LoginBloc, LoginState>(
+                          builder: (context, state) {
+                            GetAllAssociatedGroupModel? _selectedGroup;
+                            // 1️⃣ Loading indicator while waiting
+                            if (state.status ==
+                                LoginStatus.getAllGroupsLoading) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+
+                            // 2️⃣ Error text
+                            if (state.status == LoginStatus.getAllGroupsError) {
+                              return const Text('Failed to load groups');
+                            }//10@Testing
+
+                            // 3️⃣ Success → build dropdown
+
+                            return DropdownButtonFormField<
+                                GetAllAssociatedGroupModel>(
+                              hint: const Text(
+                                  'Select group'), // <-- “Select group”
+                              value: _selectedGroup, // currently chosen
+                              items: state.getAllAssociatedGroupModel!.map((g) {
+                                return DropdownMenuItem<
+                                    GetAllAssociatedGroupModel>(
+                                  value: g,
+                                  child: Row(
+                                    children: [
+                                      // Optional icon (remove if you don’t need it)
+                                      Image.network(
+                                        '${ApiConstants.baseDomain}${g.iconUrl}',
+                                        color:  Colors.black,
+                                        width: 24,
+                                        height: 24,
+                                        errorBuilder: (_, __, ___) =>
+                                            const SizedBox(width: 24),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(g.name),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() => _selectedGroup = value);
+                                // ‑‑ if you need to pass the ID somewhere:
+                                // context.read<SomeOtherBloc>().add(SetGroupId(value?.id));
+                              },
+                              // decoration: const InputDecoration(
+                              //   border: OutlineInputBorder(),
+                              //   contentPadding: EdgeInsets.symmetric(
+                              //       horizontal: 12, vertical: 8),
+                              // ),
+                              validator: (value) => value == null
+                                  ? 'Please select a group'
+                                  : null,
+                            );
+                          },
+                        ),*/
                         // const SizedBox(height: 20),
                         // _buildProfileImage(),
                         // ListView.builder(
