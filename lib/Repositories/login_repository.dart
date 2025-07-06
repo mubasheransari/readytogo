@@ -60,6 +60,73 @@ class LoginRepository {
     return ProfessionalProfileModel.fromJson(jsonResponse);
   }
 
+    Future<http.Response> updateProfessionalProfile({
+    required String id,
+    required ProfessionalProfileModel profile,
+    File? profileImage,
+  }) async {
+    var uri = Uri.parse(
+        'http://173.249.27.4:343/api/Profile/professional/edit-profile');
+
+    var request = http.MultipartRequest('PUT', uri);
+
+    // Basic fields
+    request.fields.addAll({
+      "UserId": id,
+      "FirstName": profile.firstname,
+      "LastName": profile.lastname,
+      "Email": profile.email,
+      "Description": profile.description,
+      "PhoneNumber": profile.phoneNumber,
+      "StreetAddress": profile.locations.isNotEmpty
+          ? profile.locations[0]["streetAddress"] ?? ""
+          : "",
+      "Area": profile.locations.isNotEmpty
+          ? profile.locations[0]["area"] ?? ""
+          : "",
+      "City": profile.locations.isNotEmpty
+          ? profile.locations[0]["city"] ?? ""
+          : "",
+      "State": profile.locations.isNotEmpty
+          ? profile.locations[0]["state"] ?? ""
+          : "",
+      "ZipCode": profile.locations.isNotEmpty
+          ? profile.locations[0]["zipCode"] ?? ""
+          : "",
+      "Description": "Updated via app",
+      "ProfileImageUrl": profile.profileImageUrl,
+      "Locations": jsonEncode(profile.locations),
+    });
+
+    // 🔐 Only add if valid
+    final orgId = _extractOrganizationId(profile.organizationProfessionals);
+    if (orgId != null && orgId.isNotEmpty) {
+      request.fields["OrganizationId"] = orgId;
+    }
+
+    if (profile.specializations is List &&
+        (profile.specializations as List).isNotEmpty) {
+      request.fields["SpecializationIds"] = jsonEncode(profile.specializations);
+    }
+
+    if (profile.organizationProfessionals is List &&
+        (profile.organizationProfessionals as List).isNotEmpty) {
+      request.fields["ProfessionalIds"] =
+          jsonEncode(profile.organizationProfessionals);
+    }
+
+    if (profileImage != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        "ProfileImage",
+        profileImage.path,
+        contentType: MediaType("image", "jpeg"),
+      ));
+    }
+
+    final streamedResponse = await request.send();
+    return await http.Response.fromStream(streamedResponse);
+  }
+
   Future<http.Response> updateIndividualProfile({
     required String id,
     required IndividualProfileModel profile,

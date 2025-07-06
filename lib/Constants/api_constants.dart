@@ -12,10 +12,10 @@ class ApiConstants {
   static const String resetforgetPassword = "account/reset-password";
   static const String updateFcmToken = "account/update-fcm-token";
   static const String sendPushNotification = "notification/send-notification";
-  static const String getIndividualProfileData = "profile/individual/";
+  static const String getIndividualProfileData = "profile/individual/";//10@Testing
   static const String getProfessionalProfileData = "profile/professional/";
   static const String getAllAssociatedGroups = "api/profile/groups";
-  static const String getAllProfessionalProfile = "api/profile/professional";
+  static const String getAllProfessionalProfile = "api/profile/professionals";
   static const String addAffiliationsGroups = "profile/individual/affiliations/add";
   static const String removeAffiliationsGroups = "profile/individual/affiliations/remove";
 

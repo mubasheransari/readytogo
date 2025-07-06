@@ -11,6 +11,7 @@ import '../../Model/individual_profile_model.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
+import 'group_association_professional_profile_screen.dart';
 
 class EditProfessionalProfileScreen extends StatefulWidget {
   final ProfessionalProfileModel profile;
@@ -73,27 +74,7 @@ class _EditProfessionalProfileScreenState
         zipController.text != (location['zipCode'] ?? '');
   }
 
-  /*@override
-  void initState() {
-    super.initState();
-    final p = widget.profile;
-    firstNameController = TextEditingController(text: p.firstname);
-    lastNameController = TextEditingController(text: p.lastname);
-    emailController = TextEditingController(text: p.email);
-    phoneController = TextEditingController(text: p.phoneNumber);
-    streetController = TextEditingController(
-        text: p.locations.isNotEmpty
-            ? p.locations[0]['streetAddress'] ?? ''
-            : '');
-    areaController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['area'] ?? '' : '');
-    cityController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['city'] ?? '' : '');
-    stateController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['state'] ?? '' : '');
-    zipController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
-  }*/
+
 
   _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -364,8 +345,6 @@ class _EditProfessionalProfileScreenState
                           _buildField(zipController, "Zip Code"),
 
                           const SizedBox(height: 10),
-
-                          /// --- Navigation Buttons ---
                         ],
                       ),
                     ),
@@ -373,28 +352,28 @@ class _EditProfessionalProfileScreenState
                     BackAndNextButton(
                       onBackPressed: () => Navigator.of(context).pop(),
                       onNextPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) =>
-                        //         GroupAssociationEditIndividual(
-                        //       profile: widget.profile,
-                        //       area: areaController.text,
-                        //       city: cityController.text,
-                        //       firstName: firstNameController.text,
-                        //       lastName: lastNameController.text,
-                        //       phone: phoneController.text,
-                        //       selectedImageFile: selectedImage,
-                        //       imageUrl: widget.profile.profileImageUrl,
-                        //       states: stateController.text,
-                        //       street: streetController.text,
-                        //       userid: userId,
-                        //       zip: zipController.text,
-                        //       email: widget.profile.email,
-                        //       isAddressChanged: _isAddressChanged(),
-                        //     ),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                GroupAssociationEditProfessionalProfile(
+                              profile: widget.profile,
+                              area: areaController.text,
+                              city: cityController.text,
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              phone: phoneController.text,
+                              selectedImageFile: selectedImage,
+                              imageUrl: widget.profile.profileImageUrl,
+                              states: stateController.text,
+                              street: streetController.text,
+                              userid: userId,
+                              zip: zipController.text,
+                              email: widget.profile.email,
+                              isAddressChanged: _isAddressChanged(),
+                            ),
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(height: 25),

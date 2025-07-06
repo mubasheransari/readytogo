@@ -13,6 +13,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetIndividualProfile>(_getIndividualProfile);
     on<GetProfessionalProfile>(_getProfessionalProfile);
     on<UpdateIndividualProfile>(updateIndividualProfile);
+    on<UpdateProfessionalProfile>(updateProfessionalProfile);
     on<GetAllAssociatedGroups>(getAllAssociatedGroups);
     on<GetAllProfessionalProfiles>(getAllProfessionalProfiles);
     on<RemoveAffiliations>(removeAffiliations);
@@ -241,6 +242,40 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   } catch (e) {
     emit(state.copyWith(
       status: LoginStatus.updateProfileError,
+      errorMessage: e.toString(),
+    ));
+  }
+}
+
+  updateProfessionalProfile(
+  UpdateProfessionalProfile event,
+  Emitter<LoginState> emit,
+) async {
+  emit(state.copyWith(status: LoginStatus.updateProfessionalProfileLoading));
+  try {
+    final response = await loginRepository.updateProfessionalProfile(
+      id: event.userId,
+      profile: event.profile,
+    );
+
+    if (response.statusCode == 200) {
+      // ✅ Refetch profile from server after update
+      final refreshedProfile = await loginRepository.individualProfile(event.userId);
+
+
+      emit(state.copyWith(
+        status: LoginStatus.updateProfessionalProfileSuccess,
+        profile: refreshedProfile,
+      ));
+    } else {
+      emit(state.copyWith(
+        status: LoginStatus.updateProfessionalProfileError,
+        errorMessage: response.body,
+      ));
+    }
+  } catch (e) {
+    emit(state.copyWith(
+      status: LoginStatus.updateProfessionalProfileError,
       errorMessage: e.toString(),
     ));
   }

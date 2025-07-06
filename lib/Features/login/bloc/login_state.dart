@@ -37,6 +37,9 @@ enum LoginStatus {
   getAllProfessionalProfileLoading,
   getAllProfessionalProfileSuccess,
   getAllProfessionalProfileError,
+  updateProfessionalProfileLoading,
+  updateProfessionalProfileSuccess,
+  updateProfessionalProfileError,
 }
 
 /// A unified state class for Login & Profile operations
