@@ -7,6 +7,7 @@ import '../../widgets/boxDecorationWidget.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
+import 'edit_professional_profile_screen.dart';
 
 class ProfessionalProfileScreen extends StatefulWidget {
   ProfessionalProfileScreen({Key? key}) : super(key: key);
@@ -112,11 +113,11 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                                 ),
                                 child: IconButton(
                                     onPressed: () {
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) =>
-                                      //             EditIndividualProfileScreen()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditProfessionalProfileScreen(profile: profile,)));
                                     },
                                     icon: Image.asset(
                                       "assets/icon_edit.png",
@@ -474,8 +475,8 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                         _groupCard(
                          // doctorImageUrls: 'assets/users-02.png',
                           context: context,
-                          title: group.groupName,
-                          memberCount: group.memberCount,
+                          title: group['groupName'],
+                          memberCount: group['memberCount'],
                         ),
                         SizedBox(height: 12),
                       ],
@@ -582,6 +583,7 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                   padding: EdgeInsets.all(screenWidth * 0.03),
                   child: Image.asset(
                     "assets/users-02.png",
+                    width: 24,height:20,
                     //  height: 48,width:48
                     fit: BoxFit.contain,
                   ),
@@ -593,7 +595,7 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                   title,
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    fontSize: screenWidth * 0.04,
+                    fontSize:20, //screenWidth * 0.04,
                     color: Colors.black87,
                     fontFamily: 'Satoshi',
                   ),
@@ -614,15 +616,19 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
               Text(
                 '$memberCount other doctors',
                 style: TextStyle(
-                  fontSize: screenWidth * 0.03,
-                  color: Colors.grey.shade600,
+                  fontSize:15, //screenWidth * 0.03,
+                  color: Colors.grey.shade900,
+                  fontFamily: 'satoshi'
                 ),
               ),
               Spacer(),
-              Icon(
-                Icons.open_in_new,
-                color: Colors.grey.shade400,
-                size: screenWidth * 0.05,
+              Padding(
+                padding: const EdgeInsets.only(top:18.0,left:30),
+                child: Icon(
+                  Icons.open_in_new,
+                  color: Colors.grey.shade400,
+                  size: screenWidth * 0.05,
+                ),
               ),
             ],
           ),
