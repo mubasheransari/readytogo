@@ -15,6 +15,7 @@ class ApiConstants {
   static const String getIndividualProfileData = "profile/individual/";
   static const String getProfessionalProfileData = "profile/professional/";
   static const String getAllAssociatedGroups = "api/profile/groups";
+  static const String getAllProfessionalProfile = "api/profile/professional";
   static const String addAffiliationsGroups = "profile/individual/affiliations/add";
   static const String removeAffiliationsGroups = "profile/individual/affiliations/remove";
 

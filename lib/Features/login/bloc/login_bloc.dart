@@ -14,6 +14,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetProfessionalProfile>(_getProfessionalProfile);
     on<UpdateIndividualProfile>(updateIndividualProfile);
     on<GetAllAssociatedGroups>(getAllAssociatedGroups);
+    on<GetAllProfessionalProfiles>(getAllProfessionalProfiles);
     on<RemoveAffiliations>(removeAffiliations);
     on<AddAffiliations>(addAffiliations);
   }
@@ -148,6 +149,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else {
       emit(state.copyWith(
         status: LoginStatus.getAllGroupsError,
+        //errorMessage: "Failed to fetch profile: ${e.toString()}",
+      ));
+    }
+  }
+
+    getAllProfessionalProfiles(
+    GetAllProfessionalProfiles event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.getAllProfessionalProfileLoading));
+
+    final getallgroups = await loginRepository.getAllProfessionalProfile();
+    
+
+    if (getallgroups != null) {
+      emit(state.copyWith(getAllProfessionalProfileModel: getallgroups, status: LoginStatus.getAllProfessionalProfileSuccess));
+    } else {
+      emit(state.copyWith(
+        status: LoginStatus.getAllProfessionalProfileError,
         //errorMessage: "Failed to fetch profile: ${e.toString()}",
       ));
     }

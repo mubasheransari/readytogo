@@ -1,4 +1,5 @@
 import 'package:readytogo/Model/get_all_associated_groups_model.dart';
+import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
 
 import '../../../Model/individual_profile_model.dart';
@@ -33,6 +34,9 @@ enum LoginStatus {
   addAffilicationGroupsLoading,
   addAffilicationGroupsSuccess,
   addAffilicationGroupsError,
+  getAllProfessionalProfileLoading,
+  getAllProfessionalProfileSuccess,
+  getAllProfessionalProfileError,
 }
 
 /// A unified state class for Login & Profile operations
@@ -42,7 +46,8 @@ class LoginState extends Equatable {
   final String? token;
   final IndividualProfileModel? profile;
   final ProfessionalProfileModel? professionalProfileModel;
-final List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel;
+  final List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel;
+  final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
   const LoginState(
       {this.status = LoginStatus.initial,
@@ -50,8 +55,8 @@ final List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel;
       this.token,
       this.profile,
       this.professionalProfileModel,
-      this.getAllAssociatedGroupModel
-      });
+      this.getAllAssociatedGroupModel,
+      this.getAllProfessionalProfileModel});
 
   /// Copy the state with updated fields
   LoginState copyWith({
@@ -60,7 +65,8 @@ final List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel;
     String? token,
     IndividualProfileModel? profile,
     ProfessionalProfileModel? professionalProfileModel,
- List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel,
+    List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel,
+    List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
         status: status ?? this.status,
@@ -69,13 +75,22 @@ final List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel;
         profile: profile ?? this.profile,
         professionalProfileModel:
             professionalProfileModel ?? this.professionalProfileModel,
-            getAllAssociatedGroupModel: getAllAssociatedGroupModel ?? this.getAllAssociatedGroupModel
-            );
+        getAllAssociatedGroupModel:
+            getAllAssociatedGroupModel ?? this.getAllAssociatedGroupModel,
+        getAllProfessionalProfileModel: getAllProfessionalProfileModel ??
+            this.getAllProfessionalProfileModel);
   }
 
   @override
-  List<Object?> get props =>
-      [status, errorMessage, token, profile, professionalProfileModel,getAllAssociatedGroupModel];
+  List<Object?> get props => [
+        status,
+        errorMessage,
+        token,
+        profile,
+        professionalProfileModel,
+        getAllAssociatedGroupModel,
+        getAllProfessionalProfileModel
+      ];
 
   @override
   String toString() {

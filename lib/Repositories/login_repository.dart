@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Model/get_all_associated_groups_model.dart';
+import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
 import 'package:http_parser/http_parser.dart';
 
@@ -137,18 +138,18 @@ class LoginRepository {
     return null;
   }
 
-Future<List<GetAllAssociatedGroupModel>> getAllAssociatedGroup() async {
-  final jsonResponse = await _apiBaseHelper.get(
-    url: ApiConstants.baseDomain,
-    path: ApiConstants.getAllAssociatedGroups,
-  );
+  Future<List<GetAllAssociatedGroupModel>> getAllAssociatedGroup() async {
+    final jsonResponse = await _apiBaseHelper.get(
+      url: ApiConstants.baseDomain,
+      path: ApiConstants.getAllAssociatedGroups,
+    );
 
-  print(jsonResponse); // Should print a List of maps
+    print(jsonResponse); // Should print a List of maps
 
-  return List<GetAllAssociatedGroupModel>.from(
-    jsonResponse.map((x) => GetAllAssociatedGroupModel.fromJson(x)),
-  );
-}
+    return List<GetAllAssociatedGroupModel>.from(
+      jsonResponse.map((x) => GetAllAssociatedGroupModel.fromJson(x)),
+    );
+  }
 
   Future<http.Response> removeAffiliationsGroups(
       String userId, String groupId) async {
@@ -160,6 +161,7 @@ Future<List<GetAllAssociatedGroupModel>> getAllAssociatedGroup() async {
       },
     );
   }
+
   Future<http.Response> addAffiliationsGroups(
       String userId, String groupId) async {
     return await _apiBaseHelper.post(
@@ -171,6 +173,20 @@ Future<List<GetAllAssociatedGroupModel>> getAllAssociatedGroup() async {
     );
   }
 
+  Future<List<GetAllProfessionalProfileModel>>
+      getAllProfessionalProfile() async {
+    final jsonResponse = await _apiBaseHelper.get(
+      url: ApiConstants.baseDomain,
+      path: ApiConstants.getAllProfessionalProfile,
+    );
+
+    print(
+        "GET ALL PROFESSIONAL PROFILE $jsonResponse"); // Should print a List of maps
+
+    return List<GetAllProfessionalProfileModel>.from(
+      jsonResponse.map((x) => GetAllProfessionalProfileModel.fromJson(x)),
+    );
+  }
 
   /*Future<http.Response> updateIndividualProfile({
     required String id,

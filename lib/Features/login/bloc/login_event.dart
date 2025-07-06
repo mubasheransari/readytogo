@@ -80,4 +80,4 @@ class RemoveAffiliations extends LoginEvent {
 
   RemoveAffiliations({required this.userId, required this.groupId});
 }
-
+class GetAllProfessionalProfiles extends LoginEvent {}
