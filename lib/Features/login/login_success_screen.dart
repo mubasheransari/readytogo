@@ -51,7 +51,9 @@ class LoginSuccessScreen extends StatelessWidget {
                     print("ROLE ::::: $role");
 
                     if (role == "Individual") {
-                      if (state.status == LoginStatus.profileLoaded &&
+                        // if (state.status == LoginStatus.profileLoaded &&
+                        //   state.profile != null)
+                      if (
                           state.profile != null) {
                         final profile = state.profile!;
                         return CustomTextWidget(

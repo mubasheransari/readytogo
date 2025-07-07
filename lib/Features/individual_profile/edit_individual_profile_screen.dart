@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
@@ -8,7 +7,6 @@ import 'package:readytogo/widgets/back_next_button_widget.dart';
 import '../../Constants/constants.dart';
 import '../../Model/individual_profile_model.dart';
 import '../login/bloc/login_bloc.dart';
-import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
 import 'group_assocation_edit_screen.dart';
 
@@ -71,28 +69,6 @@ class _EditIndividualProfileScreenState
         zipController.text != (location['zipCode'] ?? '');
   }
 
-  /*@override
-  void initState() {
-    super.initState();
-    final p = widget.profile;
-    firstNameController = TextEditingController(text: p.firstname);
-    lastNameController = TextEditingController(text: p.lastname);
-    emailController = TextEditingController(text: p.email);
-    phoneController = TextEditingController(text: p.phoneNumber);
-    streetController = TextEditingController(
-        text: p.locations.isNotEmpty
-            ? p.locations[0]['streetAddress'] ?? ''
-            : '');
-    areaController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['area'] ?? '' : '');
-    cityController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['city'] ?? '' : '');
-    stateController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['state'] ?? '' : '');
-    zipController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
-  }*/
-
   _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -100,36 +76,6 @@ class _EditIndividualProfileScreenState
     }
   }
 
-  void _submit() {
-    setState(() => _submitted = true);
-    if (_formKey.currentState!.validate()) {
-      final updatedProfile = widget.profile.copyWith(
-        firstname: firstNameController.text,
-        lastname: lastNameController.text,
-        email: emailController.text,
-        phoneNumber: phoneController.text,
-        locations: [
-          {
-            "streetAddress": streetController.text,
-            "area": areaController.text,
-            "city": cityController.text,
-            "state": stateController.text,
-            "zipCode": zipController.text,
-          }
-        ],
-      );
-
-      final userId = GetStorage().read("id");
-
-      if (userId != null) {
-        context.read<LoginBloc>().add(UpdateIndividualProfile(
-              userId: userId,
-              profile: updatedProfile,
-              profileImage: selectedImage,
-            ));
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -330,8 +276,6 @@ class _EditIndividualProfileScreenState
                           ),
 
                           const SizedBox(height: 30),
-
-                          /// --- Address Section ---
                           Padding(
                             padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width * 0.49,
@@ -354,8 +298,6 @@ class _EditIndividualProfileScreenState
                           _buildField(zipController, "Zip Code"),
 
                           const SizedBox(height: 10),
-
-                          /// --- Navigation Buttons ---
                         ],
                       ),
                     ),
