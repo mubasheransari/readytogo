@@ -357,6 +357,7 @@ class _EditProfessionalProfileScreenState
                           MaterialPageRoute(
                             builder: (context) =>
                                 GroupAssociationEditProfessionalProfile(
+                                  description: descriptionController.text,
                               profile: widget.profile,
                               area: areaController.text,
                               city: cityController.text,

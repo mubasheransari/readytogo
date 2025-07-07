@@ -140,13 +140,13 @@ class _EditIndividualProfileScreenState
           listener: (context, state) {
             if (state.status == LoginStatus.profileLoaded &&
                 state.profile != null) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Profile updated successfully",
-                      style: TextStyle(color: Colors.white)),
-                  backgroundColor: Colors.green,
-                ),
-              );
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: Text("Profile updated successfully",
+              //         style: TextStyle(color: Colors.white)),
+              //     backgroundColor: Colors.green,
+              //   ),
+              // );
               Navigator.pop(context);
             } else if (state.status == LoginStatus.updateProfileError) {
               ScaffoldMessenger.of(context).showSnackBar(

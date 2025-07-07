@@ -18,6 +18,7 @@ class GroupAssociationEditProfessionalProfile extends StatefulWidget {
       firstName,
       lastName,
       phone,
+      description,
       street,
       area,
       city,
@@ -31,6 +32,7 @@ class GroupAssociationEditProfessionalProfile extends StatefulWidget {
     required this.profile,
     this.selectedImageFile,
     this.imageUrl,
+    required this.description,
     required this.userid,
     required this.firstName,
     required this.lastName,
@@ -69,6 +71,7 @@ class _GroupAssociationEditProfessionalProfileState
         lastname: widget.lastName,
         email: widget.email,
         phoneNumber: widget.phone,
+        description: widget.description,
         locations:
             /* [
             {

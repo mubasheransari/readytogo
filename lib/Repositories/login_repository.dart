@@ -93,7 +93,6 @@ class LoginRepository {
       "ZipCode": profile.locations.isNotEmpty
           ? profile.locations[0]["zipCode"] ?? ""
           : "",
-      "Description": "Updated via app",
       "ProfileImageUrl": profile.profileImageUrl,
       "Locations": jsonEncode(profile.locations),
     });
@@ -103,6 +102,22 @@ class LoginRepository {
     if (orgId != null && orgId.isNotEmpty) {
       request.fields["OrganizationId"] = orgId;
     }
+
+// if (profile.specializations is List &&
+//     (profile.specializations as List).isNotEmpty) {
+//   final specializationNameToId = {
+//     for (var spec in allSpecializations) spec["name"]: spec["id"]
+//   };
+
+//   final specializationIds = (profile.specializations as List)
+//       .map((name) => specializationNameToId[name])
+//       .where((id) => id != null)
+//       .toList();
+
+//   request.fields["SpecializationIds"] = jsonEncode(specializationIds);
+// }10@Testing
+
+
 
     if (profile.specializations is List &&
         (profile.specializations as List).isNotEmpty) {

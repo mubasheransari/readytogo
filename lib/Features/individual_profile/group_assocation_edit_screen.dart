@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -66,6 +67,10 @@ class _GroupAssociationEditIndividualState
     _selectedImage = widget.selectedImageFile; // ✅ FIX
   }
 
+ 
+
+
+
   void _submit() {
     if (_formKey.currentState!.validate()) {
       final updatedProfile = widget.profile.copyWith(
@@ -74,18 +79,7 @@ class _GroupAssociationEditIndividualState
         email: widget.email,
         phoneNumber: widget.phone,
         locations:
-            /* [
-            {
-              "id": widget.userid,
-              "streetAddress": "samar",
-              "area": "vewvwevew",
-              "city": "wvevewvewv",
-              "state": "ewkhfkjhewiufhew",
-              "zipCode": "34796983",
-              "latitude": 0,
-              "longitude": 0
-            }
-          ]*/
+            
             widget.isAddressChanged
                 ? [
                     {
@@ -101,10 +95,6 @@ class _GroupAssociationEditIndividualState
                   ]
                 : widget.profile.locations,
       );
-      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
-      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
-      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
-      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
 
       context.read<LoginBloc>().add(UpdateIndividualProfile(
             userId: widget.userid,
@@ -210,48 +200,48 @@ class _GroupAssociationEditIndividualState
               child: Column(
                 children: [
                   const SizedBox(height: 60),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            InkWell(
-                              onTap: () => Navigator.pop(context),
-                              child: const CircleAvatar(
-                                radius: 20,
-                                backgroundColor: Colors.white,
-                                child:
-                                    Icon(Icons.arrow_back, color: Colors.black),
-                              ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () => Navigator.pop(context),
+                            child: const CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.white,
+                              child:
+                                  Icon(Icons.arrow_back, color: Colors.black),
                             ),
-                            const SizedBox(
-                                width:
-                                    12), // 👈 Gap between back button and title
-                            const Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                fontSize: 22,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: 'Satoshi',
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Text(
-                          '2 of 2 page',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Satoshi',
                           ),
+                          const SizedBox(
+                              width:
+                                  12), // 👈 Gap between back button and title
+                          const Text(
+                            'Edit Profile',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Satoshi',
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Text(
+                        '2 of 2 page',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Satoshi',
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
                   // Row(
                   //   children: [
                   //     InkWell(
@@ -443,12 +433,12 @@ class _GroupAssociationEditIndividualState
                                     elevation: 0,
                                     decoration: InputDecoration(
                                       hintText: "Select group",
-                                      hintStyle:  TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'Satoshi',
-                                  ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Satoshi',
+                                      ),
                                       contentPadding:
                                           const EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 12),

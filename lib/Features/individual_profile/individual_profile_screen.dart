@@ -98,19 +98,19 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
                               Text(
                                 '${profile.firstname} ${profile.lastname}',
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18,
-                                ),
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 24,
+                                        fontFamily: 'satoshi'),
                               ),
                               SizedBox(height: 4),
                               Text(
-                                profile.role,
+                                "(${profile.role})",
                                 style: TextStyle(
-                                  color: Colors.white70,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                ),
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16,
+                                        fontFamily: 'satoshi'),
                               ),
                             ],
                           ),
@@ -145,7 +145,46 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  _buildDetailsCard(profile),
+                  //_buildDetailsCard(profile),
+                  SizedBox(height: 20),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        )
+                      ],
+                    ),
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildInfoRow('DM:', '@${profile.userName}'),
+                        SizedBox(height: 10),
+                        _buildInfoRow('Email:', profile.email),
+                        SizedBox(height: 10),
+                        _buildInfoRow('Phone:', profile.phoneNumber),
+                        SizedBox(height: 10),
+                        _buildInfoRow(
+                          'Location:',
+                          profile.locations.isNotEmpty
+                              ? '${profile.locations[0]["streetAddress"] ?? ""}, ${profile.locations[0]["area"] ?? ""}, ${profile.locations[0]["city"] ?? ""}, ${profile.locations[0]["state"] ?? ""}.'
+                              : 'No Address Provided',
+                        ),
+                        SizedBox(height: 10),
+                        _buildInfoRow(
+                          'Zip Code:',
+                          profile.locations.isNotEmpty
+                              ? '${profile.locations[0]["zipCode"] ?? ""}'
+                              : 'No Address Provided',
+                        ),
+                      ],
+                    ),
+                  ),
                   SizedBox(height: 28),
                   Text(
                     'Groups/Association',
@@ -181,6 +220,38 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
           return Center(child: Text('No profile data available.'));
         }
       },
+    );
+  }
+
+  Widget _buildInfoRow(String title, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 80,
+          child: Text(
+            title,
+            style: TextStyle(
+              fontFamily: 'Satoshi',
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(
+              fontFamily: 'Satoshi',
+              fontSize: 17,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+              height: 1.4,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -293,6 +364,7 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
                   padding: EdgeInsets.all(screenWidth * 0.03),
                   child: Image.asset(
                     "assets/users-02.png",
+                    width: 24, height: 20,
                     //  height: 48,width:48
                     fit: BoxFit.contain,
                   ),
@@ -304,7 +376,7 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
                   title,
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    fontSize: screenWidth * 0.04,
+                    fontSize: 20, //screenWidth * 0.04,
                     color: Colors.black87,
                     fontFamily: 'Satoshi',
                   ),
@@ -325,15 +397,18 @@ class _IndividualProfileScreenState extends State<IndividualProfileScreen> {
               Text(
                 '$memberCount other doctors',
                 style: TextStyle(
-                  fontSize: screenWidth * 0.03,
-                  color: Colors.grey.shade600,
-                ),
+                    fontSize: 15, //screenWidth * 0.03,
+                    color: Colors.grey.shade900,
+                    fontFamily: 'satoshi'),
               ),
               Spacer(),
-              Icon(
-                Icons.open_in_new,
-                color: Colors.grey.shade400,
-                size: screenWidth * 0.05,
+              Padding(
+                padding: const EdgeInsets.only(top: 18.0, left: 30),
+                child: Icon(
+                  Icons.open_in_new,
+                  color: Colors.grey.shade400,
+                  size: screenWidth * 0.05,
+                ),
               ),
             ],
           ),
