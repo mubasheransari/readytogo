@@ -78,6 +78,54 @@ class ApiBaseHelper {
     return responseJson;
   }*/
 
+  Future<http.Response> delete({
+  String? baseUrl,
+  required String path,
+  Map<String, dynamic>? body,
+  String? token,
+  Map<String, dynamic>? queryParam,
+}) async {
+  print('Api Delete, url: $path');
+
+  final hasInternet = await _hasInternet();
+  if (!hasInternet) {
+    _showNoInternetToast();
+    throw FetchDataException('No Internet connection');
+  }
+
+  try {
+    final uri = Uri.http(
+      baseUrl ?? ApiConstants.baseDomain,
+      '${ApiConstants.apiPrefix}$path',
+      queryParam,
+    );
+
+    final request = http.Request("DELETE", uri);
+    request.headers.addAll({
+      'Content-Type': 'application/json',
+      'X-Request-For': '::1',
+      if (token != null && token.isNotEmpty) 'Authorization': token,
+    });
+
+    if (body != null) {
+      request.body = json.encode(body);
+    }
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    print('API DELETE Response: ${response.statusCode}');
+    return response;
+  } on SocketException catch (e) {
+    print('SocketException: $e');
+    if (!await _hasInternet()) {
+      _showNoInternetToast();
+    }
+    throw FetchDataException('No Internet connection');
+  }
+}
+
+
   Future<http.Response> post({
     String? baseUrl,
     required String path,

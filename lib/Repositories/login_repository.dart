@@ -235,7 +235,7 @@ class LoginRepository {
 
   Future<http.Response> removeAffiliationsGroups(
       String userId, String groupId) async {
-    return await _apiBaseHelper.post(
+    return await _apiBaseHelper.delete(
       path: ApiConstants.removeAffiliationsGroups,
       body: {
         "userId": userId,
