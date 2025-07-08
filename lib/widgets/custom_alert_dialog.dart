@@ -205,7 +205,7 @@ void logoutDialog(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         backgroundColor: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -221,12 +221,12 @@ void logoutDialog(BuildContext context) {
               ),
               SizedBox(height: 10),
               Image.asset(
-                'assets/logut_text.png',
+                'assets/logout_text.png',
                 width: 130,
-                height: 130,
+                height: 80,
               ),
               //  SizedBox(height: 20),
-              // CustomTextWidget(
+              // CustomTextWidget(//10@Testing
               //     text: "Cancel Subscription",
               //     color: Colors.black,
               //     textSize: 22,
@@ -247,60 +247,69 @@ void logoutDialog(BuildContext context) {
               ),
               SizedBox(height: 25),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        side: BorderSide(color: Colors.green),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                  SizedBox(
+                    height: 42,
+                    width: 115,
+                    child: Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          side: BorderSide(color: Colors.green),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 7),
                         ),
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontFamily: 'satoshi',
+                              fontWeight: FontWeight.w900),
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(width: 10),
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        final box = GetStorage();
-                        box.remove("token");
-                        box.remove("id");
-                        box.remove("role");
-                        toastWidget("Logout", Colors.red);
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        side: BorderSide(color: Colors.red),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                  SizedBox(
+                    height: 42,
+                    width: 115,
+                    child: Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          final box = GetStorage();
+                          box.remove("token");
+                          box.remove("id");
+                          box.remove("role");
+                          toastWidget("Logout", Colors.red);
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                            (Route<dynamic> route) => false,
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          side: BorderSide(color: Colors.red),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 7),
                         ),
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: Text(
-                        "Logout",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontFamily: 'satoshi',
-                            fontWeight: FontWeight.w700),
+                        child: Text(
+                          "Logout",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontFamily: 'satoshi',
+                              fontWeight: FontWeight.w700),
+                        ),
                       ),
                     ),
                   ),
