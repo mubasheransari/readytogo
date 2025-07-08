@@ -176,10 +176,10 @@ class LoginRepository {
           : "",
       "Description": "Updated via app",
       "ProfileImageUrl": profile.profileImageUrl,
-      "Locations": jsonEncode(profile.locations),
+      "LocationsJson": jsonEncode(profile.locations),
     });
 
-    // 🔐 Only add if valid
+    // 🔐 Only add if valid 10@Testing
     final orgId = _extractOrganizationId(profile.organizationProfessionals);
     if (orgId != null && orgId.isNotEmpty) {
       request.fields["OrganizationId"] = orgId;

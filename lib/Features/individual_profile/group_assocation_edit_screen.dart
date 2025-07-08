@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,26 +64,47 @@ class _GroupAssociationEditIndividualState
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
+      // final updatedProfile = widget.profile.copyWith(
+      //   firstname: widget.firstName,
+      //   lastname: widget.lastName,
+      //   email: widget.email,
+      //   phoneNumber: widget.phone,
+      //   locationJson: widget.isAddressChanged
+      //       ? 
+      //           {
+      //             "id": widget.userid,
+      //             "streetAddress": widget.street,
+      //             "area": widget.area,
+      //             "city": widget.city,
+      //             "state": widget.states,
+      //             "zipCode": widget.zip,
+      //             "latitude": 0,
+      //             "longitude": 0
+      //           }
+              
+      //       : widget.profile.locations,
+      // );
       final updatedProfile = widget.profile.copyWith(
-        firstname: widget.firstName,
-        lastname: widget.lastName,
-        email: widget.email,
-        phoneNumber: widget.phone,
-        locations: widget.isAddressChanged
-            ? [
-                {
-                  "id": widget.userid,
-                  "streetAddress": widget.street,
-                  "area": widget.area,
-                  "city": widget.city,
-                  "state": widget.states,
-                  "zipCode": widget.zip,
-                  "latitude": 0,
-                  "longitude": 0
-                }
-              ]
-            : widget.profile.locations,
-      );
+  firstname: widget.firstName,
+  lastname: widget.lastName,
+  email: widget.email,
+  phoneNumber: widget.phone,
+  locationJson: widget.isAddressChanged
+      ? jsonEncode([
+          {
+            "id": widget.userid,
+            "streetAddress": widget.street,
+            "area": widget.area,
+            "city": widget.city,
+            "state": widget.states,
+            "zipCode": widget.zip,
+            "latitude": 0,
+            "longitude": 0
+          }
+        ])
+      : jsonEncode(widget.profile.locations),
+);
+
 
       context.read<LoginBloc>().add(UpdateIndividualProfile(
             userId: widget.userid,

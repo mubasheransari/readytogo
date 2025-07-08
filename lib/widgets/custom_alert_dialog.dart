@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/Donate/add_new_card.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
-
 import '../Features/Subscription/subscription_screen.dart';
-
-import 'package:flutter/material.dart';
-
 import '../Features/login/login_screen.dart';
 
 // class DialogWidget extends StatelessWidget {
