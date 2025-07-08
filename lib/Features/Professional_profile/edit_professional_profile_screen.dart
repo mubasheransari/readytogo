@@ -42,37 +42,70 @@ class _EditProfessionalProfileScreenState
   late TextEditingController zipController;
 
   @override
-  void initState() {
-    super.initState();
-    final p = widget.profile;
-    firstNameController = TextEditingController(text: p.firstname);
-    lastNameController = TextEditingController(text: p.lastname);
-    emailController = TextEditingController(text: p.email);
-    phoneController = TextEditingController(text: p.phoneNumber);
-    descriptionController = TextEditingController(text: p.description);
-    streetController = TextEditingController(
-        text: p.locations.isNotEmpty
-            ? p.locations[0]['streetAddress'] ?? ''
-            : '');
-    areaController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['area'] ?? '' : '');
-    cityController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['city'] ?? '' : '');
-    stateController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['state'] ?? '' : '');
-    zipController = TextEditingController(
-        text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
-  }
+void initState() {
+  super.initState();
+  final p = widget.profile;
+  firstNameController = TextEditingController(text: p.firstname ?? '');
+  lastNameController = TextEditingController(text: p.lastname ?? '');
+  emailController = TextEditingController(text: p.email ?? '');
+  phoneController = TextEditingController(text: p.phoneNumber ?? '');
+  descriptionController = TextEditingController(text: p.description ?? '');
 
-  bool _isAddressChanged() {
-    final location =
-        widget.profile.locations.isNotEmpty ? widget.profile.locations[0] : {};
-    return streetController.text != (location['streetAddress'] ?? '') ||
-        areaController.text != (location['area'] ?? '') ||
-        cityController.text != (location['city'] ?? '') ||
-        stateController.text != (location['state'] ?? '') ||
-        zipController.text != (location['zipCode'] ?? '');
-  }
+  final loc = (p.locations != null && p.locations!.isNotEmpty) ? p.locations![0] : null;
+  streetController = TextEditingController(text: loc?.streetAddress ?? '');
+  areaController = TextEditingController(text: loc?.area ?? '');
+  cityController = TextEditingController(text: loc?.city ?? '');
+  stateController = TextEditingController(text: loc?.state ?? '');
+  zipController = TextEditingController(text: loc?.zipCode ?? '');
+}
+
+bool _isAddressChanged() {
+  final location = (widget.profile.locations != null && widget.profile.locations!.isNotEmpty)
+      ? widget.profile.locations![0]
+      : null;
+
+  return location == null ||
+      streetController.text != (location.streetAddress ?? '') ||
+      areaController.text != (location.area ?? '') ||
+      cityController.text != (location.city ?? '') ||
+      stateController.text != (location.state ?? '') ||
+      zipController.text != (location.zipCode ?? '');
+}
+
+
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   final p = widget.profile;
+  //   firstNameController = TextEditingController(text: p.firstname);
+  //   lastNameController = TextEditingController(text: p.lastname);
+  //   emailController = TextEditingController(text: p.email);
+  //   phoneController = TextEditingController(text: p.phoneNumber);
+  //   descriptionController = TextEditingController(text: p.description);
+  //   streetController = TextEditingController(
+  //       text: p.locations.isNotEmpty
+  //           ? p.locations[0]['streetAddress'] ?? ''
+  //           : '');
+  //   areaController = TextEditingController(
+  //       text: p.locations.isNotEmpty ? p.locations[0]['area'] ?? '' : '');
+  //   cityController = TextEditingController(
+  //       text: p.locations.isNotEmpty ? p.locations[0]['city'] ?? '' : '');
+  //   stateController = TextEditingController(
+  //       text: p.locations.isNotEmpty ? p.locations[0]['state'] ?? '' : '');
+  //   zipController = TextEditingController(
+  //       text: p.locations.isNotEmpty ? p.locations[0]['zipCode'] ?? '' : '');
+  // }
+
+  // bool _isAddressChanged() {
+  //   final location =
+  //       widget.profile.locations.isNotEmpty ? widget.profile.locations[0] : {};
+  //   return streetController.text != (location['streetAddress'] ?? '') ||
+  //       areaController.text != (location['area'] ?? '') ||
+  //       cityController.text != (location['city'] ?? '') ||
+  //       stateController.text != (location['state'] ?? '') ||
+  //       zipController.text != (location['zipCode'] ?? '');
+  // }
 
 
 
@@ -83,36 +116,7 @@ class _EditProfessionalProfileScreenState
     }
   }
 
-  void _submit() {
-    setState(() => _submitted = true);
-    if (_formKey.currentState!.validate()) {
-      final updatedProfile = widget.profile.copyWith(
-        firstname: firstNameController.text,
-        lastname: lastNameController.text,
-        email: emailController.text,
-        phoneNumber: phoneController.text,
-        locations: [
-          {
-            "streetAddress": streetController.text,
-            "area": areaController.text,
-            "city": cityController.text,
-            "state": stateController.text,
-            "zipCode": zipController.text,
-          }
-        ],
-      );
-
-      final userId = GetStorage().read("id");
-
-      if (userId != null) {
-        // context.read<LoginBloc>().add(UpdateIndividualProfile(
-        //       userId: userId,
-        //       profile: updatedProfile,
-        //       profileImage: selectedImage,
-        //     ));
-      }
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -370,7 +374,7 @@ class _EditProfessionalProfileScreenState
                               street: streetController.text,
                               userid: userId,
                               zip: zipController.text,
-                              email: widget.profile.email,
+                              email: widget.profile.email.toString(),
                               isAddressChanged: _isAddressChanged(),
                             ),
                           ),

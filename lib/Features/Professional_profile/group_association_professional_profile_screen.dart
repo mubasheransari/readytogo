@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,33 +73,23 @@ class _GroupAssociationEditProfessionalProfileState
         email: widget.email,
         phoneNumber: widget.phone,
         description: widget.description,
-        locations:
-            /* [
-            {
-              "id": widget.userid,
-              "streetAddress": "samar",
-              "area": "vewvwevew",
-              "city": "wvevewvewv",
-              "state": "ewkhfkjhewiufhew",
-              "zipCode": "34796983",
-              "latitude": 0,
-              "longitude": 0
-            }
-          ]*/
-            widget.isAddressChanged
-                ? [
-                    {
-                      "id": widget.userid,
-                      "streetAddress": widget.street,
-                      "area": widget.area,
-                      "city": widget.city,
-                      "state": widget.states,
-                      "zipCode": widget.zip,
-                      "latitude": 0,
-                      "longitude": 0
-                    }
-                  ]
-                : widget.profile.locations,
+        locationJson:
+            widget.isAddressChanged ?
+
+            jsonEncode([
+          {
+            "id": widget.userid,
+            "streetAddress": widget.street,
+            "area": widget.area,
+            "city": widget.city,
+            "state": widget.states,
+            "zipCode": widget.zip,
+            "latitude": 0,
+            "longitude": 0
+          }
+        ])
+      : jsonEncode(widget.profile.locations),
+              
       );
       print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
       print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
@@ -279,13 +270,12 @@ class _GroupAssociationEditProfessionalProfileState
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Column(
                             children: List.generate(
-                              widget.profile.groupAssociations.length,
+                              widget.profile.groupAssociations!.length,
                               (index) => ListTile(
                                 trailing: Image.asset("assets/icon_delete.png"),
                             
                                 title: Text(
-                                  widget.profile.groupAssociations[index]
-                                      ['groupName'],
+                                  widget.profile.groupAssociations![index].groupName!,
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black87,

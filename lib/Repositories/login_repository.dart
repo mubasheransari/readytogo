@@ -59,88 +59,447 @@ class LoginRepository {
 
     return ProfessionalProfileModel.fromJson(jsonResponse);
   }
+  
 
-    Future<http.Response> updateProfessionalProfile({
-    required String id,
-    required ProfessionalProfileModel profile,
-    File? profileImage,
-  }) async {
-    var uri = Uri.parse(
-        'http://173.249.27.4:343/api/Profile/professional/edit-profile');
+//  Future<http.Response> updateProfessionalProfile({
+//   required String id,
+//   required ProfessionalProfileModel profile,
+//   File? profileImage,
+// }) async {
+//   final uri = Uri.parse('http://173.249.27.4:343/api/Profile/professional/edit-profile');
+//   final request = http.MultipartRequest('PUT', uri);
 
-    var request = http.MultipartRequest('PUT', uri);
+//   final Location? loc = profile.locations?.isNotEmpty == true ? profile.locations!.first : null;
 
-    // Basic fields
-    request.fields.addAll({
-      "UserId": id,
-      "FirstName": profile.firstname,
-      "LastName": profile.lastname,
-      "Email": profile.email,
-      "Description": profile.description,
-      "PhoneNumber": profile.phoneNumber,
-      "StreetAddress": profile.locations.isNotEmpty
-          ? profile.locations[0]["streetAddress"] ?? ""
-          : "",
-      "Area": profile.locations.isNotEmpty
-          ? profile.locations[0]["area"] ?? ""
-          : "",
-      "City": profile.locations.isNotEmpty
-          ? profile.locations[0]["city"] ?? ""
-          : "",
-      "State": profile.locations.isNotEmpty
-          ? profile.locations[0]["state"] ?? ""
-          : "",
-      "ZipCode": profile.locations.isNotEmpty
-          ? profile.locations[0]["zipCode"] ?? ""
-          : "",
-      "ProfileImageUrl": profile.profileImageUrl,
-      "Locations": jsonEncode(profile.locations),
-    });
+//   // ✅ Extract specialization IDs dynamically if already in ID form (list of strings)
+//   // OR convert from list of maps if structure changes later
+//   final List specializationIds = profile.specializations ?? [];
 
-    // 🔐 Only add if valid
-    final orgId = _extractOrganizationId(profile.organizationProfessionals);
-    if (orgId != null && orgId.isNotEmpty) {
-      request.fields["OrganizationId"] = orgId;
-    }
+//   request.fields.addAll({
+//     "UserId": id,
+//     "FirstName": profile.firstname ?? "",
+//     "LastName": profile.lastname ?? "",
+//     "Email": profile.email ?? "",
+//     "Description": profile.description ?? "",
+//     "PhoneNumber": profile.phoneNumber ?? "",
+//     "StreetAddress": loc?.streetAddress ?? "",
+//     "Area": loc?.area ?? "",
+//     "City": loc?.city ?? "",
+//     "State": loc?.state ?? "",
+//     "ZipCode": loc?.zipCode ?? "",
+//     "ProfileImageUrl": profile.profileImageUrl ?? "",
+//     "LocationsJson": jsonEncode(profile.locations?.map((e) => e.toJson()).toList() ?? []),
+//   });
 
-// if (profile.specializations is List &&
-//     (profile.specializations as List).isNotEmpty) {
-//   final specializationNameToId = {
-//     for (var spec in allSpecializations) spec["name"]: spec["id"]
-//   };
+//   final orgId = _extractOrganizationId(profile.organizationProfessionals);
+//   if (orgId != null && orgId.isNotEmpty) {
+//     request.fields["OrganizationId"] = orgId;
+//   }
 
-//   final specializationIds = (profile.specializations as List)
-//       .map((name) => specializationNameToId[name])
-//       .where((id) => id != null)
-//       .toList();
+//   // ✅ Add specialization IDs only if they are valid strings
+//   if (specializationIds.isNotEmpty && specializationIds.every((e) => e is String)) {
+//     request.fields["SpecializationIds"] = jsonEncode(specializationIds);
+//   }
 
-//   request.fields["SpecializationIds"] = jsonEncode(specializationIds);
-// }10@Testing
+//   if (profile.organizationProfessionals is List &&
+//       (profile.organizationProfessionals as List).isNotEmpty) {
+//     request.fields["ProfessionalIds"] = jsonEncode(profile.organizationProfessionals);
+//   }
+
+//   if (profileImage != null) {
+//     request.files.add(await http.MultipartFile.fromPath(
+//       "ProfileImage",
+//       profileImage.path,
+//       contentType: MediaType("image", "jpeg"),
+//     ));
+//   }
+
+//   final streamedResponse = await request.send();
+//   return await http.Response.fromStream(streamedResponse);
+// }
 
 
 
-    if (profile.specializations is List &&
-        (profile.specializations as List).isNotEmpty) {
-      request.fields["SpecializationIds"] = jsonEncode(profile.specializations);
-    }
+/*  Future<http.Response> updateProfessionalProfile({
+  required String id,
+  required ProfessionalProfileModel profile,
+  required List<SpecializationModel> allSpecializations,
+  File? profileImage,
+}) async {
+  var uri = Uri.parse(
+      'http://173.249.27.4:343/api/Profile/professional/edit-profile');
+  var request = http.MultipartRequest('PUT', uri);
 
-    if (profile.organizationProfessionals is List &&
-        (profile.organizationProfessionals as List).isNotEmpty) {
-      request.fields["ProfessionalIds"] =
-          jsonEncode(profile.organizationProfessionals);
-    }
+  // Safely get first location
+  final Location? loc = profile.locations != null && profile.locations!.isNotEmpty
+      ? profile.locations!.first
+      : null;
 
-    if (profileImage != null) {
-      request.files.add(await http.MultipartFile.fromPath(
-        "ProfileImage",
-        profileImage.path,
-        contentType: MediaType("image", "jpeg"),
-      ));
-    }
+ final List<String> specializationIds = profile.specializations != null
+    ? profile.specializations!
+        .cast<String>() // 👈 this is the fix
+        .map((name) => allSpecializations
+            .firstWhere((s) => s.name == name, orElse: () => SpecializationModel(id: '', name: ''))
+            .id)
+        .where((id) => id.isNotEmpty)
+        .toList()
+    : [];
 
-    final streamedResponse = await request.send();
-    return await http.Response.fromStream(streamedResponse);
+  // ✅ Required fields
+  request.fields.addAll({
+    "UserId": id,
+    "FirstName": profile.firstname ?? "",
+    "LastName": profile.lastname ?? "",
+    "Email": profile.email ?? "",
+    "Description": profile.description ?? "",
+    "PhoneNumber": profile.phoneNumber ?? "",
+    "StreetAddress": loc?.streetAddress ?? "",
+    "Area": loc?.area ?? "",
+    "City": loc?.city ?? "",
+    "State": loc?.state ?? "",
+    "ZipCode": loc?.zipCode ?? "",
+    "ProfileImageUrl": profile.profileImageUrl ?? "",
+
+    // ✅ LocationsJson as required by model
+    "LocationsJson": jsonEncode(profile.locations?.map((e) => e.toJson()).toList() ?? []),
+  });
+
+  // ✅ Optional: Organization ID
+  final orgId = _extractOrganizationId(profile.organizationProfessionals);
+  if (orgId != null && orgId.isNotEmpty) {
+    request.fields["OrganizationId"] = orgId;
   }
+
+  // ✅ Optional: SpecializationIds[] as array
+  for (int i = 0; i < specializationIds.length; i++) {
+    request.fields["SpecializationIds[$i]"] = specializationIds[i];
+  }
+
+  // ✅ Optional: ProfessionalIds[] as array
+  if (profile.organizationProfessionals is List &&
+      (profile.organizationProfessionals as List).isNotEmpty) {
+    final profList = profile.organizationProfessionals as List;
+    for (int i = 0; i < profList.length; i++) {
+      request.fields["ProfessionalIds[$i]"] = profList[i].toString();
+    }
+  }
+
+  // ✅ Optional: Profile Image
+  if (profileImage != null) {
+    request.files.add(await http.MultipartFile.fromPath(
+      "ProfileImage",
+      profileImage.path,
+      contentType: MediaType("image", "jpeg"),
+    ));
+  }
+
+  final streamedResponse = await request.send();
+  return await http.Response.fromStream(streamedResponse);
+}*/
+
+
+/*Future<http.Response> updateProfessionalProfile({
+  required String id,
+  required ProfessionalProfileModel profile,
+  File? profileImage,
+}) async {
+  var uri = Uri.parse('http://173.249.27.4:343/api/Profile/professional/edit-profile');
+  var request = http.MultipartRequest('PUT', uri);
+
+  // Extract location safely
+  final Location? loc = (profile.locations != null && profile.locations!.isNotEmpty)
+      ? profile.locations!.first
+      : null;
+
+  // Specialization name to ID mapping
+  const specializationNameToId = {
+    "Endourology": "1",
+    "Andrology": "2",
+    "Uro-oncology": "3",
+    "Pediatric Urology": "4",
+    // Add more if needed
+  };
+
+  // Convert specialization names to IDs
+  final List<String> specializationIds = profile.specializations != null
+      ? profile.specializations!
+          .map((name) => specializationNameToId[name])
+          .whereType<String>()
+          .toList()
+      : [];
+
+  request.fields.addAll({
+    "UserId": id,
+    "FirstName": profile.firstname ?? "",
+    "LastName": profile.lastname ?? "",
+    "Email": profile.email ?? "",
+    "Description": profile.description ?? "",
+    "PhoneNumber": profile.phoneNumber ?? "",
+    "StreetAddress": loc?.streetAddress ?? "",
+    "Area": loc?.area ?? "",
+    "City": loc?.city ?? "",
+    "State": loc?.state ?? "",
+    "ZipCode": loc?.zipCode ?? "",
+    "ProfileImageUrl": profile.profileImageUrl ?? "",
+    "Locations": jsonEncode(profile.locations?.map((e) => e.toJson()).toList() ?? []),
+  });
+
+  // Add OrganizationId
+  final orgId = _extractOrganizationId(profile.organizationProfessionals);
+  if (orgId != null && orgId.isNotEmpty) {
+    request.fields["OrganizationId"] = orgId;
+  }
+
+  // Add specialization IDs (as strings)
+  if (specializationIds.isNotEmpty) {
+    request.fields["SpecializationIds"] = jsonEncode(specializationIds);
+  }
+
+  // Add ProfessionalIds if present
+  if (profile.organizationProfessionals is List &&
+      (profile.organizationProfessionals as List).isNotEmpty) {
+    request.fields["ProfessionalIds"] =
+        jsonEncode(profile.organizationProfessionals);
+  }
+
+  // Add image if provided
+  if (profileImage != null) {
+    request.files.add(await http.MultipartFile.fromPath(
+      "ProfileImage",
+      profileImage.path,
+      contentType: MediaType("image", "jpeg"),
+    ));
+  }
+
+  final streamedResponse = await request.send();
+  return await http.Response.fromStream(streamedResponse);
+}*/
+
+
+  /*Future<http.Response> updateProfessionalProfile({
+  required String id,
+  required ProfessionalProfileModel profile,
+  File? profileImage,
+}) async {
+  var uri = Uri.parse('http://173.249.27.4:343/api/Profile/professional/edit-profile');
+  var request = http.MultipartRequest('PUT', uri);
+
+  // Extract location (first one, if exists)
+  final Location? loc = (profile.locations != null && profile.locations!.isNotEmpty)
+      ? profile.locations!.first
+      : null;
+
+  request.fields.addAll({
+    "UserId": id,
+    "FirstName": profile.firstname ?? "",
+    "LastName": profile.lastname ?? "",
+    "Email": profile.email ?? "",
+    "Description": profile.description ?? "",
+    "PhoneNumber": profile.phoneNumber ?? "",
+    "StreetAddress": loc?.streetAddress ?? "",
+    "Area": loc?.area ?? "",
+    "City": loc?.city ?? "",
+    "State": loc?.state ?? "",
+    "ZipCode": loc?.zipCode ?? "",
+    "ProfileImageUrl": profile.profileImageUrl ?? "",
+    "Locations": jsonEncode(profile.locations?.map((e) => e.toJson()).toList() ?? []),
+  });
+
+  // Extract and assign OrganizationId (from dynamic field)
+  final orgId = _extractOrganizationId(profile.organizationProfessionals);
+  if (orgId != null && orgId.isNotEmpty) {
+    request.fields["OrganizationId"] = orgId;
+  }
+
+  // Handle SpecializationIds (List<String>)
+  if (profile.specializations != null && profile.specializations!.isNotEmpty) {
+    request.fields["SpecializationIds"] = jsonEncode(profile.specializations);
+  }
+
+  // Handle ProfessionalIds (from dynamic field)
+  if (profile.organizationProfessionals is List &&
+      (profile.organizationProfessionals as List).isNotEmpty) {
+    request.fields["ProfessionalIds"] =
+        jsonEncode(profile.organizationProfessionals);
+  }
+
+  // Attach image if present
+  if (profileImage != null) {
+    request.files.add(await http.MultipartFile.fromPath(
+      "ProfileImage",
+      profileImage.path,
+      contentType: MediaType("image", "jpeg"),
+    ));
+  }
+
+  final streamedResponse = await request.send();
+  return await http.Response.fromStream(streamedResponse);
+}*/
+
+
+  //   Future<http.Response> updateProfessionalProfile({
+  //   required String id,
+  //   required ProfessionalProfileModel profile,
+  //   File? profileImage,
+  // }) async {
+  //   var uri = Uri.parse(
+  //       'http://173.249.27.4:343/api/Profile/professional/edit-profile');
+
+  //   var request = http.MultipartRequest('PUT', uri);
+
+  //   // Basic fields
+  //   request.fields.addAll({
+  //     "UserId": id,
+  //     "FirstName": profile.firstname,
+  //     "LastName": profile.lastname,
+  //     "Email": profile.email,
+  //     "Description": profile.description,
+  //     "PhoneNumber": profile.phoneNumber,
+  //     "StreetAddress": profile.locations.isNotEmpty
+  //         ? profile.locations[0]["streetAddress"] ?? ""
+  //         : "",
+  //     "Area": profile.locations.isNotEmpty
+  //         ? profile.locations[0]["area"] ?? ""
+  //         : "",
+  //     "City": profile.locations.isNotEmpty
+  //         ? profile.locations[0]["city"] ?? ""
+  //         : "",
+  //     "State": profile.locations.isNotEmpty
+  //         ? profile.locations[0]["state"] ?? ""
+  //         : "",
+  //     "ZipCode": profile.locations.isNotEmpty
+  //         ? profile.locations[0]["zipCode"] ?? ""
+  //         : "",
+  //     "ProfileImageUrl": profile.profileImageUrl,
+  //     "Locations": jsonEncode(profile.locations),
+  //   });
+
+  //   final orgId = _extractOrganizationId(profile.organizationProfessionals);
+  //   if (orgId != null && orgId.isNotEmpty) {
+  //     request.fields["OrganizationId"] = orgId;
+  //   }
+
+
+
+
+
+  //   if (profile.specializations is List &&
+  //       (profile.specializations as List).isNotEmpty) {
+  //     request.fields["SpecializationIds"] = jsonEncode(profile.specializations);
+  //   }
+
+  //   if (profile.organizationProfessionals is List &&
+  //       (profile.organizationProfessionals as List).isNotEmpty) {
+  //     request.fields["ProfessionalIds"] =
+  //         jsonEncode(profile.organizationProfessionals);
+  //   }
+
+  //   if (profileImage != null) {
+  //     request.files.add(await http.MultipartFile.fromPath(
+  //       "ProfileImage",
+  //       profileImage.path,
+  //       contentType: MediaType("image", "jpeg"),
+  //     ));
+  //   }
+
+  //   final streamedResponse = await request.send();
+  //   return await http.Response.fromStream(streamedResponse);
+  // }
+
+
+Future<http.Response> updateProfessionalProfile({
+  required String id,
+  required ProfessionalProfileModel profile,
+  File? profileImage,
+}) async {
+  final uri = Uri.parse('http://173.249.27.4:343/api/Profile/professional/edit-profile');
+  final request = http.MultipartRequest('PUT', uri);
+
+  final Location? loc = profile.locations?.isNotEmpty == true ? profile.locations!.first : null;
+
+  // 🔹 Convert specialization objects to IDs
+  final List<String> specializationIds = profile.specializationIds
+          ?.map((e) => e.id)
+          .whereType<String>()
+          .toList() ??
+      [];
+
+  request.fields.addAll({
+    "UserId": id,
+    "FirstName": profile.firstname ?? "",
+    "LastName": profile.lastname ?? "",
+    "Email": profile.email ?? "",
+    "Description": profile.description ?? "",
+    "PhoneNumber": profile.phoneNumber ?? "",
+    "StreetAddress": loc?.streetAddress ?? "",
+    "Area": loc?.area ?? "",
+    "City": loc?.city ?? "",
+    "State": loc?.state ?? "",
+    "ZipCode": loc?.zipCode ?? "",
+    "ProfileImageUrl": profile.profileImageUrl ?? "",
+    "LocationsJson": jsonEncode(
+      profile.locations?.map((e) => e.toJson()).toList() ?? [],
+    ),
+  });
+
+  final orgId = _extractOrganizationId(profile.organizationProfessionals);
+  if (orgId != null && orgId.isNotEmpty) {
+    request.fields["OrganizationId"] = orgId;
+  }
+
+  if (specializationIds.isNotEmpty) {
+    request.fields["SpecializationIds"] = jsonEncode(specializationIds);
+  }
+
+  if (profile.organizationProfessionals is List &&
+      (profile.organizationProfessionals as List).isNotEmpty) {
+    request.fields["ProfessionalIds"] =
+        jsonEncode(profile.organizationProfessionals);
+  }
+
+  if (profileImage != null) {
+    request.files.add(await http.MultipartFile.fromPath(
+      "ProfileImage",
+      profileImage.path,
+      contentType: MediaType("image", "jpeg"),
+    ));
+  }
+
+  final streamedResponse = await request.send();
+  return await http.Response.fromStream(streamedResponse);
+}
+
+String? _extractOrganizationId(dynamic organizationProfessionals) {
+  if (organizationProfessionals is List && organizationProfessionals.isNotEmpty) {
+    final first = organizationProfessionals.first;
+    if (first is Map && first.containsKey('organizationId')) {
+      return first['organizationId']?.toString();
+    } else if (first is String) {
+      return first;
+    }
+  } else if (organizationProfessionals is String) {
+    return organizationProfessionals;
+  }
+  return null;
+}
+
+
+// Helper method (if not already defined)
+// String? _extractOrganizationId(dynamic organizationProfessionals) {
+//   if (organizationProfessionals is List && organizationProfessionals.isNotEmpty) {
+//     final first = organizationProfessionals.first;
+//     if (first is Map && first.containsKey('organizationId')) {
+//       return first['organizationId']?.toString();
+//     } else if (first is String) {
+//       return first;
+//     }
+//   } else if (organizationProfessionals is String) {
+//     return organizationProfessionals;
+//   }
+//   return null;
+// }
+
+
 
   Future<http.Response> updateIndividualProfile({
     required String id,
@@ -209,7 +568,7 @@ class LoginRepository {
   }
 
   /// Helper to extract organizationId safely
-  String? _extractOrganizationId(dynamic organizationProfessionals) {
+  String? extractOrganizationId(dynamic organizationProfessionals) {
     if (organizationProfessionals is List &&
         organizationProfessionals.isNotEmpty) {
       final first = organizationProfessionals[0];
@@ -270,6 +629,8 @@ class LoginRepository {
     );
   }
 
+  
+
   /*Future<http.Response> updateIndividualProfile({
     required String id,
     required IndividualProfileModel profile,
@@ -315,7 +676,9 @@ class LoginRepository {
         profileImage.path,
         contentType: MediaType("image", "jpeg"),
       ));
-    }
+    }10@Testing
+
+    bhai yeh flow check kro. is main ab yeh issue hai ke get profile ki api main groupassociations main id chahye ta k delete functionality proper work kry. aur is main multiple entries horhe hain. aur jo groups already joined hain us main filer krna hai. filter wala kaam main kron ya krdogy?
 
     final streamedResponse = await request.send();
     return await http.Response.fromStream(streamedResponse);
