@@ -104,65 +104,7 @@ class _GroupAssociationEditProfessionalProfileState
     }
   }
 
-  Widget _buildProfileImage() {
-    return GestureDetector(
-      onTap: () async {
-        final XFile? image =
-            await _picker.pickImage(source: ImageSource.gallery);
-        if (image != null) {
-          setState(() => _selectedImage = File(image.path));
-        }
-      },
-      child: Container(
-        height: 148,
-        width: 120,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-        child: _selectedImage != null
-            ? Column(
-                children: [
-                  SizedBox(
-                    height: 120,
-                    width: 130,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        _selectedImage!,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    height: 23,
-                    width: 80,
-                    decoration: BoxDecoration(
-                      color: Constants().themeColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Change',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              )
-            : Center(
-                child: SizedBox(
-                  height: 120,
-                  width: 130,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      'http://173.249.27.4:343/${widget.imageUrl}',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-      ),
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'dart:convert';
+
 
 IndividualProfileModel individualProfileModelFromJson(String str) =>
     IndividualProfileModel.fromJson(json.decode(str));

@@ -70,7 +70,7 @@ class _GroupAssociationEditIndividualState
       //   email: widget.email,
       //   phoneNumber: widget.phone,
       //   locationJson: widget.isAddressChanged
-      //       ? 
+      //       ?
       //           {
       //             "id": widget.userid,
       //             "streetAddress": widget.street,
@@ -81,30 +81,29 @@ class _GroupAssociationEditIndividualState
       //             "latitude": 0,
       //             "longitude": 0
       //           }
-              
+
       //       : widget.profile.locations,
       // );
       final updatedProfile = widget.profile.copyWith(
-  firstname: widget.firstName,
-  lastname: widget.lastName,
-  email: widget.email,
-  phoneNumber: widget.phone,
-  locationJson: widget.isAddressChanged
-      ? jsonEncode([
-          {
-            "id": widget.userid,
-            "streetAddress": widget.street,
-            "area": widget.area,
-            "city": widget.city,
-            "state": widget.states,
-            "zipCode": widget.zip,
-            "latitude": 0,
-            "longitude": 0
-          }
-        ])
-      : jsonEncode(widget.profile.locations),
-);
-
+        firstname: widget.firstName,
+        lastname: widget.lastName,
+        email: widget.email,
+        phoneNumber: widget.phone,
+        locationJson: widget.isAddressChanged
+            ? jsonEncode([
+                {
+                  "id": widget.userid,
+                  "streetAddress": widget.street,
+                  "area": widget.area,
+                  "city": widget.city,
+                  "state": widget.states,
+                  "zipCode": widget.zip,
+                  "latitude": 0,
+                  "longitude": 0
+                }
+              ])
+            : jsonEncode(widget.profile.locations),
+      );
 
       context.read<LoginBloc>().add(UpdateIndividualProfile(
             userId: widget.userid,
@@ -113,7 +112,6 @@ class _GroupAssociationEditIndividualState
           ));
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +191,6 @@ class _GroupAssociationEditIndividualState
                       ),
                     ],
                   ),
-                
                   const SizedBox(height: 20),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.95,
@@ -226,15 +223,17 @@ class _GroupAssociationEditIndividualState
                                     (index) => ListTile(
                                       trailing: InkWell(
                                           onTap: () {
-                                            setState(() {});
-                                            print("USER ID ${widget.userid}");
-                                            print("USER ID ${widget.userid}");
+                                            //   setState(() {});
                                             context.read<LoginBloc>().add(
                                                 //10@Testing
                                                 RemoveAffiliations(
                                                     userId: widget.userid,
-                                                    groupId:
-                                                        "c3333333-3333-3333-3333-333333333333"));
+                                                    groupId: widget.profile
+                                                            .groupAssociations[
+                                                        index]['groupId']
+                                                    //"c3333333-3333-3333-3333-333333333333"
+                                                    ));
+                                            setState(() {});
                                             // context.read<LoginBloc>().add(
                                             //     GetIndividualProfile(
                                             //         userId: widget.userid));
@@ -273,8 +272,6 @@ class _GroupAssociationEditIndividualState
                         SizedBox(
                           height: 15,
                         ),
-                      
-
                         Padding(
                           padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width * 0.53),
@@ -288,7 +285,7 @@ class _GroupAssociationEditIndividualState
                             ),
                           ),
                         ),
-                         BlocBuilder<LoginBloc, LoginState>(
+                        BlocBuilder<LoginBloc, LoginState>(
                           builder: (context, state) {
                             final allGroups =
                                 state.getAllAssociatedGroupModel ??
@@ -366,7 +363,6 @@ class _GroupAssociationEditIndividualState
                             );
                           },
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
