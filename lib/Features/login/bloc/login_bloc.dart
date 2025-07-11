@@ -259,9 +259,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
 
     if (response.statusCode == 200) {
-      // ✅ Refetch profile from server after update
       final refreshedProfile = await loginRepository.individualProfile(event.userId);
-
 
       emit(state.copyWith(
         status: LoginStatus.updateProfessionalProfileSuccess,
@@ -281,7 +279,42 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 }
 
-  removeAffiliations(
+removeAffiliations(
+  RemoveAffiliations event,
+  Emitter<LoginState> emit,
+) async {
+  emit(state.copyWith(status: LoginStatus.removeAffilicationGroupsLoading));
+
+  try {
+    final response = await loginRepository.removeAffiliationsGroups(
+      event.userId,
+      event.groupId,
+    );
+
+    print("RemoveAffiliations Status Code: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      // ✅ Dispatch the GetIndividualProfile event to refresh profile
+      add(GetIndividualProfile(userId: event.userId));
+
+      emit(state.copyWith(status: LoginStatus.removeAffilicationGroupsSuccess));
+    } else {
+      emit(state.copyWith(
+        status: LoginStatus.removeAffilicationGroupsError,
+        errorMessage: "Failed to remove group (Status: ${response.statusCode})",
+      ));
+    }
+  } catch (e) {
+    print("Error in RemoveAffiliations: $e");
+    emit(state.copyWith(
+      status: LoginStatus.removeAffilicationGroupsError,
+      errorMessage: "An error occurred: ${e.toString()}",
+    ));
+  }
+}
+
+
+ /* removeAffiliations(
     RemoveAffiliations event,
     Emitter<LoginState> emit,
   ) async {
@@ -292,6 +325,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         event.userId,
         event.groupId,
       );
+       emit(state.copyWith(
+    profile: response,
+    status: LoginStatus.removeAffilicationGroupsSuccess,
+  ));
 
       print("Status Code: ${response.statusCode}");
 
@@ -310,7 +347,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         errorMessage: "An error occurred: ${e.toString()}",
       ));
     }
-  }
+  }*/
 
    addAffiliations(
     AddAffiliations event,

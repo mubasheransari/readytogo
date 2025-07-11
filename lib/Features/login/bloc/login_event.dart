@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:equatable/equatable.dart';
-
 import '../../../Model/individual_profile_model.dart';
 import '../../../Model/professional_profile_model.dart';
 

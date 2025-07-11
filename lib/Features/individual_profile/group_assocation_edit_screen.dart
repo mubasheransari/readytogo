@@ -215,7 +215,47 @@ class _GroupAssociationEditIndividualState
                           ),
                         ),
                         widget.profile.groupAssociations.isNotEmpty
-                            ? Padding(
+                            ? BlocBuilder<LoginBloc, LoginState>(
+                                builder: (context, state) {
+                                  final groups =
+                                      state.profile?.groupAssociations ?? [];
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Column(
+                                      children: List.generate(
+                                        groups.length,
+                                        (index) => ListTile(
+                                          trailing: InkWell(
+                                            onTap: () {
+                                              context.read<LoginBloc>().add(
+                                                    RemoveAffiliations(
+                                                      userId: widget.userid,
+                                                      groupId: groups[index]
+                                                          ['groupId'],
+                                                    ),
+                                                  );
+                                            },
+                                            child: Image.asset(
+                                                "assets/icon_delete.png"),
+                                          ),
+                                          title: Text(
+                                            groups[index]['groupName'],
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'Satoshi',
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+
+                            /*Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Column(
                                   children: List.generate(
@@ -223,20 +263,13 @@ class _GroupAssociationEditIndividualState
                                     (index) => ListTile(
                                       trailing: InkWell(
                                           onTap: () {
-                                            //   setState(() {});
                                             context.read<LoginBloc>().add(
                                                 //10@Testing
                                                 RemoveAffiliations(
                                                     userId: widget.userid,
                                                     groupId: widget.profile
                                                             .groupAssociations[
-                                                        index]['groupId']
-                                                    //"c3333333-3333-3333-3333-333333333333"
-                                                    ));
-                                            setState(() {});
-                                            // context.read<LoginBloc>().add(
-                                            //     GetIndividualProfile(
-                                            //         userId: widget.userid));
+                                                        index]['groupId']));
                                           },
                                           child: Image.asset(
                                               "assets/icon_delete.png")),
@@ -253,7 +286,7 @@ class _GroupAssociationEditIndividualState
                                     ),
                                   ),
                                 ),
-                              )
+                              )*/
                             : Padding(
                                 padding: EdgeInsets.only(
                                     right: MediaQuery.of(context).size.width *
