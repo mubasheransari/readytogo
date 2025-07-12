@@ -42,14 +42,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else {
         emit(state.copyWith(
           status: LoginStatus.failure,
-          errorMessage: "Login failed with status ${response.statusCode}",
+          errorMessage:"Incorrect Email or Password" //"Login failed with status ${response.statusCode}",
         ));
       }
     } catch (e) {
       print("Error in login: $e");
       emit(state.copyWith(
         status: LoginStatus.failure,
-        errorMessage: "An error occurred: ${e.toString()}",
+        errorMessage:"Incorrect Email or Password" //"An error occurred: ${e.toString()}",
       ));
     }
   }
@@ -65,9 +65,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         event.email,
         event.password,
         event.otp,
-      );
+      );//10@Testing
 
       print("VERIFY OTP: $response");
+      final responseBody = json.decode(response.body);
+      print("RESPONSE BODY $responseBody");
+      print("RESPONSE BODY $responseBody");
+      print("RESPONSE BODY $responseBody");
 
       if (response.statusCode == 200) {
         final responseBody = json.decode(response.body);
@@ -136,17 +140,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-   getAllAssociatedGroups(
+  getAllAssociatedGroups(
     GetAllAssociatedGroups event,
     Emitter<LoginState> emit,
   ) async {
     emit(state.copyWith(status: LoginStatus.getAllGroupsLoading));
 
     final getallgroups = await loginRepository.getAllAssociatedGroup();
-    
 
     if (getallgroups != null) {
-      emit(state.copyWith(getAllAssociatedGroupModel: getallgroups, status: LoginStatus.getAllGroupsSuccess));
+      emit(state.copyWith(
+          getAllAssociatedGroupModel: getallgroups,
+          status: LoginStatus.getAllGroupsSuccess));
     } else {
       emit(state.copyWith(
         status: LoginStatus.getAllGroupsError,
@@ -155,17 +160,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-    getAllProfessionalProfiles(
+  getAllProfessionalProfiles(
     GetAllProfessionalProfiles event,
     Emitter<LoginState> emit,
   ) async {
     emit(state.copyWith(status: LoginStatus.getAllProfessionalProfileLoading));
 
     final getallgroups = await loginRepository.getAllProfessionalProfile();
-    
 
     if (getallgroups != null) {
-      emit(state.copyWith(getAllProfessionalProfileModel: getallgroups, status: LoginStatus.getAllProfessionalProfileSuccess));
+      emit(state.copyWith(
+          getAllProfessionalProfileModel: getallgroups,
+          status: LoginStatus.getAllProfessionalProfileSuccess));
     } else {
       emit(state.copyWith(
         status: LoginStatus.getAllProfessionalProfileError,
@@ -213,108 +219,110 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   updateIndividualProfile(
-  UpdateIndividualProfile event,
-  Emitter<LoginState> emit,
-) async {
-  emit(state.copyWith(status: LoginStatus.updateProfileLoading));
-  try {
-    final response = await loginRepository.updateIndividualProfile(
-      id: event.userId,
-      profile: event.profile,
-      profileImage: event.profileImage,
-    );
+    UpdateIndividualProfile event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.updateProfileLoading));
+    try {
+      final response = await loginRepository.updateIndividualProfile(
+        id: event.userId,
+        profile: event.profile,
+        profileImage: event.profileImage,
+      );
 
-    if (response.statusCode == 200) {
-      // ✅ Refetch profile from server after update
-      final refreshedProfile = await loginRepository.individualProfile(event.userId);
+      if (response.statusCode == 200) {
+        // ✅ Refetch profile from server after update
+        final refreshedProfile =
+            await loginRepository.individualProfile(event.userId);
 
-
-      emit(state.copyWith(
-        status: LoginStatus.profileLoaded,
-        profile: refreshedProfile,
-      ));
-    } else {
+        emit(state.copyWith(
+          status: LoginStatus.profileLoaded,
+          profile: refreshedProfile,
+        ));
+      } else {
+        emit(state.copyWith(
+          status: LoginStatus.updateProfileError,
+          errorMessage: response.body,
+        ));
+      }
+    } catch (e) {
       emit(state.copyWith(
         status: LoginStatus.updateProfileError,
-        errorMessage: response.body,
+        errorMessage: e.toString(),
       ));
     }
-  } catch (e) {
-    emit(state.copyWith(
-      status: LoginStatus.updateProfileError,
-      errorMessage: e.toString(),
-    ));
   }
-}
 
   updateProfessionalProfile(
-  UpdateProfessionalProfile event,
-  Emitter<LoginState> emit,
-) async {
-  emit(state.copyWith(status: LoginStatus.updateProfessionalProfileLoading));
-  try {
-    final response = await loginRepository.updateProfessionalProfile(
-      id: event.userId,
-      profile: event.profile,
-    );
+    UpdateProfessionalProfile event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.updateProfessionalProfileLoading));
+    try {
+      final response = await loginRepository.updateProfessionalProfile(
+        id: event.userId,
+        profile: event.profile,
+      );
 
-    if (response.statusCode == 200) {
-      final refreshedProfile = await loginRepository.individualProfile(event.userId);
+      if (response.statusCode == 200) {
+        final refreshedProfile =
+            await loginRepository.individualProfile(event.userId);
 
-      emit(state.copyWith(
-        status: LoginStatus.updateProfessionalProfileSuccess,
-        profile: refreshedProfile,
-      ));
-    } else {
+        emit(state.copyWith(
+          status: LoginStatus.updateProfessionalProfileSuccess,
+          profile: refreshedProfile,
+        ));
+      } else {
+        emit(state.copyWith(
+          status: LoginStatus.updateProfessionalProfileError,
+          errorMessage: response.body,
+        ));
+      }
+    } catch (e) {
       emit(state.copyWith(
         status: LoginStatus.updateProfessionalProfileError,
-        errorMessage: response.body,
+        errorMessage: e.toString(),
       ));
     }
-  } catch (e) {
-    emit(state.copyWith(
-      status: LoginStatus.updateProfessionalProfileError,
-      errorMessage: e.toString(),
-    ));
   }
-}
 
-removeAffiliations(
-  RemoveAffiliations event,
-  Emitter<LoginState> emit,
-) async {
-  emit(state.copyWith(status: LoginStatus.removeAffilicationGroupsLoading));
+  removeAffiliations(
+    RemoveAffiliations event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.removeAffilicationGroupsLoading));
 
-  try {
-    final response = await loginRepository.removeAffiliationsGroups(
-      event.userId,
-      event.groupId,
-    );
+    try {
+      final response = await loginRepository.removeAffiliationsGroups(
+        event.userId,
+        event.groupId,
+      );
 
-    print("RemoveAffiliations Status Code: ${response.statusCode}");
+      print("RemoveAffiliations Status Code: ${response.statusCode}");
 
-    if (response.statusCode == 200) {
-      // ✅ Dispatch the GetIndividualProfile event to refresh profile
-      add(GetIndividualProfile(userId: event.userId));
+      if (response.statusCode == 200) {
+        // ✅ Dispatch the GetIndividualProfile event to refresh profile
+        add(GetIndividualProfile(userId: event.userId));
 
-      emit(state.copyWith(status: LoginStatus.removeAffilicationGroupsSuccess));
-    } else {
+        emit(state.copyWith(
+            status: LoginStatus.removeAffilicationGroupsSuccess));
+      } else {
+        emit(state.copyWith(
+          status: LoginStatus.removeAffilicationGroupsError,
+          errorMessage:
+              "Failed to remove group (Status: ${response.statusCode})",
+        ));
+      }
+    } catch (e) {
+      print("Error in RemoveAffiliations: $e");
       emit(state.copyWith(
         status: LoginStatus.removeAffilicationGroupsError,
-        errorMessage: "Failed to remove group (Status: ${response.statusCode})",
+        errorMessage: "An error occurred: ${e.toString()}",
       ));
     }
-  } catch (e) {
-    print("Error in RemoveAffiliations: $e");
-    emit(state.copyWith(
-      status: LoginStatus.removeAffilicationGroupsError,
-      errorMessage: "An error occurred: ${e.toString()}",
-    ));
   }
-}
 
-
- /* removeAffiliations(
+  /* removeAffiliations(
     RemoveAffiliations event,
     Emitter<LoginState> emit,
   ) async {
@@ -349,7 +357,7 @@ removeAffiliations(
     }
   }*/
 
-   addAffiliations(
+  addAffiliations(
     AddAffiliations event,
     Emitter<LoginState> emit,
   ) async {
@@ -379,7 +387,6 @@ removeAffiliations(
       ));
     }
   }
-
 
   /*updateIndividualProfile(
     UpdateIndividualProfile event,
