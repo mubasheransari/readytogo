@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Model/get_all_associated_groups_model.dart';
 import 'package:readytogo/Model/get_all_individual_profile_model.dart';
+import 'package:readytogo/Model/organization_profile_model.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
 import 'package:http_parser/http_parser.dart';
 import '../Constants/api_constants.dart';
@@ -56,6 +57,17 @@ class LoginRepository {//10@Testing
     );
 
     return ProfessionalProfileModel.fromJson(jsonResponse);
+  }
+
+    Future<OrganizationProfileModel> organizationProfile(String userId) async {
+    final jsonResponse = await _apiBaseHelper.get(
+      url: ApiConstants.baseDomain,
+      path:
+          "${ApiConstants.apiPrefix}${ApiConstants.getOrganizationalProfileData}$userId",
+      queryParam: {},
+    );
+
+    return OrganizationProfileModel.fromJson(jsonResponse);
   }
   
 

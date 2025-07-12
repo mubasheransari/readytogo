@@ -51,6 +51,12 @@ class GetProfessionalProfile extends LoginEvent {
     required this.userId,
   });
 }
+class GetOrganizationProfile extends LoginEvent {
+  final String userId;
+  const GetOrganizationProfile({
+    required this.userId,
+  });
+}
 
 class UpdateIndividualProfile extends LoginEvent {
   final String userId;

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'dart:convert';
 
 ProfessionalProfileModel professionalProfileModelFromJson(String str) =>
     ProfessionalProfileModel.fromJson(json.decode(str));

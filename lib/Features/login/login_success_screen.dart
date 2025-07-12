@@ -90,7 +90,32 @@ class LoginSuccessScreen extends StatelessWidget {
                               strokeWidth: 2, color: Colors.white),
                         );
                       }
+                      
                     }
+
+                    else if (role == "Organization") {
+                      if (state.organizationalStatus ==
+                              OrganizationalStatus.success &&
+                          state.organizationProfileModel != null) {
+                        final profile = state.organizationProfileModel!;
+                        return CustomTextWidget(
+                          text: '${profile.firstname} ${profile.lastname}',
+                          color: Constants().themeColor,
+                          textSize: 35,
+                          fontWeight: FontWeight.w500,
+                        );
+                      } else if (state.organizationalStatus ==
+                              OrganizationalStatus.loading) {
+                        return const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: Colors.white),
+                        );
+                      }
+                      
+                    }
+                    
 
                     return const Text(
                       'Loading...',

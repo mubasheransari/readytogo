@@ -12,6 +12,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<VerifyOtpSubmitted>(_onVerifyOtpSubmitted);
     on<GetIndividualProfile>(_getIndividualProfile);
     on<GetProfessionalProfile>(_getProfessionalProfile);
+    on<GetOrganizationProfile>(_getOrganizationProfile);
     on<UpdateIndividualProfile>(updateIndividualProfile);
     on<UpdateProfessionalProfile>(updateProfessionalProfile);
     on<GetAllAssociatedGroups>(getAllAssociatedGroups);
@@ -117,6 +118,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               professionalProfileModel: profile,
             ));
           }
+          else if (userRole == "Organization") {
+            emit(state.copyWith(organizationalStatus: OrganizationalStatus.loading));
+
+            final profile = await loginRepository.organizationProfile(userId);
+            emit(state.copyWith(
+             organizationalStatus: OrganizationalStatus.success,
+              organizationProfileModel: profile,
+            ));
+          }
+
 
           // Fetch profile next
           //   add(GetIndividualProfile(userId: userId));
@@ -213,6 +224,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else {
       emit(state.copyWith(
         status: LoginStatus.professionalProfileError,
+        //errorMessage: "Failed to fetch profile: ${e.toString()}",
+      ));
+    }
+  }
+
+    _getOrganizationProfile(
+    GetOrganizationProfile event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(organizationalStatus: OrganizationalStatus.loading));
+
+    final profile = await loginRepository.organizationProfile(event.userId);
+
+    if (profile != null) {
+      emit(state.copyWith(
+          organizationProfileModel: profile,
+          organizationalStatus: OrganizationalStatus.success));
+    } else {
+      emit(state.copyWith(
+        organizationalStatus: OrganizationalStatus.failure
         //errorMessage: "Failed to fetch profile: ${e.toString()}",
       ));
     }

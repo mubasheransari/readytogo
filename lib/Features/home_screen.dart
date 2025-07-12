@@ -6,6 +6,7 @@ import 'package:readytogo/Features/search_screen.dart'; // This is FindProviders
 import 'Professional_profile/professional_profile_screen.dart';
 import 'mygeo_screen.dart';
 import 'navdrawer.dart';
+import 'organization/organization_profile_screen.dart';
 
 final Key mapKey = UniqueKey();
 var st = GetStorage();
@@ -34,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ? const IndividualProfileScreen()
           : role == "Professional"
               ?  ProfessionalProfileScreen()
+                  : role == "Organization"
+              ?  OrganizationProfileScreen()
               : const Center(child: Text("Unknown role")),
     ];
 

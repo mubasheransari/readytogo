@@ -1,10 +1,10 @@
 import 'package:readytogo/Model/get_all_associated_groups_model.dart';
 import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
-
 import '../../../Model/individual_profile_model.dart';
-
 import 'package:equatable/equatable.dart';
+
+import '../../../Model/organization_profile_model.dart';
 
 /// Enum to represent different states in the login process
 enum LoginStatus {
@@ -42,9 +42,18 @@ enum LoginStatus {
   updateProfessionalProfileError,
 }
 
+enum OrganizationalStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 /// A unified state class for Login & Profile operations
 class LoginState extends Equatable {
   final LoginStatus status;
+  final OrganizationalStatus organizationalStatus;
+  final OrganizationProfileModel ?organizationProfileModel;
   final String? errorMessage;
   final String? token;
   final IndividualProfileModel? profile;
@@ -54,6 +63,8 @@ class LoginState extends Equatable {
 
   const LoginState(
       {this.status = LoginStatus.initial,
+      this.organizationalStatus = OrganizationalStatus.initial,
+      this.organizationProfileModel,
       this.errorMessage,
       this.token,
       this.profile,
@@ -64,6 +75,8 @@ class LoginState extends Equatable {
   /// Copy the state with updated fields
   LoginState copyWith({
     LoginStatus? status,
+    OrganizationalStatus? organizationalStatus,
+    OrganizationProfileModel? organizationProfileModel,
     String? errorMessage,
     String? token,
     IndividualProfileModel? profile,
@@ -73,6 +86,8 @@ class LoginState extends Equatable {
   }) {
     return LoginState(
         status: status ?? this.status,
+        organizationProfileModel: organizationProfileModel ?? this.organizationProfileModel,
+        organizationalStatus: organizationalStatus ?? this.organizationalStatus,
         errorMessage: errorMessage ?? this.errorMessage,
         token: token ?? this.token,
         profile: profile ?? this.profile,
@@ -87,6 +102,8 @@ class LoginState extends Equatable {
   @override
   List<Object?> get props => [
         status,
+        organizationalStatus,
+        organizationProfileModel,
         errorMessage,
         token,
         profile,
