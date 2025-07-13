@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:readytogo/Model/professional_profile_model.dart';
 
 OrganizationProfileModel organizationProfileModelFromJson(String str) =>
