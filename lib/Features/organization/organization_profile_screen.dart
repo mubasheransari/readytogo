@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
-
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/Model/individual_profile_model.dart';
 
@@ -258,6 +260,9 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                       ],
                     );
                   }).toList(),
+                  SizedBox(height: 28),
+                 
+                  FindProvidersMapWidget(),
                 ],
               ),
             ),
@@ -550,6 +555,54 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class FindProvidersMapWidget extends StatelessWidget {
+  FindProvidersMapWidget({super.key});
+
+  CameraPosition _initialCameraPosition = CameraPosition(
+    target: LatLng(38.7946, -106.5348), // Centered over USA
+    zoom: 3.5,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width * 0.9;
+
+    return Center(
+      child: Container(
+        width: width,
+        height: 200,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _initialCameraPosition,
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
+            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+              Factory<OneSequenceGestureRecognizer>(
+                  () => EagerGestureRecognizer()),
+            },
+            onMapCreated: (controller) {
+              // Optional: set map style here
+            },
+          ),
+        ),
       ),
     );
   }
