@@ -13,8 +13,6 @@ import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 
 import 'bloc/login_state.dart';
 
-
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -99,7 +97,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               validateEmail(value?.trim() ?? ''),
                         ),
                         const SizedBox(height: 5),
-                        CustomTextFieldWidget(//10@Testing
+                        CustomTextFieldWidget(
+                          //10@Testing
                           obscureText: true,
                           borderColor: Constants().themeColor,
                           controller: passwordController,
@@ -146,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 );
-                              });//10@Testing
+                              }); //10@Testing
                             } else if (state.status == LoginStatus.failure) {
                               toastWidget(
                                 state.errorMessage ??
@@ -160,27 +159,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                 state.status == LoginStatus.loading;
 
                             return SizedBox(
-                              width:
-                                  MediaQuery.of(context).size.width * 0.85,
+                              width: MediaQuery.of(context).size.width * 0.85,
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
+                                  FocusScope.of(context).unfocus();
                                   if (_formKey.currentState!.validate() &&
                                       !isLoading) {
                                     context.read<LoginBloc>().add(
                                           LoginWithEmailPassword(
-                                            email:
-                                                emailController.text.trim(),
-                                            password: passwordController.text
-                                                .trim(),
+                                            email: emailController.text.trim(),
+                                            password:
+                                                passwordController.text.trim(),
                                           ),
                                         );
-                                  }
+                                  }//10@Testing
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Constants().themeColor,
-                                  disabledBackgroundColor:
-                                      Colors.grey.shade400,
+                                  disabledBackgroundColor: Colors.grey.shade400,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   ),
@@ -226,8 +223,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 20),
                         InkWell(
                           onTap: () {
-                            FcmRepository().updateFcmToken(
-                                "YOUR_TEST_TOKEN_HERE");
+                            FcmRepository()
+                                .updateFcmToken("YOUR_TEST_TOKEN_HERE");
                           },
                           child: _buildSocialLoginButton(
                             iconPath: 'assets/facebook.png',

@@ -182,7 +182,82 @@ class LoginRepository {
 //   return null;
 // }
 
-  Future<http.Response> updateIndividualProfile({
+
+Future<http.Response> updateIndividualProfile({
+  required String id,
+  required IndividualProfileModel profile,
+  File? profileImage,
+}) async {
+  final uri = Uri.parse(
+    'http://173.249.27.4:343/api/Profile/individual/edit-profile',
+  );
+
+  final request = http.MultipartRequest('PUT', uri);
+
+  // ✅ Read token
+  var storage = GetStorage();
+  var token = storage.read("id");
+
+  // ✅ Set Authorization header (do NOT set Content-Type manually for MultipartRequest)
+  if (token != null && token.toString().isNotEmpty) {
+    request.headers['Authorization'] = 'Bearer $token';
+  }
+
+  // ✅ Prepare location (first one if available)
+  final loc = profile.locations.isNotEmpty ? profile.locations[0] : {};
+
+  // ✅ Add fields
+  request.fields.addAll({
+    "UserId": id,
+    "FirstName": profile.firstname,
+    "LastName": profile.lastname,
+    "Email": profile.email,
+    "PhoneNumber": profile.phoneNumber,
+    "StreetAddress": loc["streetAddress"] ?? "",
+    "Area": loc["area"] ?? "",
+    "City": loc["city"] ?? "",
+    "State": loc["state"] ?? "",
+    "ZipCode": loc["zipCode"] ?? "",
+    "Description": "Updated via app",
+    "ProfileImageUrl": profile.profileImageUrl,
+    "LocationsJson": jsonEncode(profile.locations),
+  });
+
+  // ✅ Optional: OrganizationId
+  final orgId = _extractOrganizationId(profile.organizationProfessionals);
+  if (orgId != null && orgId.isNotEmpty) {
+    request.fields["OrganizationId"] = orgId;
+  }
+
+  // ✅ SpecializationIds
+  if (profile.specializations is List &&
+      (profile.specializations as List).isNotEmpty) {
+    request.fields["SpecializationIds"] =
+        jsonEncode(profile.specializations);
+  }
+
+  // ✅ ProfessionalIds
+  if (profile.organizationProfessionals is List &&
+      (profile.organizationProfessionals as List).isNotEmpty) {
+    request.fields["ProfessionalIds"] =
+        jsonEncode(profile.organizationProfessionals);
+  }
+
+  // ✅ Optional profile image
+  if (profileImage != null) {
+    request.files.add(await http.MultipartFile.fromPath(
+      "ProfileImage",
+      profileImage.path,
+      contentType: MediaType("image", "jpeg"),
+    ));
+  }
+
+  // ✅ Send request and convert streamed response to http.Response
+  final streamedResponse = await request.send();
+  return await http.Response.fromStream(streamedResponse);
+}
+
+ /*Future<http.Response> updateIndividualProfile({
     required String id,
     required IndividualProfileModel profile,
     File? profileImage,
@@ -250,7 +325,7 @@ class LoginRepository {
     // ⏩ Send request and return response
     final streamedResponse = await request.send();
     return await http.Response.fromStream(streamedResponse);
-  }
+  }*/
 
   // Future<http.Response> updateIndividualProfile({
   //   required String id,

@@ -10,43 +10,44 @@ import 'package:flutter/material.dart';
 
 class ApiBaseHelper {
   bool _wasConnected = true;
-Future<dynamic> get({
-  required String url,
-  required String path,
-  String? token,
-  Map<String, dynamic>? queryParam,
-}) async {
-  print('Api GET -> url: $url, path: $path');
+  Future<dynamic> get({
+    required String url,
+    required String path,
+    String? token,
+    Map<String, dynamic>? queryParam,
+  }) async {
+    print('Api GET -> url: $url, path: $path');
 
-  final hasInternet = await _checkConnectionWithToast();
-  if (!hasInternet) {
-    throw FetchDataException('No Internet connection');
+    final hasInternet = await _checkConnectionWithToast();
+    if (!hasInternet) {
+      throw FetchDataException('No Internet connection');
+    }
+
+    try {
+      final uri =
+          Uri.parse("http://$url/$path").replace(queryParameters: queryParam);
+      print("Final URI: $uri");
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null && token.isNotEmpty)
+            'Authorization': 'Bearer $token',
+        },
+      );
+
+      print("TOKEN USED: $token");
+      print("GET response status: ${response.statusCode}");
+      print("GET response body: ${response.body}");
+
+      return _returnResponse(response);
+    } on SocketException catch (e) {
+      print('SocketException: $e');
+      await _checkConnectionWithToast();
+      throw FetchDataException('No Internet connection');
+    }
   }
-
-  try {
-    final uri = Uri.parse("http://$url/$path").replace(queryParameters: queryParam);
-    print("Final URI: $uri");
-
-    final response = await http.get(
-      uri,
-      headers: {
-        'Content-Type': 'application/json',
-        if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
-      },
-    );
-
-    print("TOKEN USED: $token");
-    print("GET response status: ${response.statusCode}");
-    print("GET response body: ${response.body}");
-
-    return _returnResponse(response);
-  } on SocketException catch (e) {
-    print('SocketException: $e');
-    await _checkConnectionWithToast();
-    throw FetchDataException('No Internet connection');
-  }
-}
-
 
   Future<http.Response> delete({
     String? baseUrl,
@@ -72,8 +73,7 @@ Future<dynamic> get({
       final request = http.Request("DELETE", uri);
       request.headers.addAll({
         'Content-Type': 'application/json',
-        'X-Request-For': '::1',
-        if (token != null && token.isNotEmpty) 'Authorization': token,
+        'Authorization': 'Bearer$token'
       });
 
       if (body != null) {
