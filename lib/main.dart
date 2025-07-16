@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:readytogo/Features/Signup/bloc/signup_bloc.dart';
-import 'package:readytogo/Features/Signup/bloc/signup_event.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Features/splash_screen.dart';
-import 'package:readytogo/Model/professional_profile_model.dart';
-
 import 'Features/ForgetPassword/bloc/forget_password_bloc.dart';
-import 'Features/Signup/release_of_information.dart';
-import 'Features/Signup/signup_screen.dart';
 import 'Features/login/bloc/login_bloc.dart';
 import 'Features/login/login_success_screen.dart';
-import 'Features/welcome_screen.dart';
 import 'package:get_storage/get_storage.dart';
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();

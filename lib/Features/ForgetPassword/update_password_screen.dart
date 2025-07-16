@@ -178,10 +178,10 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
                             const SizedBox(height: 20),
 
-                            // Submit Button
+                            // Submit Button 10@Testing
                             SizedBox(
-                              width: 342,
-                              height: 60,
+                              width: MediaQuery.of(context).size.width * 0.85,
+                              height: 50,
                               child: ElevatedButton(
                                 onPressed: isButtonEnabled
                                     ? () {

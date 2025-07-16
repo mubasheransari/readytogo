@@ -42,16 +42,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(state.copyWith(status: LoginStatus.success));
       } else {
         emit(state.copyWith(
-          status: LoginStatus.failure,
-          errorMessage:"Incorrect Email or Password" //"Login failed with status ${response.statusCode}",
-        ));
+            status: LoginStatus.failure,
+            errorMessage:
+                "Incorrect Email or Password" //"Login failed with status ${response.statusCode}",
+            ));
       }
     } catch (e) {
       print("Error in login: $e");
       emit(state.copyWith(
-        status: LoginStatus.failure,
-        errorMessage:"Incorrect Email or Password" //"An error occurred: ${e.toString()}",
-      ));
+          status: LoginStatus.failure,
+          errorMessage:
+              "Incorrect Email or Password" //"An error occurred: ${e.toString()}",
+          ));
     }
   }
 
@@ -66,7 +68,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         event.email,
         event.password,
         event.otp,
-      );//10@Testing
+      ); //10@Testing
 
       print("VERIFY OTP: $response");
       final responseBody = json.decode(response.body);
@@ -77,7 +79,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (response.statusCode == 200) {
         final responseBody = json.decode(response.body);
         final token = responseBody['token'];
-        final userId = responseBody['id'];
+        final userId = responseBody['token'];
 
         List<dynamic> roles = responseBody['role'];
         String userRole = roles.isNotEmpty ? roles[0] : '';
@@ -117,17 +119,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               status: LoginStatus.professionalProfileLoaded,
               professionalProfileModel: profile,
             ));
-          }
+          } //10@Testing
           else if (userRole == "Organization") {
-            emit(state.copyWith(organizationalStatus: OrganizationalStatus.loading));
+            emit(state.copyWith(
+                organizationalStatus: OrganizationalStatus.loading));
 
             final profile = await loginRepository.organizationProfile(userId);
             emit(state.copyWith(
-             organizationalStatus: OrganizationalStatus.success,
+              organizationalStatus: OrganizationalStatus.success,
               organizationProfileModel: profile,
             ));
           }
-
 
           // Fetch profile next
           //   add(GetIndividualProfile(userId: userId));
@@ -189,7 +191,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         //errorMessage: "Failed to fetch profile: ${e.toString()}",
       ));
     }
-  }
+  } //10@Testing
 
   _getIndividualProfile(
     GetIndividualProfile event,
@@ -229,7 +231,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-    _getOrganizationProfile(
+  _getOrganizationProfile(
     GetOrganizationProfile event,
     Emitter<LoginState> emit,
   ) async {
@@ -242,10 +244,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           organizationProfileModel: profile,
           organizationalStatus: OrganizationalStatus.success));
     } else {
-      emit(state.copyWith(
-        organizationalStatus: OrganizationalStatus.failure
-        //errorMessage: "Failed to fetch profile: ${e.toString()}",
-      ));
+      emit(state.copyWith(organizationalStatus: OrganizationalStatus.failure
+          //errorMessage: "Failed to fetch profile: ${e.toString()}",
+          ));
     }
   }
 
@@ -263,8 +264,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (response.statusCode == 200) {
         // ✅ Refetch profile from server after update
-        final refreshedProfile =
-            await loginRepository.individualProfile(event.userId);
+        final refreshedProfile = await loginRepository.individualProfile(
+            event.userId);
 
         emit(state.copyWith(
           status: LoginStatus.profileLoaded,
@@ -293,11 +294,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final response = await loginRepository.updateProfessionalProfile(
         id: event.userId,
         profile: event.profile,
-      );
+      );//10@Testing
 
       if (response.statusCode == 200) {
-        final refreshedProfile =
-            await loginRepository.individualProfile(event.userId);
+        final refreshedProfile = await loginRepository.individualProfile(
+            event.userId);
 
         emit(state.copyWith(
           status: LoginStatus.updateProfessionalProfileSuccess,
