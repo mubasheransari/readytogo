@@ -56,7 +56,14 @@ enum UpdateProfessionalProfileStatus {
   failure,
 }
 
-enum RemoveAffiliationGroupStatus {
+enum RemoveAffiliationGroupStatusProfessional {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
+enum AddAffiliationGroupStatusProfessional {
   initial,
   loading,
   success,
@@ -82,7 +89,8 @@ class LoginState extends Equatable {
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
   final UpdateProfessionalProfileStatus updateProfessionalProfileStatus;
-  final RemoveAffiliationGroupStatus removeAffiliationGroupStatus;
+  final RemoveAffiliationGroupStatusProfessional removeAffiliationGroupStatus;
+  AddAffiliationGroupStatusProfessional addAffiliationGroupStatusProfessional;
   final OrganizationalStatus organizationalStatus;
   final OrganizationProfileModel? organizationProfileModel;
   final String? errorMessage;
@@ -92,12 +100,15 @@ class LoginState extends Equatable {
   final List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel;
   final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
-  const LoginState(
+   LoginState(
       {this.status = LoginStatus.initial,
       this.professionalStatus = ProfessionalStatus.initial,
       this.updateProfessionalProfileStatus =
           UpdateProfessionalProfileStatus.initial,
-          this.removeAffiliationGroupStatus = RemoveAffiliationGroupStatus.initial,
+      this.removeAffiliationGroupStatus =
+          RemoveAffiliationGroupStatusProfessional.initial,
+          
+          this.addAffiliationGroupStatusProfessional = AddAffiliationGroupStatusProfessional.initial,
       this.organizationalStatus = OrganizationalStatus.initial,
       this.organizationProfileModel,
       this.errorMessage,
@@ -112,7 +123,8 @@ class LoginState extends Equatable {
     LoginStatus? status,
     ProfessionalStatus? professionalStatus,
     UpdateProfessionalProfileStatus? updateProfessionalProfileStatus,
-    RemoveAffiliationGroupStatus ? removeAffiliationGroupStatus,
+    RemoveAffiliationGroupStatusProfessional? removeAffiliationGroupStatus,
+    AddAffiliationGroupStatusProfessional ? addAffiliationGroupStatusProfessional,
     OrganizationalStatus? organizationalStatus,
     OrganizationProfileModel? organizationProfileModel,
     String? errorMessage,
@@ -127,7 +139,9 @@ class LoginState extends Equatable {
         professionalStatus: professionalStatus ?? this.professionalStatus,
         updateProfessionalProfileStatus: updateProfessionalProfileStatus ??
             this.updateProfessionalProfileStatus,
-            removeAffiliationGroupStatus: removeAffiliationGroupStatus ?? this.removeAffiliationGroupStatus,
+        removeAffiliationGroupStatus:
+            removeAffiliationGroupStatus ?? this.removeAffiliationGroupStatus,
+            addAffiliationGroupStatusProfessional: addAffiliationGroupStatusProfessional ?? this.addAffiliationGroupStatusProfessional,
         organizationProfileModel:
             organizationProfileModel ?? this.organizationProfileModel,
         organizationalStatus: organizationalStatus ?? this.organizationalStatus,
@@ -148,6 +162,7 @@ class LoginState extends Equatable {
         professionalStatus,
         updateProfessionalProfileStatus,
         removeAffiliationGroupStatus,
+        addAffiliationGroupStatusProfessional,
         organizationalStatus,
         organizationProfileModel,
         errorMessage,

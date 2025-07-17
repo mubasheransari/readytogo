@@ -446,6 +446,21 @@ class LoginRepository {
         token: token);
   }
 
+  Future<http.Response> addAffiliationsGroupsProfessional(
+      String userId, String groupId) async {
+        var storage = GetStorage();
+    var token = storage.read("id");
+    return await _apiBaseHelper.post(
+      path: ApiConstants.addAffiliationsGroupsProfessional,
+      body: {
+        "userId": userId,
+        "groupId": groupId,
+      },
+      token: token
+    );
+  }
+
+
   Future<http.Response> addAffiliationsGroups(
       String userId, String groupId) async {
         var storage = GetStorage();

@@ -7,7 +7,7 @@ import 'package:readytogo/Features/login/bloc/login_state.dart';
 import 'package:readytogo/Repositories/login_repository.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(const LoginState()) {
+  LoginBloc() : super(LoginState()) {
     on<LoginWithEmailPassword>(_loginWithEmailPassword);
     on<VerifyOtpSubmitted>(_onVerifyOtpSubmitted);
     on<GetIndividualProfile>(_getIndividualProfile);
@@ -20,6 +20,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<RemoveAffiliations>(removeAffiliations);
     on<AddAffiliations>(addAffiliations);
     on<RemoveAffiliationsProfrofessional>(removeAffiliationsProfessional);
+    on<AddAffiliationsProfrofessional>(addAffiliationsProfrofessional);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -366,7 +367,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     emit(state.copyWith(
-        removeAffiliationGroupStatus: RemoveAffiliationGroupStatus.loading));
+        removeAffiliationGroupStatus:
+            RemoveAffiliationGroupStatusProfessional.loading));
 
     try {
       final response =
@@ -383,10 +385,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         //10@Testing
         emit(state.copyWith(
             removeAffiliationGroupStatus:
-                RemoveAffiliationGroupStatus.success));
+                RemoveAffiliationGroupStatusProfessional.success));
       } else {
         emit(state.copyWith(
-          removeAffiliationGroupStatus: RemoveAffiliationGroupStatus.failure,
+          removeAffiliationGroupStatus:
+              RemoveAffiliationGroupStatusProfessional.failure,
           errorMessage:
               "Failed to remove group (Status: ${response.statusCode})",
         ));
@@ -394,7 +397,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } catch (e) {
       print("Error in RemoveAffiliations: $e");
       emit(state.copyWith(
-        removeAffiliationGroupStatus: RemoveAffiliationGroupStatus.failure,
+        removeAffiliationGroupStatus:
+            RemoveAffiliationGroupStatusProfessional.failure,
         errorMessage: "An error occurred: ${e.toString()}",
       ));
     }
@@ -461,6 +465,43 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print("Error in login: $e");
       emit(state.copyWith(
         status: LoginStatus.addAffilicationGroupsError,
+        errorMessage: "An error occurred: ${e.toString()}",
+      ));
+    }
+  }
+
+  addAffiliationsProfrofessional(
+    AddAffiliationsProfrofessional event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(
+        addAffiliationGroupStatusProfessional:
+            AddAffiliationGroupStatusProfessional.loading));
+
+    try {
+      final response = await loginRepository.addAffiliationsGroupsProfessional(
+        event.userId,
+        event.groupId,
+      );
+
+      print("Status Code: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        emit(state.copyWith(
+            addAffiliationGroupStatusProfessional:
+                AddAffiliationGroupStatusProfessional.success));
+      } else {
+        emit(state.copyWith(
+          addAffiliationGroupStatusProfessional:
+              AddAffiliationGroupStatusProfessional.failure,
+          errorMessage: "Login failed with status ${response.statusCode}",
+        ));
+      }
+    } catch (e) {
+      print("Error in login: $e");
+      emit(state.copyWith(
+        addAffiliationGroupStatusProfessional:
+            AddAffiliationGroupStatusProfessional.failure,
         errorMessage: "An error occurred: ${e.toString()}",
       ));
     }

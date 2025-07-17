@@ -122,7 +122,20 @@ class _GroupAssociationEditProfessionalProfileState
             Navigator.pop(context);
             Navigator.pop(context);
           } else if (state.removeAffiliationGroupStatus ==
-              RemoveAffiliationGroupStatus.success) {
+              RemoveAffiliationGroupStatusProfessional.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Profile Updated Successfully",
+                    style: TextStyle(color: Colors.white)),
+                backgroundColor: Colors.green,
+              ),
+            );
+            print("PROFESSIONAL STATUS ${state.status}");
+            print("PROFESSIONAL STATUS ${state.status}");
+            Navigator.pop(context);
+            Navigator.pop(context);
+          } else if (state.addAffiliationGroupStatusProfessional ==
+              AddAffiliationGroupStatusProfessional.success) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text("Profile Updated Successfully",
@@ -337,16 +350,41 @@ class _GroupAssociationEditProfessionalProfileState
                                           ),
                                         ),
                                       );
-                                    }).toList(),
+                                    }).toList(), //10@Testing
                                     onChanged: (group) {
+                                     
+                                      var storage = GetStorage();
+
+                                      var useerid = storage.read('userid');
+                                      print("USER ID $useerid");
                                       if (group != null &&
-                                          !selectedGroups.contains(group)) {
+                                          !selectedGroups
+                                              .any((g) => g.id == group.id)) {
+                                        print(group.id);
+                                        print(group.id);
+                                        print(group.id);
+                                        context.read<LoginBloc>().add(
+                                              AddAffiliationsProfrofessional(
+                                                userId: useerid,
+                                                groupId: group.id,
+                                              ),
+                                            );
+
                                         setState(() {
                                           _dropdownValue = group;
                                           selectedGroups.add(group);
                                         });
                                       }
                                     },
+                                    // onChanged: (group) {
+                                    //   if (group != null &&
+                                    //       !selectedGroups.contains(group)) {
+                                    //     setState(() {
+                                    //       _dropdownValue = group;
+                                    //       selectedGroups.add(group);
+                                    //     });
+                                    //   }
+                                    // },
                                   ),
                                 ),
                               );
