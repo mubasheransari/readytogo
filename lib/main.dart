@@ -128,7 +128,7 @@ void main() async {
                   ..add(GetAllAssociatedGroups())
                   ..add(GetAllProfessionalProfiles()),
               )
-            : role == "Professional"
+            : role == "Professional"//Professional
                 ? BlocProvider<LoginBloc>(
                     lazy: false,
                     create: (context) => LoginBloc()

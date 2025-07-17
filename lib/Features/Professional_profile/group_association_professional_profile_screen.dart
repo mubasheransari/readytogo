@@ -73,23 +73,20 @@ class _GroupAssociationEditProfessionalProfileState
         email: widget.email,
         phoneNumber: widget.phone,
         description: widget.description,
-        locationJson:
-            widget.isAddressChanged ?
-
-            jsonEncode([
-          {
-            "id": widget.userid,
-            "streetAddress": widget.street,
-            "area": widget.area,
-            "city": widget.city,
-            "state": widget.states,
-            "zipCode": widget.zip,
-            "latitude": 0,
-            "longitude": 0
-          }
-        ])
-      : jsonEncode(widget.profile.locations),
-              
+        locationJson: widget.isAddressChanged
+            ? jsonEncode([
+                {
+                  "id": widget.userid,
+                  "streetAddress": widget.street,
+                  "area": widget.area,
+                  "city": widget.city,
+                  "state": widget.states,
+                  "zipCode": widget.zip,
+                  "latitude": 0,
+                  "longitude": 0
+                }
+              ])
+            : jsonEncode(widget.profile.locations),
       );
       print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
       print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
@@ -103,8 +100,6 @@ class _GroupAssociationEditProfessionalProfileState
           ));
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +118,12 @@ class _GroupAssociationEditProfessionalProfileState
                 backgroundColor: Colors.green,
               ),
             );
+            print("PROFESSIONAL STATUS ${state.status}");
+            print("PROFESSIONAL STATUS ${state.status}");
             Navigator.pop(context);
-          } else if (state.status == LoginStatus.updateProfessionalProfileError) {
+            Navigator.pop(context);
+          } else if (state.status ==
+              LoginStatus.updateProfessionalProfileError) {
             print("UPDATE FAILED ${state.errorMessage}");
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -142,49 +141,48 @@ class _GroupAssociationEditProfessionalProfileState
               child: Column(
                 children: [
                   const SizedBox(height: 60),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            InkWell(
-                              onTap: () => Navigator.pop(context),
-                              child: const CircleAvatar(
-                                radius: 20,
-                                backgroundColor: Colors.white,
-                                child:
-                                    Icon(Icons.arrow_back, color: Colors.black),
-                              ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () => Navigator.pop(context),
+                            child: const CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.white,
+                              child:
+                                  Icon(Icons.arrow_back, color: Colors.black),
                             ),
-                            const SizedBox(
-                                width:
-                                    12), // 👈 Gap between back button and title
-                            const Text(
-                              'Edit Profile',
-                              style: TextStyle(
-                                fontSize: 22,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: 'Satoshi',
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Text(
-                          '2 of 2 page',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Satoshi',
                           ),
+                          const SizedBox(
+                              width:
+                                  12), // 👈 Gap between back button and title
+                          const Text(
+                            'Edit Profile',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Satoshi',
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Text(
+                        '2 of 2 page',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Satoshi',
                         ),
-                      ],
-                    ),
-   
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 20),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.95,
@@ -215,9 +213,9 @@ class _GroupAssociationEditProfessionalProfileState
                               widget.profile.groupAssociations!.length,
                               (index) => ListTile(
                                 trailing: Image.asset("assets/icon_delete.png"),
-                            
                                 title: Text(
-                                  widget.profile.groupAssociations![index].groupName!,
+                                  widget.profile.groupAssociations![index]
+                                      .groupName!,
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Colors.black87,
@@ -232,7 +230,6 @@ class _GroupAssociationEditProfessionalProfileState
                         SizedBox(
                           height: 15,
                         ),
-                        
                         Padding(
                           padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width * 0.53),
@@ -246,34 +243,30 @@ class _GroupAssociationEditProfessionalProfileState
                             ),
                           ),
                         ),
-                       
-
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: BlocBuilder<LoginBloc, LoginState>(
                             builder: (context, state) {
                               final allGroups =
-                                  state.getAllProfessionalProfileModel ??
-                                      []; 
+                                  state.getAllProfessionalProfileModel ?? [];
                               return SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.83,
                                 child: Theme(
                                   data: Theme.of(context).copyWith(
                                     canvasColor: Colors.white,
-                                    dropdownMenuTheme: DropdownMenuThemeData(
-                                        ),
+                                    dropdownMenuTheme: DropdownMenuThemeData(),
                                   ),
                                   child: DropdownButtonFormField<
                                       GetAllProfessionalProfileModel>(
                                     elevation: 0,
                                     decoration: InputDecoration(
                                       hintText: "Select group",
-                                      hintStyle:  TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'Satoshi',
-                                  ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Satoshi',
+                                      ),
                                       contentPadding:
                                           const EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 12),
@@ -322,12 +315,9 @@ class _GroupAssociationEditProfessionalProfileState
                             },
                           ),
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
-
-                        
                       ],
                     ),
                   ),

@@ -46,7 +46,6 @@ class LoginRepository {
       path: "${ApiConstants.apiPrefix}${ApiConstants.getIndividualProfileData}",
       token: token,
     );
-
     return IndividualProfileModel.fromJson(jsonResponse);
   }
 
@@ -72,7 +71,6 @@ class LoginRepository {
         path:
             "${ApiConstants.apiPrefix}${ApiConstants.getProfessionalProfileData}",
         token: token);
-
     return ProfessionalProfileModel.fromJson(jsonResponse);
   }
 
@@ -81,8 +79,7 @@ class LoginRepository {
     var token = storage.read("id");
     final jsonResponse = await _apiBaseHelper.get(
         url: ApiConstants.baseDomain,
-        path:
-            "${ApiConstants.apiPrefix}${ApiConstants.getOrganizationalProfileData}",
+        path:"${ApiConstants.apiPrefix}${ApiConstants.getOrganizationalProfileData}",
         token: token);
 
     return OrganizationProfileModel.fromJson(jsonResponse);
@@ -117,7 +114,7 @@ class LoginRepository {
         [];
 
     request.fields.addAll({
-      "UserId": id,
+      //"UserId": id,
       "FirstName": profile.firstname ?? "",
       "LastName": profile.lastname ?? "",
       "Email": profile.email ?? "",

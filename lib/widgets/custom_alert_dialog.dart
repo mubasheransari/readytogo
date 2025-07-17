@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/Donate/add_new_card.dart';
+import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import '../Features/Subscription/subscription_screen.dart';
 import '../Features/login/login_screen.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 // class DialogWidget extends StatelessWidget {
 //   final VoidCallback onGoBackPressed;
 //   final VoidCallback onCancelPressed;
@@ -277,19 +278,24 @@ void logoutDialog(BuildContext context) {
                     height: 42,
                     width: 115,
                     child: Expanded(
-                      child: OutlinedButton(
+                      child: OutlinedButton(//10@Testing
                         onPressed: () {
+                          context.read<LoginBloc>().state.profile == null;
+                          context.read<LoginBloc>().state.professionalProfileModel == null;
+                                                    context.read<LoginBloc>().state.organizationProfileModel == null;
                           final box = GetStorage();
+
                           box.remove("token");
                           box.remove("id");
                           box.remove("role");
+                          box.remove('userid');
                           toastWidget("Logout", Colors.red);
                           Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => LoginScreen()),
                             (Route<dynamic> route) => false,
                           );
-                        },
+                        }, //10@Testing
                         style: OutlinedButton.styleFrom(
                           backgroundColor: Colors.red,
                           side: BorderSide(color: Colors.red),

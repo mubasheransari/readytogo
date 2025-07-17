@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
@@ -7,9 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
 import 'package:readytogo/widgets/back_next_button_widget.dart';
 import '../../Constants/constants.dart';
-import '../../Model/individual_profile_model.dart';
+import '../../widgets/toast_widget.dart';
 import '../login/bloc/login_bloc.dart';
-import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
 import 'group_association_professional_profile_screen.dart';
 
@@ -309,7 +307,7 @@ bool _isAddressChanged() {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
-                            child: _buildField(emailController, "Email"),
+                            child: _buildField(emailController, "Email",readOnly: true),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
@@ -391,8 +389,97 @@ bool _isAddressChanged() {
       ),
     );
   }
-
   Widget _buildField(
+  TextEditingController controller,
+  String label, {
+  bool obscureText = false,
+  bool isMultiline = false,
+  bool readOnly = false,
+}) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 12.0),
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
+              fontFamily: 'Satoshi',
+              color: Color(0xff323747),
+            ),
+          ),
+        ),
+        const SizedBox(height: 5),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.85,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFE6DCFD), Color(0xFFD8E7FF)],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: GestureDetector(
+              onTap: () {
+                if (readOnly) {
+                  toastWidget("Unable to edit $label", Colors.red);
+                }
+              },
+              child: AbsorbPointer(
+                absorbing: readOnly,
+                child: TextFormField(
+                  controller: controller,
+                  obscureText: obscureText,
+                  readOnly: readOnly, // still set readOnly for keyboard suppression
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Required' : null,
+                  keyboardType: isMultiline
+                      ? TextInputType.multiline
+                      : TextInputType.text,
+                  minLines: isMultiline ? 1 : 1,
+                  maxLines: isMultiline ? null : 1,
+                  decoration: InputDecoration(
+                    hintText: 'Enter $label',
+                    hintStyle: const TextStyle(
+                      color: Color(0xff666F80),
+                      fontSize: 18,
+                      fontFamily: 'Satoshi',
+                      fontWeight: FontWeight.w500,
+                    ),
+                    filled: true,
+                    fillColor: Colors.transparent,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 18),
+                    errorStyle: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+  /*Widget _buildField(
     TextEditingController controller,
     String label, {
     bool obscureText = false,
@@ -467,7 +554,7 @@ bool _isAddressChanged() {
         ],
       ),
     );
-  }
+  }*/
 
   // Widget _buildField(
   //   TextEditingController controller,

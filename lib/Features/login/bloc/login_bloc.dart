@@ -303,7 +303,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await loginRepository.individualProfile(event.userId);
 
         emit(state.copyWith(
-          status: LoginStatus.updateProfessionalProfileSuccess,
+          status: LoginStatus.professionalProfileLoaded,
           profile: refreshedProfile,
         ));
       } else {

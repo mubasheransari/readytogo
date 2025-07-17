@@ -137,15 +137,15 @@ class CustomNavDrawer extends StatelessWidget {
                                         //   ),
                                         // ),
 
-                                        // Text(
-                                        //   'Psychiatrist, General Hospital',
-                                        //   style: TextStyle(
-                                        //     fontWeight: FontWeight.w700,
-                                        //     fontSize: 16,
-                                        //     color: Color(0xff666F80),
-                                        //     fontFamily: 'Satoshi',
-                                        //   ),
-                                        // ),
+                                        Text(
+                                          userRole,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16,
+                                            color: Color(0xff666F80),
+                                            fontFamily: 'Satoshi',
+                                          ),
+                                        ),
 
                                         // SizedBox(height: 6),
 
@@ -187,7 +187,7 @@ class CustomNavDrawer extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: 10,),
-                              Container(
+                            /*  Container(
                                 height: 40,
                                 width: MediaQuery.of(context).size.width*0.9,
                                 //  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 1),
@@ -203,7 +203,7 @@ class CustomNavDrawer extends StatelessWidget {
                                     fontSize: 19
                                   ),),
                                 ),
-                              ),
+                              ),*/
                             ],
                           ),
                         );
@@ -336,7 +336,7 @@ class CustomNavDrawer extends StatelessWidget {
                               ),
                             );
                           }).toList(),
-                          onChanged: (value) {},
+                          onChanged: (value) {},10@Testing
                         ),
                       ),*/
                       SizedBox(height: 6),
