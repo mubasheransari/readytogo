@@ -27,7 +27,32 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository loginRepository = LoginRepository();
   String? _tempToken;
 
-  _searchFunctionality(
+  void _searchFunctionality(
+    SearchFunctionality event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(searchStatus: SearchStatus.searchLoading));
+
+    try {
+      final result = await loginRepository.searchFunctionality(event.services);
+      print('Received ${state.searchModel!.firstName.length} providers');
+      print('Received ${state.searchModel!.firstName.length} providers');
+
+      print('Received ${state.searchModel!.firstName.length} providers');
+
+      emit(state.copyWith(
+        searchResults: result, // searchModel: result,10@Testing
+        searchStatus: SearchStatus.searchSuccess,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        searchStatus: SearchStatus.searchError,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
+
+  /*_searchFunctionality(
     SearchFunctionality event,
     Emitter<LoginState> emit,
   ) async {
@@ -50,7 +75,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         errorMessage: e.toString(),
       ));
     }
-  }
+  }*/
 
   _loginWithEmailPassword(
     LoginWithEmailPassword event,
