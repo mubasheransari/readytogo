@@ -6,6 +6,7 @@ import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import 'package:readytogo/Model/organization_profile_model.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:readytogo/Model/search_model.dart';
 import '../Constants/api_constants.dart';
 import '../Model/individual_profile_model.dart';
 import '../Service/api_basehelper.dart';
@@ -79,7 +80,8 @@ class LoginRepository {
     var token = storage.read("id");
     final jsonResponse = await _apiBaseHelper.get(
         url: ApiConstants.baseDomain,
-        path:"${ApiConstants.apiPrefix}${ApiConstants.getOrganizationalProfileData}",
+        path:
+            "${ApiConstants.apiPrefix}${ApiConstants.getOrganizationalProfileData}",
         token: token);
 
     return OrganizationProfileModel.fromJson(jsonResponse);
@@ -432,7 +434,8 @@ class LoginRepository {
         },
         token: token);
   }
-    Future<http.Response> removeAffiliationsGroupsProfessional(
+
+  Future<http.Response> removeAffiliationsGroupsProfessional(
       String userId, String groupId) async {
     var storage = GetStorage();
     var token = storage.read("id");
@@ -448,31 +451,28 @@ class LoginRepository {
 
   Future<http.Response> addAffiliationsGroupsProfessional(
       String userId, String groupId) async {
-        var storage = GetStorage();
+    var storage = GetStorage();
     var token = storage.read("id");
     return await _apiBaseHelper.post(
-      path: ApiConstants.addAffiliationsGroupsProfessional,
-      body: {
-        "userId": userId,
-        "groupId": groupId,
-      },
-      token: token
-    );
+        path: ApiConstants.addAffiliationsGroupsProfessional,
+        body: {
+          "userId": userId,
+          "groupId": groupId,
+        },
+        token: token);
   }
-
 
   Future<http.Response> addAffiliationsGroups(
       String userId, String groupId) async {
-        var storage = GetStorage();
+    var storage = GetStorage();
     var token = storage.read("id");
     return await _apiBaseHelper.post(
-      path: ApiConstants.addAffiliationsGroups,
-      body: {
-        "userId": userId,
-        "groupId": groupId,
-      },
-      token: token
-    );
+        path: ApiConstants.addAffiliationsGroups,
+        body: {
+          "userId": userId,
+          "groupId": groupId,
+        },
+        token: token);
   }
 
   Future<List<GetAllProfessionalProfileModel>>
@@ -488,5 +488,39 @@ class LoginRepository {
     return List<GetAllProfessionalProfileModel>.from(
       jsonResponse.map((x) => GetAllProfessionalProfileModel.fromJson(x)),
     );
+  } //10@Testing
+
+  Future<List<SearchModel>> searchFunctionality(String search) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
+
+    final response = await _apiBaseHelper.post(
+      path: ApiConstants.search,
+      body: {
+        "services": search,
+      },
+      token: token,
+    );
+
+    final decoded = json.decode(response.body);
+
+    if (decoded is List) {
+      return decoded.map((item) => SearchModel.fromJson(item)).toList();
+    } else {
+      throw Exception('Unexpected response format: ${response.body}');
+    }
   }
+
+  // Future<SearchModel> searchFunctionality(String search) async {
+  //   var storage = GetStorage();
+  //   var token = storage.read("id");
+  // var response= await _apiBaseHelper.post(
+  //     path: ApiConstants.loginApi,
+  //     body: {
+  //       "search": search,
+  //     },
+  //   token: token
+  //   );
+
+  // }
 }

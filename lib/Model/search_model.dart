@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:readytogo/Model/professional_profile_model.dart';
+
 List<SearchModel> searchModelFromJson(String str) =>
     List<SearchModel>.from(json.decode(str).map((x) => SearchModel.fromJson(x)));
 
@@ -69,46 +71,46 @@ class SearchModel {
       };
 }
 
-class Location {
-  final String id;
-  final String? streetAddress;
-  final String? area;
-  final String? city;
-  final String? state;
-  final String zipCode;
-  final double? latitude;
-  final double? longitude;
+// class Location {
+//   final String id;
+//   final String? streetAddress;
+//   final String? area;
+//   final String? city;
+//   final String? state;
+//   final String zipCode;
+//   final double? latitude;
+//   final double? longitude;
 
-  Location({
-    required this.id,
-    this.streetAddress,
-    this.area,
-    this.city,
-    this.state,
-    required this.zipCode,
-    this.latitude,
-    this.longitude,
-  });
+//   Location({
+//     required this.id,
+//     this.streetAddress,
+//     this.area,
+//     this.city,
+//     this.state,
+//     required this.zipCode,
+//     this.latitude,
+//     this.longitude,
+//   });
 
-  factory Location.fromJson(Map<String, dynamic> json) => Location(
-        id: json["id"] ?? '',
-        streetAddress: json["streetAddress"],
-        area: json["area"],
-        city: json["city"],
-        state: json["state"],
-        zipCode: json["zipCode"] ?? '',
-        latitude: (json["latitude"] != null) ? json["latitude"].toDouble() : null,
-        longitude: (json["longitude"] != null) ? json["longitude"].toDouble() : null,
-      );
+//   factory Location.fromJson(Map<String, dynamic> json) => Location(
+//         id: json["id"] ?? '',
+//         streetAddress: json["streetAddress"],
+//         area: json["area"],
+//         city: json["city"],
+//         state: json["state"],
+//         zipCode: json["zipCode"] ?? '',
+//         latitude: (json["latitude"] != null) ? json["latitude"].toDouble() : null,
+//         longitude: (json["longitude"] != null) ? json["longitude"].toDouble() : null,
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "streetAddress": streetAddress,
-        "area": area,
-        "city": city,
-        "state": state,
-        "zipCode": zipCode,
-        "latitude": latitude,
-        "longitude": longitude,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "streetAddress": streetAddress,
+//         "area": area,
+//         "city": city,
+//         "state": state,
+//         "zipCode": zipCode,
+//         "latitude": latitude,
+//         "longitude": longitude,
+//       };
+// }

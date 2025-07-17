@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:readytogo/Constants/constants.dart';
+import '../Repositories/login_repository.dart';
 import '../widgets/boxDecorationWidget.dart';
 import '../widgets/customscfaffold_widget.dart';
 import 'filters_search_screen.dart';
@@ -141,14 +142,20 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                         const SizedBox(width: 10),
                         Column(
                           children: [
-                            Container(
-                              height: 44,
-                              width: 44,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.grey.shade300),
+                            InkWell(
+                              onTap: () {
+                                LoginRepository().searchFunctionality('urologist');
+                              },
+                              child: Container(
+                                height: 44,
+                                width: 44,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade300),
+                                ),
+                                child: Image.asset("assets/search.png"),
                               ),
-                              child: Image.asset("assets/search.png"),
                             ),
                             const SizedBox(height: 8),
                             InkWell(
