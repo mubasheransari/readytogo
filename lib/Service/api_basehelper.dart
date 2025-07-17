@@ -4,12 +4,13 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../Constants/api_constants.dart';
 import 'api_exception.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
 class ApiBaseHelper {
   bool _wasConnected = true;
+
+
   Future<dynamic> get({
     required String url,
     required String path,

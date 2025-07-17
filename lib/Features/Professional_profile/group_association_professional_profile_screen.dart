@@ -350,19 +350,14 @@ class _GroupAssociationEditProfessionalProfileState
                                           ),
                                         ),
                                       );
-                                    }).toList(), //10@Testing
+                                    }).toList(),
                                     onChanged: (group) {
-                                     
                                       var storage = GetStorage();
-
                                       var useerid = storage.read('userid');
                                       print("USER ID $useerid");
                                       if (group != null &&
                                           !selectedGroups
                                               .any((g) => g.id == group.id)) {
-                                        print(group.id);
-                                        print(group.id);
-                                        print(group.id);
                                         context.read<LoginBloc>().add(
                                               AddAffiliationsProfrofessional(
                                                 userId: useerid,
@@ -376,15 +371,6 @@ class _GroupAssociationEditProfessionalProfileState
                                         });
                                       }
                                     },
-                                    // onChanged: (group) {
-                                    //   if (group != null &&
-                                    //       !selectedGroups.contains(group)) {
-                                    //     setState(() {
-                                    //       _dropdownValue = group;
-                                    //       selectedGroups.add(group);
-                                    //     });
-                                    //   }
-                                    // },
                                   ),
                                 ),
                               );
