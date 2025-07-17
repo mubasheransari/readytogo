@@ -421,7 +421,7 @@ class _GroupAssociationEditIndividualState
                                         var storage = GetStorage();
 
                                         var useerid = storage.read('userid');
-
+                                        print("USER ID $useerid");
                                         if (group != null &&
                                             !selectedGroups
                                                 .any((g) => g.id == group.id)) {

@@ -118,7 +118,7 @@ class ApiBaseHelper {
         headers: {
           'Content-Type': 'application/json',
           'X-Request-For': '::1',
-          if (token != null && token.isNotEmpty) 'Authorization': token,
+          if (token != null && token.isNotEmpty)  'Authorization': 'Bearer $token',
         },
         body: json.encode(body),
       );
