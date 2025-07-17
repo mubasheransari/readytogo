@@ -71,8 +71,7 @@ class LoginSuccessScreen extends StatelessWidget {
                         );
                       }
                     } else if (role == "Professional") {
-                      if (state.status ==
-                              LoginStatus.professionalProfileLoaded &&
+                      if (state.professionalStatus == ProfessionalStatus.success &&
                           state.professionalProfileModel != null) {
                         final profile = state.professionalProfileModel!;
                         return CustomTextWidget(

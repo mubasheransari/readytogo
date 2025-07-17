@@ -216,19 +216,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     GetProfessionalProfile event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: LoginStatus.professionalProfileLoading));
+    emit(state.copyWith(professionalStatus: ProfessionalStatus.loading));
 
     final profile = await loginRepository.professionalProfile(event.userId);
 
     if (profile != null) {
       emit(state.copyWith(
           professionalProfileModel: profile,
-          status: LoginStatus.professionalProfileLoaded));
+          professionalStatus: ProfessionalStatus.success));
     } else {
-      emit(state.copyWith(
-        status: LoginStatus.professionalProfileError,
-        //errorMessage: "Failed to fetch profile: ${e.toString()}",
-      ));
+      emit(state.copyWith(professionalStatus: ProfessionalStatus.failure
+          //errorMessage: "Failed to fetch profile: ${e.toString()}",
+          ));
     }
   }
 

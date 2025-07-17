@@ -36,9 +36,9 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
 
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        if (state.status == LoginStatus.professionalProfileLoading) {
+        if (state.professionalStatus == ProfessionalStatus.loading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state.status == LoginStatus.professionalProfileLoaded &&
+        } else if (state.professionalStatus == ProfessionalStatus.success &&
             state.professionalProfileModel != null) {
           final profile = state.professionalProfileModel!;
           return CustomScaffoldWidget(

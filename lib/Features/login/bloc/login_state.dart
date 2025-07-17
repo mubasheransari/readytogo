@@ -42,6 +42,13 @@ enum LoginStatus {
   updateProfessionalProfileError,
 }
 
+enum ProfessionalStatus {
+  initial,
+  loading,
+  success,
+  failure, //10@Testing
+}
+
 enum OrganizationalStatus {
   initial,
   loading,
@@ -52,8 +59,9 @@ enum OrganizationalStatus {
 /// A unified state class for Login & Profile operations
 class LoginState extends Equatable {
   final LoginStatus status;
+  final ProfessionalStatus professionalStatus;
   final OrganizationalStatus organizationalStatus;
-  final OrganizationProfileModel ?organizationProfileModel;
+  final OrganizationProfileModel? organizationProfileModel;
   final String? errorMessage;
   final String? token;
   final IndividualProfileModel? profile;
@@ -63,6 +71,7 @@ class LoginState extends Equatable {
 
   const LoginState(
       {this.status = LoginStatus.initial,
+      this.professionalStatus = ProfessionalStatus.initial,
       this.organizationalStatus = OrganizationalStatus.initial,
       this.organizationProfileModel,
       this.errorMessage,
@@ -75,6 +84,7 @@ class LoginState extends Equatable {
   /// Copy the state with updated fields
   LoginState copyWith({
     LoginStatus? status,
+    ProfessionalStatus ? professionalStatus,
     OrganizationalStatus? organizationalStatus,
     OrganizationProfileModel? organizationProfileModel,
     String? errorMessage,
@@ -86,7 +96,9 @@ class LoginState extends Equatable {
   }) {
     return LoginState(
         status: status ?? this.status,
-        organizationProfileModel: organizationProfileModel ?? this.organizationProfileModel,
+        professionalStatus:  professionalStatus ?? this.professionalStatus,
+        organizationProfileModel:
+            organizationProfileModel ?? this.organizationProfileModel,
         organizationalStatus: organizationalStatus ?? this.organizationalStatus,
         errorMessage: errorMessage ?? this.errorMessage,
         token: token ?? this.token,
@@ -102,6 +114,7 @@ class LoginState extends Equatable {
   @override
   List<Object?> get props => [
         status,
+        professionalStatus,
         organizationalStatus,
         organizationProfileModel,
         errorMessage,
