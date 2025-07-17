@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../Constants/constants.dart';
 import '../../Model/get_all_associated_groups_model.dart';
@@ -64,6 +65,7 @@ class _GroupAssociationEditIndividualState
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
+      print("id :${widget.userid}"); //10@Testing
       // final updatedProfile = widget.profile.copyWith(
       //   firstname: widget.firstName,
       //   lastname: widget.lastName,
@@ -104,9 +106,12 @@ class _GroupAssociationEditIndividualState
               ])
             : jsonEncode(widget.profile.locations),
       );
+      var storage = GetStorage();
+
+      var useerid = storage.read('userid');
 
       context.read<LoginBloc>().add(UpdateIndividualProfile(
-            userId: widget.userid,
+            userId: useerid,
             profile: updatedProfile,
             profileImage: _selectedImage,
           ));
@@ -228,13 +233,20 @@ class _GroupAssociationEditIndividualState
                                         (index) => ListTile(
                                           trailing: InkWell(
                                             onTap: () {
+                                              print("USER ID ${widget.userid}");
+                                              print(
+                                                  "GROUP ID ${groups[index]['groupId']}");
+                                              var storage = GetStorage();
+
+                                              var useerid =
+                                                  storage.read('userid');
                                               context.read<LoginBloc>().add(
                                                     RemoveAffiliations(
-                                                      userId: widget.userid,
+                                                      userId: useerid,
                                                       groupId: groups[index]
                                                           ['groupId'],
                                                     ),
-                                                  );
+                                                  ); //10@Testing
                                             },
                                             child: Image.asset(
                                                 "assets/icon_delete.png"),
@@ -302,7 +314,6 @@ class _GroupAssociationEditIndividualState
                                   ),
                                 ),
                               ),
-                     
                         BlocBuilder<LoginBloc, LoginState>(
                           builder: (context, state) {
                             final allGroups =
@@ -407,12 +418,16 @@ class _GroupAssociationEditIndividualState
                                         );
                                       }).toList(),
                                       onChanged: (group) {
+                                        var storage = GetStorage();
+
+                                        var useerid = storage.read('userid');
+
                                         if (group != null &&
                                             !selectedGroups
                                                 .any((g) => g.id == group.id)) {
                                           context.read<LoginBloc>().add(
                                                 AddAffiliations(
-                                                  userId: widget.userid,
+                                                  userId: useerid,
                                                   groupId: group.id,
                                                 ),
                                               );

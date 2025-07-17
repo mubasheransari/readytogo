@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/Features/Donate/donate_navbar.dart';
 import 'package:readytogo/Features/Subscription/subscription_screen.dart';
 import 'package:readytogo/Features/howtouse_screen.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import '../widgets/custom_alert_dialog.dart';
 import 'Settings/settings_screen.dart';
 import 'aboutus_screen.dart';
 import 'login/login_screen.dart';
 import 'manage_my_geo_navbar.dart';
+import 'package:readytogo/Features/login/bloc/login_state.dart';
 
 class CustomNavDrawer extends StatelessWidget {
   @override
@@ -30,89 +33,273 @@ class CustomNavDrawer extends StatelessWidget {
             child: SafeArea(
               child: Stack(
                 children: [
-                  // Main content - a column with all the items
+                  // Main content - a column with all the items10@Testing
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        // padding: const EdgeInsets.only(
-                        //     left: 16, right: 16, top: 0, bottom: 18),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5, vertical: 12),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 7,
-                            ),
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80'),
-                            ),
-                            SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Dr. John',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 24,
-                                      color: Color(0xff323747),
-                                      fontFamily: 'Satoshi',
-                                    ),
-                                  ),
-                                  Text(
-                                    'Psychiatrist, General Hospital',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16,
-                                      color: Color(0xff666F80),
-                                      fontFamily: 'Satoshi',
-                                    ),
-                                  ),
-                                  // SizedBox(height: 6),
+                      BlocBuilder<LoginBloc, LoginState>(
+                          builder: (context, state) {
+                        final String imageUrl = state
+                                    .profile?.profileImageUrl !=
+                                null
+                            ? 'http://173.249.27.4:343/${state.profile!.profileImageUrl}'
+                            : state.professionalProfileModel?.profileImageUrl !=
+                                    null
+                                ? 'http://173.249.27.4:343/${state.professionalProfileModel!.profileImageUrl}'
+                                : state.organizationProfileModel
+                                            ?.profileImageUrl !=
+                                        null
+                                    ? 'http://173.249.27.4:343/${state.organizationProfileModel!.profileImageUrl}'
+                                    : 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80';
 
-                                  // Container(
-                                  //   padding:
-                                  //       EdgeInsets.symmetric(horizontal: 12),
-                                  //   decoration: BoxDecoration(
-                                  //     color: Colors.white,
-                                  //     borderRadius: BorderRadius.circular(15),
-                                  //     border: Border.all(
-                                  //         color: Colors.grey.shade300),
-                                  //   ),
-                                  //   child: DropdownButtonHideUnderline(
-                                  //     child: DropdownButton<String>(
-                                  //       value: 'Professional',
-                                  //       items: [
-                                  //         'Professional',
-                                  //         'Personal',
-                                  //         'Other'
-                                  //       ].map((String value) {
-                                  //         return DropdownMenuItem<String>(
-                                  //           value: value,
-                                  //           child: Text(value,
-                                  //               style: TextStyle(fontSize: 14)),
-                                  //         );
-                                  //       }).toList(),
-                                  //       onChanged: (value) {
-                                  //         // Handle dropdown change
-                                  //       },
-                                  //       iconSize: 20,
-                                  //       icon: Icon(Icons.keyboard_arrow_down),
-                                  //       style: TextStyle(color: Colors.black87),
-                                  //     ),
-                                  //   ),
-                                  // )
+                        final String userRole = state.profile != null
+                            ? 'Individual'
+                            : state.professionalProfileModel != null
+                                ? 'Professional'
+                                : state.organizationProfileModel != null
+                                    ? 'Organization'
+                                    : 'Guest';
+
+                        return Padding(
+                          // padding: const EdgeInsets.only(
+                          //     left: 16, right: 16, top: 0, bottom: 18),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 12),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 7,
+                                  ), //10@Testing
+
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(imageUrl),
+                                  ),
+                                  /* state.profile != null
+                                        ? CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: NetworkImage(
+                                                'http://173.249.27.4:343/${state.profile!.profileImageUrl}' //'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80'),
+                                                )):
+                                        state.professionalProfileModel != null? CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: NetworkImage(
+                                                'http://173.249.27.4:343/${state.professionalProfileModel!.profileImageUrl}' //'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80'),
+                                                )): 
+                                                state.organizationProfileModel != null?CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: NetworkImage(
+                                                'http://173.249.27.4:343/${state.organizationProfileModel!.profileImageUrl}' //'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80'),
+                                                )):CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: NetworkImage(
+                                                'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80' //'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80'),
+                                                )) ,*/
+
+                                  // CircleAvatar(
+                                  //   radius: 30,
+                                  //   backgroundImage: NetworkImage(
+                                  //     'http://173.249.27.4:343/${context.read<LoginBloc>().profile.profileImageUrl}'  //'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80'),
+                                  // )),
+                                  SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          state.profile != null
+                                              ? '${state.profile!.firstname} ${state.profile!.lastname}'
+                                              : state.professionalProfileModel !=
+                                                      null
+                                                  ? '${state.professionalProfileModel!.firstname} ${state.professionalProfileModel!.lastname}'
+                                                  : state.organizationProfileModel !=
+                                                          null
+                                                      ? '${state.organizationProfileModel!.firstname} ${state.organizationProfileModel!.lastname}'
+                                                      : 'Dr. John',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 24,
+                                            color: Color(0xff323747),
+                                            fontFamily: 'Satoshi',
+                                          ),
+                                        ),
+
+                                        // Text(
+                                        //   'Dr. John',
+                                        //   style: TextStyle(
+                                        //     fontWeight: FontWeight.w600,
+                                        //     fontSize: 24,
+                                        //     color: Color(0xff323747),
+                                        //     fontFamily: 'Satoshi',
+                                        //   ),
+                                        // ),
+
+                                        // Text(
+                                        //   'Psychiatrist, General Hospital',
+                                        //   style: TextStyle(
+                                        //     fontWeight: FontWeight.w700,
+                                        //     fontSize: 16,
+                                        //     color: Color(0xff666F80),
+                                        //     fontFamily: 'Satoshi',
+                                        //   ),
+                                        // ),
+
+                                        // SizedBox(height: 6),
+
+                                        // Container(
+                                        //   padding:
+                                        //       EdgeInsets.symmetric(horizontal: 12),
+                                        //   decoration: BoxDecoration(
+                                        //     color: Colors.white,
+                                        //     borderRadius: BorderRadius.circular(15),
+                                        //     border: Border.all(
+                                        //         color: Colors.grey.shade300),
+                                        //   ),
+                                        //   child: DropdownButtonHideUnderline(
+                                        //     child: DropdownButton<String>(
+                                        //       value: 'Professional',
+                                        //       items: [
+                                        //         'Professional',
+                                        //         'Personal',
+                                        //         'Other'
+                                        //       ].map((String value) {
+                                        //         return DropdownMenuItem<String>(
+                                        //           value: value,
+                                        //           child: Text(value,
+                                        //               style: TextStyle(fontSize: 14)),
+                                        //         );
+                                        //       }).toList(),
+                                        //       onChanged: (value) {
+                                        //         // Handle dropdown change
+                                        //       },
+                                        //       iconSize: 20,
+                                        //       icon: Icon(Icons.keyboard_arrow_down),
+                                        //       style: TextStyle(color: Colors.black87),
+                                        //     ),
+                                        //   ),
+                                        // )
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
+                              SizedBox(height: 10,),
+                              Container(
+                                height: 40,
+                                width: MediaQuery.of(context).size.width*0.9,
+                                //  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 1),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top:8.0,left: 18),
+                                  child: Text(userRole,
+                                  style: TextStyle(
+                                    fontFamily: 'satoshi',
+                                    fontSize: 19
+                                  ),),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                      // Padding(
+                      //   // padding: const EdgeInsets.only(
+                      //   //     left: 16, right: 16, top: 0, bottom: 18),
+                      //   padding: const EdgeInsets.symmetric(
+                      //       horizontal: 5, vertical: 12),
+                      //   child: Row(
+                      //     children: [
+                      //       SizedBox(
+                      //         width: 7,
+                      //       ),//10@Testing
+                      //       BlocBuilder<LoginBloc, LoginState>(
+                      //           builder: (context, state) {
+                      //         return state.profile!= null ?
+                      //          CircleAvatar(
+                      //             radius: 30,
+                      //             backgroundImage: NetworkImage(
+                      //                 'http://173.249.27.4:343/${state.profile!.profileImageUrl}' //'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80'),
+                      //                 )):CircleAvatar(
+                      //             radius: 30,
+                      //             backgroundImage: NetworkImage(
+                      //                 'http://173.249.27.4:343/${state.professionalProfileModel!.profileImageUrl}' //'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80'),
+                      //                 ));
+                      //       }),
+                      //       // CircleAvatar(
+                      //       //   radius: 30,
+                      //       //   backgroundImage: NetworkImage(
+                      //       //     'http://173.249.27.4:343/${context.read<LoginBloc>().profile.profileImageUrl}'  //'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80'),
+                      //       // )),
+                      //       SizedBox(width: 12),
+                      //       Expanded(
+                      //         child: Column(
+                      //           crossAxisAlignment: CrossAxisAlignment.start,
+                      //           children: [
+                      //             Text(
+                      //               'Dr. John',
+                      //               style: TextStyle(
+                      //                 fontWeight: FontWeight.w600,
+                      //                 fontSize: 24,
+                      //                 color: Color(0xff323747),
+                      //                 fontFamily: 'Satoshi',
+                      //               ),
+                      //             ),
+                      //             Text(
+                      //               'Psychiatrist, General Hospital',
+                      //               style: TextStyle(
+                      //                 fontWeight: FontWeight.w700,
+                      //                 fontSize: 16,
+                      //                 color: Color(0xff666F80),
+                      //                 fontFamily: 'Satoshi',
+                      //               ),
+                      //             ),
+                      //             // SizedBox(height: 6),
+
+                      //             // Container(
+                      //             //   padding:
+                      //             //       EdgeInsets.symmetric(horizontal: 12),
+                      //             //   decoration: BoxDecoration(
+                      //             //     color: Colors.white,
+                      //             //     borderRadius: BorderRadius.circular(15),
+                      //             //     border: Border.all(
+                      //             //         color: Colors.grey.shade300),
+                      //             //   ),
+                      //             //   child: DropdownButtonHideUnderline(
+                      //             //     child: DropdownButton<String>(
+                      //             //       value: 'Professional',
+                      //             //       items: [
+                      //             //         'Professional',
+                      //             //         'Personal',
+                      //             //         'Other'
+                      //             //       ].map((String value) {
+                      //             //         return DropdownMenuItem<String>(
+                      //             //           value: value,
+                      //             //           child: Text(value,
+                      //             //               style: TextStyle(fontSize: 14)),
+                      //             //         );
+                      //             //       }).toList(),
+                      //             //       onChanged: (value) {
+                      //             //         // Handle dropdown change
+                      //             //       },
+                      //             //       iconSize: 20,
+                      //             //       icon: Icon(Icons.keyboard_arrow_down),
+                      //             //       style: TextStyle(color: Colors.black87),
+                      //             //     ),
+                      //             //   ),
+                      //             // )
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      /* Container(
                         height: 40,
                         width: 296,
                         //  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 1),
@@ -151,7 +338,7 @@ class CustomNavDrawer extends StatelessWidget {
                           }).toList(),
                           onChanged: (value) {},
                         ),
-                      ),
+                      ),*/
                       SizedBox(height: 6),
 
                       Divider(thickness: 1, height: 1),

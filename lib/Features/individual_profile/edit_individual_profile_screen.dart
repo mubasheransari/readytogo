@@ -76,7 +76,6 @@ class _EditIndividualProfileScreenState
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -241,7 +240,6 @@ class _EditIndividualProfileScreenState
                           SizedBox(
                             height: 20,
                           ),
-
                           Padding(
                             padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width * 0.33,
@@ -274,7 +272,6 @@ class _EditIndividualProfileScreenState
                             padding: const EdgeInsets.only(left: 8.0),
                             child: _buildField(phoneController, "Phone Number"),
                           ),
-
                           const SizedBox(height: 30),
                           Padding(
                             padding: EdgeInsets.only(
@@ -296,7 +293,6 @@ class _EditIndividualProfileScreenState
                           _buildField(cityController, "City"),
                           _buildField(stateController, "State"),
                           _buildField(zipController, "Zip Code"),
-
                           const SizedBox(height: 10),
                         ],
                       ),
@@ -305,6 +301,7 @@ class _EditIndividualProfileScreenState
                     BackAndNextButton(
                       onBackPressed: () => Navigator.of(context).pop(),
                       onNextPressed: () {
+                        print(state.profile!.userId);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

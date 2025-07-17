@@ -89,6 +89,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         var storage = GetStorage();
         storage.write("id", userId);
         storage.write("role", userRole);
+        storage.write('userid', responseBody['id']);
 
         if (token != null && userId != null) {
           _tempToken = token;
@@ -262,10 +263,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         profileImage: event.profileImage,
       );
 
-      if (response.statusCode == 200) {//10@Testing
+      if (response.statusCode == 200) {
+        //10@Testing
         // ✅ Refetch profile from server after update
-        final refreshedProfile = await loginRepository.individualProfile(
-            event.userId);
+        final refreshedProfile =
+            await loginRepository.individualProfile(event.userId);
 
         emit(state.copyWith(
           status: LoginStatus.profileLoaded,
@@ -294,11 +296,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final response = await loginRepository.updateProfessionalProfile(
         id: event.userId,
         profile: event.profile,
-      );//10@Testing
+      ); //10@Testing
 
       if (response.statusCode == 200) {
-        final refreshedProfile = await loginRepository.individualProfile(
-            event.userId);
+        final refreshedProfile =
+            await loginRepository.individualProfile(event.userId);
 
         emit(state.copyWith(
           status: LoginStatus.updateProfessionalProfileSuccess,

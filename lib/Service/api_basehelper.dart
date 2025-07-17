@@ -73,7 +73,7 @@ class ApiBaseHelper {
       final request = http.Request("DELETE", uri);
       request.headers.addAll({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer$token'
+        'Authorization': 'Bearer $token'
       });
 
       if (body != null) {

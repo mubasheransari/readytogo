@@ -65,23 +65,25 @@ class LoginRepository {
   // }
 
   Future<ProfessionalProfileModel> professionalProfile(String userId) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
     final jsonResponse = await _apiBaseHelper.get(
-      url: ApiConstants.baseDomain,
-      path:
-          "${ApiConstants.apiPrefix}${ApiConstants.getProfessionalProfileData}$userId",
-      queryParam: {},
-    );
+        url: ApiConstants.baseDomain,
+        path:
+            "${ApiConstants.apiPrefix}${ApiConstants.getProfessionalProfileData}",
+        token: token);
 
     return ProfessionalProfileModel.fromJson(jsonResponse);
   }
 
   Future<OrganizationProfileModel> organizationProfile(String userId) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
     final jsonResponse = await _apiBaseHelper.get(
-      url: ApiConstants.baseDomain,
-      path:
-          "${ApiConstants.apiPrefix}${ApiConstants.getOrganizationalProfileData}$userId",
-      queryParam: {},
-    );
+        url: ApiConstants.baseDomain,
+        path:
+            "${ApiConstants.apiPrefix}${ApiConstants.getOrganizationalProfileData}",
+        token: token);
 
     return OrganizationProfileModel.fromJson(jsonResponse);
   }
@@ -97,6 +99,13 @@ class LoginRepository {
       'PUT',
       uri,
     );
+    var storage = GetStorage();
+    var token = storage.read("id");
+
+    // ✅ Set Authorization header (do NOT set Content-Type manually for MultipartRequest)
+    if (token != null && token.toString().isNotEmpty) {
+      request.headers['Authorization'] = 'Bearer $token';
+    }
 
     final Location? loc =
         profile.locations?.isNotEmpty == true ? profile.locations!.first : null;
@@ -182,82 +191,77 @@ class LoginRepository {
 //   return null;
 // }
 
+  Future<http.Response> updateIndividualProfile({
+    required String id,
+    required IndividualProfileModel profile,
+    File? profileImage,
+  }) async {
+    final uri = Uri.parse(
+      'http://173.249.27.4:343/api/Profile/individual/edit-profile',
+    );
 
-Future<http.Response> updateIndividualProfile({
-  required String id,
-  required IndividualProfileModel profile,
-  File? profileImage,
-}) async {
-  final uri = Uri.parse(
-    'http://173.249.27.4:343/api/Profile/individual/edit-profile',
-  );
+    final request = http.MultipartRequest('PUT', uri);
 
-  final request = http.MultipartRequest('PUT', uri);
+    var storage = GetStorage();
+    var token = storage.read(
+        "id"); //yeh token hai id nahi hai id pe condition thi jabhi key name id rkh lia tha
 
-  // ✅ Read token
-  var storage = GetStorage();
-  var token = storage.read("id");
+    if (token != null && token.toString().isNotEmpty) {
+      request.headers['Authorization'] = 'Bearer $token';
+    }
 
-  // ✅ Set Authorization header (do NOT set Content-Type manually for MultipartRequest)
-  if (token != null && token.toString().isNotEmpty) {
-    request.headers['Authorization'] = 'Bearer $token';
+    final loc = profile.locations.isNotEmpty ? profile.locations[0] : {};
+
+    request.fields.addAll({
+      //  "UserId": id,
+      "FirstName": profile.firstname,
+      "LastName": profile.lastname,
+      "Email": profile.email,
+      "PhoneNumber": profile.phoneNumber,
+      "StreetAddress": loc["streetAddress"] ?? "",
+      "Area": loc["area"] ?? "",
+      "City": loc["city"] ?? "",
+      "State": loc["state"] ?? "",
+      "ZipCode": loc["zipCode"] ?? "",
+      "Description": "Updated via app",
+      "ProfileImageUrl": profile.profileImageUrl,
+      "LocationsJson": jsonEncode(profile.locations),
+    });
+
+    // ✅ Optional: OrganizationId
+    final orgId = _extractOrganizationId(profile.organizationProfessionals);
+    if (orgId != null && orgId.isNotEmpty) {
+      request.fields["OrganizationId"] = orgId;
+    }
+
+    // ✅ SpecializationIds
+    if (profile.specializations is List &&
+        (profile.specializations as List).isNotEmpty) {
+      request.fields["SpecializationIds"] = jsonEncode(profile.specializations);
+    }
+
+    // ✅ ProfessionalIds
+    if (profile.organizationProfessionals is List &&
+        (profile.organizationProfessionals as List).isNotEmpty) {
+      request.fields["ProfessionalIds"] =
+          jsonEncode(profile.organizationProfessionals);
+    }
+
+    // ✅ Optional profile image
+    if (profileImage != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        "ProfileImage",
+        profileImage.path,
+        contentType: MediaType("image", "jpeg"),
+      ));
+    }
+
+    // ✅ Send request and convert streamed response to http.Response
+    final streamedResponse = await request.send();
+    return await http.Response.fromStream(streamedResponse);
   }
 
-  // ✅ Prepare location (first one if available)
-  final loc = profile.locations.isNotEmpty ? profile.locations[0] : {};
-
-  // ✅ Add fields
-  request.fields.addAll({
-    "UserId": id,
-    "FirstName": profile.firstname,
-    "LastName": profile.lastname,
-    "Email": profile.email,
-    "PhoneNumber": profile.phoneNumber,
-    "StreetAddress": loc["streetAddress"] ?? "",
-    "Area": loc["area"] ?? "",
-    "City": loc["city"] ?? "",
-    "State": loc["state"] ?? "",
-    "ZipCode": loc["zipCode"] ?? "",
-    "Description": "Updated via app",
-    "ProfileImageUrl": profile.profileImageUrl,
-    "LocationsJson": jsonEncode(profile.locations),
-  });
-
-  // ✅ Optional: OrganizationId
-  final orgId = _extractOrganizationId(profile.organizationProfessionals);
-  if (orgId != null && orgId.isNotEmpty) {
-    request.fields["OrganizationId"] = orgId;
-  }
-
-  // ✅ SpecializationIds
-  if (profile.specializations is List &&
-      (profile.specializations as List).isNotEmpty) {
-    request.fields["SpecializationIds"] =
-        jsonEncode(profile.specializations);
-  }
-
-  // ✅ ProfessionalIds
-  if (profile.organizationProfessionals is List &&
-      (profile.organizationProfessionals as List).isNotEmpty) {
-    request.fields["ProfessionalIds"] =
-        jsonEncode(profile.organizationProfessionals);
-  }
-
-  // ✅ Optional profile image
-  if (profileImage != null) {
-    request.files.add(await http.MultipartFile.fromPath(
-      "ProfileImage",
-      profileImage.path,
-      contentType: MediaType("image", "jpeg"),
-    ));
-  }
-
-  // ✅ Send request and convert streamed response to http.Response
-  final streamedResponse = await request.send();
-  return await http.Response.fromStream(streamedResponse);
-}
-
- /*Future<http.Response> updateIndividualProfile({
+  /*Future<http.Response> updateIndividualProfile({
     required String id,
     required IndividualProfileModel profile,
     File? profileImage,
@@ -420,23 +424,29 @@ Future<http.Response> updateIndividualProfile({
 
   Future<http.Response> removeAffiliationsGroups(
       String userId, String groupId) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
+
     return await _apiBaseHelper.delete(
-      path: ApiConstants.removeAffiliationsGroups,
-      body: {
-        "userId": userId,
-        "groupId": groupId,
-      },
-    );
+        path: ApiConstants.removeAffiliationsGroups,
+        body: {
+          "userId": userId,
+          "groupId": groupId,
+        },
+        token: token);
   }
 
   Future<http.Response> addAffiliationsGroups(
       String userId, String groupId) async {
+        var storage = GetStorage();
+    var token = storage.read("id");
     return await _apiBaseHelper.post(
       path: ApiConstants.addAffiliationsGroups,
       body: {
         "userId": userId,
         "groupId": groupId,
       },
+      token: token
     );
   }
 
