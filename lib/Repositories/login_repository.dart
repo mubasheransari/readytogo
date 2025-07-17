@@ -503,6 +503,9 @@ class LoginRepository {
     );
 
     final decoded = json.decode(response.body);
+    print("DECODED SEARCH $decoded");
+    print("DECODED SEARCH $decoded");
+    print("DECODED SEARCH $decoded");
 
     if (decoded is List) {
       return decoded.map((item) => SearchModel.fromJson(item)).toList();

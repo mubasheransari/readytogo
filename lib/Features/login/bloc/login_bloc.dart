@@ -35,10 +35,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     try {
       final result = await loginRepository.searchFunctionality(event.services);
-      print('Received ${state.searchModel!.firstName.length} providers');
-      print('Received ${state.searchModel!.firstName.length} providers');
-
-      print('Received ${state.searchModel!.firstName.length} providers');
 
       emit(state.copyWith(
         searchResults: result, // searchModel: result,10@Testing

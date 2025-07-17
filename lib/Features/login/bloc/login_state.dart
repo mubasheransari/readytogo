@@ -93,6 +93,7 @@ enum SearchStatus {
 }
 
 /// A unified state class for Login & Profile operations
+// ignore: must_be_immutable
 class LoginState extends Equatable {
   final List<SearchModel>? searchResults;
   final SearchStatus searchStatus;
@@ -135,7 +136,7 @@ class LoginState extends Equatable {
   /// Copy the state with updated fields
   LoginState copyWith({
     List<SearchModel>? searchResults,
-    SearchStatus ? searchStatus,
+    SearchStatus? searchStatus,
     LoginStatus? status,
     ProfessionalStatus? professionalStatus,
     UpdateProfessionalProfileStatus? updateProfessionalProfileStatus,
@@ -181,6 +182,7 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
+        searchResults,
         searchStatus,
         status,
         professionalStatus,

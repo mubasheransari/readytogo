@@ -13,7 +13,7 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_stat_notification" />
 
-        <!-- ✅ Google Maps API Key correctly placed -->
+        <!-- ✅ Google Maps API Key correctly placed 10@Testing -->
         <meta-data 
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD64TeJchgwVToC1U2IbrCBtjWKeVzuy-U"/>
