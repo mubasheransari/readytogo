@@ -290,7 +290,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     UpdateProfessionalProfile event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: LoginStatus.updateProfessionalProfileLoading));
+    emit(state.copyWith(
+        updateProfessionalProfileStatus:
+            UpdateProfessionalProfileStatus.loading));
     try {
       final response = await loginRepository.updateProfessionalProfile(
         id: event.userId,
@@ -299,21 +301,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (response.statusCode == 200) {
         final refreshedProfile =
-            await loginRepository.individualProfile(event.userId);
+            await loginRepository.professionalProfile(event.userId);
 
         emit(state.copyWith(
-          status: LoginStatus.professionalProfileLoaded,
-          profile: refreshedProfile,
+          updateProfessionalProfileStatus:
+              UpdateProfessionalProfileStatus.success,
+          professionalProfileModel: refreshedProfile,
         ));
       } else {
         emit(state.copyWith(
-          status: LoginStatus.updateProfessionalProfileError,
+          updateProfessionalProfileStatus:
+              UpdateProfessionalProfileStatus.failure,
           errorMessage: response.body,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        status: LoginStatus.updateProfessionalProfileError,
+        updateProfessionalProfileStatus:
+            UpdateProfessionalProfileStatus.failure,
         errorMessage: e.toString(),
       ));
     }

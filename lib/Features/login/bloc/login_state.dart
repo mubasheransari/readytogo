@@ -46,7 +46,14 @@ enum ProfessionalStatus {
   initial,
   loading,
   success,
-  failure, //10@Testing
+  failure,
+}
+
+enum UpdateProfessionalProfileStatus {
+  initial,
+  loading,
+  success,
+  failure,
 }
 
 enum OrganizationalStatus {
@@ -60,6 +67,7 @@ enum OrganizationalStatus {
 class LoginState extends Equatable {
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
+  final UpdateProfessionalProfileStatus updateProfessionalProfileStatus;
   final OrganizationalStatus organizationalStatus;
   final OrganizationProfileModel? organizationProfileModel;
   final String? errorMessage;
@@ -72,6 +80,7 @@ class LoginState extends Equatable {
   const LoginState(
       {this.status = LoginStatus.initial,
       this.professionalStatus = ProfessionalStatus.initial,
+      this.updateProfessionalProfileStatus = UpdateProfessionalProfileStatus.initial,
       this.organizationalStatus = OrganizationalStatus.initial,
       this.organizationProfileModel,
       this.errorMessage,
@@ -84,7 +93,8 @@ class LoginState extends Equatable {
   /// Copy the state with updated fields
   LoginState copyWith({
     LoginStatus? status,
-    ProfessionalStatus ? professionalStatus,
+    ProfessionalStatus? professionalStatus,
+    UpdateProfessionalProfileStatus ? updateProfessionalProfileStatus,
     OrganizationalStatus? organizationalStatus,
     OrganizationProfileModel? organizationProfileModel,
     String? errorMessage,
@@ -96,7 +106,8 @@ class LoginState extends Equatable {
   }) {
     return LoginState(
         status: status ?? this.status,
-        professionalStatus:  professionalStatus ?? this.professionalStatus,
+        professionalStatus: professionalStatus ?? this.professionalStatus,
+        updateProfessionalProfileStatus: updateProfessionalProfileStatus ?? this.updateProfessionalProfileStatus,
         organizationProfileModel:
             organizationProfileModel ?? this.organizationProfileModel,
         organizationalStatus: organizationalStatus ?? this.organizationalStatus,
@@ -115,6 +126,7 @@ class LoginState extends Equatable {
   List<Object?> get props => [
         status,
         professionalStatus,
+        updateProfessionalProfileStatus,
         organizationalStatus,
         organizationProfileModel,
         errorMessage,

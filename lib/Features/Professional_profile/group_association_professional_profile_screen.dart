@@ -67,6 +67,9 @@ class _GroupAssociationEditProfessionalProfileState
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
+      print(context.read<LoginBloc>().state.status);
+      print(context.read<LoginBloc>().state.status);
+      print(context.read<LoginBloc>().state.status);
       final updatedProfile = widget.profile.copyWith(
         firstname: widget.firstName,
         lastname: widget.lastName,
@@ -109,11 +112,11 @@ class _GroupAssociationEditProfessionalProfileState
       backgroundColor: Colors.grey[200],
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
-          if (state.status == LoginStatus.updateProfessionalProfileSuccess &&
+          if (state.updateProfessionalProfileStatus == UpdateProfessionalProfileStatus.success &&
               state.professionalProfileModel != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text("Profile updated successfully",
+                content: Text("Profile Updated Successfully",
                     style: TextStyle(color: Colors.white)),
                 backgroundColor: Colors.green,
               ),
@@ -122,8 +125,7 @@ class _GroupAssociationEditProfessionalProfileState
             print("PROFESSIONAL STATUS ${state.status}");
             Navigator.pop(context);
             Navigator.pop(context);
-          } else if (state.status ==
-              LoginStatus.updateProfessionalProfileError) {
+          } else if (state.updateProfessionalProfileStatus== UpdateProfessionalProfileStatus.failure) {
             print("UPDATE FAILED ${state.errorMessage}");
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
