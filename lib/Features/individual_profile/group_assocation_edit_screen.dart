@@ -86,6 +86,9 @@ class _GroupAssociationEditIndividualState
 
       //       : widget.profile.locations,
       // );
+                               var storage = GetStorage();
+
+                                      var useerid = storage.read('userid');
       final updatedProfile = widget.profile.copyWith(
         firstname: widget.firstName,
         lastname: widget.lastName,
@@ -94,7 +97,7 @@ class _GroupAssociationEditIndividualState
         locationJson: widget.isAddressChanged
             ? jsonEncode([
                 {
-                  "id": widget.userid,
+                  "id": useerid,
                   "streetAddress": widget.street,
                   "area": widget.area,
                   "city": widget.city,
@@ -106,10 +109,8 @@ class _GroupAssociationEditIndividualState
               ])
             : jsonEncode(widget.profile.locations),
       );
-      var storage = GetStorage();
 
-      var useerid = storage.read('userid');
-
+//10@Testing
       context.read<LoginBloc>().add(UpdateIndividualProfile(
             userId: useerid,
             profile: updatedProfile,

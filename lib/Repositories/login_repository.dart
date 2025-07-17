@@ -432,6 +432,19 @@ class LoginRepository {
         },
         token: token);
   }
+    Future<http.Response> removeAffiliationsGroupsProfessional(
+      String userId, String groupId) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
+
+    return await _apiBaseHelper.delete(
+        path: ApiConstants.removeAffiliationsGroupsProfessional,
+        body: {
+          "userId": userId,
+          "groupId": groupId,
+        },
+        token: token);
+  }
 
   Future<http.Response> addAffiliationsGroups(
       String userId, String groupId) async {

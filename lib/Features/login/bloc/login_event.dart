@@ -98,3 +98,18 @@ class RemoveAffiliations extends LoginEvent {
   RemoveAffiliations({required this.userId, required this.groupId});
 }
 class GetAllProfessionalProfiles extends LoginEvent {}
+
+
+class AddAffiliationsProfrofessional extends LoginEvent {
+  final String userId;
+  final String groupId;
+
+  AddAffiliationsProfrofessional({required this.userId, required this.groupId});
+}
+
+class RemoveAffiliationsProfrofessional extends LoginEvent {
+  final String userId;
+  final String groupId;
+
+  RemoveAffiliationsProfrofessional({required this.userId, required this.groupId});
+}

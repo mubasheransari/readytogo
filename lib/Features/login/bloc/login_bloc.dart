@@ -19,6 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetAllProfessionalProfiles>(getAllProfessionalProfiles);
     on<RemoveAffiliations>(removeAffiliations);
     on<AddAffiliations>(addAffiliations);
+    on<RemoveAffiliationsProfrofessional>(removeAffiliationsProfessional);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -355,6 +356,45 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print("Error in RemoveAffiliations: $e");
       emit(state.copyWith(
         status: LoginStatus.removeAffilicationGroupsError,
+        errorMessage: "An error occurred: ${e.toString()}",
+      ));
+    }
+  }
+
+  removeAffiliationsProfessional(
+    RemoveAffiliationsProfrofessional event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(
+        removeAffiliationGroupStatus: RemoveAffiliationGroupStatus.loading));
+
+    try {
+      final response =
+          await loginRepository.removeAffiliationsGroupsProfessional(
+        event.userId,
+        event.groupId,
+      );
+
+      print("RemoveAffiliations Status Code: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        // ✅ Dispatch the GetIndividualProfile event to refresh profile
+        add(GetProfessionalProfile(userId: event.userId));
+        //10@Testing
+        emit(state.copyWith(
+            removeAffiliationGroupStatus:
+                RemoveAffiliationGroupStatus.success));
+      } else {
+        emit(state.copyWith(
+          removeAffiliationGroupStatus: RemoveAffiliationGroupStatus.failure,
+          errorMessage:
+              "Failed to remove group (Status: ${response.statusCode})",
+        ));
+      }
+    } catch (e) {
+      print("Error in RemoveAffiliations: $e");
+      emit(state.copyWith(
+        removeAffiliationGroupStatus: RemoveAffiliationGroupStatus.failure,
         errorMessage: "An error occurred: ${e.toString()}",
       ));
     }

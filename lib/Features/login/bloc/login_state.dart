@@ -56,6 +56,20 @@ enum UpdateProfessionalProfileStatus {
   failure,
 }
 
+enum RemoveAffiliationGroupStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
+enum AddAffiliationGroupStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 enum OrganizationalStatus {
   initial,
   loading,
@@ -68,6 +82,7 @@ class LoginState extends Equatable {
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
   final UpdateProfessionalProfileStatus updateProfessionalProfileStatus;
+  final RemoveAffiliationGroupStatus removeAffiliationGroupStatus;
   final OrganizationalStatus organizationalStatus;
   final OrganizationProfileModel? organizationProfileModel;
   final String? errorMessage;
@@ -80,7 +95,9 @@ class LoginState extends Equatable {
   const LoginState(
       {this.status = LoginStatus.initial,
       this.professionalStatus = ProfessionalStatus.initial,
-      this.updateProfessionalProfileStatus = UpdateProfessionalProfileStatus.initial,
+      this.updateProfessionalProfileStatus =
+          UpdateProfessionalProfileStatus.initial,
+          this.removeAffiliationGroupStatus = RemoveAffiliationGroupStatus.initial,
       this.organizationalStatus = OrganizationalStatus.initial,
       this.organizationProfileModel,
       this.errorMessage,
@@ -94,7 +111,8 @@ class LoginState extends Equatable {
   LoginState copyWith({
     LoginStatus? status,
     ProfessionalStatus? professionalStatus,
-    UpdateProfessionalProfileStatus ? updateProfessionalProfileStatus,
+    UpdateProfessionalProfileStatus? updateProfessionalProfileStatus,
+    RemoveAffiliationGroupStatus ? removeAffiliationGroupStatus,
     OrganizationalStatus? organizationalStatus,
     OrganizationProfileModel? organizationProfileModel,
     String? errorMessage,
@@ -107,7 +125,9 @@ class LoginState extends Equatable {
     return LoginState(
         status: status ?? this.status,
         professionalStatus: professionalStatus ?? this.professionalStatus,
-        updateProfessionalProfileStatus: updateProfessionalProfileStatus ?? this.updateProfessionalProfileStatus,
+        updateProfessionalProfileStatus: updateProfessionalProfileStatus ??
+            this.updateProfessionalProfileStatus,
+            removeAffiliationGroupStatus: removeAffiliationGroupStatus ?? this.removeAffiliationGroupStatus,
         organizationProfileModel:
             organizationProfileModel ?? this.organizationProfileModel,
         organizationalStatus: organizationalStatus ?? this.organizationalStatus,
@@ -127,6 +147,7 @@ class LoginState extends Equatable {
         status,
         professionalStatus,
         updateProfessionalProfileStatus,
+        removeAffiliationGroupStatus,
         organizationalStatus,
         organizationProfileModel,
         errorMessage,

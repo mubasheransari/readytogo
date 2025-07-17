@@ -6,7 +6,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import '../../Constants/constants.dart';
-import '../../Model/individual_profile_model.dart';
 import '../../Model/professional_profile_model.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_event.dart';
@@ -68,12 +67,9 @@ class _GroupAssociationEditProfessionalProfileState
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-var storage = GetStorage();
+      var storage = GetStorage();
 
       var useerid = storage.read('userid');
-      print(context.read<LoginBloc>().state.status);
-      print(context.read<LoginBloc>().state.status);
-      print(context.read<LoginBloc>().state.status);
       final updatedProfile = widget.profile.copyWith(
         firstname: widget.firstName,
         lastname: widget.lastName,
@@ -95,11 +91,6 @@ var storage = GetStorage();
               ])
             : jsonEncode(widget.profile.locations),
       );
-      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
-      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
-      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
-      print("ADDRESS IS CHANGED ${widget.isAddressChanged}");
-
       context.read<LoginBloc>().add(UpdateProfessionalProfile(
             userId: widget.userid,
             profile: updatedProfile,
@@ -116,7 +107,8 @@ var storage = GetStorage();
       backgroundColor: Colors.grey[200],
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
-          if (state.updateProfessionalProfileStatus == UpdateProfessionalProfileStatus.success &&
+          if (state.updateProfessionalProfileStatus ==
+                  UpdateProfessionalProfileStatus.success &&
               state.professionalProfileModel != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -129,7 +121,21 @@ var storage = GetStorage();
             print("PROFESSIONAL STATUS ${state.status}");
             Navigator.pop(context);
             Navigator.pop(context);
-          } else if (state.updateProfessionalProfileStatus== UpdateProfessionalProfileStatus.failure) {
+          } else if (state.removeAffiliationGroupStatus ==
+              RemoveAffiliationGroupStatus.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Profile Updated Successfully",
+                    style: TextStyle(color: Colors.white)),
+                backgroundColor: Colors.green,
+              ),
+            );
+            print("PROFESSIONAL STATUS ${state.status}");
+            print("PROFESSIONAL STATUS ${state.status}");
+            Navigator.pop(context);
+            Navigator.pop(context);
+          } else if (state.updateProfessionalProfileStatus ==
+              UpdateProfessionalProfileStatus.failure) {
             print("UPDATE FAILED ${state.errorMessage}");
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -218,7 +224,33 @@ var storage = GetStorage();
                             children: List.generate(
                               widget.profile.groupAssociations!.length,
                               (index) => ListTile(
-                                trailing: Image.asset("assets/icon_delete.png"),
+                                trailing: InkWell(
+                                    onTap: () {
+                                      print("USER ID ${widget.userid}");
+                                      print(
+                                          "GROUP ID ${widget.profile.groupAssociations![index].groupId}");
+                                      var storage = GetStorage();
+
+                                      var useerid = storage.read('userid');
+                                      context.read<LoginBloc>().add(
+                                            RemoveAffiliationsProfrofessional(
+                                              userId: useerid,
+                                              groupId: widget
+                                                  .profile
+                                                  .groupAssociations![index]
+                                                  .groupId
+                                                  .toString(),
+                                            ),
+                                          ); //10@Testing
+                                      print(state.removeAffiliationGroupStatus
+                                          .toString());
+                                      print(state.removeAffiliationGroupStatus
+                                          .toString());
+                                      print(state.removeAffiliationGroupStatus
+                                          .toString());
+                                    },
+                                    child:
+                                        Image.asset("assets/icon_delete.png")),
                                 title: Text(
                                   widget.profile.groupAssociations![index]
                                       .groupName!,
