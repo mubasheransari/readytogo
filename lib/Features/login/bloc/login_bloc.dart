@@ -21,10 +21,36 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<AddAffiliations>(addAffiliations);
     on<RemoveAffiliationsProfrofessional>(removeAffiliationsProfessional);
     on<AddAffiliationsProfrofessional>(addAffiliationsProfrofessional);
+    on<SearchFunctionality>(_searchFunctionality);
   }
 
   final LoginRepository loginRepository = LoginRepository();
   String? _tempToken;
+
+  _searchFunctionality(
+    SearchFunctionality event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(
+      searchStatus: SearchStatus.searchLoading,
+      searchResults: [],
+      errorMessage: null,
+    ));
+
+    try {
+      final results = await loginRepository.searchFunctionality(event.services);
+
+      emit(state.copyWith(
+        searchStatus: SearchStatus.searchSuccess,
+        searchResults: results,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        searchStatus: SearchStatus.searchError,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
 
   _loginWithEmailPassword(
     LoginWithEmailPassword event,

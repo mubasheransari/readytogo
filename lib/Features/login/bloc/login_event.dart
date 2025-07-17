@@ -113,3 +113,8 @@ class RemoveAffiliationsProfrofessional extends LoginEvent {
 
   RemoveAffiliationsProfrofessional({required this.userId, required this.groupId});
 }
+
+class SearchFunctionality extends LoginEvent {
+  final String services;
+  SearchFunctionality({required this.services});
+}

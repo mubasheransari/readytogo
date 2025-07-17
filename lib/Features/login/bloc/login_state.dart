@@ -1,6 +1,7 @@
 import 'package:readytogo/Model/get_all_associated_groups_model.dart';
 import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
+import 'package:readytogo/Model/search_model.dart';
 import '../../../Model/individual_profile_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -84,8 +85,17 @@ enum OrganizationalStatus {
   failure,
 }
 
+enum SearchStatus {
+  searchInitial,
+  searchLoading,
+  searchSuccess,
+  searchError,
+}
+
 /// A unified state class for Login & Profile operations
 class LoginState extends Equatable {
+  final List<SearchModel>? searchResults;
+  final SearchStatus searchStatus;
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
   final UpdateProfessionalProfileStatus updateProfessionalProfileStatus;
@@ -93,6 +103,7 @@ class LoginState extends Equatable {
   AddAffiliationGroupStatusProfessional addAffiliationGroupStatusProfessional;
   final OrganizationalStatus organizationalStatus;
   final OrganizationProfileModel? organizationProfileModel;
+  final SearchModel? searchModel;
   final String? errorMessage;
   final String? token;
   final IndividualProfileModel? profile;
@@ -100,15 +111,17 @@ class LoginState extends Equatable {
   final List<GetAllAssociatedGroupModel>? getAllAssociatedGroupModel;
   final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
-   LoginState(
-      {this.status = LoginStatus.initial,
+  LoginState(
+      {this.searchResults,
+      this.searchStatus = SearchStatus.searchInitial,
+      this.status = LoginStatus.initial,
       this.professionalStatus = ProfessionalStatus.initial,
       this.updateProfessionalProfileStatus =
           UpdateProfessionalProfileStatus.initial,
       this.removeAffiliationGroupStatus =
           RemoveAffiliationGroupStatusProfessional.initial,
-          
-          this.addAffiliationGroupStatusProfessional = AddAffiliationGroupStatusProfessional.initial,
+      this.addAffiliationGroupStatusProfessional =
+          AddAffiliationGroupStatusProfessional.initial,
       this.organizationalStatus = OrganizationalStatus.initial,
       this.organizationProfileModel,
       this.errorMessage,
@@ -116,17 +129,22 @@ class LoginState extends Equatable {
       this.profile,
       this.professionalProfileModel,
       this.getAllAssociatedGroupModel,
+      this.searchModel,
       this.getAllProfessionalProfileModel});
 
   /// Copy the state with updated fields
   LoginState copyWith({
+    List<SearchModel>? searchResults,
+    SearchStatus ? searchStatus,
     LoginStatus? status,
     ProfessionalStatus? professionalStatus,
     UpdateProfessionalProfileStatus? updateProfessionalProfileStatus,
     RemoveAffiliationGroupStatusProfessional? removeAffiliationGroupStatus,
-    AddAffiliationGroupStatusProfessional ? addAffiliationGroupStatusProfessional,
+    AddAffiliationGroupStatusProfessional?
+        addAffiliationGroupStatusProfessional,
     OrganizationalStatus? organizationalStatus,
     OrganizationProfileModel? organizationProfileModel,
+    SearchModel? searchModel,
     String? errorMessage,
     String? token,
     IndividualProfileModel? profile,
@@ -135,13 +153,17 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
+        searchResults: searchResults ?? this.searchResults,
+        searchStatus: searchStatus ?? this.searchStatus,
         status: status ?? this.status,
         professionalStatus: professionalStatus ?? this.professionalStatus,
         updateProfessionalProfileStatus: updateProfessionalProfileStatus ??
             this.updateProfessionalProfileStatus,
         removeAffiliationGroupStatus:
             removeAffiliationGroupStatus ?? this.removeAffiliationGroupStatus,
-            addAffiliationGroupStatusProfessional: addAffiliationGroupStatusProfessional ?? this.addAffiliationGroupStatusProfessional,
+        addAffiliationGroupStatusProfessional:
+            addAffiliationGroupStatusProfessional ??
+                this.addAffiliationGroupStatusProfessional,
         organizationProfileModel:
             organizationProfileModel ?? this.organizationProfileModel,
         organizationalStatus: organizationalStatus ?? this.organizationalStatus,
@@ -150,6 +172,7 @@ class LoginState extends Equatable {
         profile: profile ?? this.profile,
         professionalProfileModel:
             professionalProfileModel ?? this.professionalProfileModel,
+        searchModel: searchModel ?? this.searchModel,
         getAllAssociatedGroupModel:
             getAllAssociatedGroupModel ?? this.getAllAssociatedGroupModel,
         getAllProfessionalProfileModel: getAllProfessionalProfileModel ??
@@ -158,6 +181,7 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
+        searchStatus,
         status,
         professionalStatus,
         updateProfessionalProfileStatus,
@@ -165,6 +189,8 @@ class LoginState extends Equatable {
         addAffiliationGroupStatusProfessional,
         organizationalStatus,
         organizationProfileModel,
+        searchModel,
+        searchResults,
         errorMessage,
         token,
         profile,
