@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import '../../Constants/constants.dart';
@@ -67,6 +68,9 @@ class _GroupAssociationEditProfessionalProfileState
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
+var storage = GetStorage();
+
+      var useerid = storage.read('userid');
       print(context.read<LoginBloc>().state.status);
       print(context.read<LoginBloc>().state.status);
       print(context.read<LoginBloc>().state.status);
@@ -79,7 +83,7 @@ class _GroupAssociationEditProfessionalProfileState
         locationJson: widget.isAddressChanged
             ? jsonEncode([
                 {
-                  "id": widget.userid,
+                  "id": useerid,
                   "streetAddress": widget.street,
                   "area": widget.area,
                   "city": widget.city,
