@@ -22,6 +22,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<RemoveAffiliationsProfrofessional>(removeAffiliationsProfessional);
     on<AddAffiliationsProfrofessional>(addAffiliationsProfrofessional);
     on<SearchFunctionality>(_searchFunctionality);
+    on<LogoutRequested>(logoutRequested);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -665,4 +666,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       ));
     }
   }*/
+
+  logoutRequested(LogoutRequested event, emit) {
+    emit(state.copyWith(
+        status: LoginStatus.initial,
+        professionalStatus: ProfessionalStatus.initial,
+        organizationalStatus: OrganizationalStatus.initial));
+  }
 }

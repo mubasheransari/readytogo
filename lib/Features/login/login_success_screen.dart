@@ -39,84 +39,88 @@ class LoginSuccessScreen extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
                 BlocConsumer<LoginBloc, LoginState>(
-  listener: (context, state) {
-    // Side effects like navigation or toast can go here
-    // Example: if (state.status == LoginStatus.error) show error dialog
-  },
-  builder: (context, state) {
-    final storage = GetStorage();
-    final String? role = storage.read("role");
-    print("ROLE ::::: $role");
+                  listener: (context, state) {
+                    // Side effects like navigation or toast can go here
+                    // Example: if (state.status == LoginStatus.error) show error dialog
+                  },
+                  builder: (context, state) {
+                    final storage = GetStorage();
+                    final String? role = storage.read("role");
+                    print("ROLE ::::: $role");
 
-    if (role == "Individual") {
-      if (state.profile != null) {
-        final profile = state.profile!;
-        return CustomTextWidget(
-          text: '${profile.firstname} ${profile.lastname}',
-          color: Constants().themeColor,
-          textSize: 35,
-          fontWeight: FontWeight.w500,
-        );
-      } else if (state.status == LoginStatus.profileLoading) {
-        return const SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-              strokeWidth: 2, color: Colors.white),
-        );
-      }
-    } else if (role == "Professional") {
-      if (state.professionalStatus == ProfessionalStatus.success &&
-          state.professionalProfileModel != null) {
-        final profile = state.professionalProfileModel!;
-        return CustomTextWidget(
-          text: '${profile.firstname} ${profile.lastname}',
-          color: Constants().themeColor,
-          textSize: 35,
-          fontWeight: FontWeight.w500,//10@Testing
-        );
-      } else if (state.status == LoginStatus.professionalProfileLoading) {
-        return const SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-              strokeWidth: 2, color: Colors.white),
-        );
-      }
-    } else if (role == "Organization") {
-      if (state.organizationalStatus == OrganizationalStatus.success &&
-          state.organizationProfileModel != null) {
-        final profile = state.organizationProfileModel!;
-        return CustomTextWidget(
-          text: '${profile.firstname} ${profile.lastname}',
-          color: Constants().themeColor,
-          textSize: 35,
-          fontWeight: FontWeight.w500,
-        );
-      } else if (state.organizationalStatus == OrganizationalStatus.loading) {
-        return const SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-              strokeWidth: 2, color: Colors.white),
-        );
-      }
-    }
+                    if (role == "Individual") {
+                      if (state.profile != null) {
+                        final profile = state.profile!;
+                        return CustomTextWidget(
+                          text: '${profile.firstname} ${profile.lastname}',
+                          color: Constants().themeColor,
+                          textSize: 35,
+                          fontWeight: FontWeight.w500,
+                        );
+                      } else if (state.status == LoginStatus.profileLoading) {
+                        return const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: Colors.white),
+                        );
+                      }
+                    } else if (role == "Professional") {
+                      print("PROFESSIONAL STATUS ${state.professionalStatus}");
+                      print("MODEL PROFESSIONAL LENGTH ${state.professionalProfileModel}");
+                      if (state.professionalStatus ==
+                              ProfessionalStatus.success) {
+                        final profile = state.professionalProfileModel!;
+                        return CustomTextWidget(
+                          text: '${profile.firstname} ${profile.lastname}',
+                          color: Constants().themeColor,
+                          textSize: 35,
+                          fontWeight: FontWeight.w500, //10@Testing
+                        );
+                      } else if (state.status ==
+                          LoginStatus.professionalProfileLoading) {
+                        return const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: Colors.white),
+                        );
+                      }
+                    } else if (role == "Organization") {
+                      if (state.organizationalStatus ==
+                              OrganizationalStatus.success &&
+                          state.organizationProfileModel != null) {
+                        final profile = state.organizationProfileModel!;
+                        return CustomTextWidget(
+                          text: '${profile.firstname} ${profile.lastname}',
+                          color: Constants().themeColor,
+                          textSize: 35,
+                          fontWeight: FontWeight.w500,
+                        );
+                      } else if (state.organizationalStatus ==
+                          OrganizationalStatus.loading) {
+                        return const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: Colors.white),
+                        );
+                      }
+                    }
 
-    return const Text(
-      'Loading...',
-      style: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.w700,
-        fontSize: 18,
-      ),
-    );
-  },
-),
-
+                    return const Text(
+                      'Loading...',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                      ),
+                    );
+                  },
+                ),
 
                 /// Profile Loader and Name
-              /*  BlocBuilder<LoginBloc, LoginState>(
+                /*  BlocBuilder<LoginBloc, LoginState>(
                   builder: (context, state) {
                     // final role = state.role;
                     final storage = GetStorage();

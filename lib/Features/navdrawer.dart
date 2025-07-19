@@ -37,7 +37,95 @@ class CustomNavDrawer extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      BlocBuilder<LoginBloc, LoginState>(
+                      BlocConsumer<LoginBloc, LoginState>(
+                        listener: (context, state) {
+                          // Add any side-effects if needed (e.g., navigation, SnackBars)
+                        },
+                        builder: (context, state) {
+                          print("INDIVIDUAL ${state.status}");
+                          print("PROFESSIONAL ${state.professionalStatus}");
+                          print("ORGANIZATION ${state.organizationalStatus}");
+                          final String imageUrl = state.status ==
+                                  LoginStatus.profileLoaded //10@Testing
+                              ? 'http://173.249.27.4:343/${state.profile!.profileImageUrl}'
+                              : state.professionalStatus ==
+                                      ProfessionalStatus.success
+                                  ? 'http://173.249.27.4:343/${state.professionalProfileModel!.profileImageUrl}'
+                                  : state.organizationalStatus ==
+                                          OrganizationalStatus.success
+                                      ? 'http://173.249.27.4:343/${state.organizationProfileModel!.profileImageUrl}'
+                                      : 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80';
+
+                          final String userRole =
+                              state.status == LoginStatus.profileLoaded
+                                  ? 'Individual'
+                                  : state.professionalStatus ==
+                                          ProfessionalStatus.success
+                                      ? 'Professional'
+                                      : state.organizationalStatus ==
+                                              OrganizationalStatus.success
+                                          ? 'Organization'
+                                          : 'Guest';
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 12),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const SizedBox(width: 7),//10@Testing
+                                    CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: NetworkImage(imageUrl),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,//10@Testing
+                                        children: [
+                                          Text(
+                                            state.status == LoginStatus.profileLoaded
+                                                ? '${state.profile!.firstname} ${state.profile!.lastname}'
+                                                : state.professionalStatus ==
+                                                        ProfessionalStatus
+                                                            .success
+                                                    ? '${state.professionalProfileModel!.firstname} ${state.professionalProfileModel!.lastname}'
+                                                    : state.organizationalStatus ==
+                                                            OrganizationalStatus
+                                                                .success
+                                                        ? '${state.organizationProfileModel!.firstname} ${state.organizationProfileModel!.lastname}'
+                                                        : 'Dr. John',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 24,
+                                              color: Color(0xff323747),
+                                              fontFamily: 'Satoshi',
+                                            ),
+                                          ),
+                                          Text(
+                                            userRole,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16,
+                                              color: Color(0xff666F80),
+                                              fontFamily: 'Satoshi',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+
+                      /*   BlocBuilder<LoginBloc, LoginState>( 10@Testing
                           builder: (context, state) {
                         final String imageUrl = state
                                     .profile?.profileImageUrl !=
@@ -207,7 +295,7 @@ class CustomNavDrawer extends StatelessWidget {
                             ],
                           ),
                         );
-                      }),
+                      }),*/
                       // Padding(
                       //   // padding: const EdgeInsets.only(
                       //   //     left: 16, right: 16, top: 0, bottom: 18),

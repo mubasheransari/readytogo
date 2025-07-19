@@ -118,3 +118,5 @@ class SearchFunctionality extends LoginEvent {
   final String services;
   SearchFunctionality({required this.services});
 }
+
+class LogoutRequested extends LoginEvent {}
