@@ -128,3 +128,6 @@ class FiltersSearchFunctionality extends LoginEvent {
   final double distance;
   FiltersSearchFunctionality({required this.search,required this.zipcode,required this.service,required this.distance});
 }
+
+
+class GetSavedSearches extends LoginEvent {}

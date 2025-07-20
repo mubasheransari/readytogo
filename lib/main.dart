@@ -126,15 +126,15 @@ void main() async {
                 create: (context) => LoginBloc()
                   ..add(GetIndividualProfile(userId: value))
                   ..add(GetAllAssociatedGroups())
-                  ..add(GetAllProfessionalProfiles()),
+                  ..add(GetAllProfessionalProfiles())..add(GetSavedSearches()),
               )
-            : role == "Professional"//Professional
+            : role == "Professional"//Professional 10@Testing
                 ? BlocProvider<LoginBloc>(
                     lazy: false,
                     create: (context) => LoginBloc()
                       ..add(GetAllProfessionalProfiles())
                       ..add(GetProfessionalProfile(userId: value))
-                      ..add(GetAllAssociatedGroups()),
+                      ..add(GetAllAssociatedGroups())..add(GetSavedSearches()),
                   )
                 : role == "Organization"
                     ? BlocProvider<LoginBloc>(
@@ -145,10 +145,10 @@ void main() async {
                         lazy: false,
                         create: (context) => LoginBloc()
                           ..add(GetAllAssociatedGroups())
-                          ..add(GetAllProfessionalProfiles()),
+                          ..add(GetAllProfessionalProfiles())..add(GetSavedSearches()),
                       ),
         BlocProvider<ForgetPasswordBloc>(
-          lazy: false,
+          lazy: false,//10@Testing
           create: (context) => ForgetPasswordBloc(),
         ),
       ],

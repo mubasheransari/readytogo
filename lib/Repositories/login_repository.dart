@@ -7,6 +7,7 @@ import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import 'package:readytogo/Model/organization_profile_model.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:readytogo/Model/saved_search_model.dart';
 import 'package:readytogo/Model/search_model.dart';
 import '../Constants/api_constants.dart';
 import '../Model/individual_profile_model.dart';
@@ -548,6 +549,43 @@ class LoginRepository {
       throw Exception('Unexpected response format: ${response.body}');
     }
   }
+  Future<List<SavedSearchModel>?> getAllSavedSearches() async {
+     var storage = GetStorage();
+    var token = storage.read("id");
+  final response = await _apiBaseHelper.get(
+    url: ApiConstants.baseDomain,
+    path: "${ApiConstants.apiPrefix}${ApiConstants.saveSearch}",
+    token: token,
+  );
+
+  return savedSearchModelFromJson(json.encode(response));
+}
+
+
+  /*Future<List<SavedSearchModel>> getAllSavedSearches() async {
+    var storage = GetStorage();
+    var token = storage.read("id");
+
+    final response = await _apiBaseHelper.get(
+      url: ApiConstants.baseDomain,
+        path:
+      "${ApiConstants.apiPrefix}${ApiConstants.saveSearch}",
+     // path: ApiConstants.saveSearch,
+      token: token,
+    );
+
+    final decoded = json.decode(response.body);
+    print("SAVED SEARCHES $decoded");
+    print("SAVED SEARCHES $decoded");
+    print("SAVED SEARCHES $decoded");
+    print("SAVED SEARCHES $decoded");
+
+    if (decoded is List) {
+      return decoded.map((item) => SavedSearchModel.fromJson(item)).toList();
+    } else {
+      throw Exception('Unexpected response format: ${response.body}');
+    }
+  }*/
 
   // Future<SearchModel> searchFunctionality(String search) async {
   //   var storage = GetStorage();

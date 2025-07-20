@@ -7,6 +7,7 @@ import '../../../Model/individual_profile_model.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../Model/organization_profile_model.dart';
+import '../../../Model/saved_search_model.dart';
 
 /// Enum to represent different states in the login process
 enum LoginStatus {
@@ -100,12 +101,20 @@ enum FilterSearchStatus {
   filtersearchError,
 }
 
+enum GetSavedSearchesStatus {
+  getSavedSearchesInitial,
+  getSavedSearchesLoading,
+  getSavedSearchesSuccess,
+  getSavedSearchesError,
+}
+
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
   final List<SearchModel>? searchResults;
   final List<FilterSearchModel>? filterSearchResults;
   final SearchStatus searchStatus;
+  final GetSavedSearchesStatus getSavedSearchesStatus;
   final FilterSearchStatus filterSearchStatus;
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
@@ -114,6 +123,7 @@ class LoginState extends Equatable {
   AddAffiliationGroupStatusProfessional addAffiliationGroupStatusProfessional;
   final OrganizationalStatus organizationalStatus;
   final OrganizationProfileModel? organizationProfileModel;
+  final List<SavedSearchModel>? savedSearchModel;
   final SearchModel? searchModel;
   final String? errorMessage;
   final String? token;
@@ -125,6 +135,8 @@ class LoginState extends Equatable {
   LoginState(
       {this.searchResults,
       this.filterSearchResults,
+      this.getSavedSearchesStatus =
+          GetSavedSearchesStatus.getSavedSearchesInitial,
       this.searchStatus = SearchStatus.searchInitial,
       this.filterSearchStatus = FilterSearchStatus.filtersearchInitial,
       this.status = LoginStatus.initial,
@@ -140,6 +152,7 @@ class LoginState extends Equatable {
       this.errorMessage,
       this.token,
       this.profile,
+      this.savedSearchModel,
       this.professionalProfileModel,
       this.getAllAssociatedGroupModel,
       this.searchModel,
@@ -150,7 +163,8 @@ class LoginState extends Equatable {
     List<SearchModel>? searchResults,
     List<FilterSearchModel>? filterSearchResults,
     SearchStatus? searchStatus,
-   FilterSearchStatus? filterSearchStatus,
+    GetSavedSearchesStatus? getSavedSearchesStatus,
+    FilterSearchStatus? filterSearchStatus,
     LoginStatus? status,
     ProfessionalStatus? professionalStatus,
     UpdateProfessionalProfileStatus? updateProfessionalProfileStatus,
@@ -159,6 +173,7 @@ class LoginState extends Equatable {
         addAffiliationGroupStatusProfessional,
     OrganizationalStatus? organizationalStatus,
     OrganizationProfileModel? organizationProfileModel,
+    List<SavedSearchModel>? savedSearchModel,
     SearchModel? searchModel,
     String? errorMessage,
     String? token,
@@ -168,9 +183,12 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
-      filterSearchResults: filterSearchResults ?? this.filterSearchResults,
+      savedSearchModel: savedSearchModel ?? this.savedSearchModel,
+        filterSearchResults: filterSearchResults ?? this.filterSearchResults,
         searchResults: searchResults ?? this.searchResults,
         searchStatus: searchStatus ?? this.searchStatus,
+        getSavedSearchesStatus:
+            getSavedSearchesStatus ?? this.getSavedSearchesStatus,
         filterSearchStatus: filterSearchStatus ?? this.filterSearchStatus,
         status: status ?? this.status,
         professionalStatus: professionalStatus ?? this.professionalStatus,
@@ -198,9 +216,12 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
+        savedSearchModel,
+      
         searchResults,
         filterSearchResults,
         searchStatus,
+        getSavedSearchesStatus,
         filterSearchStatus,
         status,
         professionalStatus,

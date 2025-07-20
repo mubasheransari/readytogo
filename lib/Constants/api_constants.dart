@@ -22,5 +22,6 @@ class ApiConstants {
   static const String addAffiliationsGroupsProfessional = "profile/professional/affiliations/add";
   static const String removeAffiliationsGroupsProfessional = "profile/professional/affiliations/remove";  
   static const String search = "search/search";  
+  static const String saveSearch = "search/get-saved-searches";  
   
 }

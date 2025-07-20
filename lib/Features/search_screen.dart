@@ -146,6 +146,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
         }
       },
       child: CustomScaffoldWidget(
+        showNotificationIcon: false,
         isDrawerRequired: true,
         appbartitle: 'Find Providers',
         body: DecoratedBox(
@@ -212,9 +213,11 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                   children: [
                     InkWell(
                       onTap: () {
-                        
                         final services = _searchController.text;
                         if (services.isNotEmpty) {
+                          setState(() {
+                            _selectedFilterProvider == null;
+                          });
                           context
                               .read<LoginBloc>()
                               .add(SearchFunctionality(services: services));

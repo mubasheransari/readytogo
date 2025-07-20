@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/Features/saved_search_screen.dart';
 import '../Features/navdrawer.dart';
 import '../Features/notification_screen.dart';
 import 'boxDecorationWidget.dart';
@@ -93,7 +94,21 @@ class CustomScaffoldWidget extends StatelessWidget {
                           ),
                         )
                       else
-                        const SizedBox(width: 44), // to maintain layout spacing
+                      CircleAvatar(
+                            radius: 22,
+                            backgroundColor: Colors.white,
+                            child:  IconButton(onPressed: (){
+                             Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const SavedSearchScreen(),
+                              ),
+                            );
+                            }, icon: Icon(Icons.favorite_border_outlined,color: Colors.red,)),
+                          ),
+                     
+                       // const SizedBox(width: 44), // to maintain layout spacing
                     ],
                   ),
                 ),

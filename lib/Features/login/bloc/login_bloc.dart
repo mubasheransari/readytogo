@@ -24,6 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<SearchFunctionality>(_searchFunctionality);
     on<FiltersSearchFunctionality>(_filterSearchFunctionality);
     on<LogoutRequested>(logoutRequested);
+    on<GetSavedSearches>(getSavedSearches);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -33,7 +34,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     SearchFunctionality event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(searchStatus: SearchStatus.searchLoading));
+    //state.filterSearchResults == null;
+    emit(state.copyWith(
+        searchStatus: SearchStatus.searchLoading, filterSearchResults: null));
 
     try {
       final result = await loginRepository.searchFunctionality(event.services);
@@ -56,7 +59,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     emit(state.copyWith(
         filterSearchStatus: FilterSearchStatus.filtersearchLoading));
-
     try {
       final result = await loginRepository.filterSearchFunctionality(
           event.search, event.zipcode, event.service, event.distance);
@@ -159,7 +161,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         List<dynamic> roles = responseBody['role'];
         String userRole = roles.isNotEmpty ? roles[0] : '';
 
-        print('User Role: $userRole');
+        print('User Role: $userRole');//10@Testing
 
         var storage = GetStorage();
         storage.write("id", userId);
@@ -183,29 +185,40 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             emit(state.copyWith(status: LoginStatus.profileLoading));
 
             final profile = await loginRepository.individualProfile(userId);
+            final getSavedSerches = await loginRepository.getAllSavedSearches();
+
             emit(state.copyWith(
-              status: LoginStatus.profileLoaded,
-              profile: profile, //10@Testing
-            ));
+                status: LoginStatus.profileLoaded,
+                profile: profile, //10@Testing
+                savedSearchModel: getSavedSerches,
+                getSavedSearchesStatus:
+                    GetSavedSearchesStatus.getSavedSearchesSuccess));
           } else if (userRole == "Professional") {
             emit(
                 state.copyWith(professionalStatus: ProfessionalStatus.loading));
 
             final profile = await loginRepository.professionalProfile(userId);
+            final getSavedSerches = await loginRepository.getAllSavedSearches();
             emit(state.copyWith(
-              professionalStatus: ProfessionalStatus.success,
-              professionalProfileModel: profile,
-            ));
+                professionalStatus: ProfessionalStatus.success,
+                professionalProfileModel: profile,
+                savedSearchModel: getSavedSerches,
+                getSavedSearchesStatus:
+                    GetSavedSearchesStatus.getSavedSearchesSuccess));
           } //10@Testing
           else if (userRole == "Organization") {
             emit(state.copyWith(
                 organizationalStatus: OrganizationalStatus.loading));
 
             final profile = await loginRepository.organizationProfile(userId);
+            final getSavedSerches = await loginRepository.getAllSavedSearches();
+
             emit(state.copyWith(
-              organizationalStatus: OrganizationalStatus.success,
-              organizationProfileModel: profile,
-            ));
+                organizationalStatus: OrganizationalStatus.success,
+                organizationProfileModel: profile,
+                savedSearchModel: getSavedSerches,
+                getSavedSearchesStatus:
+                    GetSavedSearchesStatus.getSavedSearchesSuccess));
           }
 
           // Fetch profile next
@@ -698,5 +711,32 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         status: LoginStatus.initial,
         professionalStatus: ProfessionalStatus.initial,
         organizationalStatus: OrganizationalStatus.initial));
+  }
+
+  getSavedSearches(
+    GetSavedSearches event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(
+        getSavedSearchesStatus:
+            GetSavedSearchesStatus.getSavedSearchesLoading));
+
+    final savedSearches = await loginRepository.getAllSavedSearches();
+    
+    print("SAVED SEARCHES $savedSearches");
+    print("SAVED SEARCHES $savedSearches");
+    print("SAVED SEARCHES $savedSearches");
+
+    if (savedSearches != null) {
+      emit(state.copyWith(
+          savedSearchModel: savedSearches,
+          getSavedSearchesStatus:
+              GetSavedSearchesStatus.getSavedSearchesSuccess));
+    } else {
+      emit(state.copyWith(
+          getSavedSearchesStatus: GetSavedSearchesStatus.getSavedSearchesError
+          //errorMessage: "Failed to fetch profile: ${e.toString()}", //10@Testing
+          ));
+    }
   }
 }
