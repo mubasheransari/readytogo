@@ -160,14 +160,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             final profile = await loginRepository.individualProfile(userId);
             emit(state.copyWith(
               status: LoginStatus.profileLoaded,
-              profile: profile,
+              profile: profile, //10@Testing
             ));
           } else if (userRole == "Professional") {
-            emit(state.copyWith(status: LoginStatus.profileLoading));
+            emit(
+                state.copyWith(professionalStatus: ProfessionalStatus.loading));
 
             final profile = await loginRepository.professionalProfile(userId);
             emit(state.copyWith(
-              status: LoginStatus.professionalProfileLoaded,
+              professionalStatus: ProfessionalStatus.success,
               professionalProfileModel: profile,
             ));
           } //10@Testing
@@ -276,7 +277,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           professionalStatus: ProfessionalStatus.success));
     } else {
       emit(state.copyWith(professionalStatus: ProfessionalStatus.failure
-          //errorMessage: "Failed to fetch profile: ${e.toString()}",
+          //errorMessage: "Failed to fetch profile: ${e.toString()}", //10@Testing
           ));
     }
   }

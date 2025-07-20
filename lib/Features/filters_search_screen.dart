@@ -1,270 +1,158 @@
 import 'package:flutter/material.dart';
 
-import '../Constants/constants.dart';
-import 'home_screen.dart';
-
 class FilterBottomSheet extends StatefulWidget {
   @override
   _FilterBottomSheetState createState() => _FilterBottomSheetState();
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
-  final TextEditingController _zipCodeController =
-      TextEditingController(text: "NW1 6XE");
+  final TextEditingController _zipCodeController = TextEditingController();
+  final TextEditingController _serviceController = TextEditingController();
 
-  String _selectedMemberType = 'Provider';
-  String _selectedService = 'Nutritionist';
-  String _selectedDistance = 'Under 6km';
-
-  final List<String> _memberTypes = ['Provider', 'Client', 'Other'];
-  final List<String> _services = ['Nutritionist', 'Therapist', 'Coach'];
-  final List<String> _distances = ['Under 6km', 'Under 12km', 'Under 20km'];
+  double _distanceValue = 6.0;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.84,
-      // Height can be adjusted as per need
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      height: MediaQuery.of(context).size.height * 0.85,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.95),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         gradient: LinearGradient(
-          colors: [
-            Color(0xFFE6DCFD),
-            Color(0xFFD8E7FF),
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
+          colors: [Color(0xFFE6DCFD), Color(0xFFD8E7FF)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 5,
-            width: 100,
-            decoration: BoxDecoration(
-                color: Colors.grey, borderRadius: BorderRadius.circular(20)),
-          ),
-          SizedBox(
-            height: 10,
+          Center(
+            child: Container(
+              height: 5,
+              width: 60,
+              margin: EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade400,
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
           ),
           Center(
             child: Text(
               'Filters',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Satoshi',
+              ),
             ),
           ),
+          SizedBox(height: 24),
+
+          _buildLabel("Zip Code"),
+          _buildTextField(_zipCodeController, "Zip Code"),
+
+          SizedBox(height: 20),
+          _buildLabel("Service"),
+          _buildTextField(_serviceController, "Service"),
+
+          SizedBox(height: 24),
+          _buildLabel("Distance (${_distanceValue.toStringAsFixed(1)} km)"),
+
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              activeTrackColor: Color(0xFF407BFF),
+              inactiveTrackColor: Colors.grey.shade300,
+              thumbColor: Color(0xFF407BFF),
+              overlayColor: Color(0xFF407BFF).withOpacity(0.2),
+              trackHeight: 4,
+              thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+              overlayShape: RoundSliderOverlayShape(overlayRadius: 18),
+            ),
+            child: Slider(
+              value: _distanceValue,
+              min: 1,
+              max: 50,
+              divisions: 49,
+              label: "${_distanceValue.toStringAsFixed(1)} km",
+              onChanged: (value) {
+                setState(() {
+                  _distanceValue = value;
+                });
+              },
+            ),
+          ),
+
+          //  Spacer(),
           SizedBox(height: 20),
 
-          // Zip Code
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Zip Code',
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17),
-            ),
-          ),
-          SizedBox(height: 4),
-          TextField(
-            controller: _zipCodeController,
-            decoration: InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blue.shade300),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-
-          // Type of Member Dropdown
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Type of Member',
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17),
-            ),
-          ),
-          SizedBox(height: 4),
-          DropdownButtonFormField<String>(
-            value: _selectedMemberType,
-            items: _memberTypes
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
-            onChanged: (val) {
-              setState(() {
-                _selectedMemberType = val!;
-              });
-            },
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blue.shade300),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-
-          // Service Dropdown
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Service',
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17),
-            ),
-          ),
-          SizedBox(height: 4),
-          DropdownButtonFormField<String>(
-            value: _selectedService,
-            items: _services
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
-            onChanged: (val) {
-              setState(() {
-                _selectedService = val!;
-              });
-            },
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blue.shade300),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-
-          // Distance Dropdown
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Distance',
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17),
-            ),
-          ),
-          SizedBox(height: 4),
-          DropdownButtonFormField<String>(
-            value: _selectedDistance,
-            items: _distances
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
-            onChanged: (val) {
-              setState(() {
-                _selectedDistance = val!;
-              });
-            },
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blue.shade300),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.blue.shade600, width: 2),
-              ),
-            ),
-          ),
-          SizedBox(height: 30),
           SizedBox(
-            width: 342,
-            height: 60,
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HomeScreen
-                              // VerificationScreen
-                              ()));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Constants().themeColor,
-                  minimumSize: const Size(200, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+            width: MediaQuery.of(context).size.width * 0.85,
+            height: 50,
+            // width: double.infinity,
+            // height: 56,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // You can pass data back here
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF407BFF),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                elevation: 3,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Apply Filters',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'Satoshi',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Apply Filters',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Satoshi',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(width: 10),
-                    Image.asset(
-                      'assets/loginbuttonicon.png',
-                      width: 20,
-                      height: 20,
-                    ),
-                  ],
-                ),
+                  SizedBox(width: 8),
+                  Icon(Icons.check_circle_outline,
+                      color: Colors.white, size: 22),
+                ],
               ),
             ),
           ),
-
-          // Apply Filters Button
-          // SizedBox(
-          //   width: double.infinity,
-          //   child: ElevatedButton.icon(
-          //     onPressed: () {
-          //       // You can pass the selected filters back or handle them here
-          //       Navigator.of(context).pop({
-          //         'zipCode': _zipCodeController.text,
-          //         'memberType': _selectedMemberType,
-          //         'service': _selectedService,
-          //         'distance': _selectedDistance,
-          //       });
-          //     },
-          //     icon: Icon(Icons.check_circle_outline),
-          //     label: Text('Apply Filters'),
-          //     style: ElevatedButton.styleFrom(
-          //       padding: EdgeInsets.symmetric(vertical: 14),
-          //       shape: RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.circular(8),
-          //       ),
-          //       textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          //       backgroundColor: Colors.blue.shade600,
-          //     ),
-          //   ),
-          // ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLabel(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+        fontFamily: 'Satoshi',
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String hint) {
+    return Container(
+      margin: EdgeInsets.only(top: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.7),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: TextField(
+        controller: controller,
+        style: TextStyle(fontSize: 16),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          hintText: hint,
+          border: InputBorder.none,
+        ),
       ),
     );
   }
