@@ -12,8 +12,6 @@ import 'bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'dart:async';
 
-
-
 class VerificattionScreen extends StatefulWidget {
   final String email, password;
 
@@ -100,7 +98,8 @@ class _VerificattionScreenState extends State<VerificattionScreen>
         child: SafeArea(
           child: BlocConsumer<LoginBloc, LoginState>(
             listener: (context, state) {
-              if (state.status == LoginStatus.otpSuccess && state.token != null) {
+              if (state.status == LoginStatus.otpSuccess &&
+                  state.token != null) {
                 final box = GetStorage();
                 box.write("token", state.token);
 
@@ -125,7 +124,8 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                   ),
                   child: IntrinsicHeight(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       child: Column(
                         children: [
                           Row(
@@ -135,7 +135,8 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                 child: const CircleAvatar(
                                   radius: 19,
                                   backgroundColor: Colors.white,
-                                  child: Icon(Icons.arrow_back, color: Colors.black, size: 19),
+                                  child: Icon(Icons.arrow_back,
+                                      color: Colors.black, size: 19),
                                 ),
                               ),
                               const SizedBox(width: 17),
@@ -152,7 +153,8 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                           ),
                           const SizedBox(height: 50),
                           Center(
-                            child: Image.asset("assets/lock.png", height: 120, width: 120),
+                            child: Image.asset("assets/lock.png",
+                                height: 120, width: 120),
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -240,9 +242,11 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                             password: widget.password,
                                           ),
                                         );
-                                    toastWidget("OTP code resent", Colors.green);
+                                    toastWidget(
+                                        "OTP code resent", Colors.green);
                                   } else {
-                                    toastWidget("Wait for $timerText", Colors.red);
+                                    toastWidget(
+                                        "Wait for $timerText", Colors.red);
                                   }
                                 },
                                 child: Text(
@@ -259,8 +263,10 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                           ),
                           const SizedBox(height: 30),
                           SizedBox(
-                            width: 376,
-                            height: 60,
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            height: 50,
+                            // width: 376,
+                            // height: 60,
                             child: ElevatedButton(
                               onPressed: (codeValue.length == 4 && !isLoading)
                                   ? () {
@@ -324,7 +330,6 @@ class _VerificattionScreenState extends State<VerificattionScreen>
     );
   }
 }
-
 
 // class VerificattionScreen extends StatefulWidget {
 //   final String email, password;

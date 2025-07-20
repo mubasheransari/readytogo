@@ -212,6 +212,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                   children: [
                     InkWell(
                       onTap: () {
+                        
                         final services = _searchController.text;
                         if (services.isNotEmpty) {
                           context

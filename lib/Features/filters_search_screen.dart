@@ -101,11 +101,19 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context); // You can pass data back here
-                context.read<LoginBloc>().add(FiltersSearchFunctionality(
-                    search: "dr irvin packwell",
-                    zipcode: "75850",
-                    service: "urologist",
-                    distance: 4.6));
+                // context.read<LoginBloc>().add(FiltersSearchFunctionality(
+                //     search: "dr irvin packwell",
+                //     zipcode: "75850",
+                //     service: "urologist",
+                //     distance: _distanceValue));
+                    //10@Testing
+                    
+                    
+                        context.read<LoginBloc>().add(FiltersSearchFunctionality(
+                    search: _searchController.text,
+                    zipcode: _zipCodeController.text,
+                    service: _serviceController.text,
+                    distance: _distanceValue));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF407BFF),
