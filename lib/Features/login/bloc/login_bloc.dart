@@ -22,6 +22,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<RemoveAffiliationsProfrofessional>(removeAffiliationsProfessional);
     on<AddAffiliationsProfrofessional>(addAffiliationsProfrofessional);
     on<SearchFunctionality>(_searchFunctionality);
+    on<FiltersSearchFunctionality>(_filterSearchFunctionality);
     on<LogoutRequested>(logoutRequested);
   }
 
@@ -44,6 +45,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } catch (e) {
       emit(state.copyWith(
         searchStatus: SearchStatus.searchError,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
+
+  _filterSearchFunctionality(
+    FiltersSearchFunctionality event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(
+        filterSearchStatus: FilterSearchStatus.filtersearchLoading));
+
+    try {
+      final result = await loginRepository.filterSearchFunctionality(
+          event.search, event.zipcode, event.service, event.distance);
+
+      emit(state.copyWith(
+          filterSearchResults: result, // searchModel: result,10@Testing
+          filterSearchStatus: FilterSearchStatus.filtersearchSuccess));
+    } catch (e) {
+      emit(state.copyWith(
+        filterSearchStatus: FilterSearchStatus.filtersearchError,
         errorMessage: e.toString(),
       ));
     }

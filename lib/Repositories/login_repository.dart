@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:get_storage/get_storage.dart';
+import 'package:readytogo/Model/filter_search_model.dart';
 import 'package:readytogo/Model/get_all_associated_groups_model.dart';
 import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import 'package:readytogo/Model/organization_profile_model.dart';
@@ -509,6 +510,40 @@ class LoginRepository {
 
     if (decoded is List) {
       return decoded.map((item) => SearchModel.fromJson(item)).toList();
+    } else {
+      throw Exception('Unexpected response format: ${response.body}');
+    }
+  }
+
+  Future<List<FilterSearchModel>> filterSearchFunctionality(
+      String search,String zipcode,String service,double distance) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
+    var role = storage.read("role");
+
+    final response = await _apiBaseHelper.post(
+      path: ApiConstants.search,
+      body: {
+        "request": {
+          "search": search,
+          "zipCode": zipcode,
+          "memberType":role,
+          "service": service,
+          "distance": distance,
+          "latitude": 0,
+          "longitude": 0
+        }
+      },
+      token: token,
+    );
+
+    final decoded = json.decode(response.body);
+    print("DECODED SEARCH $decoded");
+    print("DECODED SEARCH $decoded");
+    print("DECODED SEARCH $decoded");
+
+    if (decoded is List) {
+      return decoded.map((item) => FilterSearchModel.fromJson(item)).toList();
     } else {
       throw Exception('Unexpected response format: ${response.body}');
     }

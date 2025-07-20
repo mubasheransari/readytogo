@@ -1,3 +1,4 @@
+import 'package:readytogo/Model/filter_search_model.dart';
 import 'package:readytogo/Model/get_all_associated_groups_model.dart';
 import 'package:readytogo/Model/get_all_individual_profile_model.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
@@ -92,11 +93,20 @@ enum SearchStatus {
   searchError,
 }
 
+enum FilterSearchStatus {
+  filtersearchInitial,
+  filtersearchLoading,
+  filtersearchSuccess,
+  filtersearchError,
+}
+
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
   final List<SearchModel>? searchResults;
+  final List<FilterSearchModel>? filterSearchResults;
   final SearchStatus searchStatus;
+  final FilterSearchStatus filterSearchStatus;
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
   final UpdateProfessionalProfileStatus updateProfessionalProfileStatus;
@@ -114,7 +124,9 @@ class LoginState extends Equatable {
 
   LoginState(
       {this.searchResults,
+      this.filterSearchResults,
       this.searchStatus = SearchStatus.searchInitial,
+      this.filterSearchStatus = FilterSearchStatus.filtersearchInitial,
       this.status = LoginStatus.initial,
       this.professionalStatus = ProfessionalStatus.initial,
       this.updateProfessionalProfileStatus =
@@ -136,7 +148,9 @@ class LoginState extends Equatable {
   /// Copy the state with updated fields
   LoginState copyWith({
     List<SearchModel>? searchResults,
+    List<FilterSearchModel>? filterSearchResults,
     SearchStatus? searchStatus,
+   FilterSearchStatus? filterSearchStatus,
     LoginStatus? status,
     ProfessionalStatus? professionalStatus,
     UpdateProfessionalProfileStatus? updateProfessionalProfileStatus,
@@ -154,8 +168,10 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
+      filterSearchResults: filterSearchResults ?? this.filterSearchResults,
         searchResults: searchResults ?? this.searchResults,
         searchStatus: searchStatus ?? this.searchStatus,
+        filterSearchStatus: filterSearchStatus ?? this.filterSearchStatus,
         status: status ?? this.status,
         professionalStatus: professionalStatus ?? this.professionalStatus,
         updateProfessionalProfileStatus: updateProfessionalProfileStatus ??
@@ -183,7 +199,9 @@ class LoginState extends Equatable {
   @override
   List<Object?> get props => [
         searchResults,
+        filterSearchResults,
         searchStatus,
+        filterSearchStatus,
         status,
         professionalStatus,
         updateProfessionalProfileStatus,

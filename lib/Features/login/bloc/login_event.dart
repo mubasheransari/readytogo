@@ -51,6 +51,7 @@ class GetProfessionalProfile extends LoginEvent {
     required this.userId,
   });
 }
+
 class GetOrganizationProfile extends LoginEvent {
   final String userId;
   const GetOrganizationProfile({
@@ -97,8 +98,8 @@ class RemoveAffiliations extends LoginEvent {
 
   RemoveAffiliations({required this.userId, required this.groupId});
 }
-class GetAllProfessionalProfiles extends LoginEvent {}
 
+class GetAllProfessionalProfiles extends LoginEvent {}
 
 class AddAffiliationsProfrofessional extends LoginEvent {
   final String userId;
@@ -111,7 +112,8 @@ class RemoveAffiliationsProfrofessional extends LoginEvent {
   final String userId;
   final String groupId;
 
-  RemoveAffiliationsProfrofessional({required this.userId, required this.groupId});
+  RemoveAffiliationsProfrofessional(
+      {required this.userId, required this.groupId});
 }
 
 class SearchFunctionality extends LoginEvent {
@@ -120,3 +122,9 @@ class SearchFunctionality extends LoginEvent {
 }
 
 class LogoutRequested extends LoginEvent {}
+
+class FiltersSearchFunctionality extends LoginEvent {
+  final String search, zipcode, service;
+  final double distance;
+  FiltersSearchFunctionality({required this.search,required this.zipcode,required this.service,required this.distance});
+}
