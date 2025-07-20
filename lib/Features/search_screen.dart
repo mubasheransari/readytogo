@@ -608,6 +608,20 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                     ),
                   ),
                   const SizedBox(width: 8),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: IconButton(
+                      icon:  Icon(Icons.favorite_border_outlined, color: Colors.blue),
+                      onPressed: () {
+                        setState(() {
+  model.add(newItem);
+});
+                      },
+                    ),
+                  ),
                   // Call button
                   Container(
                     decoration: BoxDecoration(

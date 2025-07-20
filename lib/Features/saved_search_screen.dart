@@ -28,11 +28,18 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                     itemCount: state.savedSearchModel!.length,
                     itemBuilder: (context, index) {
                       return DoctorCard(
-                        profileImage:'https://i.pravatar.cc/100?img=60',
-                        name: "${state.savedSearchModel![index].firstName} ${state.savedSearchModel![index].lastName}",
-                        phone: state.savedSearchModel![index].phoneNumber.toString(),
+                        onFavoriteTap: () {
+                          setState(() {
+                            state.savedSearchModel!.removeAt(index);
+                          });
+                        },
+                        profileImage: 'https://i.pravatar.cc/100?img=60',
+                        name:
+                            "${state.savedSearchModel![index].firstName} ${state.savedSearchModel![index].lastName}",
+                        phone: state.savedSearchModel![index].phoneNumber
+                            .toString(),
                         email: state.savedSearchModel![index].email.toString(),
-                           // state.savedSearchModel![index].profileImageUrl!,
+                        // state.savedSearchModel![index].profileImageUrl!,
                       );
                     });
               }),
@@ -46,8 +53,16 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
 }
 
 class DoctorCard extends StatelessWidget {
-  String profileImage,name,phone,email;
-  DoctorCard({super.key, required this.profileImage,required this.name,required this.phone,required this.email});
+  String profileImage, name, phone, email;
+  final VoidCallback onFavoriteTap;
+  DoctorCard({
+    super.key,
+    required this.profileImage,
+    required this.name,
+    required this.phone,
+    required this.email,
+    required this.onFavoriteTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +107,7 @@ class DoctorCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children:  [
+                  children: [
                     Text(
                       name,
                       //'Dr. Imran (Pediatrician)',
@@ -104,7 +119,7 @@ class DoctorCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                     phone, //'+0594 56249 5894',
+                      phone, //'+0594 56249 5894',
                       style: TextStyle(color: Colors.black54),
                     ),
                   ],
@@ -112,7 +127,9 @@ class DoctorCard extends StatelessWidget {
               ),
 
               // Heart Icon
-              Icon(Icons.favorite_border, color: Colors.black54),
+              InkWell(
+                  onTap: onFavoriteTap,
+                  child: Icon(Icons.favorite_border, color: Colors.black54)),
             ],
           ),
           const SizedBox(height: 14),
@@ -145,7 +162,7 @@ class DoctorCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children:  [
+                  children: [
                     Text(email),
                     SizedBox(height: 10),
                     Text('$phone'),
@@ -178,7 +195,7 @@ class DoctorCard extends StatelessWidget {
               _InfoText(title: 'Member', value: 'Since July 15th'),
             ],
           ),
-           //  SizedBox(height: 100,)
+          //  SizedBox(height: 100,)
         ],
       ),
     );
