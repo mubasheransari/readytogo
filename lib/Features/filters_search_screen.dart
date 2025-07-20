@@ -13,7 +13,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   final TextEditingController _serviceController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
 
-  double _distanceValue = 6.0;
+  double _distanceValue = 1.0;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +107,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 //     service: "urologist",
                 //     distance: _distanceValue));
                     //10@Testing
-                    
+
                     
                         context.read<LoginBloc>().add(FiltersSearchFunctionality(
                     search: _searchController.text,

@@ -108,8 +108,8 @@ class LoginSuccessScreen extends StatelessWidget {
                       }
                     }
 
-                    return const Text(
-                      'Loading...',
+                    return  Text(
+                      'Loading...${context.read<LoginBloc>().state.professionalStatus} ${context.read<LoginBloc>().state.status} ${context.read<LoginBloc>().state.organizationalStatus}',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -119,7 +119,7 @@ class LoginSuccessScreen extends StatelessWidget {
                   },
                 ),
 
-                /// Profile Loader and Name
+                /// Profile Loader and Name//10@Testing
                 /*  BlocBuilder<LoginBloc, LoginState>(
                   builder: (context, state) {
                     // final role = state.role;

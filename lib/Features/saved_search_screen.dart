@@ -19,10 +19,10 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
       //  showNotificationIcon: false,
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.white,
+         /// color: Colors.white,
           child: Column(
             children: [
-              BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+           context.read<LoginBloc>().state.savedSearchModel!.isNotEmpty?    BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
                 return ListView.builder(
                     shrinkWrap: true,
                     itemCount: state.savedSearchModel!.length,
@@ -42,7 +42,13 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                         // state.savedSearchModel![index].profileImageUrl!,
                       );
                     });
-              }),
+              }):
+                  
+                  Padding(
+                    padding:  EdgeInsets.only(top:MediaQuery.of(context).size.height *0.35),
+                    child: Center(child: Text("No Saved Searches"),),
+                  ),
+             
               //SizedBox(height: 100,)
             ],
           ),
