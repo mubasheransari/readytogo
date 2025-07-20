@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:readytogo/Features/login/bloc/login_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:readytogo/Features/login/bloc/login_event.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   @override
@@ -8,6 +11,7 @@ class FilterBottomSheet extends StatefulWidget {
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
   final TextEditingController _zipCodeController = TextEditingController();
   final TextEditingController _serviceController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   double _distanceValue = 6.0;
 
@@ -49,7 +53,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
           ),
           SizedBox(height: 24),
-
+          _buildLabel("Search"),
+          _buildTextField(_searchController, "Search"),
+          SizedBox(height: 20),
           _buildLabel("Zip Code"),
           _buildTextField(_zipCodeController, "Zip Code"),
 
@@ -90,11 +96,16 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.85,
             height: 50,
-            // width: double.infinity,
+            // width: double.infinity, 10@Testing
             // height: 56,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context); // You can pass data back here
+                context.read<LoginBloc>().add(FiltersSearchFunctionality(
+                    search: "dr irvin packwell",
+                    zipcode: "75850",
+                    service: "urologist",
+                    distance: 4.6));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF407BFF),

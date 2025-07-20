@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:readytogo/Constants/constants.dart';
+import '../Model/filter_search_model.dart';
 import '../Model/search_model.dart';
 import '../Repositories/login_repository.dart';
 import '../widgets/boxDecorationWidget.dart';
@@ -32,6 +33,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
   Set<Marker> _markers = {};
   BitmapDescriptor? _customMarkerIcon;
   SearchModel? _selectedProvider;
+  FilterSearchModel? _selectedProviderFilters;
 
   bool _showInfoWindow = false;
   LatLng? _selectedMarkerPosition;
@@ -76,6 +78,40 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
               _showInfoWindow = true;
             });
           },
+  
+        ));
+      }
+    }
+
+    setState(() {
+      _markers = newMarkers;
+    });
+  }
+
+  void _updateMarkersFilters(List<FilterSearchModel> searchResults) {
+    final Set<Marker> newMarkers = {};
+
+    for (int i = 0; i < searchResults.length; i++) {
+      final model = searchResults[i];
+      print("FILTERS MARKERS $model");
+      print("FILTERS MARKERS $model");
+      print("FILTERS MARKERS $model");
+      if (model.locations.isNotEmpty) {
+        final location = model.locations.first;
+        final LatLng position =
+            LatLng(location.latitude ?? 0.0, location.longitude ?? 0.0);
+
+        newMarkers.add(Marker(
+          markerId: MarkerId('marker_$i'),
+          position: position,
+          icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
+          onTap: () {
+            setState(() {
+              _selectedMarkerPosition = position;
+              _selectedProviderFilters = model;
+              _showInfoWindow = true;
+            });
+          },
           // onTap: () {
           //   setState(() {
           //     _selectedMarkerPosition = position;
@@ -100,6 +136,10 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
         if (state.searchStatus == SearchStatus.searchSuccess &&
             state.searchResults != null) {
           _updateMarkers(state.searchResults!);
+        } else if (state.filterSearchStatus ==
+                FilterSearchStatus.filtersearchSuccess &&
+            state.filterSearchResults != null) {
+          _updateMarkersFilters(state.filterSearchResults!);
         }
       },
       child: CustomScaffoldWidget(
@@ -371,23 +411,24 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                   ? Column(
                       children: [
                         Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _infoColumn('Service', 'Pediatrician'),
-        _separator(),
-        _infoColumn('Location', 'Distance 3.2 km'),
-        _separator(),
-        _infoColumn('Member', 'Since July 15th'),
-      ],
-    ),
-                      //  _infoRow(), // You can update _infoRow if needed
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _infoColumn('Service', 'Pediatrician'),
+                            _separator(),
+                            _infoColumn('Location', 'Distance 3.2 km'),
+                            _separator(),
+                            _infoColumn('Member', 'Since July 15th'),
+                          ],
+                        ),
+                        //  _infoRow(), // You can update _infoRow if needed
                         const SizedBox(height: 16),
                       ],
                     )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _infoColumn('Location', 'Distance ${model.distanceKm} km'),
+                        _infoColumn(
+                            'Location', 'Distance ${model.distanceKm} km'),
                         _separator(),
                         _infoColumn('Member', 'Sinc ${model.memberSince}'),
                       ],

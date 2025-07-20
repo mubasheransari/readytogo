@@ -60,7 +60,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     try {
       final result = await loginRepository.filterSearchFunctionality(
           event.search, event.zipcode, event.service, event.distance);
-
+      print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
+      print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
+      print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
       emit(state.copyWith(
           filterSearchResults: result, // searchModel: result,10@Testing
           filterSearchStatus: FilterSearchStatus.filtersearchSuccess));

@@ -516,7 +516,7 @@ class LoginRepository {
   }
 
   Future<List<FilterSearchModel>> filterSearchFunctionality(
-      String search,String zipcode,String service,double distance) async {
+      String search, String zipcode, String service, double distance) async {
     var storage = GetStorage();
     var token = storage.read("id");
     var role = storage.read("role");
@@ -527,7 +527,7 @@ class LoginRepository {
         "request": {
           "search": search,
           "zipCode": zipcode,
-          "memberType":role,
+          "memberType": role,
           "service": service,
           "distance": distance,
           "latitude": 0,
@@ -538,9 +538,9 @@ class LoginRepository {
     );
 
     final decoded = json.decode(response.body);
-    print("DECODED SEARCH $decoded");
-    print("DECODED SEARCH $decoded");
-    print("DECODED SEARCH $decoded");
+    print("DECODED SEARCH FILTERS $decoded");
+    print("DECODED SEARCH FILTERS $decoded");
+    print("DECODED SEARCH FILTERS $decoded");
 
     if (decoded is List) {
       return decoded.map((item) => FilterSearchModel.fromJson(item)).toList();
