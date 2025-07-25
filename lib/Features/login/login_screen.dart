@@ -98,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 5),
                         CustomTextFieldWidget(
-                          //10@Testing
                           obscureText: true,
                           borderColor: Constants().themeColor,
                           controller: passwordController,
@@ -109,6 +108,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           validator: (value) =>
                               validatePassword(value?.trim() ?? ''),
                         ),
+
+                        /*CustomTextFieldWidget(
+                          //10@Testing
+                          obscureText: true,
+                          borderColor: Constants().themeColor,
+                          controller: passwordController,
+                          hintText: 'peterpk454',
+                          labelText: 'Password',
+                          textWidgetText: 'Password',
+                          hintTextColor: Constants().themeColor,
+                          validator: (value) =>
+                              validatePassword(value?.trim() ?? ''),
+                        ),*/
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
@@ -173,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 passwordController.text.trim(),
                                           ),
                                         );
-                                  }//10@Testing
+                                  } //10@Testing
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Constants().themeColor,

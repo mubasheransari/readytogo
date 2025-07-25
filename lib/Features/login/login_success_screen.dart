@@ -67,9 +67,10 @@ class LoginSuccessScreen extends StatelessWidget {
                       }
                     } else if (role == "Professional") {
                       print("PROFESSIONAL STATUS ${state.professionalStatus}");
-                      print("MODEL PROFESSIONAL LENGTH ${state.professionalProfileModel}");
+                      print(
+                          "MODEL PROFESSIONAL LENGTH ${state.professionalProfileModel}");
                       if (state.professionalStatus ==
-                              ProfessionalStatus.success) {
+                          ProfessionalStatus.success) {
                         final profile = state.professionalProfileModel!;
                         return CustomTextWidget(
                           text: '${profile.firstname} ${profile.lastname}',
@@ -108,8 +109,8 @@ class LoginSuccessScreen extends StatelessWidget {
                       }
                     }
 
-                    return  Text(
-                      'Loading...${context.read<LoginBloc>().state.professionalStatus} ${context.read<LoginBloc>().state.status} ${context.read<LoginBloc>().state.organizationalStatus}',
+                    return Text(
+                      'Loading...',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,

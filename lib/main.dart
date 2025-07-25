@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readytogo/Features/Signup/bloc/signup_bloc.dart';
@@ -73,9 +75,70 @@ void showLocalNotification(RemoteMessage message) async {
   );
 }*/
 
+Future<Position> getCurrentLocation() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  // Check if location services are enabled
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    throw Exception('Location services are disabled.');
+  }
+
+  // Check permission status
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      throw Exception('Location permission denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    throw Exception('Location permissions are permanently denied');
+  }
+  StreamSubscription<Position> positionStream =
+      Geolocator.getPositionStream().listen(
+    (Position position) {
+      print(position == null
+          ? 'Unknown'
+          : '${position.latitude}, ${position.longitude}');
+      print(position == null
+          ? 'Unknown'
+          : '${position.latitude}, ${position.longitude}');
+    },
+  );
+
+  // Get current location
+  return await Geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.high,
+  );
+}
+
+// StreamSubscription<Position> positionStream =
+//     Geolocator.getPositionStream().listen(
+//   (Position position) {
+//     print(position == null
+//         ? 'Unknown'
+//         : '${position.latitude}, ${position.longitude}');
+//   },
+// );
+
+//////////////
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  getCurrentLocation();
+  print("MAIN METHOD");
+  print("MAIN METHOD");
+  print("MAIN METHOD");
+  print("MAIN METHOD");
+  print("MAIN METHOD");
+  print("MAIN METHOD");
+  print("MAIN METHOD");
+  print("MAIN METHOD");
+  print("MAIN METHOD");
   /*await Firebase.initializeApp();
 
   await initializeLocalNotifications();
@@ -126,15 +189,17 @@ void main() async {
                 create: (context) => LoginBloc()
                   ..add(GetIndividualProfile(userId: value))
                   ..add(GetAllAssociatedGroups())
-                  ..add(GetAllProfessionalProfiles())..add(GetSavedSearches()),
+                  ..add(GetAllProfessionalProfiles())
+                  ..add(GetSavedSearches()),
               )
-            : role == "Professional"//Professional 10@Testing
+            : role == "Professional" //Professional 10@Testing
                 ? BlocProvider<LoginBloc>(
                     lazy: false,
                     create: (context) => LoginBloc()
                       ..add(GetAllProfessionalProfiles())
                       ..add(GetProfessionalProfile(userId: value))
-                      ..add(GetAllAssociatedGroups())..add(GetSavedSearches()),
+                      ..add(GetAllAssociatedGroups())
+                      ..add(GetSavedSearches()),
                   )
                 : role == "Organization"
                     ? BlocProvider<LoginBloc>(
@@ -145,10 +210,11 @@ void main() async {
                         lazy: false,
                         create: (context) => LoginBloc()
                           ..add(GetAllAssociatedGroups())
-                          ..add(GetAllProfessionalProfiles())..add(GetSavedSearches()),
+                          ..add(GetAllProfessionalProfiles())
+                          ..add(GetSavedSearches()),
                       ),
         BlocProvider<ForgetPasswordBloc>(
-          lazy: false,//10@Testing
+          lazy: false, //10@Testing
           create: (context) => ForgetPasswordBloc(),
         ),
       ],
@@ -157,9 +223,72 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Your initialization logic here
+    print('initState called!');
+    print('initState called!');
+    print('initState called!');
+    print('initState called!');
+    print('initState called!');
+    print('initState called!');
+    print('initState called!');
+    print('initState called!');
+    print('initState called!');
+    print('initState called!');
+    print('initState called!');
+  }
+
   @override
   Widget build(BuildContext context) {
+    StreamSubscription<Position>? _positionStream;
+    String _location = 'Waiting...';
+
+    void _startListening() {
+      _positionStream = Geolocator.getPositionStream(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 10,
+        ),
+      ).listen((Position position) {
+        setState(() {
+          _location = 'Lat: ${position.latitude}, Lon: ${position.longitude}';
+        });
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+        print("LOCATION ${position.latitude} ${position.longitude}");
+      });
+    }
+
+    void _stopListening() {
+      _positionStream?.cancel();
+      setState(() {
+        _location = 'Stopped listening';
+      });
+    }
+
+    @override
+    void dispose() {
+      _stopListening(); // Ensure we stop listening on widget dispose
+      super.dispose();
+    }
+
     final box = GetStorage();
     var token = box.read("token");
 

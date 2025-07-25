@@ -53,6 +53,7 @@ dependencies:
   firebase_core: 
   firebase_messaging:
   flutter_local_notifications: ^17.0.0
+  geolocator: ^10.1.0
 
 flutter_launcher_icons:
   android: "launcher_icon"

@@ -5,7 +5,6 @@ import 'package:readytogo/Constants/constants.dart';
 import '../Model/filter_search_model.dart';
 import '../Model/professional_profile_model.dart';
 import '../Model/search_model.dart';
-import '../Repositories/login_repository.dart';
 import '../widgets/boxDecorationWidget.dart';
 import '../widgets/customscfaffold_widget.dart';
 import 'filters_search_screen.dart';
