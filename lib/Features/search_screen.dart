@@ -10,7 +10,7 @@ import '../widgets/customscfaffold_widget.dart';
 import 'filters_search_screen.dart';
 import 'login/bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
-
+import 'package:location/location.dart' as loc;
 import 'login/bloc/login_state.dart';
 
 // Assume imports are already handled
@@ -25,11 +25,9 @@ class FindProvidersScreen extends StatefulWidget {
 class _FindProvidersScreenState extends State<FindProvidersScreen> {
   final TextEditingController _searchController = TextEditingController();
 
-  static const CameraPosition _initialCameraPosition = CameraPosition(
-    target: LatLng(38.7946, -106.5348),
-    zoom: 1.5,
-  );
+CameraPosition? _initialCameraPosition;
 
+  final loc.Location location = loc.Location();
   late GoogleMapController _mapController;
   late Future<void> _delayedMapLoad;
   Set<Marker> _markers = {};
@@ -41,13 +39,111 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
 
   bool _showInfoWindow = false;
   LatLng? _selectedMarkerPosition;
+  CameraPosition? _cameraPosition;
+  String? _currentAddress;
+  late Future<void> _initLocationFuture;
 
   @override
   void initState() {
     super.initState();
-    _delayedMapLoad = Future.delayed(const Duration(milliseconds: 100));
+   //     _initLocationFuture = _requestPermissionAndFetchLocation();
+    _delayedMapLoad = Future.delayed(Duration(milliseconds: 100));
     _loadCustomMarker();
   }
+
+Future<void> _requestPermissionAndFetchLocation() async {
+  bool serviceEnabled = await location.serviceEnabled();
+  if (!serviceEnabled) {
+    serviceEnabled = await location.requestService();
+    if (!serviceEnabled) return;
+  }
+
+  loc.PermissionStatus permissionGranted = await location.hasPermission();
+  if (permissionGranted == loc.PermissionStatus.denied) {
+    permissionGranted = await location.requestPermission();
+    if (permissionGranted != loc.PermissionStatus.granted) return;
+  }
+
+  final currentLocation = await location.getLocation();
+
+  final LatLng currentLatLng = LatLng(
+    currentLocation.latitude ?? 30.3753,
+    currentLocation.longitude ?? 69.3451,
+  );
+
+  _cameraPosition = CameraPosition(target: currentLatLng, zoom: 16);
+
+  // 👇 THIS IS KEY: Set initial camera position BEFORE building map
+  _initialCameraPosition = _cameraPosition;
+
+  if (_customMarkerIcon != null) {
+    _markers.add(
+      Marker(
+        markerId: const MarkerId('current_location'),
+        position: currentLatLng,
+        icon: _customMarkerIcon!,
+        infoWindow: const InfoWindow(title: 'Your Location'),
+      ),
+    );
+  }
+
+  setState(() {});
+}
+
+
+
+  /*Future<void> _requestPermissionAndFetchLocation() async {
+    bool serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) return;
+    }
+
+    loc.PermissionStatus permissionGranted = await location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != loc.PermissionStatus.granted) return;
+    }
+
+    location.changeSettings(
+      accuracy: loc.LocationAccuracy.high,
+      interval: 1000,
+      distanceFilter: 1,
+    );
+
+    loc.LocationData currentLocation = await location.getLocation();
+
+    LatLng currentLatLng = LatLng(
+      currentLocation.latitude ?? 30.3753,
+      currentLocation.longitude ?? 69.3451,
+    );
+
+    _cameraPosition = CameraPosition(target: currentLatLng, zoom: 18);
+
+  
+
+    if (_customMarkerIcon != null) {
+      setState(() {
+        _markers.clear();
+        _markers.add(
+          Marker(
+            markerId: const MarkerId('custom_marker'),
+            position: currentLatLng,
+            icon: _customMarkerIcon!,
+            infoWindow: const InfoWindow(title: 'Your Location'),
+          ),
+        );
+      });
+    }
+
+    if (_mapController != null) {
+      _mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: currentLatLng, zoom: 18),
+        ),
+      );
+    }
+  }*/
 
   Future<void> _loadCustomMarker() async {
     final BitmapDescriptor bitmapDescriptor =
@@ -58,6 +154,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
     setState(() {
       _customMarkerIcon = bitmapDescriptor;
     });
+      _requestPermissionAndFetchLocation();
   }
 
   void _updateMarkers(List<SearchModel> searchResults) {
@@ -69,26 +166,28 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
         final location = model.locations.first;
         final LatLng position =
             LatLng(location.latitude ?? 0.0, location.longitude ?? 0.0);
+            
 
-        newMarkers.add(Marker(
-          markerId: MarkerId('marker_$i'),
-          position: position,
-          icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
-          onTap: () {
-            setState(() {
-              _selectedMarkerPosition = position;
-              _selectedProvider = model;
-              _selectedFilterProvider = null;
-              _showInfoWindow = true;
-            });
-          },
-        ));
+        // newMarkers.add(Marker(
+        //   markerId: MarkerId('marker_$i'),
+        //   position: position,
+        //   icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
+        //   onTap: () {
+        //     setState(() {
+        //       _selectedMarkerPosition = position;
+        //       _selectedProvider = model;
+        //       _selectedFilterProvider = null;
+        //       _showInfoWindow = true;
+        //     });
+        //   },
+        // ));
       }
     }
 
     setState(() {
       _markers = newMarkers;
     });
+    
   }
 
   void _updateMarkersFilters(List<FilterSearchModel> filteredProviders) {
@@ -290,7 +389,9 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                 borderRadius: BorderRadius.circular(24),
                 child: GoogleMap(
                   mapType: MapType.normal,
-                  initialCameraPosition: _initialCameraPosition,
+                initialCameraPosition: _initialCameraPosition ??
+    CameraPosition(target: LatLng(30.3753, 69.3451), zoom: 2), // fallback
+ // initialCameraPosition: _initialCameraPosition,
                   myLocationButtonEnabled: false,
                   zoomControlsEnabled: false,
                   markers: _markers,
@@ -439,21 +540,22 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                             Container(
+                  Container(
                     decoration: BoxDecoration(
                       color: Colors.blue.shade50,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
-                      icon:  Icon(Icons.favorite_border_outlined, color: Colors.blue),
+                      icon: Icon(Icons.favorite_border_outlined,
+                          color: Colors.blue),
                       onPressed: () {
-                        setState(() {
-
-});
+                        setState(() {});
                       },
                     ),
                   ),
-                  SizedBox(width: 5,),
+                  SizedBox(
+                    width: 5,
+                  ),
                   // Call button
                   Container(
                     decoration: BoxDecoration(
@@ -628,15 +730,18 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
-                      icon:  Icon(Icons.favorite_border_outlined, color: Colors.blue),
+                      icon: Icon(Icons.favorite_border_outlined,
+                          color: Colors.blue),
                       onPressed: () {
                         setState(() {
-  //model.add(newItem);
-});
+                          //model.add(newItem);
+                        });
                       },
                     ),
                   ),
-                  SizedBox(width: 5,),
+                  SizedBox(
+                    width: 5,
+                  ),
                   // Call button
                   Container(
                     decoration: BoxDecoration(
