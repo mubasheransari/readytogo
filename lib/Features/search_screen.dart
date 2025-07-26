@@ -42,6 +42,8 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
   CameraPosition? _cameraPosition;
   String? _currentAddress;
   late Future<void> _initLocationFuture;
+  LatLng? _currentLatLng;
+
 
   @override
   void initState() {
@@ -52,43 +54,48 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
   }
 
   Future<void> _requestPermissionAndFetchLocation() async {
-    bool serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) return;
-    }
-
-    loc.PermissionStatus permissionGranted = await location.hasPermission();
-    if (permissionGranted == loc.PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != loc.PermissionStatus.granted) return;
-    }
-
-    final currentLocation = await location.getLocation();
-
-    final LatLng currentLatLng = LatLng(
-      currentLocation.latitude ?? 30.3753,
-      currentLocation.longitude ?? 69.3451,
-    );
-
-    _cameraPosition = CameraPosition(target: currentLatLng, zoom: 16);
-
-    // 👇 THIS IS KEY: Set initial camera position BEFORE building map
-    _initialCameraPosition = _cameraPosition;
-
-    if (_customMarkerIcon != null) {
-      _markers.add(
-        Marker(
-          markerId: const MarkerId('current_location'),
-          position: currentLatLng,
-          icon: _customMarkerIcon!,
-          infoWindow: const InfoWindow(title: 'Your Location'),
-        ),
-      );
-    }
-
-    setState(() {});
+  bool serviceEnabled = await location.serviceEnabled();
+  if (!serviceEnabled) {
+    serviceEnabled = await location.requestService();
+    if (!serviceEnabled) return;
   }
+
+  loc.PermissionStatus permissionGranted = await location.hasPermission();
+  if (permissionGranted == loc.PermissionStatus.denied) {
+    permissionGranted = await location.requestPermission();
+    if (permissionGranted != loc.PermissionStatus.granted) return;
+  }
+
+  final currentLocation = await location.getLocation();
+  final currentLatLng = LatLng(
+    currentLocation.latitude ?? 30.3753,
+    currentLocation.longitude ?? 69.3451,
+  );
+
+  _currentLatLng = currentLatLng;
+
+  _initialCameraPosition = CameraPosition(
+    target: currentLatLng,
+    zoom: 16,
+  );
+
+  // Add current location marker
+  if (_customMarkerIcon != null) {
+    _markers.add(
+      Marker(
+        markerId: const MarkerId('current_location'),
+        position: currentLatLng,
+        icon: _customMarkerIcon!,
+        infoWindow: const InfoWindow(title: 'Your Location'),
+      ),
+    );
+  }
+
+  setState(() {}); // 🟢 Triggers rebuild to update map with initialCameraPosition
+}
+
+
+
 
   /*Future<void> _requestPermissionAndFetchLocation() async {
     bool serviceEnabled = await location.serviceEnabled();
@@ -156,6 +163,52 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
   }
 
   void _updateMarkers(List<SearchModel> searchResults) {
+  final Set<Marker> newMarkers = {};
+
+  // 🔁 Add search markers
+  for (int i = 0; i < searchResults.length; i++) {
+    final model = searchResults[i];
+    if (model.locations.isNotEmpty) {
+      final location = model.locations.first;
+      final LatLng position =
+          LatLng(location.latitude ?? 0.0, location.longitude ?? 0.0);
+
+
+      newMarkers.add(Marker(
+        markerId: MarkerId('marker_$i'),
+        position: position,
+        icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
+        onTap: () {
+          setState(() {
+            _selectedMarkerPosition = position;
+            _selectedProvider = model;
+            _selectedFilterProvider = null;
+            _showInfoWindow = true;
+          });
+        },
+      ));
+    }
+  }
+
+  // ✅ Add current location marker
+  if (_currentLatLng != null && _customMarkerIcon != null) {
+    newMarkers.add(
+      Marker(
+        markerId: const MarkerId('current_location'),
+        position: _currentLatLng!,
+        icon: _customMarkerIcon!,
+        infoWindow: const InfoWindow(title: 'Your Location'),
+      ),
+    );
+  }
+
+  setState(() {
+    _markers = newMarkers;
+  });
+}
+
+
+ /* void _updateMarkers(List<SearchModel> searchResults) {
     final Set<Marker> newMarkers = {};
 
     for (int i = 0; i < searchResults.length; i++) {
@@ -184,7 +237,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
     setState(() {
       _markers = newMarkers;
     });
-  }
+  }*/
 
   void _updateMarkersFilters(List<FilterSearchModel> filteredProviders) {
     final Set<Marker> newMarkers = {};
