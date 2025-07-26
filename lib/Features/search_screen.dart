@@ -25,7 +25,7 @@ class FindProvidersScreen extends StatefulWidget {
 class _FindProvidersScreenState extends State<FindProvidersScreen> {
   final TextEditingController _searchController = TextEditingController();
 
-CameraPosition? _initialCameraPosition;
+  CameraPosition? _initialCameraPosition;
 
   final loc.Location location = loc.Location();
   late GoogleMapController _mapController;
@@ -46,51 +46,49 @@ CameraPosition? _initialCameraPosition;
   @override
   void initState() {
     super.initState();
-   //     _initLocationFuture = _requestPermissionAndFetchLocation();
+    //     _initLocationFuture = _requestPermissionAndFetchLocation();
     _delayedMapLoad = Future.delayed(Duration(milliseconds: 100));
     _loadCustomMarker();
   }
 
-Future<void> _requestPermissionAndFetchLocation() async {
-  bool serviceEnabled = await location.serviceEnabled();
-  if (!serviceEnabled) {
-    serviceEnabled = await location.requestService();
-    if (!serviceEnabled) return;
-  }
+  Future<void> _requestPermissionAndFetchLocation() async {
+    bool serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) return;
+    }
 
-  loc.PermissionStatus permissionGranted = await location.hasPermission();
-  if (permissionGranted == loc.PermissionStatus.denied) {
-    permissionGranted = await location.requestPermission();
-    if (permissionGranted != loc.PermissionStatus.granted) return;
-  }
+    loc.PermissionStatus permissionGranted = await location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != loc.PermissionStatus.granted) return;
+    }
 
-  final currentLocation = await location.getLocation();
+    final currentLocation = await location.getLocation();
 
-  final LatLng currentLatLng = LatLng(
-    currentLocation.latitude ?? 30.3753,
-    currentLocation.longitude ?? 69.3451,
-  );
-
-  _cameraPosition = CameraPosition(target: currentLatLng, zoom: 16);
-
-  // 👇 THIS IS KEY: Set initial camera position BEFORE building map
-  _initialCameraPosition = _cameraPosition;
-
-  if (_customMarkerIcon != null) {
-    _markers.add(
-      Marker(
-        markerId: const MarkerId('current_location'),
-        position: currentLatLng,
-        icon: _customMarkerIcon!,
-        infoWindow: const InfoWindow(title: 'Your Location'),
-      ),
+    final LatLng currentLatLng = LatLng(
+      currentLocation.latitude ?? 30.3753,
+      currentLocation.longitude ?? 69.3451,
     );
+
+    _cameraPosition = CameraPosition(target: currentLatLng, zoom: 16);
+
+    // 👇 THIS IS KEY: Set initial camera position BEFORE building map
+    _initialCameraPosition = _cameraPosition;
+
+    if (_customMarkerIcon != null) {
+      _markers.add(
+        Marker(
+          markerId: const MarkerId('current_location'),
+          position: currentLatLng,
+          icon: _customMarkerIcon!,
+          infoWindow: const InfoWindow(title: 'Your Location'),
+        ),
+      );
+    }
+
+    setState(() {});
   }
-
-  setState(() {});
-}
-
-
 
   /*Future<void> _requestPermissionAndFetchLocation() async {
     bool serviceEnabled = await location.serviceEnabled();
@@ -154,7 +152,7 @@ Future<void> _requestPermissionAndFetchLocation() async {
     setState(() {
       _customMarkerIcon = bitmapDescriptor;
     });
-      _requestPermissionAndFetchLocation();
+    _requestPermissionAndFetchLocation();
   }
 
   void _updateMarkers(List<SearchModel> searchResults) {
@@ -166,28 +164,26 @@ Future<void> _requestPermissionAndFetchLocation() async {
         final location = model.locations.first;
         final LatLng position =
             LatLng(location.latitude ?? 0.0, location.longitude ?? 0.0);
-            
 
-        // newMarkers.add(Marker(
-        //   markerId: MarkerId('marker_$i'),
-        //   position: position,
-        //   icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
-        //   onTap: () {
-        //     setState(() {
-        //       _selectedMarkerPosition = position;
-        //       _selectedProvider = model;
-        //       _selectedFilterProvider = null;
-        //       _showInfoWindow = true;
-        //     });
-        //   },
-        // ));
+        newMarkers.add(Marker(
+          markerId: MarkerId('marker_$i'),
+          position: position,
+          icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
+          onTap: () {
+            setState(() {
+              _selectedMarkerPosition = position;
+              _selectedProvider = model;
+              _selectedFilterProvider = null;
+              _showInfoWindow = true;
+            });
+          },
+        ));
       }
     }
 
     setState(() {
       _markers = newMarkers;
     });
-    
   }
 
   void _updateMarkersFilters(List<FilterSearchModel> filteredProviders) {
@@ -389,9 +385,11 @@ Future<void> _requestPermissionAndFetchLocation() async {
                 borderRadius: BorderRadius.circular(24),
                 child: GoogleMap(
                   mapType: MapType.normal,
-                initialCameraPosition: _initialCameraPosition ??
-    CameraPosition(target: LatLng(30.3753, 69.3451), zoom: 2), // fallback
- // initialCameraPosition: _initialCameraPosition,
+                  initialCameraPosition: _initialCameraPosition ??
+                      CameraPosition(
+                          target: LatLng(30.3753, 69.3451),
+                          zoom: 2), // fallback
+                  // initialCameraPosition: _initialCameraPosition,
                   myLocationButtonEnabled: false,
                   zoomControlsEnabled: false,
                   markers: _markers,
