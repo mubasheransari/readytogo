@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
+import '../../Model/professional_profile_model.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
@@ -34,6 +35,14 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
     final Color primaryBlue = Color(0xFF5D6EFF);
     final Color lightBlue = Color(0xFF8A97FF);
 
+    List<LatLng> convertLocationsToLatLng(List<Location> locations) {
+      return locations
+          .where((loc) => loc.latitude != null && loc.longitude != null)
+          .map((loc) =>
+              LatLng(loc.latitude!.toDouble(), loc.longitude!.toDouble()))
+          .toList();
+    }
+
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.organizationalStatus == OrganizationalStatus.failure &&
@@ -44,6 +53,12 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
         }
       },
       builder: (context, state) {
+        //     final List<Location> locationList =
+        // state.organizationProfileModel?.locations ?? [];
+
+        //     // final List<Location> locationList =
+        //     //     state.professionalProfileModel!.locations ?? []; // example
+        //     final latLngList = convertLocationsToLatLng(locationList);
         if (state.organizationalStatus == OrganizationalStatus.loading //||
             //   state.status == LoginStatus.updateProfileLoading
             ) {
@@ -51,6 +66,13 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
         } else if (state.organizationalStatus == OrganizationalStatus.success &&
             state.organizationProfileModel != null) {
           final profile = state.organizationProfileModel!;
+
+          final List<Location> locationList =
+              state.organizationProfileModel?.locations ?? [];
+
+          // final List<Location> locationList =
+          //     state.professionalProfileModel!.locations ?? []; // example
+          final latLngList = convertLocationsToLatLng(locationList);
           return CustomScaffoldWidget(
             isDrawerRequired: true,
             appbartitle: 'Profile',
@@ -261,8 +283,13 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                     );
                   }).toList(),
                   SizedBox(height: 28),
-                 
-                  FindProvidersMapWidget(),
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   itemBuilder: (contextt,indexx){
+
+                  //   }),
+
+                  FindProvidersMapWidget(latLngList: latLngList),
                 ],
               ),
             ),
@@ -561,16 +588,34 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
 }
 
 class FindProvidersMapWidget extends StatelessWidget {
-  FindProvidersMapWidget({super.key});
+  final List<LatLng> latLngList;
 
-  CameraPosition _initialCameraPosition = CameraPosition(
-    target: LatLng(38.7946, -106.5348), // Centered over USA
+  FindProvidersMapWidget({
+    Key? key,
+    required this.latLngList,
+  }) : super(key: key);
+
+  final CameraPosition _initialCameraPosition = CameraPosition(
+    target: LatLng(38.7946, -106.5348), // default center
     zoom: 3.5,
   );
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width * 0.9;
+
+    // Convert LatLng list to Marker set
+    final Set<Marker> markers = latLngList.asMap().entries.map(
+      (entry) {
+        final index = entry.key;
+        final latLng = entry.value;
+        return Marker(
+          markerId: MarkerId('marker_$index'),
+          position: latLng,
+          infoWindow: InfoWindow(title: 'Provider ${index + 1}'),
+        );
+      },
+    ).toSet();
 
     return Center(
       child: Container(
@@ -594,12 +639,14 @@ class FindProvidersMapWidget extends StatelessWidget {
             initialCameraPosition: _initialCameraPosition,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
+            markers: markers,
             gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
               Factory<OneSequenceGestureRecognizer>(
-                  () => EagerGestureRecognizer()),
+                () => EagerGestureRecognizer(),
+              ),
             },
             onMapCreated: (controller) {
-              // Optional: set map style here
+              // Optional: adjust camera here
             },
           ),
         ),
