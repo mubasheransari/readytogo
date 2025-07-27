@@ -10,7 +10,7 @@ import '../login/bloc/login_state.dart';
 import 'edit_professional_profile_screen.dart';
 
 class ProfessionalProfileScreen extends StatefulWidget {
- const ProfessionalProfileScreen({Key? key}) : super(key: key);
+  const ProfessionalProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<ProfessionalProfileScreen> createState() =>
@@ -198,7 +198,13 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _badgeBox("assets/shield-tick.png", "Verified"),
+                      SizedBox(
+                        width: 3,
+                      ),
                       _badgeBox("assets/book-open-01.png", "Contributor"),
+                      SizedBox(
+                        width: 3,
+                      ),
                       _badgeBox("assets/life-buoy-02.png", "Lifeguard"),
                     ],
                   ),
@@ -316,7 +322,7 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
 
   Widget _badgeBox(String imagePath, String label) {
     return Container(
-      width: 115,
+      width: MediaQuery.of(context).size.width * 0.28,
       height: 88,
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(10)),
@@ -464,4 +470,3 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
     );
   }
 }
-
