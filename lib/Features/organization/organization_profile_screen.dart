@@ -186,12 +186,25 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                         SizedBox(height: 10),
                         _buildInfoRow('Phone:', profile.phoneNumber!),
                         SizedBox(height: 10),
-                        _buildInfoRow(
-                          'Location:',
-                          profile.locations!.isNotEmpty
-                              ? '${profile.locations![0].streetAddress ?? ""}, ${profile.locations![0].area ?? ""}, ${profile.locations![0].city ?? ""}, ${profile.locations![0].state ?? ""}.'
-                              : 'No Address Provided',
-                        ),
+                        _buildAllLocations(profile.locations ?? []),
+
+                        // _buildInfoRow(
+                        //   'Location:',
+                        //   profile.locations != null &&
+                        //           profile.locations!.isNotEmpty
+                        //       ? profile.locations!
+                        //           .map((loc) =>
+                        //               '${loc.streetAddress ?? ""}, ${loc.area ?? ""}, ${loc.city ?? ""}, ${loc.state ?? ""}.')
+                        //           .join('\n')
+                        //       : 'No Address Provided',
+                        // ),
+
+                        // _buildInfoRow(
+                        //   'Location:',
+                        //   profile.locations!.isNotEmpty
+                        //       ? '${profile.locations![0].streetAddress ?? ""}, ${profile.locations![0].area ?? ""}, ${profile.locations![0].city ?? ""}, ${profile.locations![0].state ?? ""}.'
+                        //       : 'No Address Provided',
+                        // ),
                         SizedBox(height: 10),
                         _buildInfoRow(
                           'Zip Code:',
@@ -302,6 +315,23 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
           return Center(child: Text('No profile data available.'));
         }
       },
+    );
+  }
+
+  Widget _buildAllLocations(List<Location> locations) {
+    if (locations.isEmpty) {
+      return _buildInfoRow('Location:', 'No Address Provided');
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (int i = 0; i < locations.length; i++)
+          _buildInfoRow(
+            'Address ${i + 1}:',
+            '${locations[i].streetAddress ?? ""}, ${locations[i].area ?? ""}, ${locations[i].city ?? ""}, ${locations[i].state ?? ""}',
+          ),
+      ],
     );
   }
 
@@ -605,17 +635,50 @@ class FindProvidersMapWidget extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width * 0.9;
 
     // Convert LatLng list to Marker set
-    final Set<Marker> markers = latLngList.asMap().entries.map(
-      (entry) {
-        final index = entry.key;
-        final latLng = entry.value;
-        return Marker(
-          markerId: MarkerId('marker_$index'),
-          position: latLng,
-          infoWindow: InfoWindow(title: 'Provider ${index + 1}'),
-        );
-      },
-    ).toSet();
+    // final Set<Marker> markers = latLngList.asMap().entries.map(
+    //   (entry) {
+    //     final index = entry.key;
+    //     final latLng = entry.value;
+    //     return Marker(
+    //       markerId: MarkerId('marker_$index'),
+    //       position: latLng,
+    //       infoWindow: InfoWindow(title: '${index + 1}'),
+    //     );
+    //   },
+    // ).toSet();
+
+    final locations =
+        context.read<LoginBloc>().state.organizationProfileModel?.locations;
+
+    final Set<Marker> markers = locations == null
+        ? {}
+        : locations
+            .asMap()
+            .entries
+            .map(
+              (entry) {
+                final index = entry.key;
+                final location = entry.value;
+
+                if (location.latitude == null || location.longitude == null)
+                  return null;
+
+                return Marker(
+                  markerId: MarkerId('marker_$index'),
+                  position: LatLng(
+                    location.latitude!.toDouble(),
+                    location.longitude!.toDouble(),
+                  ),
+                  infoWindow: InfoWindow(
+                    title: location.area ?? 'Location ${index + 1}',
+                    snippet:
+                        '${location.streetAddress ?? ''}, ${location.city ?? ''}',
+                  ),
+                );
+              },
+            )
+            .whereType<Marker>()
+            .toSet();
 
     return Center(
       child: Container(
