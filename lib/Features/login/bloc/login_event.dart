@@ -126,7 +126,9 @@ class LogoutRequested extends LoginEvent {}
 class FiltersSearchFunctionality extends LoginEvent {
   final String search, zipcode, service;
   final double distance;
-  FiltersSearchFunctionality({required this.search,required this.zipcode,required this.service,required this.distance});
+    final double lat;
+      final double lng;
+  FiltersSearchFunctionality({required this.search,required this.zipcode,required this.service,required this.distance,required this.lat,required this.lng});
 }
 
 

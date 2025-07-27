@@ -383,7 +383,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                             padding: EdgeInsets.only(
                               bottom: MediaQuery.of(context).viewInsets.bottom,
                             ),
-                            child: FilterBottomSheet(),
+                            child: FilterBottomSheet(lat: _currentLatLng!.latitude,lng: _currentLatLng!.longitude),
                           ),
                         );
                       },

@@ -61,7 +61,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         filterSearchStatus: FilterSearchStatus.filtersearchLoading));
     try {
       final result = await loginRepository.filterSearchFunctionality(
-          event.search, event.zipcode, event.service, event.distance);
+          event.search, event.zipcode, event.service, event.distance,event.lat,event.lng);
       print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
       print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
       print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");

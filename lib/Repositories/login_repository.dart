@@ -517,7 +517,7 @@ class LoginRepository {
   }
 
   Future<List<FilterSearchModel>> filterSearchFunctionality(
-      String search, String zipcode, String service, double distance) async {
+      String search, String zipcode, String service, double distance, double lat, double lng) async {
     var storage = GetStorage();
     var token = storage.read("id");
     var role = storage.read("role");
@@ -531,8 +531,8 @@ class LoginRepository {
           "memberType": role,
           "service": service,
           "distance": distance,
-          "latitude": 0,
-          "longitude": 0
+          "latitude": lat,
+          "longitude": lng
         }
       },
       token: token,
