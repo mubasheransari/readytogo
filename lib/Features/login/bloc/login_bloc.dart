@@ -6,6 +6,8 @@ import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
 import 'package:readytogo/Repositories/login_repository.dart';
 
+import '../../../Model/saved_search_model.dart';
+
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginState()) {
     on<LoginWithEmailPassword>(_loginWithEmailPassword);
@@ -25,10 +27,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<FiltersSearchFunctionality>(_filterSearchFunctionality);
     on<LogoutRequested>(logoutRequested);
     on<GetSavedSearches>(getSavedSearches);
+    on<RemoveSavedSearch>(removeSavedSearch);
   }
 
   final LoginRepository loginRepository = LoginRepository();
   String? _tempToken;
+
+
+  removeSavedSearch(RemoveSavedSearch event, emit) {
+  final updatedList = List<SavedSearchModel>.from(state.savedSearchModel ?? []);
+  if (event.index >= 0 && event.index < updatedList.length) {
+    updatedList.removeAt(event.index);
+    emit(state.copyWith(savedSearchModel: updatedList));
+  }
+}
 
   void _searchFunctionality(
     SearchFunctionality event,

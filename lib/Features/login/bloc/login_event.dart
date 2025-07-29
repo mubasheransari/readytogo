@@ -143,3 +143,7 @@ class RemoveSearch extends LoginEvent {
     required this.searchId
   });
 }
+class RemoveSavedSearch extends LoginEvent {
+  final int index;
+  RemoveSavedSearch(this.index);
+}

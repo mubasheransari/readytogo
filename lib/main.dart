@@ -205,7 +205,8 @@ void main() async {
                     ? BlocProvider<LoginBloc>(
                         lazy: false,
                         create: (context) => LoginBloc()
-                          ..add(GetOrganizationProfile(userId: value)))
+                          ..add(GetOrganizationProfile(userId: value))
+                          ..add(GetSavedSearches()))
                     : BlocProvider<LoginBloc>(
                         lazy: false,
                         create: (context) => LoginBloc()

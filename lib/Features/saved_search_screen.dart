@@ -4,6 +4,8 @@ import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
+import 'login/bloc/login_event.dart';
+
 class SavedSearchScreen extends StatefulWidget {
   const SavedSearchScreen({super.key});
 
@@ -16,47 +18,102 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
   Widget build(BuildContext context) {
     return CustomScaffoldWidget(
       appbartitle: "Saved Search",
-      //  showNotificationIcon: false,
-      body: SingleChildScrollView(
-        child: Container(
-         /// color: Colors.white,
-          child: Column(
-            children: [
-           context.read<LoginBloc>().state.savedSearchModel!.isNotEmpty?    BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-                return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: state.savedSearchModel!.length,
-                    itemBuilder: (context, index) {
-                      return DoctorCard(
-                        onFavoriteTap: () {
-                          setState(() {
-                            state.savedSearchModel!.removeAt(index);
-                          });
-                        },
-                        profileImage: 'https://i.pravatar.cc/100?img=60',
-                        name:
-                            "${state.savedSearchModel![index].firstName} ${state.savedSearchModel![index].lastName}",
-                        phone: state.savedSearchModel![index].phoneNumber
-                            .toString(),
-                        email: state.savedSearchModel![index].email.toString(),
-                        // state.savedSearchModel![index].profileImageUrl!,
-                      );
-                    });
-              }):
-                  
-                  Padding(
-                    padding:  EdgeInsets.only(top:MediaQuery.of(context).size.height *0.35),
-                    child: Center(child: Text("No Saved Searches"),),
-                  ),
-             
-              //SizedBox(height: 100,)
-            ],
-          ),
-        ),
+      body: BlocConsumer<LoginBloc, LoginState>(
+        listener: (context, state) {
+          // Add any snackbars or side effects here
+        },
+        builder: (context, state) {
+          final savedSearches = state.savedSearchModel;
+
+          if (savedSearches == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (savedSearches.isEmpty) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.05),
+              child: const Center(child: Text("No Saved Searches")),
+            );
+          }
+
+          return SingleChildScrollView(
+            child: Column(
+              children: List.generate(savedSearches.length, (index) {
+                final model = savedSearches[index];
+                return DoctorCard(
+                  onFavoriteTap: () {
+                    // Trigger a BLoC event to remove this saved search
+                    context.read<LoginBloc>().add(RemoveSavedSearch(index));
+                  },
+                  profileImage: model.profileImageUrl ??
+                      'https://i.pravatar.cc/100?img=60',
+                  name: "${model.firstName} ${model.lastName}",
+                  phone: model.phoneNumber ?? "",
+                  email: model.email ?? "",
+                );
+              }),
+            ),
+          );
+        },
       ),
-    ); //10@Testing
+    );
   }
 }
+
+// class SavedSearchScreen extends StatefulWidget {
+//   const SavedSearchScreen({super.key});
+
+//   @override
+//   State<SavedSearchScreen> createState() => _SavedSearchScreenState();
+// }
+
+// class _SavedSearchScreenState extends State<SavedSearchScreen> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return CustomScaffoldWidget(
+//       appbartitle: "Saved Search",
+//       //  showNotificationIcon: false,
+//       body: SingleChildScrollView(
+//         child: Container(
+//          /// color: Colors.white,
+//           child: Column(
+//             children: [
+//            context.read<LoginBloc>().state.savedSearchModel!.isNotEmpty?    BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+//                 return ListView.builder(
+//                     shrinkWrap: true,
+//                     itemCount: state.savedSearchModel!.length,
+//                     itemBuilder: (context, index) {
+//                       return DoctorCard(
+//                         onFavoriteTap: () {
+//                           setState(() {
+//                             state.savedSearchModel!.removeAt(index);
+//                           });
+//                         },
+//                         profileImage: 'https://i.pravatar.cc/100?img=60',
+//                         name:
+//                             "${state.savedSearchModel![index].firstName} ${state.savedSearchModel![index].lastName}",
+//                         phone: state.savedSearchModel![index].phoneNumber
+//                             .toString(),
+//                         email: state.savedSearchModel![index].email.toString(),
+//                         // state.savedSearchModel![index].profileImageUrl!,
+//                       );
+//                     });
+//               }):
+
+//                   Padding(
+//                     padding:  EdgeInsets.only(top:MediaQuery.of(context).size.height *0.35),
+//                     child: Center(child: Text("No Saved Searches"),),
+//                   ),
+
+//               //SizedBox(height: 100,)
+//             ],
+//           ),
+//         ),
+//       ),
+//     ); //10@Testing
+//   }
+// }
 
 class DoctorCard extends StatelessWidget {
   String profileImage, name, phone, email;
@@ -116,7 +173,6 @@ class DoctorCard extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      //'Dr. Imran (Pediatrician)',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

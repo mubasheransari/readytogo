@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:readytogo/Model/professional_profile_model.dart';
 
 List<SavedSearchModel> savedSearchModelFromJson(String str) =>
-    List<SavedSearchModel>.from(json.decode(str).map((x) => SavedSearchModel.fromJson(x)));
+    List<SavedSearchModel>.from(
+        json.decode(str).map((x) => SavedSearchModel.fromJson(x)));
 
 String savedSearchModelToJson(List<SavedSearchModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -36,7 +37,29 @@ class SavedSearchModel {
     this.services,
   });
 
-  factory SavedSearchModel.fromJson(Map<String, dynamic> json) => SavedSearchModel(
+  factory SavedSearchModel.fromJson(Map<String, dynamic> json) =>
+      SavedSearchModel(
+        userId: json["userId"] as String?, // or int? if appropriate
+        firstName: json["firstName"] as String?,
+        lastName: json["lastName"] as String?,
+        memberType: json["memberType"] as String?,
+        email: json["email"] as String?,
+        phoneNumber: json["phoneNumber"] as String?,
+        profileImageUrl: json["profileImageUrl"] as String?,
+        memberSince: json["memberSince"] != null
+            ? DateTime.tryParse(json["memberSince"])
+            : null,
+        isSaved: json["isSaved"] as bool?,
+        distanceKm: (json["distanceKm"] as num?)?.toDouble(),
+        locations: (json["locations"] as List<dynamic>?)
+            ?.map((x) => Location.fromJson(x as Map<String, dynamic>))
+            .toList(),
+        services: (json["services"] as List<dynamic>?)
+            ?.map((x) => x.toString())
+            .toList(),
+      );
+
+  /*factory SavedSearchModel.fromJson(Map<String, dynamic> json) => SavedSearchModel(
         userId: json["userId"],
         firstName: json["firstName"],
         lastName: json["lastName"],
@@ -53,7 +76,7 @@ class SavedSearchModel {
         services: json["services"] != null
             ? List<String>.from(json["services"].map((x) => x.toString()))
             : null,
-      );
+      );*/
 
   Map<String, dynamic> toJson() => {
         "userId": userId,
