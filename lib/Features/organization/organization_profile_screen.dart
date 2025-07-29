@@ -9,7 +9,6 @@ import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/Model/individual_profile_model.dart';
 
 class OrganizationProfileScreen extends StatefulWidget {
@@ -53,14 +52,8 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
         }
       },
       builder: (context, state) {
-        //     final List<Location> locationList =
-        // state.organizationProfileModel?.locations ?? [];
 
-        //     // final List<Location> locationList =
-        //     //     state.professionalProfileModel!.locations ?? []; // example
-        //     final latLngList = convertLocationsToLatLng(locationList);
         if (state.organizationalStatus == OrganizationalStatus.loading //||
-            //   state.status == LoginStatus.updateProfileLoading
             ) {
           return const Center(child: CircularProgressIndicator());
         } else if (state.organizationalStatus == OrganizationalStatus.success &&
@@ -70,8 +63,6 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
           final List<Location> locationList =
               state.organizationProfileModel?.locations ?? [];
 
-          // final List<Location> locationList =
-          //     state.professionalProfileModel!.locations ?? []; // example
           final latLngList = convertLocationsToLatLng(locationList);
           return CustomScaffoldWidget(
             isDrawerRequired: true,
@@ -188,23 +179,6 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                         SizedBox(height: 10),
                         _buildAllLocations(profile.locations ?? []),
 
-                        // _buildInfoRow(
-                        //   'Location:',
-                        //   profile.locations != null &&
-                        //           profile.locations!.isNotEmpty
-                        //       ? profile.locations!
-                        //           .map((loc) =>
-                        //               '${loc.streetAddress ?? ""}, ${loc.area ?? ""}, ${loc.city ?? ""}, ${loc.state ?? ""}.')
-                        //           .join('\n')
-                        //       : 'No Address Provided',
-                        // ),
-
-                        // _buildInfoRow(
-                        //   'Location:',
-                        //   profile.locations!.isNotEmpty
-                        //       ? '${profile.locations![0].streetAddress ?? ""}, ${profile.locations![0].area ?? ""}, ${profile.locations![0].city ?? ""}, ${profile.locations![0].state ?? ""}.'
-                        //       : 'No Address Provided',
-                        // ),
                         SizedBox(height: 10),
                         _buildInfoRow(
                           'Zip Code:',
@@ -296,11 +270,6 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                     );
                   }).toList(),
                   SizedBox(height: 28),
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   itemBuilder: (contextt,indexx){
-
-                  //   }),
 
                   FindProvidersMapWidget(latLngList: latLngList),
                 ],

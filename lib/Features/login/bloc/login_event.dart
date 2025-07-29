@@ -12,18 +12,12 @@ abstract class LoginEvent extends Equatable {
 
 // ignore: must_be_immutable
 class LoginWithEmailPassword extends LoginEvent {
-  LoginWithEmailPassword({
-    this.email,
-    this.password,
-  });
+  LoginWithEmailPassword({this.email, this.password});
 
   String? email, password;
 
   @override
-  List<Object> get props => [
-        email!,
-        password!,
-      ];
+  List<Object> get props => [email!, password!];
 }
 
 class VerifyOtpSubmitted extends LoginEvent {
@@ -40,23 +34,17 @@ class VerifyOtpSubmitted extends LoginEvent {
 
 class GetIndividualProfile extends LoginEvent {
   final String userId;
-  const GetIndividualProfile({
-    required this.userId,
-  });
+  const GetIndividualProfile({required this.userId});
 }
 
 class GetProfessionalProfile extends LoginEvent {
   final String userId;
-  const GetProfessionalProfile({
-    required this.userId,
-  });
+  const GetProfessionalProfile({required this.userId});
 }
 
 class GetOrganizationProfile extends LoginEvent {
   final String userId;
-  const GetOrganizationProfile({
-    required this.userId,
-  });
+  const GetOrganizationProfile({required this.userId});
 }
 
 class UpdateIndividualProfile extends LoginEvent {
@@ -112,8 +100,10 @@ class RemoveAffiliationsProfrofessional extends LoginEvent {
   final String userId;
   final String groupId;
 
-  RemoveAffiliationsProfrofessional(
-      {required this.userId, required this.groupId});
+  RemoveAffiliationsProfrofessional({
+    required this.userId,
+    required this.groupId,
+  });
 }
 
 class SearchFunctionality extends LoginEvent {
@@ -126,10 +116,30 @@ class LogoutRequested extends LoginEvent {}
 class FiltersSearchFunctionality extends LoginEvent {
   final String search, zipcode, service;
   final double distance;
-    final double lat;
-      final double lng;
-  FiltersSearchFunctionality({required this.search,required this.zipcode,required this.service,required this.distance,required this.lat,required this.lng});
+  final double lat;
+  final double lng;
+  FiltersSearchFunctionality({
+    required this.search,
+    required this.zipcode,
+    required this.service,
+    required this.distance,
+    required this.lat,
+    required this.lng,
+  });
 }
 
-
 class GetSavedSearches extends LoginEvent {}
+
+class SavedSearch extends LoginEvent {
+  final String searchId;
+  const SavedSearch({
+    required this.searchId
+  });
+}
+
+class RemoveSearch extends LoginEvent {
+  final String searchId;
+  const RemoveSearch({
+    required this.searchId
+  });
+}
