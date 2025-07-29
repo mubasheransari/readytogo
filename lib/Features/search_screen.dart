@@ -595,13 +595,31 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.favorite_border_outlined,
-                          color: Colors.blue),
-                      onPressed: () {
-                        setState(() {});
-                        // context.read<LoginBloc>().add(AddSavedSearch(model));
-                      },
-                    ),
+                        icon: Icon(Icons.favorite_border_outlined,
+                            color: Colors.blue),
+                        onPressed: () {
+                          setState(() {});
+                          final savedSearch = SavedSearchModel(
+                            userId: model.userId,
+                            firstName: model.firstName,
+                            lastName: model.lastName,
+                            email: model.email,
+                            phoneNumber: model.phoneNumber,
+                            profileImageUrl: model.profileImageUrl,
+                            memberType: model.memberType,
+                            memberSince: DateTime.now(),
+                          );
+
+                          if (!model.isSaved) {
+                            context
+                                .read<LoginBloc>()
+                                .add(AddSavedSearch(savedSearch));
+                          } else {
+                            context.read<LoginBloc>().add(
+                                RemoveSavedSearch(int.parse(model.userId)));
+                            // context.read<LoginBloc>().add(AddSavedSearch(model));
+                          }
+                        }),
                   ),
                   SizedBox(
                     width: 5,
@@ -780,6 +798,39 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
+                      icon: Icon(
+                        model.isSaved
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined,
+                        color: model.isSaved ? Colors.red : Colors.blue,
+                      ),
+                      onPressed: () {
+                        print("Fav${model.isSaved}");
+                        // You can toggle saved state through a BLoC event
+                        final savedSearch = SavedSearchModel(
+                          userId: model.userId,
+                          firstName: model.firstName,
+                          lastName: model.lastName,
+                          email: model.email,
+                          phoneNumber: model.phoneNumber,
+                          profileImageUrl: model.profileImageUrl,
+                          memberType: model.memberType,
+                          memberSince: DateTime.now(),
+                        );
+
+                        if (!model.isSaved) {
+                          context
+                              .read<LoginBloc>()
+                              .add(AddSavedSearch(savedSearch));
+                        } else {
+                          context
+                              .read<LoginBloc>()
+                              .add(RemoveSavedSearch(int.parse(model.userId)));
+                        }
+                      },
+                    ),
+
+                    /*  IconButton(
                       icon: Icon(Icons.favorite_border_outlined,
                           color: Colors.blue),
                       onPressed: () {
@@ -802,7 +853,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                             .read<LoginBloc>()
                             .add(AddSavedSearch(savedSearch));
                       },
-                    ),
+                    ),*/
                   ),
                   SizedBox(
                     width: 5,

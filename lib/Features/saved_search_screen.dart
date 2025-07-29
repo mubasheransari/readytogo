@@ -46,8 +46,10 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                     // Trigger a BLoC event to remove this saved search
                     context.read<LoginBloc>().add(RemoveSavedSearch(index));
                   },
-                  profileImage: model.profileImageUrl ??
-                      'https://i.pravatar.cc/100?img=60',
+                  profileImage: model.profileImageUrl != null
+                      ? "http://173.249.27.4:343/${model.profileImageUrl}"
+                      : "https://i.pravatar.cc/100?img=60",
+                  // 'https://i.pravatar.cc/100?img=60',
                   name: "${model.firstName} ${model.lastName}",
                   phone: model.phoneNumber ?? "",
                   email: model.email ?? "",
@@ -157,8 +159,7 @@ class DoctorCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(40),
                 child: Image.network(
-                  "https://i.pravatar.cc/100?img=60",
-                  //  profileImage!= null?         "http://173.249.27.4:343/${profileImage}":"https://i.pravatar.cc/100?img=60",  // 'https://i.pravatar.cc/100?img=60', // Replace with your asset or network image
+                  profileImage,
                   width: 55,
                   height: 55,
                   fit: BoxFit.cover,
