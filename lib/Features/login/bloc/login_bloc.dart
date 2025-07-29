@@ -28,19 +28,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LogoutRequested>(logoutRequested);
     on<GetSavedSearches>(getSavedSearches);
     on<RemoveSavedSearch>(removeSavedSearch);
+    on<AddSavedSearch>(addSavedSearch);
   }
 
   final LoginRepository loginRepository = LoginRepository();
   String? _tempToken;
-
+  addSavedSearch(AddSavedSearch event, emit) {
+    final currentList =
+        List<SavedSearchModel>.from(state.savedSearchModel ?? []);
+    currentList.add(event.savedSearch);
+    emit(state.copyWith(savedSearchModel: currentList));
+  }
 
   removeSavedSearch(RemoveSavedSearch event, emit) {
-  final updatedList = List<SavedSearchModel>.from(state.savedSearchModel ?? []);
-  if (event.index >= 0 && event.index < updatedList.length) {
-    updatedList.removeAt(event.index);
-    emit(state.copyWith(savedSearchModel: updatedList));
+    final updatedList =
+        List<SavedSearchModel>.from(state.savedSearchModel ?? []);
+    if (event.index >= 0 && event.index < updatedList.length) {
+      updatedList.removeAt(event.index);
+      emit(state.copyWith(savedSearchModel: updatedList));
+    }
   }
-}
 
   void _searchFunctionality(
     SearchFunctionality event,
@@ -73,7 +80,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         filterSearchStatus: FilterSearchStatus.filtersearchLoading));
     try {
       final result = await loginRepository.filterSearchFunctionality(
-          event.search, event.zipcode, event.service, event.distance,event.lat,event.lng);
+          event.search,
+          event.zipcode,
+          event.service,
+          event.distance,
+          event.lat,
+          event.lng);
       print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
       print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
       print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
@@ -173,7 +185,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         List<dynamic> roles = responseBody['role'];
         String userRole = roles.isNotEmpty ? roles[0] : '';
 
-        print('User Role: $userRole');//10@Testing
+        print('User Role: $userRole'); //10@Testing
 
         var storage = GetStorage();
         storage.write("id", userId);
@@ -734,7 +746,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             GetSavedSearchesStatus.getSavedSearchesLoading));
 
     final savedSearches = await loginRepository.getAllSavedSearches();
-    
+
     print("SAVED SEARCHES $savedSearches");
     print("SAVED SEARCHES $savedSearches");
     print("SAVED SEARCHES $savedSearches");

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import '../../../Model/individual_profile_model.dart';
 import '../../../Model/professional_profile_model.dart';
+import '../../../Model/saved_search_model.dart';
 
 abstract class LoginEvent extends Equatable {
   const LoginEvent();
@@ -146,4 +147,10 @@ class RemoveSearch extends LoginEvent {
 class RemoveSavedSearch extends LoginEvent {
   final int index;
   RemoveSavedSearch(this.index);
+}
+
+class AddSavedSearch extends LoginEvent {
+  final SavedSearchModel savedSearch;
+
+  AddSavedSearch(this.savedSearch);
 }

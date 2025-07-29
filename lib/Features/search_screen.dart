@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:readytogo/Constants/constants.dart';
+import 'package:readytogo/Model/saved_search_model.dart';
 import '../Model/filter_search_model.dart';
 import '../Model/professional_profile_model.dart';
 import '../Model/search_model.dart';
@@ -44,7 +45,6 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
   late Future<void> _initLocationFuture;
   LatLng? _currentLatLng;
 
-
   @override
   void initState() {
     super.initState();
@@ -54,48 +54,46 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
   }
 
   Future<void> _requestPermissionAndFetchLocation() async {
-  bool serviceEnabled = await location.serviceEnabled();
-  if (!serviceEnabled) {
-    serviceEnabled = await location.requestService();
-    if (!serviceEnabled) return;
-  }
+    bool serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) return;
+    }
 
-  loc.PermissionStatus permissionGranted = await location.hasPermission();
-  if (permissionGranted == loc.PermissionStatus.denied) {
-    permissionGranted = await location.requestPermission();
-    if (permissionGranted != loc.PermissionStatus.granted) return;
-  }
+    loc.PermissionStatus permissionGranted = await location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != loc.PermissionStatus.granted) return;
+    }
 
-  final currentLocation = await location.getLocation();
-  final currentLatLng = LatLng(
-    currentLocation.latitude ?? 30.3753,
-    currentLocation.longitude ?? 69.3451,
-  );
-
-  _currentLatLng = currentLatLng;
-
-  _initialCameraPosition = CameraPosition(
-    target: currentLatLng,
-    zoom: 16,
-  );
-
-  // Add current location marker
-  if (_customMarkerIcon != null) {
-    _markers.add(
-      Marker(
-        markerId: const MarkerId('current_location'),
-        position: currentLatLng,
-        icon: _customMarkerIcon!,
-        infoWindow: const InfoWindow(title: 'Your Location'),
-      ),
+    final currentLocation = await location.getLocation();
+    final currentLatLng = LatLng(
+      currentLocation.latitude ?? 30.3753,
+      currentLocation.longitude ?? 69.3451,
     );
+
+    _currentLatLng = currentLatLng;
+
+    _initialCameraPosition = CameraPosition(
+      target: currentLatLng,
+      zoom: 16,
+    );
+
+    // Add current location marker
+    if (_customMarkerIcon != null) {
+      _markers.add(
+        Marker(
+          markerId: const MarkerId('current_location'),
+          position: currentLatLng,
+          icon: _customMarkerIcon!,
+          infoWindow: const InfoWindow(title: 'Your Location'),
+        ),
+      );
+    }
+
+    setState(
+        () {}); // 🟢 Triggers rebuild to update map with initialCameraPosition
   }
-
-  setState(() {}); // 🟢 Triggers rebuild to update map with initialCameraPosition
-}
-
-
-
 
   /*Future<void> _requestPermissionAndFetchLocation() async {
     bool serviceEnabled = await location.serviceEnabled();
@@ -163,52 +161,50 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
   }
 
   void _updateMarkers(List<SearchModel> searchResults) {
-  final Set<Marker> newMarkers = {};
+    final Set<Marker> newMarkers = {};
 
-  // 🔁 Add search markers
-  for (int i = 0; i < searchResults.length; i++) {
-    final model = searchResults[i];
-    if (model.locations.isNotEmpty) {
-      final location = model.locations.first;
-      final LatLng position =
-          LatLng(location.latitude ?? 0.0, location.longitude ?? 0.0);
+    // 🔁 Add search markers
+    for (int i = 0; i < searchResults.length; i++) {
+      final model = searchResults[i];
+      if (model.locations.isNotEmpty) {
+        final location = model.locations.first;
+        final LatLng position =
+            LatLng(location.latitude ?? 0.0, location.longitude ?? 0.0);
 
-
-      newMarkers.add(Marker(
-        markerId: MarkerId('marker_$i'),
-        position: position,
-        icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
-        onTap: () {
-          setState(() {
-            _selectedMarkerPosition = position;
-            _selectedProvider = model;
-            _selectedFilterProvider = null;
-            _showInfoWindow = true;
-          });
-        },
-      ));
+        newMarkers.add(Marker(
+          markerId: MarkerId('marker_$i'),
+          position: position,
+          icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
+          onTap: () {
+            setState(() {
+              _selectedMarkerPosition = position;
+              _selectedProvider = model;
+              _selectedFilterProvider = null;
+              _showInfoWindow = true;
+            });
+          },
+        ));
+      }
     }
+
+    // ✅ Add current location marker
+    if (_currentLatLng != null && _customMarkerIcon != null) {
+      newMarkers.add(
+        Marker(
+          markerId: const MarkerId('current_location'),
+          position: _currentLatLng!,
+          icon: _customMarkerIcon!,
+          infoWindow: const InfoWindow(title: 'Your Location'),
+        ),
+      );
+    }
+
+    setState(() {
+      _markers = newMarkers;
+    });
   }
 
-  // ✅ Add current location marker
-  if (_currentLatLng != null && _customMarkerIcon != null) {
-    newMarkers.add(
-      Marker(
-        markerId: const MarkerId('current_location'),
-        position: _currentLatLng!,
-        icon: _customMarkerIcon!,
-        infoWindow: const InfoWindow(title: 'Your Location'),
-      ),
-    );
-  }
-
-  setState(() {
-    _markers = newMarkers;
-  });
-}
-
-
- /* void _updateMarkers(List<SearchModel> searchResults) {
+  /* void _updateMarkers(List<SearchModel> searchResults) {
     final Set<Marker> newMarkers = {};
 
     for (int i = 0; i < searchResults.length; i++) {
@@ -383,7 +379,9 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                             padding: EdgeInsets.only(
                               bottom: MediaQuery.of(context).viewInsets.bottom,
                             ),
-                            child: FilterBottomSheet(lat: _currentLatLng!.latitude,lng: _currentLatLng!.longitude),
+                            child: FilterBottomSheet(
+                                lat: _currentLatLng!.latitude,
+                                lng: _currentLatLng!.longitude),
                           ),
                         );
                       },
@@ -601,6 +599,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                           color: Colors.blue),
                       onPressed: () {
                         setState(() {});
+                        // context.read<LoginBloc>().add(AddSavedSearch(model));
                       },
                     ),
                   ),
@@ -787,6 +786,21 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                         setState(() {
                           //model.add(newItem);
                         });
+
+                        final savedSearch = SavedSearchModel(
+                          userId: _selectedProvider!.userId,
+                          firstName: _selectedProvider!.firstName,
+                          lastName: _selectedProvider!.lastName,
+                          email: _selectedProvider!.email,
+                          phoneNumber: _selectedProvider!.phoneNumber,
+                          profileImageUrl: _selectedProvider!.profileImageUrl,
+                          memberType: _selectedProvider!.memberType,
+                          memberSince: DateTime.now(), // Or parse if available
+                        );
+
+                        context
+                            .read<LoginBloc>()
+                            .add(AddSavedSearch(savedSearch));
                       },
                     ),
                   ),
