@@ -305,9 +305,14 @@ bool _isAddressChanged() {
                             padding: const EdgeInsets.only(left: 8.0),
                             child: _buildField(lastNameController, "Last Name"),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: _buildField(emailController, "Email",readOnly: true),
+                          InkWell(
+                               onTap:(){
+                              toastWidget("The email address is locked for editing", Colors.red);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: _buildField(emailController, "Email",readOnly: true),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
