@@ -16,6 +16,7 @@ class ForgetPasswordBloc
     on<SubmitForgetPasswordOtp>(submitForgetPasswordOtp);
     on<ForgetPasswordToken>(forgetPasswordToken);
     on<ResetForgetPassword>(resetForgetPassword);
+    on<RequestForgetPasswordOtpSMS>(forgotPasswordThroughSMS);
   }
 }
 // ForgetPasswordBloc()
@@ -64,6 +65,9 @@ forgetPasswordToken(
 
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
+      print("TOKEN ::: ${decoded['token']}");
+      print("TOKEN ::: ${decoded['token']}");
+      print("TOKEN ::: ${decoded['token']}");
 
       final box = GetStorage();
       box.write("token-forgetPassword", decoded['token']);
@@ -120,7 +124,6 @@ resetForgetPassword(
       print("RESET PASSWORD $data");
       print("RESET PASSWORD $data"); //Testing1234@
       toastWidget("Password has been reset.", Colors.green);
-      
 
       emit(ResetForgetPasswordSuccess());
     } else {
@@ -129,5 +132,33 @@ resetForgetPassword(
     }
   } catch (e) {
     emit(ResetForgetPasswordFailure("Verification error: ${e.toString()}"));
+  }
+}
+
+forgotPasswordThroughSMS(
+  RequestForgetPasswordOtpSMS event,
+  Emitter<ForgetPasswordState> emit,
+) async {
+  emit(ForgetPasswordSMSInitial());
+
+  try {
+    final response =
+        await forgetPasswordRepository.requestForgetPasswordThroughSMS(
+      event.phone,
+    );
+
+    if (response.statusCode == 200) {
+      final decoded = jsonDecode(response.body);
+      print("RESPONSE OF FORGET $decoded");
+      print("RESPONSE OF FORGET $decoded");
+      print("RESPONSE OF FORGET $decoded");
+      final message = decoded['message'] ?? 'OTP sent successfully';
+      emit(ForgetPasswordSMSSuccess(message));
+    } else {
+      emit(ForgetPasswordSMSFailure(
+          "Failed with status ${response.statusCode}"));
+    }
+  } catch (e) {
+    emit(ForgetPasswordSMSFailure("Error: ${e.toString()}"));
   }
 }

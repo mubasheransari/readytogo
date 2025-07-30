@@ -47,4 +47,13 @@ class ForgetPasswordRepository {
       },
     );
   }
+
+    Future<http.Response> requestForgetPasswordThroughSMS(String phone) async {
+    return await _apiBaseHelper.post(
+      path: ApiConstants.forgetPasswordRequestSMS,
+      body: {
+        "phoneNumber": phone,
+      },
+    );
+  }
 }

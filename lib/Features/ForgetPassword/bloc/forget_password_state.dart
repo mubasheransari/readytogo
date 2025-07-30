@@ -76,3 +76,25 @@ class ResetForgetPasswordFailure extends ForgetPasswordState {
   @override
   List<Object> get props => [error];
 }
+
+
+class ForgetPasswordSMSInitial extends ForgetPasswordState {}
+
+class ForgetPasswordSMSLoading extends ForgetPasswordState {}
+
+class ForgetPasswordSMSSuccess extends ForgetPasswordState {
+  final String message;
+
+  const ForgetPasswordSMSSuccess(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+class ForgetPasswordSMSFailure extends ForgetPasswordState {
+  final String error;
+
+  const ForgetPasswordSMSFailure(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

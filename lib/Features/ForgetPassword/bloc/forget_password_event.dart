@@ -51,3 +51,12 @@ class ResetForgetPassword extends ForgetPasswordEvent {
   @override
   List<Object?> get props => [email,password,confirmPassword];
 }
+
+class RequestForgetPasswordOtpSMS extends ForgetPasswordEvent {
+  final String phone;
+
+  RequestForgetPasswordOtpSMS({required this.phone});
+
+  @override
+  List<Object?> get props => [phone];
+}

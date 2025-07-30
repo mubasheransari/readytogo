@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:readytogo/Features/ForgetPassword/bloc/forget_password_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
 import '../../widgets/toast_widget.dart';
+import 'bloc/forget_password_event.dart';
+import 'bloc/forget_password_state.dart';
 
 class ForgetPasswordScreenSMS extends StatefulWidget {
   @override
@@ -22,7 +25,7 @@ class _ForgetPasswordScreenSMSState extends State<ForgetPasswordScreenSMS> {
 
   String? validatePhone(String value) {
     if (value.isEmpty) return 'Phone number is required';
-    if (!isValidPhone(value)) return 'Enter a valid phone number';
+    // if (!isValidPhone(value)) return 'Enter a valid phone number';
     return null;
   }
 
@@ -105,14 +108,99 @@ class _ForgetPasswordScreenSMSState extends State<ForgetPasswordScreenSMS> {
                               validatePhone(value?.trim() ?? ''),
                         ),
                         const SizedBox(height: 10),
-                        SizedBox(
+                        BlocConsumer<ForgetPasswordBloc, ForgetPasswordState>(
+                          listener: (context, state) {
+                            if (state is ForgetPasswordSMSSuccess) {
+                              context.read<ForgetPasswordBloc>().add(
+                                    ForgetPasswordToken(
+                                      email: "testuser4@yopmail.com",
+                                    ),
+                                  );
+
+                              toastWidget(
+                                  "OTP Sent Successfully", Colors.green);
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (_) =>
+                              //         ForgetPasswordOtpVerificationScreen(
+                              //       email: emailController.text,
+                              //     ),
+                              //   ),
+                              // );
+                            } else if (state is ForgetPasswordSMSFailure) {
+                              toastWidget("Email Not Found", Colors.red);
+                            }
+                          },
+                          builder: (context, state) {
+                            return SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.85,
+                              height: 50,
+                              // width: 376,
+                              // height: 60,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    FocusScope.of(context).unfocus();
+                                    context.read<ForgetPasswordBloc>().add(
+                                        RequestForgetPasswordOtpSMS(
+                                            phone: phoneController.text));
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Constants().themeColor,
+                                  minimumSize: const Size(200, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (state is ForgetPasswordSMSLoading)
+                                      const SizedBox(
+                                        height: 25,
+                                        width: 25,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    else ...[
+                                      const Text(
+                                        'Continue',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Satoshi',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Image.asset(
+                                        'assets/arrow-narrow-left.png',
+                                        width: 23,
+                                        height: 23,
+                                      ),
+                                    ]
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        /*  SizedBox(
                           width: MediaQuery.of(context).size.width * 0.85,
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 FocusScope.of(context).unfocus();
-                                // Call SMS API here
+                                context.read<ForgetPasswordBloc>().add(
+                                    RequestForgetPasswordOtpSMS(
+                                        phone: phoneController.text));
                                 toastWidget(
                                     "OTP Sent Successfully", Colors.green);
 
@@ -157,7 +245,7 @@ class _ForgetPasswordScreenSMSState extends State<ForgetPasswordScreenSMS> {
                               ],
                             ),
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),

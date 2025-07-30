@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/ForgetPassword/update_password_screen.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import '../../Constants/constants.dart';
@@ -91,6 +92,11 @@ class _ForgetPasswordOtpVerificationScreenState
 
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
+    var token = box.read("token-forgetPassword");
+    print("TOKEN $token");
+    print("TOKEN $token");
+    print("TOKEN $token");
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,

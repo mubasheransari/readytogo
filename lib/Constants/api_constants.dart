@@ -30,4 +30,6 @@ class ApiConstants {
   static const String getSaveSearch = "search/get-saved-searches";
   static const String removeSearch = "search/remove-search";
   static const String addSearch = "search/save-search";
+    static const String forgetPasswordRequestSMS =
+      "account/forgot-password-request-sms-otp";
 }
