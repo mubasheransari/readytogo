@@ -125,12 +125,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => ForgetPasswordScreen(),
-                                ),
-                              );
+                              forgetOption(context);
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (_) => ForgetPasswordScreen(),
+                              //   ),
+                              // );
                             },
                             child: Text(
                               'Forgot Password?',
@@ -299,6 +300,127 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void forgetOption(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Icon(Icons.close, size: 24, color: Colors.grey),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "Forgot Password",
+                  style: TextStyle(color: Colors.black, fontSize: 22),
+                ),
+                //  SizedBox(height: 20),
+                // CustomTextWidget(//10@Testing
+                //     text: "Cancel Subscription",
+                //     color: Colors.black,
+                //     textSize: 22,
+                //     fontWeight: FontWeight.w500),
+                // Text(
+                //   "Cancel Subscription",
+                //   style: TextStyle(
+                //     fontSize: 20,
+                //     fontWeight: FontWeight.w600,
+                //     color: Colors.black87,
+                //   ),
+                // ),
+                // SizedBox(height: 5),
+                Text(
+                  "Please select where you would like to receive the OTP.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                ),
+                SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 37,
+                      width: 105,
+                      child: Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Constants().themeColor,
+                            side: BorderSide(color: Constants().themeColor),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 7),
+                          ),
+                          child: Text(
+                            "SMS",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'satoshi',
+                                fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    SizedBox(
+                      height: 37,
+                      width: 105,
+                      child: Expanded(
+                        child: OutlinedButton(
+                          //10@Testing
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ForgetPasswordScreen(),
+                              ),
+                            );
+                            // Navigator.of(context).pop();
+                          }, //10@Testing
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: Constants().themeColor,
+                            //   backgroundColor: Colors.red,
+                            side: BorderSide(color: Constants().themeColor),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 7),
+                          ),
+                          child: Text(
+                            "EMAIL",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'satoshi',
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

@@ -80,7 +80,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         const Text(
                           'Forget Your Password?',
                           style: TextStyle(
-                            fontSize: 32,
+                            fontSize: 28,
                             fontWeight: FontWeight.w700,
                             fontFamily: 'Satoshi',
                           ),
@@ -112,22 +112,21 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         BlocConsumer<ForgetPasswordBloc, ForgetPasswordState>(
                           listener: (context, state) {
                             if (state is ForgetPasswordSuccess) {
-
                               context.read<ForgetPasswordBloc>().add(
-                                          ForgetPasswordToken(
-                                            email: emailController.text.trim(),
-                                          ),
-                                        );
-                              
-                              toastWidget("OTP Sent Successfully",
-                                  Colors.green);
+                                    ForgetPasswordToken(
+                                      email: emailController.text.trim(),
+                                    ),
+                                  );
+
+                              toastWidget(
+                                  "OTP Sent Successfully", Colors.green);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) =>
                                       ForgetPasswordOtpVerificationScreen(
-                                        email: emailController.text,
-                                      ),
+                                    email: emailController.text,
+                                  ),
                                 ),
                               );
                             } else if (state is ForgetPasswordFailure) {
@@ -136,8 +135,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           },
                           builder: (context, state) {
                             return SizedBox(
-                              width: 376,
-                              height: 60,
+                              width: MediaQuery.of(context).size.width * 0.85,
+                              height: 50,
+                              // width: 376,
+                              // height: 60,
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {

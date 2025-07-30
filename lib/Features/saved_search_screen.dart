@@ -44,9 +44,15 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                 return DoctorCard(
                   onFavoriteTap: () {
                     // Trigger a BLoC event to remove this saved search
-                    context
-                        .read<LoginBloc>()
-                        .add(RemoveSavedSearch(index.toString()));
+                    // context
+                    //     .read<LoginBloc>()
+                    //     .add(RemoveSavedSearch(index.toString()));
+                    // LoginRepository().removeSavedSearch(
+                    //     savedSearches[index].userId.toString());
+
+                    final userId = savedSearches[index].userId;
+                    context.read<LoginBloc>().add(RemoveSavedSearch(
+                        savedSearches[index].userId.toString()));
                     LoginRepository().removeSavedSearch(
                         savedSearches[index].userId.toString());
                   },

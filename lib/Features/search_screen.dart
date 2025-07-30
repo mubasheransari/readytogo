@@ -183,7 +183,21 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
               _selectedFilterProvider = null;
               _showInfoWindow = true;
             });
+
+            // Move camera to marker
+            _mapController.animateCamera(
+              CameraUpdate.newLatLngZoom(position, 16), // adjust zoom if needed
+            );
           },
+
+          // onTap: () {
+          //   setState(() {
+          //     _selectedMarkerPosition = position;
+          //     _selectedProvider = model;
+          //     _selectedFilterProvider = null;
+          //     _showInfoWindow = true;
+          //   });
+          // },
         ));
       }
     }
