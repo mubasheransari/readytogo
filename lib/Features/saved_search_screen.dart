@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
+import 'package:readytogo/Repositories/login_repository.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
-
 import 'login/bloc/login_event.dart';
 
 class SavedSearchScreen extends StatefulWidget {
@@ -45,6 +45,8 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                   onFavoriteTap: () {
                     // Trigger a BLoC event to remove this saved search
                     context.read<LoginBloc>().add(RemoveSavedSearch(index));
+                    LoginRepository().removeSavedSearch(
+                        savedSearches[index].userId.toString());
                   },
                   profileImage: model.profileImageUrl != null
                       ? "http://173.249.27.4:343/${model.profileImageUrl}"

@@ -554,12 +554,37 @@ class LoginRepository {
     var token = storage.read("id");
   final response = await _apiBaseHelper.get(
     url: ApiConstants.baseDomain,
-    path: "${ApiConstants.apiPrefix}${ApiConstants.saveSearch}",
+    path: "${ApiConstants.apiPrefix}${ApiConstants.getSaveSearch}",
     token: token,
   );
 
   return savedSearchModelFromJson(json.encode(response));
 }
+
+ Future<http.Response> removeSavedSearch(
+      String searchedUserId) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
+
+    return await _apiBaseHelper.delete(
+        path: ApiConstants.removeSearch,
+        body: {
+          "searchedUserId": searchedUserId,
+        },
+        token: token);
+  }
+
+    Future<http.Response> addSavedSearch(
+      String searchedUserId) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
+    return await _apiBaseHelper.post(
+        path: ApiConstants.addSearch,
+        body: {
+          "searchedUserId": searchedUserId,
+        },
+        token: token);
+  }
 
 
   /*Future<List<SavedSearchModel>> getAllSavedSearches() async {

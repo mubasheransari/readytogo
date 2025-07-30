@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Model/saved_search_model.dart';
+import 'package:readytogo/Repositories/login_repository.dart';
 import '../Model/filter_search_model.dart';
 import '../Model/professional_profile_model.dart';
 import '../Model/search_model.dart';
@@ -599,6 +600,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                             color: Colors.blue),
                         onPressed: () {
                           setState(() {});
+                          LoginRepository().addSavedSearch(model.userId);
                           final savedSearch = SavedSearchModel(
                             userId: model.userId,
                             firstName: model.firstName,
@@ -806,6 +808,8 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                       ),
                       onPressed: () {
                         print("Fav${model.isSaved}");
+                        print("USER IDDD::: ${model.userId}");
+                        LoginRepository().addSavedSearch(model.userId);
                         // You can toggle saved state through a BLoC event
                         final savedSearch = SavedSearchModel(
                           userId: model.userId,
