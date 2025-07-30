@@ -17,7 +17,7 @@ class SearchModel {
   final String phoneNumber;
   final String? profileImageUrl;
   final dynamic memberSince;
-  final bool isSaved;
+   bool isSaved;
   final dynamic distanceKm;
   final List<Location> locations;
   final dynamic services;

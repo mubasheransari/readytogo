@@ -616,9 +616,12 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                             context
                                 .read<LoginBloc>()
                                 .add(AddSavedSearch(savedSearch));
+                            LoginRepository().addSavedSearch(model.userId);
                           } else {
-                            context.read<LoginBloc>().add(
-                                RemoveSavedSearch(int.parse(model.userId)));
+                            context
+                                .read<LoginBloc>()
+                                .add(RemoveSavedSearch(model.userId));
+                            LoginRepository().removeSavedSearch(model.userId);
                             // context.read<LoginBloc>().add(AddSavedSearch(model));
                           }
                         }),
@@ -809,6 +812,36 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                       onPressed: () {
                         print("Fav${model.isSaved}");
                         print("USER IDDD::: ${model.userId}");
+
+                        if (!model.isSaved) {
+                          final savedSearch = SavedSearchModel(
+                            userId: model.userId,
+                            firstName: model.firstName,
+                            lastName: model.lastName,
+                            email: model.email,
+                            phoneNumber: model.phoneNumber,
+                            profileImageUrl: model.profileImageUrl,
+                            memberType: model.memberType,
+                            memberSince: DateTime.now(),
+                          );
+                          context
+                              .read<LoginBloc>()
+                              .add(AddSavedSearch(savedSearch));
+                        } else {
+                          context
+                              .read<LoginBloc>()
+                              .add(RemoveSavedSearch(model.userId));
+                        }
+
+                        // 👇 Toggle locally for immediate UI feedback
+                        setState(() {
+                          model.isSaved = !model.isSaved;
+                        });
+                      },
+
+                      /*  onPressed: () {
+                        print("Fav${model.isSaved}");
+                        print("USER IDDD::: ${model.userId}");
                         LoginRepository().addSavedSearch(model.userId);
                         // You can toggle saved state through a BLoC event
                         final savedSearch = SavedSearchModel(
@@ -831,7 +864,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                               .read<LoginBloc>()
                               .add(RemoveSavedSearch(int.parse(model.userId)));
                         }
-                      },
+                      },*/
                     ),
 
                     /*  IconButton(

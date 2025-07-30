@@ -40,14 +40,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(state.copyWith(savedSearchModel: currentList));
   }
 
-  removeSavedSearch(RemoveSavedSearch event, emit) {
-    final updatedList =
-        List<SavedSearchModel>.from(state.savedSearchModel ?? []);
-    if (event.index >= 0 && event.index < updatedList.length) {
-      updatedList.removeAt(event.index);
-      emit(state.copyWith(savedSearchModel: updatedList));
-    }
-  }
+  removeSavedSearch(RemoveSavedSearch event, Emitter<LoginState> emit) {
+  final currentList = List<SavedSearchModel>.from(state.savedSearchModel ?? []);
+
+  currentList.removeWhere((element) => element.userId == event.userId);
+
+  emit(state.copyWith(savedSearchModel: currentList));
+}
+
+
+  // removeSavedSearch(RemoveSavedSearch event, emit) {
+  //   final updatedList =
+  //       List<SavedSearchModel>.from(state.savedSearchModel ?? []);
+  //   if (event.index.toString() >= 0 && event.index < updatedList.length) {
+  //     updatedList.removeAt(event.index);
+  //     emit(state.copyWith(savedSearchModel: updatedList));
+  //   }
+  // }
 
   void _searchFunctionality(
     SearchFunctionality event,

@@ -145,8 +145,8 @@ class RemoveSearch extends LoginEvent {
   });
 }
 class RemoveSavedSearch extends LoginEvent {
-  final int index;
-  RemoveSavedSearch(this.index);
+  final String userId;
+  RemoveSavedSearch(this.userId);
 }
 
 class AddSavedSearch extends LoginEvent {

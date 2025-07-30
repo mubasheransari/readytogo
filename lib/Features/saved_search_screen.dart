@@ -44,7 +44,9 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                 return DoctorCard(
                   onFavoriteTap: () {
                     // Trigger a BLoC event to remove this saved search
-                    context.read<LoginBloc>().add(RemoveSavedSearch(index));
+                    context
+                        .read<LoginBloc>()
+                        .add(RemoveSavedSearch(index.toString()));
                     LoginRepository().removeSavedSearch(
                         savedSearches[index].userId.toString());
                   },
@@ -194,7 +196,7 @@ class DoctorCard extends StatelessWidget {
               // Heart Icon
               InkWell(
                   onTap: onFavoriteTap,
-                  child: Icon(Icons.favorite_border, color: Colors.black54)),
+                  child: Icon(Icons.favorite, color: Colors.red)),
             ],
           ),
           const SizedBox(height: 14),
