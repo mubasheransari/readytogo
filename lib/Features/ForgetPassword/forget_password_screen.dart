@@ -142,6 +142,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
+                                    FocusScope.of(context).unfocus();
                                     context.read<ForgetPasswordBloc>().add(
                                           RequestForgetPasswordOtp(
                                             email: emailController.text.trim(),

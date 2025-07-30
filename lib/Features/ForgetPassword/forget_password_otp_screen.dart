@@ -10,6 +10,7 @@ import '../login/verification_screen.dart';
 import 'bloc/forget_password_bloc.dart';
 import 'bloc/forget_password_event.dart';
 import 'bloc/forget_password_state.dart';
+import 'forgot_password_number.dart';
 
 class ForgetPasswordOtpVerificationScreen extends StatefulWidget {
   final String email;
@@ -254,13 +255,16 @@ class _ForgetPasswordOtpVerificationScreenState
                             );
                           } else if (state
                               is ForgetPasswordOtpVerifiedFailure) {
-                            toastWidget(state.error, Colors.red);
+                            toastWidget(
+                                "Wrong or Expired OTP Code", Colors.red);
                           }
                         },
                         builder: (context, state) {
                           return SizedBox(
-                            width: 376,
-                            height: 60,
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            height: 50,
+                            // width: 376,
+                            // height: 60,
                             child: ElevatedButton(
                               onPressed: (codeValue.length == 4 &&
                                       state is! ForgetPasswordLoading)
@@ -313,6 +317,51 @@ class _ForgetPasswordOtpVerificationScreenState
                           );
                         },
                       ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.85,
+                        height: 50,
+                        // width: 376,
+                        // height: 60,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ForgetPasswordScreenSMS()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Constants().themeColor,
+                            minimumSize: const Size(200, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Try through SMS',
+                                style: TextStyle(
+                                  letterSpacing: 1,
+                                  color: Colors.white,
+                                  fontFamily: 'Satoshi',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              const Icon(Icons.north_east,
+                                  size: 21, color: Colors.white),
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),

@@ -105,7 +105,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                 InkWell(
                                   onTap: () => Navigator.pop(context),
                                   child: const CircleAvatar(
-                                    radius: 19,
+                                    radius: 15,
                                     backgroundColor: Colors.white,
                                     child: Icon(Icons.arrow_back,
                                         color: Colors.black, size: 19),
@@ -115,7 +115,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                 const Text(
                                   'Update Password',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 22,
                                     color: Colors.black87,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: 'Satoshi',
@@ -131,7 +131,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                             const SizedBox(height: 20),
                             const Text('Update Your Password',
                                 style: TextStyle(
-                                  fontSize: 32,
+                                  fontSize: 28,
                                   fontWeight: FontWeight.w700,
                                   fontFamily: 'Satoshi',
                                 )),
@@ -139,7 +139,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                             const Text("A fresh password for fresh start",
                                 style: TextStyle(
                                   fontFamily: 'Satoshi',
-                                  fontSize: 24,
+                                  fontSize: 22,
                                   color: Color(0xff666F80),
                                   fontWeight: FontWeight.w700,
                                 )),
