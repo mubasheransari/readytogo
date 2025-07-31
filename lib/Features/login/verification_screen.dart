@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
+import 'package:readytogo/Features/login/login_sms_screen.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import '../../Constants/constants.dart';
@@ -310,6 +311,50 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
+                                  const SizedBox(width: 5),
+                                  const Icon(Icons.north_east,
+                                      size: 21, color: Colors.white),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            height: 50,
+                            // width: 376,
+                            // height: 60,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginSMSOtp()));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Constants().themeColor,
+                                minimumSize: const Size(200, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Try through SMS',
+                                    style: TextStyle(
+                                      letterSpacing: 1,
+                                      color: Colors.white,
+                                      fontFamily: 'Satoshi',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                                   const SizedBox(width: 5),
                                   const Icon(Icons.north_east,
                                       size: 21, color: Colors.white),

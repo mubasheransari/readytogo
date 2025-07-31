@@ -9,7 +9,6 @@ class ApiConstants {
       "account/forgot-password-request-otp";
   static const String forgetPasswordverifyOTP =
       "account/forgot-password-verify-otp";
-
         static const String forgetPasswordverifyOTPNumber =
       "account/forgot-password-verify-sms-otp";
   static const String resetforgetPassword = "account/reset-password";
@@ -33,6 +32,10 @@ class ApiConstants {
   static const String getSaveSearch = "search/get-saved-searches";
   static const String removeSearch = "search/remove-search";
   static const String addSearch = "search/save-search";
-    static const String forgetPasswordRequestSMS =
+  static const String forgetPasswordRequestSMS =
       "account/forgot-password-request-sms-otp";
+
+       static const String loginRequestSMS =
+      "account/login/request-sms-otp";
+  
 }

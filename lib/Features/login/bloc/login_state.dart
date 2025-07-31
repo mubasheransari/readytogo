@@ -108,6 +108,13 @@ enum GetSavedSearchesStatus {
   getSavedSearchesError,
 }
 
+enum LoginOTPStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
@@ -118,6 +125,7 @@ class LoginState extends Equatable {
   final FilterSearchStatus filterSearchStatus;
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
+  final LoginOTPStatus loginOTPStatus;
   final UpdateProfessionalProfileStatus updateProfessionalProfileStatus;
   final RemoveAffiliationGroupStatusProfessional removeAffiliationGroupStatus;
   AddAffiliationGroupStatusProfessional addAffiliationGroupStatusProfessional;
@@ -135,6 +143,7 @@ class LoginState extends Equatable {
   LoginState(
       {this.searchResults,
       this.filterSearchResults,
+      this.loginOTPStatus = LoginOTPStatus.initial,
       this.getSavedSearchesStatus =
           GetSavedSearchesStatus.getSavedSearchesInitial,
       this.searchStatus = SearchStatus.searchInitial,
@@ -162,6 +171,7 @@ class LoginState extends Equatable {
   LoginState copyWith({
     List<SearchModel>? searchResults,
     List<FilterSearchModel>? filterSearchResults,
+    LoginOTPStatus? loginOTPStatus,
     SearchStatus? searchStatus,
     GetSavedSearchesStatus? getSavedSearchesStatus,
     FilterSearchStatus? filterSearchStatus,
@@ -183,7 +193,8 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
-      savedSearchModel: savedSearchModel ?? this.savedSearchModel,
+        loginOTPStatus: loginOTPStatus ?? this.loginOTPStatus,
+        savedSearchModel: savedSearchModel ?? this.savedSearchModel,
         filterSearchResults: filterSearchResults ?? this.filterSearchResults,
         searchResults: searchResults ?? this.searchResults,
         searchStatus: searchStatus ?? this.searchStatus,
@@ -216,8 +227,8 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
+        loginOTPStatus,
         savedSearchModel,
-      
         searchResults,
         filterSearchResults,
         searchStatus,

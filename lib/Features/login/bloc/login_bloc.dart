@@ -29,6 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetSavedSearches>(getSavedSearches);
     on<RemoveSavedSearch>(removeSavedSearch);
     on<AddSavedSearch>(addSavedSearch);
+    on<RequestSMSOtpLogin>(requestSMSOtpLogin);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -41,13 +42,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   removeSavedSearch(RemoveSavedSearch event, Emitter<LoginState> emit) {
-  final currentList = List<SavedSearchModel>.from(state.savedSearchModel ?? []);
+    final currentList =
+        List<SavedSearchModel>.from(state.savedSearchModel ?? []);
 
-  currentList.removeWhere((element) => element.userId == event.userId);
+    currentList.removeWhere((element) => element.userId == event.userId);
 
-  emit(state.copyWith(savedSearchModel: currentList));
-}
-
+    emit(state.copyWith(savedSearchModel: currentList));
+  }
 
   // removeSavedSearch(RemoveSavedSearch event, emit) {
   //   final updatedList =
@@ -770,6 +771,30 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           getSavedSearchesStatus: GetSavedSearchesStatus.getSavedSearchesError
           //errorMessage: "Failed to fetch profile: ${e.toString()}", //10@Testing
           ));
+    }
+  }
+
+  requestSMSOtpLogin(
+    RequestSMSOtpLogin event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(loginOTPStatus: LoginOTPStatus.loading));
+    try {
+      final response = await loginRepository.requestLoginPasswordThroughSMS(
+        event.phone,
+        event.password,
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        // final token = data['token'];
+
+        emit(state.copyWith(loginOTPStatus: LoginOTPStatus.success));
+      } else {
+        emit(state.copyWith(loginOTPStatus: LoginOTPStatus.failure));
+      }
+    } catch (e) {
+      emit(state.copyWith(loginOTPStatus: LoginOTPStatus.failure));
     }
   }
 }

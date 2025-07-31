@@ -154,3 +154,10 @@ class AddSavedSearch extends LoginEvent {
 
   AddSavedSearch(this.savedSearch);
 }
+
+class RequestSMSOtpLogin extends LoginEvent {
+  final String phone,password;
+
+  RequestSMSOtpLogin({required this.phone,required this.password});
+
+}

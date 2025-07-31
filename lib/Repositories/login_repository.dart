@@ -624,4 +624,15 @@ class LoginRepository {
   //   );
 
   // }
+
+
+    Future<http.Response> requestLoginPasswordThroughSMS(String phone,password) async {
+    return await _apiBaseHelper.post(
+      path: ApiConstants.loginRequestSMS,
+      body: {
+        "phoneNumber": phone,
+        "password":password
+      },
+    );
+  }
 }
