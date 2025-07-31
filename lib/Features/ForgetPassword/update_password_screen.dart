@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/ForgetPassword/bloc/forget_password_bloc.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import '../../Constants/constants.dart';
@@ -178,16 +179,19 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
                             const SizedBox(height: 20),
 
-                            // Submit Button 10@Testing
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.85,
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: isButtonEnabled
                                     ? () {
+                                            final box = GetStorage();
+                         var email =      box.read("forgotPassword-email");
+                                      
+
                                         context.read<ForgetPasswordBloc>().add(
                                               ResetForgetPassword(
-                                                email: widget.email,
+                                                email: email,
                                                 password: passwordController
                                                     .text
                                                     .trim(),
