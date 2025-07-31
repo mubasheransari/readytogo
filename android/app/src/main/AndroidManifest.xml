@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
-        android:label="readytogo"
+        android:label="Ready To Go"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <meta-data

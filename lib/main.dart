@@ -75,7 +75,7 @@ void showLocalNotification(RemoteMessage message) async {
   );
 }*/
 
-Future<Position> getCurrentLocation() async {
+/*Future<Position> getCurrentLocation() async {
   bool serviceEnabled;
   LocationPermission permission;
 
@@ -113,7 +113,43 @@ Future<Position> getCurrentLocation() async {
   return await Geolocator.getCurrentPosition(
     desiredAccuracy: LocationAccuracy.high,
   );
+}*/
+
+Future<void> getCurrentLocation() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    // You may want to show a dialog here instead
+    print('Location services are disabled.');
+    return;
+  }
+
+  permission = await Geolocator.checkPermission();
+
+  // Retry until permission granted or permanently denied
+  while (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.deniedForever) {
+      print('Location permission permanently denied. Cannot request again.');
+      return;
+    }
+  }
+
+  if (permission == LocationPermission.whileInUse ||
+      permission == LocationPermission.always) {
+    try {
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      print('Got location: ${position.latitude}, ${position.longitude}');
+    } catch (e) {
+      print('Error getting location: $e');
+    }
+  }
 }
+
 
 // StreamSubscription<Position> positionStream =
 //     Geolocator.getPositionStream().listen(
