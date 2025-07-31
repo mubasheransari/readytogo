@@ -115,6 +115,13 @@ enum LoginOTPStatus {
   failure,
 }
 
+enum VerifySMSOtpStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
@@ -123,6 +130,7 @@ class LoginState extends Equatable {
   final SearchStatus searchStatus;
   final GetSavedSearchesStatus getSavedSearchesStatus;
   final FilterSearchStatus filterSearchStatus;
+  final VerifySMSOtpStatus verifySMSOtpStatus;
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
   final LoginOTPStatus loginOTPStatus;
@@ -143,6 +151,7 @@ class LoginState extends Equatable {
   LoginState(
       {this.searchResults,
       this.filterSearchResults,
+      this.verifySMSOtpStatus = VerifySMSOtpStatus.initial,
       this.loginOTPStatus = LoginOTPStatus.initial,
       this.getSavedSearchesStatus =
           GetSavedSearchesStatus.getSavedSearchesInitial,
@@ -169,6 +178,7 @@ class LoginState extends Equatable {
 
   /// Copy the state with updated fields
   LoginState copyWith({
+    VerifySMSOtpStatus? verifySMSOtpStatus,
     List<SearchModel>? searchResults,
     List<FilterSearchModel>? filterSearchResults,
     LoginOTPStatus? loginOTPStatus,
@@ -193,6 +203,7 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
+        verifySMSOtpStatus: verifySMSOtpStatus ?? this.verifySMSOtpStatus,
         loginOTPStatus: loginOTPStatus ?? this.loginOTPStatus,
         savedSearchModel: savedSearchModel ?? this.savedSearchModel,
         filterSearchResults: filterSearchResults ?? this.filterSearchResults,
@@ -227,6 +238,7 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
+        verifySMSOtpStatus,
         loginOTPStatus,
         savedSearchModel,
         searchResults,

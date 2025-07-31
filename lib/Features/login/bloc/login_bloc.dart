@@ -30,6 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<RemoveSavedSearch>(removeSavedSearch);
     on<AddSavedSearch>(addSavedSearch);
     on<RequestSMSOtpLogin>(requestSMSOtpLogin);
+    on<VerifySMSOtp>(verifySMSOtp);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -795,6 +796,30 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } catch (e) {
       emit(state.copyWith(loginOTPStatus: LoginOTPStatus.failure));
+    }
+  }
+
+  verifySMSOtp(
+    VerifySMSOtp event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(verifySMSOtpStatus: VerifySMSOtpStatus.loading));
+    try {
+      final response = await loginRepository.verifySMSOtp(
+        event.phone,
+        event.otp,
+      );
+
+      if (response.statusCode == 200) {
+      //  final data = jsonDecode(response.body);
+        // final token = data['token'];
+
+        emit(state.copyWith(verifySMSOtpStatus: VerifySMSOtpStatus.success));
+      } else {
+        emit(state.copyWith(verifySMSOtpStatus: VerifySMSOtpStatus.failure));
+      }
+    } catch (e) {
+      emit(state.copyWith(verifySMSOtpStatus: VerifySMSOtpStatus.failure));
     }
   }
 }

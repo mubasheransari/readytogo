@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
+import 'package:readytogo/Features/login/verificationOtpNumber.dart';
 
 import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
@@ -11,8 +13,7 @@ import 'bloc/login_event.dart';
 
 class LoginSMSOtp extends StatefulWidget {
   @override
-  State<LoginSMSOtp> createState() =>
-      _LoginSMSOtpState();
+  State<LoginSMSOtp> createState() => _LoginSMSOtpState();
 }
 
 class _LoginSMSOtpState extends State<LoginSMSOtp> {
@@ -111,7 +112,8 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                         const SizedBox(height: 10),
                         BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
-                            if (state.loginOTPStatus == LoginOTPStatus.success) {
+                            if (state.loginOTPStatus ==
+                                LoginOTPStatus.success) {
                               // final box = GetStorage();
                               // var email = box.read("forgotPassword-email");
                               // context.read<ForgetPasswordBloc>().add(
@@ -122,6 +124,13 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
 
                               toastWidget(
                                   "OTP Sent Successfully", Colors.green);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          VerificationOTPNumber(
+                                            phoneNumber: phoneController.text,
+                                          )));
                               // Navigator.push(
                               //   context,
                               //   MaterialPageRoute(
@@ -130,8 +139,14 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                               //     ),
                               //   ),
                               // );
-                            } else if (state.loginOTPStatus == LoginOTPStatus.failure) {
-                              toastWidget("Email Not Found", Colors.red);
+                            } else if (state.loginOTPStatus ==
+                                LoginOTPStatus.failure) {
+                              toastWidget("Failed to send OTP.", Colors.red);
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             VerificationOTPNumber(phoneNumber: phoneController.text,)));
                             }
                           },
                           builder: (context, state) {
@@ -145,9 +160,13 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                                   if (_formKey.currentState!.validate()) {
                                     FocusScope.of(context).unfocus();
 
+                                    final storage = GetStorage();
+                                    var password =
+                                        storage.read("password_login");
+
                                     context.read<LoginBloc>().add(
                                         RequestSMSOtpLogin(
-                                          password: "10@Testing",
+                                            password: password,
                                             phone: phoneController.text));
                                   }
                                 },
@@ -163,7 +182,8 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (state.loginOTPStatus == LoginOTPStatus.loading)
+                                    if (state.loginOTPStatus ==
+                                        LoginOTPStatus.loading)
                                       const SizedBox(
                                         height: 25,
                                         width: 25,

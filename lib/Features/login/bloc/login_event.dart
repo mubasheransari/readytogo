@@ -161,3 +161,10 @@ class RequestSMSOtpLogin extends LoginEvent {
   RequestSMSOtpLogin({required this.phone,required this.password});
 
 }
+
+class VerifySMSOtp extends LoginEvent {
+  final String phone,otp;
+
+  VerifySMSOtp({required this.phone,required this.otp});
+
+}

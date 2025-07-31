@@ -635,4 +635,15 @@ class LoginRepository {
       },
     );
   }
+
+
+    Future<http.Response> verifySMSOtp(String phone,otp) async {
+    return await _apiBaseHelper.post(
+      path: ApiConstants.verifySMSotpLogin,
+      body: {
+        "phoneNumber": phone,
+        "otp":otp
+      },
+    );
+  }
 }

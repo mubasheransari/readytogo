@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/ForgetPassword/forget_password_screen.dart';
 import 'package:readytogo/Features/Signup/signup_screen.dart';
@@ -10,7 +11,6 @@ import '../../widgets/textfeild_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
-
 import 'bloc/login_state.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -148,6 +148,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
                             if (state.status == LoginStatus.success) {
+                              final storage = GetStorage();
+                              storage.write("password_login",
+                                  passwordController.text.trim());
                               Future.microtask(() {
                                 Navigator.push(
                                   context,
