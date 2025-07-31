@@ -98,3 +98,16 @@ class ForgetPasswordSMSFailure extends ForgetPasswordState {
   @override
   List<Object> get props => [error];
 }
+
+
+
+
+class ForgetPasswordOtpVerifiedSuccessSMS extends ForgetPasswordState {
+  //final String token;
+  ForgetPasswordOtpVerifiedSuccessSMS();
+}
+
+class ForgetPasswordOtpVerifiedFailureSMS extends ForgetPasswordState {
+  final String error;
+  ForgetPasswordOtpVerifiedFailureSMS(this.error);
+}

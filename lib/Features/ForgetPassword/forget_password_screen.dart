@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../Constants/constants.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import '../../widgets/textfeild_widget.dart';
@@ -112,6 +113,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         BlocConsumer<ForgetPasswordBloc, ForgetPasswordState>(
                           listener: (context, state) {
                             if (state is ForgetPasswordSuccess) {
+                              final box = GetStorage();
+                               box.write("forgotPassword-email",
+                                  emailController.text.trim());
                               context.read<ForgetPasswordBloc>().add(
                                     ForgetPasswordToken(
                                       email: emailController.text.trim(),

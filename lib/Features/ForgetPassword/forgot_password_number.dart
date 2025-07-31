@@ -7,6 +7,7 @@ import '../../widgets/textfeild_widget.dart';
 import '../../widgets/toast_widget.dart';
 import 'bloc/forget_password_event.dart';
 import 'bloc/forget_password_state.dart';
+import 'forgot_password_otp_number_screen.dart';
 
 class ForgetPasswordScreenSMS extends StatefulWidget {
   @override
@@ -119,15 +120,14 @@ class _ForgetPasswordScreenSMSState extends State<ForgetPasswordScreenSMS> {
 
                               toastWidget(
                                   "OTP Sent Successfully", Colors.green);
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (_) =>
-                              //         ForgetPasswordOtpVerificationScreen(
-                              //       email: emailController.text,
-                              //     ),
-                              //   ),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ForgetPasswordOtpNumberScreen(
+                                    phone: phoneController.text,
+                                  ),
+                                ),
+                              );
                             } else if (state is ForgetPasswordSMSFailure) {
                               toastWidget("Email Not Found", Colors.red);
                             }
