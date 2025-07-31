@@ -71,3 +71,14 @@ class ForgotPasswordVerificationSMS extends ForgetPasswordEvent {
   @override
   List<Object?> get props => [otp,phone];
 }
+
+
+class SubmitForgetPasswordOtpThroughNumber extends ForgetPasswordEvent {
+  final String phone;
+  final String otp;
+
+  SubmitForgetPasswordOtpThroughNumber({
+    required this.phone,
+    required this.otp,
+  });
+}

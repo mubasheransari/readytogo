@@ -17,6 +17,7 @@ class ForgetPasswordBloc
     on<ForgetPasswordToken>(forgetPasswordToken);
     on<ResetForgetPassword>(resetForgetPassword);
     on<RequestForgetPasswordOtpSMS>(forgotPasswordThroughSMS);
+    on<SubmitForgetPasswordOtpThroughNumber>(submitForgetPasswordOtpThroughNumber);
   }
 }
 // ForgetPasswordBloc()
@@ -75,8 +76,9 @@ forgetPasswordToken(
       final message = decoded['message'] ?? 'OTP sent successfully';
       emit(ForgetPasswordTokenSuccess(message));
     } else {
-      emit(ForgetPasswordTokenFailure(
-          "Failed with status ${response.statusCode}"));
+      emit(
+        ForgetPasswordTokenFailure("Failed with status ${response.statusCode}"),
+      );
     }
   } catch (e) {
     emit(ForgetPasswordTokenFailure("Error: ${e.toString()}"));
@@ -100,12 +102,16 @@ submitForgetPasswordOtp(
 
       emit(ForgetPasswordOtpVerifiedSuccess());
     } else {
-      emit(ForgetPasswordOtpVerifiedFailure(
-          "Verification failed: ${response.statusCode}"));
+      emit(
+        ForgetPasswordOtpVerifiedFailure(
+          "Verification failed: ${response.statusCode}",
+        ),
+      );
     }
   } catch (e) {
-    emit(ForgetPasswordOtpVerifiedFailure(
-        "Verification error: ${e.toString()}"));
+    emit(
+      ForgetPasswordOtpVerifiedFailure("Verification error: ${e.toString()}"),
+    );
   }
 }
 
@@ -116,7 +122,10 @@ resetForgetPassword(
   emit(ResetForgetPasswordLoading());
   try {
     final response = await forgetPasswordRepository.resetForgetPassword(
-        event.email, event.password, event.confirmPassword);
+      event.email,
+      event.password,
+      event.confirmPassword,
+    );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -127,8 +136,11 @@ resetForgetPassword(
 
       emit(ResetForgetPasswordSuccess());
     } else {
-      emit(ResetForgetPasswordFailure(
-          "Verification failed: ${response.statusCode}"));
+      emit(
+        ResetForgetPasswordFailure(
+          "Verification failed: ${response.statusCode}",
+        ),
+      );
     }
   } catch (e) {
     emit(ResetForgetPasswordFailure("Verification error: ${e.toString()}"));
@@ -142,10 +154,8 @@ forgotPasswordThroughSMS(
   emit(ForgetPasswordSMSInitial());
 
   try {
-    final response =
-        await forgetPasswordRepository.requestForgetPasswordThroughSMS(
-      event.phone,
-    );
+    final response = await forgetPasswordRepository
+        .requestForgetPasswordThroughSMS(event.phone);
 
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
@@ -155,10 +165,42 @@ forgotPasswordThroughSMS(
       final message = decoded['message'] ?? 'OTP sent successfully';
       emit(ForgetPasswordSMSSuccess(message));
     } else {
-      emit(ForgetPasswordSMSFailure(
-          "Failed with status ${response.statusCode}"));
+      emit(
+        ForgetPasswordSMSFailure("Failed with status ${response.statusCode}"),
+      );
     }
   } catch (e) {
     emit(ForgetPasswordSMSFailure("Error: ${e.toString()}"));
+  }
+}
+
+
+submitForgetPasswordOtpThroughNumber(
+  SubmitForgetPasswordOtpThroughNumber event,
+  Emitter<ForgetPasswordState> emit,
+) async {
+  emit(ForgetPasswordVerificationLoadingNumber());
+  try {
+    final response = await forgetPasswordRepository.verifyOTPForgetPasswordNumber(
+      event.phone,
+      event.otp,
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final token = data['token'];
+
+      emit(ForgetPasswordVerificationSuccessNumber());
+    } else {
+      emit(
+        ForgetPasswordVerificationFailureNumber(
+          "Verification failed: ${response.statusCode}",
+        ),
+      );
+    }
+  } catch (e) {
+    emit(
+      ForgetPasswordVerificationFailureNumber("Verification error: ${e.toString()}"),
+    );
   }
 }

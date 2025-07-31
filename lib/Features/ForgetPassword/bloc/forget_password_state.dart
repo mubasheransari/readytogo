@@ -111,3 +111,25 @@ class ForgetPasswordOtpVerifiedFailureSMS extends ForgetPasswordState {
   final String error;
   ForgetPasswordOtpVerifiedFailureSMS(this.error);
 }
+
+
+
+
+
+
+
+
+
+class ForgetPasswordVerificationLoadingNumber extends ForgetPasswordState {}
+
+class ForgetPasswordVerificationSuccessNumber extends ForgetPasswordState {
+ 
+}
+class ForgetPasswordVerificationFailureNumber extends ForgetPasswordState {
+  final String error;
+
+  const ForgetPasswordVerificationFailureNumber(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

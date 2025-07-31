@@ -9,6 +9,9 @@ class ApiConstants {
       "account/forgot-password-request-otp";
   static const String forgetPasswordverifyOTP =
       "account/forgot-password-verify-otp";
+
+        static const String forgetPasswordverifyOTPNumber =
+      "account/forgot-password-verify-sms-otp";
   static const String resetforgetPassword = "account/reset-password";
   static const String updateFcmToken = "account/update-fcm-token";
   static const String sendPushNotification = "notification/send-notification";

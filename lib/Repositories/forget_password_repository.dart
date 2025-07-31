@@ -33,6 +33,14 @@ class ForgetPasswordRepository {
     );
   }
 
+    Future<http.Response> verifyOTPForgetPasswordNumber(
+      String phone, String otp) async {
+    return await _apiBaseHelper.post(
+      path: ApiConstants.forgetPasswordverifyOTPNumber,
+      body: {"phoneNumber": phone, "otp": otp},
+    );
+  }
+
   Future<http.Response> resetForgetPassword(
       String email, String password, String confirmPassword) async {
     var storage = GetStorage();

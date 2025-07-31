@@ -28,7 +28,8 @@ class ForgetPasswordOtpNumberScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordOtpNumberScreenState
-    extends State<ForgetPasswordOtpNumberScreen> with CodeAutoFill {
+    extends State<ForgetPasswordOtpNumberScreen>
+    with CodeAutoFill {
   String codeValue = "";
   late Timer _timer;
   int _remainingSeconds = 120;
@@ -107,13 +108,16 @@ class _ForgetPasswordOtpNumberScreenState
             physics: const BouncingScrollPhysics(),
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height -
+                minHeight:
+                    MediaQuery.of(context).size.height -
                     MediaQuery.of(context).padding.vertical,
               ),
               child: IntrinsicHeight(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
                   child: Column(
                     children: [
                       Row(
@@ -123,8 +127,11 @@ class _ForgetPasswordOtpNumberScreenState
                             child: const CircleAvatar(
                               radius: 19,
                               backgroundColor: Colors.white,
-                              child: Icon(Icons.arrow_back,
-                                  color: Colors.black, size: 19),
+                              child: Icon(
+                                Icons.arrow_back,
+                                color: Colors.black,
+                                size: 19,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 17),
@@ -141,8 +148,12 @@ class _ForgetPasswordOtpNumberScreenState
                       ),
                       const SizedBox(height: 50),
                       Center(
-                          child: Image.asset("assets/lock.png",
-                              height: 120, width: 120)),
+                        child: Image.asset(
+                          "assets/lock.png",
+                          height: 120,
+                          width: 120,
+                        ),
+                      ),
                       const SizedBox(height: 16),
                       const Text(
                         "Verification Code",
@@ -176,8 +187,9 @@ class _ForgetPasswordOtpNumberScreenState
                           },
                           keyboardType: TextInputType.number,
                           decoration: BoxLooseDecoration(
-                            strokeColorBuilder:
-                                FixedColorBuilder(Constants().themeColor),
+                            strokeColorBuilder: FixedColorBuilder(
+                              Constants().themeColor,
+                            ),
                             gapSpace: 10,
                             bgColorBuilder: FixedColorBuilder(Colors.white),
                             radius: const Radius.circular(16),
@@ -216,14 +228,20 @@ class _ForgetPasswordOtpNumberScreenState
                               if (_remainingSeconds == 0) {
                                 setState(() => _remainingSeconds = 120);
                                 _startTimer();
-
-                                final box = GetStorage();
-                                var email = box.read("forgotPassword-email");
+                                //    FocusScope.of(context).unfocus();
                                 context.read<ForgetPasswordBloc>().add(
-                                      ForgetPasswordToken(
-                                        email: email.trim(),
-                                      ),
-                                    );
+                                  RequestForgetPasswordOtpSMS(
+                                    phone: widget.phone,
+                                  ),
+                                );
+
+                                // final box = GetStorage();
+                                // var email = box.read("forgotPassword-email");
+                                // context.read<ForgetPasswordBloc>().add(
+                                //       ForgetPasswordToken(
+                                //         email: email.trim(),
+                                //       ),
+                                //     );
                                 // context.read<ForgetPasswordBloc>().add(
                                 //       RequestForgetPasswordOtp(
                                 //         email: widget.email,
@@ -232,7 +250,9 @@ class _ForgetPasswordOtpNumberScreenState
                                 toastWidget("OTP code resent", Colors.green);
                               } else {
                                 toastWidget(
-                                    getResendText(timerText), Colors.red);
+                                  getResendText(timerText),
+                                  Colors.red,
+                                );
                               }
                             },
                             child: Text(
@@ -252,47 +272,49 @@ class _ForgetPasswordOtpNumberScreenState
                       /// ✅ BlocConsumer with ForgetPasswordBloc
                       BlocConsumer<ForgetPasswordBloc, ForgetPasswordState>(
                         listener: (context, state) {
-                          if (state is ForgetPasswordOtpVerifiedSuccessSMS) {
+                          if (state is ForgetPasswordVerificationSuccessNumber) {
                             // print("OTP Verified Token: ${state.token}");
                             // final box = GetStorage();
                             // box.write("token", state.token);
 
                             toastWidget(
-                                "Verification successful. You can now change your password.",
-                                Colors.green);
-                                final box = GetStorage();
-                                var email = box.read("forgotPassword-email");
+                              "Verification successful. You can now change your password.",
+                              Colors.green,
+                            );
+                            final box = GetStorage();
+                            var email = box.read("forgotPassword-email");
 
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) =>
-                                    UpdatePasswordScreen(email: email),
+                                builder:
+                                    (_) => UpdatePasswordScreen(email: email),
                               ),
                             );
                           } else if (state
-                              is ForgetPasswordOtpVerifiedFailureSMS) {
+                              is ForgetPasswordVerificationFailureNumber) {
                             toastWidget(
-                                "Wrong or Expired OTP Code", Colors.red);
+                              "Wrong or Expired OTP Code",
+                              Colors.red,
+                            );
                           }
                         },
                         builder: (context, state) {
                           return SizedBox(
                             width: MediaQuery.of(context).size.width * 0.85,
                             height: 50,
-                            // width: 376,
-                            // height: 60,
                             child: ElevatedButton(
-                              onPressed: (codeValue.length == 4 &&
-                                      state is! ForgetPasswordLoading)
-                                  ? () {
-                                      // context
-                                      //     .read<ForgetPasswordBloc>()
-                                      //     .add(SubmitForgetPasswordOtp(
-                                      //       email: widget.email,
-                                      //       otp: codeValue,
-                                      //     ));
-                                    }
-                                  : null,
+                              onPressed:
+                                  (codeValue.length == 4 &&
+                                          state is! ForgetPasswordLoading)
+                                      ? () {
+                                        context
+                                            .read<ForgetPasswordBloc>()
+                                            .add(SubmitForgetPasswordOtpThroughNumber(
+                                              phone: widget.phone,
+                                              otp: codeValue,
+                                            ));
+                                      }
+                                      : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Constants().themeColor,
                                 minimumSize: const Size(200, 50),
@@ -300,33 +322,38 @@ class _ForgetPasswordOtpNumberScreenState
                                   borderRadius: BorderRadius.circular(30),
                                 ),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   state is ForgetPasswordLoading
                                       ? const SizedBox(
-                                          width: 25,
-                                          height: 25,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 2,
-                                          ),
-                                        )
-                                      : const Text(
-                                          'Verify',
-                                          style: TextStyle(
-                                            letterSpacing: 1,
-                                            color: Colors.white,
-                                            fontFamily: 'Satoshi',
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                        width: 25,
+                                        height: 25,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2,
                                         ),
+                                      )
+                                      : const Text(
+                                        'Verify',
+                                        style: TextStyle(
+                                          letterSpacing: 1,
+                                          color: Colors.white,
+                                          fontFamily: 'Satoshi',
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
                                   const SizedBox(width: 5),
-                                  const Icon(Icons.north_east,
-                                      size: 21, color: Colors.white),
+                                  const Icon(
+                                    Icons.north_east,
+                                    size: 21,
+                                    color: Colors.white,
+                                  ),
                                 ],
                               ),
                             ),
