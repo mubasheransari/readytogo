@@ -108,14 +108,21 @@ enum GetSavedSearchesStatus {
   getSavedSearchesError,
 }
 
-enum LoginOTPStatus {
+// enum LoginOTPStatus {
+//   initial,
+//   loading,
+//   success,
+//   failure,
+// }
+
+enum VerifySMSOtpStatus {
   initial,
   loading,
   success,
   failure,
 }
 
-enum VerifySMSOtpStatus {
+enum LoginThroughSMSOtpLoginRequestEnum {
   initial,
   loading,
   success,
@@ -129,11 +136,12 @@ class LoginState extends Equatable {
   final List<FilterSearchModel>? filterSearchResults;
   final SearchStatus searchStatus;
   final GetSavedSearchesStatus getSavedSearchesStatus;
+  final LoginThroughSMSOtpLoginRequestEnum loginThroughSMSOtpLoginRequestEnum;
   final FilterSearchStatus filterSearchStatus;
   final VerifySMSOtpStatus verifySMSOtpStatus;
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
-  final LoginOTPStatus loginOTPStatus;
+  //final LoginOTPStatus loginOTPStatus;
   final UpdateProfessionalProfileStatus updateProfessionalProfileStatus;
   final RemoveAffiliationGroupStatusProfessional removeAffiliationGroupStatus;
   AddAffiliationGroupStatusProfessional addAffiliationGroupStatusProfessional;
@@ -152,7 +160,9 @@ class LoginState extends Equatable {
       {this.searchResults,
       this.filterSearchResults,
       this.verifySMSOtpStatus = VerifySMSOtpStatus.initial,
-      this.loginOTPStatus = LoginOTPStatus.initial,
+      this.loginThroughSMSOtpLoginRequestEnum =
+          LoginThroughSMSOtpLoginRequestEnum.initial,
+      //this.loginOTPStatus = LoginOTPStatus.initial,
       this.getSavedSearchesStatus =
           GetSavedSearchesStatus.getSavedSearchesInitial,
       this.searchStatus = SearchStatus.searchInitial,
@@ -181,7 +191,8 @@ class LoginState extends Equatable {
     VerifySMSOtpStatus? verifySMSOtpStatus,
     List<SearchModel>? searchResults,
     List<FilterSearchModel>? filterSearchResults,
-    LoginOTPStatus? loginOTPStatus,
+    LoginThroughSMSOtpLoginRequestEnum? loginThroughSMSOtpLoginRequestEnum,
+    // LoginOTPStatus? loginOTPStatus,
     SearchStatus? searchStatus,
     GetSavedSearchesStatus? getSavedSearchesStatus,
     FilterSearchStatus? filterSearchStatus,
@@ -204,7 +215,10 @@ class LoginState extends Equatable {
   }) {
     return LoginState(
         verifySMSOtpStatus: verifySMSOtpStatus ?? this.verifySMSOtpStatus,
-        loginOTPStatus: loginOTPStatus ?? this.loginOTPStatus,
+        loginThroughSMSOtpLoginRequestEnum:
+            loginThroughSMSOtpLoginRequestEnum ??
+                this.loginThroughSMSOtpLoginRequestEnum,
+        // loginOTPStatus: loginOTPStatus ?? this.loginOTPStatus,
         savedSearchModel: savedSearchModel ?? this.savedSearchModel,
         filterSearchResults: filterSearchResults ?? this.filterSearchResults,
         searchResults: searchResults ?? this.searchResults,
@@ -239,7 +253,8 @@ class LoginState extends Equatable {
   @override
   List<Object?> get props => [
         verifySMSOtpStatus,
-        loginOTPStatus,
+        loginThroughSMSOtpLoginRequestEnum,
+        //loginOTPStatus,
         savedSearchModel,
         searchResults,
         filterSearchResults,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
-import 'package:readytogo/Features/login/login_sms_screen.dart';
+import 'package:readytogo/Features/login/login_otp/login_sms_screen.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import '../../Constants/constants.dart';
@@ -98,19 +98,19 @@ class _VerificationOTPNumberState extends State<VerificationOTPNumber>
         child: SafeArea(
           child: BlocConsumer<LoginBloc, LoginState>(
             listener: (context, state) {
-              if (state.status == LoginStatus.otpSuccess &&
-                  state.token != null) {
-                final box = GetStorage();
-                box.write("token", state.token);
+              //   if (state.status == LoginStatus.otpSuccess &&
+              //       state.token != null) {
+              //     final box = GetStorage();
+              //     box.write("token", state.token);
 
-                toastWidget("Logged-in Successfully", Colors.green);
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const LoginSuccessScreen()),
-                  (route) => false,
-                );
-              } else if (state.status == LoginStatus.otpFailure) {
-                toastWidget("OTP Verification Failed!", Colors.red);
-              }
+              //     toastWidget("Logged-in Successfully", Colors.green);
+              //     Navigator.of(context).pushAndRemoveUntil(
+              //       MaterialPageRoute(builder: (_) => const LoginSuccessScreen()),
+              //       (route) => false,
+              //     );
+              //   } else if (state.status == LoginStatus.otpFailure) {
+              //     toastWidget("OTP Verification Failed!", Colors.red);
+              //   }
             },
             builder: (context, state) {
               final isLoading = state.status == LoginStatus.otpLoading;
@@ -141,7 +141,7 @@ class _VerificationOTPNumberState extends State<VerificationOTPNumber>
                               ),
                               const SizedBox(width: 17),
                               const Text(
-                                'Verification',
+                                'Verification guyguyg',
                                 style: TextStyle(
                                   fontSize: 24,
                                   color: Colors.black87,
@@ -240,11 +240,11 @@ class _VerificationOTPNumberState extends State<VerificationOTPNumber>
                                     var password =
                                         storage.read("password_login");
 
-                                          context.read<LoginBloc>().add(
-                                        RequestSMSOtpLogin(
-                                            password:password,
-                                            phone: widget.phoneNumber));
-                              
+                                    // context.read<LoginBloc>().add(
+                                    //     RequestSMSOtpLogin(
+                                    //         password: password,
+                                    //         phone: widget.phoneNumber));
+
                                     toastWidget(
                                         "OTP code resent", Colors.green);
                                   } else {
@@ -275,7 +275,7 @@ class _VerificationOTPNumberState extends State<VerificationOTPNumber>
                                   ? () {
                                       context.read<LoginBloc>().add(
                                             VerifySMSOtp(
-                                             phone: widget.phoneNumber,
+                                              phone: widget.phoneNumber,
                                               otp: codeValue,
                                             ),
                                           );
@@ -319,7 +319,6 @@ class _VerificationOTPNumberState extends State<VerificationOTPNumber>
                               ),
                             ),
                           ),
-                        
                         ],
                       ),
                     ),

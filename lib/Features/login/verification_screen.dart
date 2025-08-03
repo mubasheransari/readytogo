@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
-import 'package:readytogo/Features/login/login_sms_screen.dart';
+import 'package:readytogo/Features/login/login_otp/login_sms_screen.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import '../../Constants/constants.dart';

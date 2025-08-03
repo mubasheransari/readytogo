@@ -5,11 +5,11 @@ import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
 import 'package:readytogo/Features/login/verificationOtpNumber.dart';
 
-import '../../Constants/constants.dart';
-import '../../widgets/boxDecorationWidget.dart';
-import '../../widgets/textfeild_widget.dart';
-import '../../widgets/toast_widget.dart';
-import 'bloc/login_event.dart';
+import '../../../Constants/constants.dart';
+import '../../../widgets/boxDecorationWidget.dart';
+import '../../../widgets/textfeild_widget.dart';
+import '../../../widgets/toast_widget.dart';
+import '../bloc/login_event.dart';
 
 class LoginSMSOtp extends StatefulWidget {
   @override
@@ -67,7 +67,7 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                             ),
                             const SizedBox(width: 17),
                             const Text(
-                              'Forget Password',
+                              'Login Through SMS',
                               style: TextStyle(
                                 fontSize: 22,
                                 color: Colors.black87,
@@ -81,23 +81,23 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                         Image.asset('assets/logo.png', height: 120, width: 115),
                         const SizedBox(height: 20),
                         const Text(
-                          'Forget Your Password?',
+                          'Login Through Number',
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w700,
                             fontFamily: 'Satoshi',
                           ),
                         ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          "Let's get you back in.",
-                          style: TextStyle(
-                            fontFamily: 'Satoshi',
-                            fontSize: 24,
-                            color: Color(0xff666F80),
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                        // const SizedBox(height: 5),
+                        // const Text(
+                        //   "Let's get you back in.",
+                        //   style: TextStyle(
+                        //     fontFamily: 'Satoshi',
+                        //     fontSize: 24,
+                        //     color: Color(0xff666F80),
+                        //     fontWeight: FontWeight.w700,
+                        //   ),
+                        // ),
                         const SizedBox(height: 40),
                         CustomTextFieldWidget(
                           borderColor: Constants().themeColor,
@@ -112,8 +112,17 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                         const SizedBox(height: 10),
                         BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
-                            if (state.loginOTPStatus ==
-                                LoginOTPStatus.success) {
+                            print(
+                                "STATUS ${state.loginThroughSMSOtpLoginRequestEnum}");
+                            print(
+                                "STATUS ${state.loginThroughSMSOtpLoginRequestEnum}");
+                            print(
+                                "STATUS ${state.loginThroughSMSOtpLoginRequestEnum}");
+                            print(
+                                "STATUS ${state.loginThroughSMSOtpLoginRequestEnum}");
+
+                            if (state.loginThroughSMSOtpLoginRequestEnum ==
+                                LoginThroughSMSOtpLoginRequestEnum.success) {
                               // final box = GetStorage();
                               // var email = box.read("forgotPassword-email");
                               // context.read<ForgetPasswordBloc>().add(
@@ -124,6 +133,7 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
 
                               toastWidget(
                                   "OTP Sent Successfully", Colors.green);
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -139,8 +149,9 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                               //     ),
                               //   ),
                               // );
-                            } else if (state.loginOTPStatus ==
-                                LoginOTPStatus.failure) {
+                            } else if (state
+                                    .loginThroughSMSOtpLoginRequestEnum ==
+                                LoginThroughSMSOtpLoginRequestEnum.failure) {
                               toastWidget("Failed to send OTP.", Colors.red);
                               // Navigator.push(
                               //     context,
@@ -165,7 +176,7 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                                         storage.read("password_login");
 
                                     context.read<LoginBloc>().add(
-                                        RequestSMSOtpLogin(
+                                        LoginThroughSMSOtpLoginRequest(
                                             password: password,
                                             phone: phoneController.text));
                                   }
@@ -182,8 +193,10 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (state.loginOTPStatus ==
-                                        LoginOTPStatus.loading)
+                                    if (state
+                                            .loginThroughSMSOtpLoginRequestEnum ==
+                                        LoginThroughSMSOtpLoginRequestEnum
+                                            .loading)
                                       const SizedBox(
                                         height: 25,
                                         width: 25,

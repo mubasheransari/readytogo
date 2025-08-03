@@ -185,9 +185,9 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
             });
 
             // Move camera to marker
-            _mapController.animateCamera(
-              CameraUpdate.newLatLngZoom(position, 16), // adjust zoom if needed
-            );
+            // _mapController.animateCamera(
+            //   CameraUpdate.newLatLngZoom(position, 16), // adjust zoom if needed
+            // );
           },
 
           // onTap: () {

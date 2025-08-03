@@ -29,7 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetSavedSearches>(getSavedSearches);
     on<RemoveSavedSearch>(removeSavedSearch);
     on<AddSavedSearch>(addSavedSearch);
-    on<RequestSMSOtpLogin>(requestSMSOtpLogin);
+    on<LoginThroughSMSOtpLoginRequest>(loginThroughSMSOtpLoginRequest);
     on<VerifySMSOtp>(verifySMSOtp);
   }
 
@@ -775,11 +775,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  requestSMSOtpLogin(
-    RequestSMSOtpLogin event,
+  loginThroughSMSOtpLoginRequest(
+    LoginThroughSMSOtpLoginRequest event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(loginOTPStatus: LoginOTPStatus.loading));
+    emit(state.copyWith(loginThroughSMSOtpLoginRequestEnum: LoginThroughSMSOtpLoginRequestEnum.loading));
     try {
       final response = await loginRepository.requestLoginPasswordThroughSMS(
         event.phone,
@@ -790,12 +790,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final data = jsonDecode(response.body);
         // final token = data['token'];
 
-        emit(state.copyWith(loginOTPStatus: LoginOTPStatus.success));
+        emit(state.copyWith(loginThroughSMSOtpLoginRequestEnum: LoginThroughSMSOtpLoginRequestEnum.success));
       } else {
-        emit(state.copyWith(loginOTPStatus: LoginOTPStatus.failure));
+        emit(state.copyWith(loginThroughSMSOtpLoginRequestEnum: LoginThroughSMSOtpLoginRequestEnum.failure));
       }
     } catch (e) {
-      emit(state.copyWith(loginOTPStatus: LoginOTPStatus.failure));
+      emit(state.copyWith(loginThroughSMSOtpLoginRequestEnum: LoginThroughSMSOtpLoginRequestEnum.failure));
     }
   }
 
