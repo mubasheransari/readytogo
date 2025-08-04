@@ -30,7 +30,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<RemoveSavedSearch>(removeSavedSearch);
     on<AddSavedSearch>(addSavedSearch);
     on<LoginThroughSMSOtpLoginRequest>(loginThroughSMSOtpLoginRequest);
-    on<VerifySMSOtp>(verifySMSOtp);
+    on<VerificationLoginThroughSMSOtpLoginRequest>(
+        verificationLoginThroughSMSOtpLoginRequest);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -779,7 +780,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginThroughSMSOtpLoginRequest event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(loginThroughSMSOtpLoginRequestEnum: LoginThroughSMSOtpLoginRequestEnum.loading));
+    emit(state.copyWith(
+        loginThroughSMSOtpLoginRequestEnum:
+            LoginThroughSMSOtpLoginRequestEnum.loading));
     try {
       final response = await loginRepository.requestLoginPasswordThroughSMS(
         event.phone,
@@ -787,23 +790,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+       // final data = jsonDecode(response.body);
         // final token = data['token'];
 
-        emit(state.copyWith(loginThroughSMSOtpLoginRequestEnum: LoginThroughSMSOtpLoginRequestEnum.success));
+        emit(state.copyWith(
+            loginThroughSMSOtpLoginRequestEnum:
+                LoginThroughSMSOtpLoginRequestEnum.success));
       } else {
-        emit(state.copyWith(loginThroughSMSOtpLoginRequestEnum: LoginThroughSMSOtpLoginRequestEnum.failure));
+        emit(state.copyWith(
+            loginThroughSMSOtpLoginRequestEnum:
+                LoginThroughSMSOtpLoginRequestEnum.failure));
       }
     } catch (e) {
-      emit(state.copyWith(loginThroughSMSOtpLoginRequestEnum: LoginThroughSMSOtpLoginRequestEnum.failure));
+      emit(state.copyWith(
+          loginThroughSMSOtpLoginRequestEnum:
+              LoginThroughSMSOtpLoginRequestEnum.failure));
     }
   }
 
-  verifySMSOtp(
-    VerifySMSOtp event,
+  verificationLoginThroughSMSOtpLoginRequest(
+    VerificationLoginThroughSMSOtpLoginRequest event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(verifySMSOtpStatus: VerifySMSOtpStatus.loading));
+    emit(state.copyWith(
+        verificationLoginThroughSMSOtpLoginRequestEnum:
+            VerificationLoginThroughSMSOtpLoginRequestEnum.loading));
     try {
       final response = await loginRepository.verifySMSOtp(
         event.phone,
@@ -811,15 +822,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
 
       if (response.statusCode == 200) {
-      //  final data = jsonDecode(response.body);
+        //  final data = jsonDecode(response.body);
         // final token = data['token'];
 
-        emit(state.copyWith(verifySMSOtpStatus: VerifySMSOtpStatus.success));
+        emit(state.copyWith(
+            verificationLoginThroughSMSOtpLoginRequestEnum:
+                VerificationLoginThroughSMSOtpLoginRequestEnum.success));
       } else {
-        emit(state.copyWith(verifySMSOtpStatus: VerifySMSOtpStatus.failure));
+        emit(state.copyWith(
+            verificationLoginThroughSMSOtpLoginRequestEnum:
+                VerificationLoginThroughSMSOtpLoginRequestEnum.failure));
       }
     } catch (e) {
-      emit(state.copyWith(verifySMSOtpStatus: VerifySMSOtpStatus.failure));
+      emit(state.copyWith(
+          verificationLoginThroughSMSOtpLoginRequestEnum:
+              VerificationLoginThroughSMSOtpLoginRequestEnum.failure));
     }
   }
 }

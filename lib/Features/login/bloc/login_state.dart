@@ -129,6 +129,13 @@ enum LoginThroughSMSOtpLoginRequestEnum {
   failure,
 }
 
+enum VerificationLoginThroughSMSOtpLoginRequestEnum {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
@@ -137,6 +144,8 @@ class LoginState extends Equatable {
   final SearchStatus searchStatus;
   final GetSavedSearchesStatus getSavedSearchesStatus;
   final LoginThroughSMSOtpLoginRequestEnum loginThroughSMSOtpLoginRequestEnum;
+  final VerificationLoginThroughSMSOtpLoginRequestEnum
+      verificationLoginThroughSMSOtpLoginRequestEnum;
   final FilterSearchStatus filterSearchStatus;
   final VerifySMSOtpStatus verifySMSOtpStatus;
   final LoginStatus status;
@@ -162,6 +171,8 @@ class LoginState extends Equatable {
       this.verifySMSOtpStatus = VerifySMSOtpStatus.initial,
       this.loginThroughSMSOtpLoginRequestEnum =
           LoginThroughSMSOtpLoginRequestEnum.initial,
+      this.verificationLoginThroughSMSOtpLoginRequestEnum =
+          VerificationLoginThroughSMSOtpLoginRequestEnum.initial,
       //this.loginOTPStatus = LoginOTPStatus.initial,
       this.getSavedSearchesStatus =
           GetSavedSearchesStatus.getSavedSearchesInitial,
@@ -192,6 +203,8 @@ class LoginState extends Equatable {
     List<SearchModel>? searchResults,
     List<FilterSearchModel>? filterSearchResults,
     LoginThroughSMSOtpLoginRequestEnum? loginThroughSMSOtpLoginRequestEnum,
+    VerificationLoginThroughSMSOtpLoginRequestEnum?
+        verificationLoginThroughSMSOtpLoginRequestEnum,
     // LoginOTPStatus? loginOTPStatus,
     SearchStatus? searchStatus,
     GetSavedSearchesStatus? getSavedSearchesStatus,
@@ -218,6 +231,9 @@ class LoginState extends Equatable {
         loginThroughSMSOtpLoginRequestEnum:
             loginThroughSMSOtpLoginRequestEnum ??
                 this.loginThroughSMSOtpLoginRequestEnum,
+        verificationLoginThroughSMSOtpLoginRequestEnum:
+            verificationLoginThroughSMSOtpLoginRequestEnum ??
+                this.verificationLoginThroughSMSOtpLoginRequestEnum,
         // loginOTPStatus: loginOTPStatus ?? this.loginOTPStatus,
         savedSearchModel: savedSearchModel ?? this.savedSearchModel,
         filterSearchResults: filterSearchResults ?? this.filterSearchResults,
@@ -254,6 +270,7 @@ class LoginState extends Equatable {
   List<Object?> get props => [
         verifySMSOtpStatus,
         loginThroughSMSOtpLoginRequestEnum,
+        verificationLoginThroughSMSOtpLoginRequestEnum,
         //loginOTPStatus,
         savedSearchModel,
         searchResults,

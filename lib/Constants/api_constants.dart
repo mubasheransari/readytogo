@@ -34,10 +34,8 @@ class ApiConstants {
   static const String addSearch = "search/save-search";
   static const String forgetPasswordRequestSMS =
       "account/forgot-password-request-sms-otp";
-
        static const String loginRequestSMS =
       "account/login/request-sms-otp";
-
              static const String verifySMSotpLogin =
       "account/login/verify-sms-otp";
   

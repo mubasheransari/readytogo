@@ -331,7 +331,8 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => LoginSMSOtp()));
+                                        builder: (context) =>
+                                            LoginSMSOtpRequest()));
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Constants().themeColor,

@@ -3,20 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
-import 'package:readytogo/Features/login/verificationOtpNumber.dart';
-
+import 'package:readytogo/Features/login/login_otp/verification_login_sms_screen.dart';
 import '../../../Constants/constants.dart';
 import '../../../widgets/boxDecorationWidget.dart';
 import '../../../widgets/textfeild_widget.dart';
 import '../../../widgets/toast_widget.dart';
 import '../bloc/login_event.dart';
 
-class LoginSMSOtp extends StatefulWidget {
+class LoginSMSOtpRequest extends StatefulWidget {
+  LoginSMSOtpRequest({Key? key}) : super(key: key);
+
   @override
-  State<LoginSMSOtp> createState() => _LoginSMSOtpState();
+  State<LoginSMSOtpRequest> createState() => _LoginSMSOtpRequestState();
 }
 
-class _LoginSMSOtpState extends State<LoginSMSOtp> {
+class _LoginSMSOtpRequestState extends State<LoginSMSOtpRequest> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController phoneController = TextEditingController();
 
@@ -126,21 +127,32 @@ class _LoginSMSOtpState extends State<LoginSMSOtp> {
                               // final box = GetStorage();
                               // var email = box.read("forgotPassword-email");
                               // context.read<ForgetPasswordBloc>().add(
-                              //       ForgetPasswordToken(
+                              //       ForgetPasxswordToken(
                               //         email: email,
                               //       ),
                               //     );
 
+                              print("Print Karo");
+                              print("Print Karo");
+                              print("Print Karo");
+                              print("Print Karo");
+                              print("Print Karo");
+
                               toastWidget(
                                   "OTP Sent Successfully", Colors.green);
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             VerificationLoginSMSScreen()));
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          VerificationOTPNumber(
-                                            phoneNumber: phoneController.text,
-                                          )));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             VerificationOTPNumber(
+                              //               phoneNumber: phoneController.text,
+                              //             )));
                               // Navigator.push(
                               //   context,
                               //   MaterialPageRoute(
