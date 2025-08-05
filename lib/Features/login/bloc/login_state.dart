@@ -136,7 +136,7 @@ enum VerificationLoginThroughSMSOtpLoginRequestEnum {
   failure,
 }
 
-enum LoginThroughSMSOtpRequest {
+enum LoginThroughSMSOtpRequestNewEnum {
   initial,
   loading,
   success,
@@ -146,6 +146,7 @@ enum LoginThroughSMSOtpRequest {
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
+  final LoginThroughSMSOtpRequestNewEnum loginThroughSMSOtpRequestNewEnum;
   final List<SearchModel>? searchResults;
   final List<FilterSearchModel>? filterSearchResults;
   final SearchStatus searchStatus;
@@ -173,7 +174,9 @@ class LoginState extends Equatable {
   final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
   LoginState(
-      {this.searchResults,
+      {
+      this.loginThroughSMSOtpRequestNewEnum = LoginThroughSMSOtpRequestNewEnum.initial,
+      this.searchResults,
       this.filterSearchResults,
       this.verifySMSOtpStatus = VerifySMSOtpStatus.initial,
       this.loginThroughSMSOtpLoginRequestEnum =
@@ -206,6 +209,7 @@ class LoginState extends Equatable {
 
   /// Copy the state with updated fields
   LoginState copyWith({
+    LoginThroughSMSOtpRequestNewEnum ? loginThroughSMSOtpRequestNewEnum,
     VerifySMSOtpStatus? verifySMSOtpStatus,
     List<SearchModel>? searchResults,
     List<FilterSearchModel>? filterSearchResults,
@@ -234,6 +238,7 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
+      loginThroughSMSOtpRequestNewEnum : loginThroughSMSOtpRequestNewEnum ?? this.loginThroughSMSOtpRequestNewEnum,
         verifySMSOtpStatus: verifySMSOtpStatus ?? this.verifySMSOtpStatus,
         loginThroughSMSOtpLoginRequestEnum:
             loginThroughSMSOtpLoginRequestEnum ??
@@ -275,6 +280,7 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
+        loginThroughSMSOtpRequestNewEnum,
         verifySMSOtpStatus,
         loginThroughSMSOtpLoginRequestEnum,
         verificationLoginThroughSMSOtpLoginRequestEnum,

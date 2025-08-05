@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class VerificationLoginSMSScreen extends StatefulWidget {
-  const VerificationLoginSMSScreen({super.key});
+class VerificationLoginSMSScreenOTP extends StatefulWidget {
+  const VerificationLoginSMSScreenOTP({super.key});
 
   @override
-  State<VerificationLoginSMSScreen> createState() => _VerificationLoginSMSScreenState();
+  State<VerificationLoginSMSScreenOTP> createState() => _VerificationLoginSMSScreenOTPState();
 }
 
-class _VerificationLoginSMSScreenState extends State<VerificationLoginSMSScreen> {
+class _VerificationLoginSMSScreenOTPState extends State<VerificationLoginSMSScreenOTP> {
   @override
   Widget build(BuildContext context) {
     return Scaffold();

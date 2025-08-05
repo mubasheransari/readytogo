@@ -142,7 +142,7 @@ class _LoginOtpRequestSMSState extends State<LoginOtpRequestSMS> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          VerificationLoginSMSScreen()));
+                                          VerificationLoginSMSScreenOTP()));
                               toastWidget("Print Karo", Colors.green);
 
                               // Navigator.push(

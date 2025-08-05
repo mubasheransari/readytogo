@@ -165,8 +165,8 @@ class VerificationLoginThroughSMSOtpLoginRequest extends LoginEvent {
       {required this.phone, required this.otp});
 }
 
-class LoginThroughSMSOtp extends LoginEvent {
-  final String phone, otp;
+class LoginThroughSMSOtpRequestNew extends LoginEvent {
+  final String phone, password;
 
-  LoginThroughSMSOtp({required this.phone, required this.otp});
+  LoginThroughSMSOtpRequestNew({required this.phone, required this.password});
 }

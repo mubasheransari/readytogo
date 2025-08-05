@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:readytogo/Features/login/bloc/login_bloc.dart';
+import 'package:readytogo/Features/login/bloc/login_event.dart';
+import 'package:readytogo/Features/login/bloc/login_state.dart';
+import 'package:readytogo/Features/login/login_otp/verification_login_sms_screen.dart';
+import 'package:readytogo/widgets/toast_widget.dart';
 
 import '../../../Constants/constants.dart';
 import '../../../widgets/boxDecorationWidget.dart';
@@ -11,13 +18,13 @@ class LoginThroughSMSViewOTPRequest extends StatefulWidget {
 
 class _LoginThroughSMSViewOTPRequestState extends State<LoginThroughSMSViewOTPRequest> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
 
   bool isValidEmail(String email) {
     return RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$").hasMatch(email);
   }
 
-  String? validateEmail(String value) {
+  String? validatePhoneNumber(String value) {
     if (value.isEmpty) return 'Email is required';
     if (!isValidEmail(value)) return 'Enter a valid email';
     return null;
@@ -93,42 +100,35 @@ class _LoginThroughSMSViewOTPRequestState extends State<LoginThroughSMSViewOTPRe
                         const SizedBox(height: 40),
                         CustomTextFieldWidget(
                           borderColor: Constants().themeColor,
-                          controller: emailController,
+                          controller: phoneNumberController,
                           hintText: 'Phone Number',
                           labelText: 'Phone Number',
                           textWidgetText: 'Phone Number',
                           hintTextColor: Constants().themeColor,
                           validator: (value) =>
-                              validateEmail(value?.trim() ?? ''),
+                              validatePhoneNumber(value?.trim() ?? ''),
                         ),
                         const SizedBox(height: 10),
 
                         /// BlocConsumer section
-                        BlocConsumer<ForgetPasswordBloc, ForgetPasswordState>(
+                        BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
-                            if (state is ForgetPasswordSuccess) {
+                            if (state.loginThroughSMSOtpRequestNewEnum ==  LoginThroughSMSOtpRequestNewEnum.success) {
                               final box = GetStorage();
-                              box.write("forgotPassword-email",
-                                  emailController.text.trim());
-                              context.read<ForgetPasswordBloc>().add(
-                                    ForgetPasswordToken(
-                                      email: emailController.text.trim(),
-                                    ),
-                                  );
+                              box.write("phone",
+                                  phoneNumberController.text.trim());
+                                    Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          VerificationLoginSMSScreenOTP()));
+                           
 
                               toastWidget(
                                   "OTP Sent Successfully", Colors.green);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) =>
-                                      ForgetPasswordOtpVerificationScreen(
-                                    email: emailController.text,
-                                  ),
-                                ),
-                              );
-                            } else if (state is ForgetPasswordFailure) {
-                              toastWidget("Email Not Found", Colors.red);
+                           
+                            } else if (state.loginThroughSMSOtpRequestNewEnum ==  LoginThroughSMSOtpRequestNewEnum.failure) {
+                              toastWidget("Failed", Colors.red);
                             }
                           },
                           builder: (context, state) {
@@ -140,10 +140,14 @@ class _LoginThroughSMSViewOTPRequestState extends State<LoginThroughSMSViewOTPRe
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
+                                      final storage = GetStorage();
+                                    var password =
+                                        storage.read("password_login");
                                     FocusScope.of(context).unfocus();
-                                    context.read<ForgetPasswordBloc>().add(
-                                          RequestForgetPasswordOtp(
-                                            email: emailController.text.trim(),
+                                    context.read<LoginBloc>().add(
+                                          LoginThroughSMSOtpRequestNew(
+                                            phone: phoneNumberController.text.trim(),
+                                            password: password
                                           ),
                                         );
                                   }
@@ -160,7 +164,7 @@ class _LoginThroughSMSViewOTPRequestState extends State<LoginThroughSMSViewOTPRe
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (state is ForgetPasswordLoading)
+                                    if (state.loginThroughSMSOtpRequestNewEnum ==  LoginThroughSMSOtpRequestNewEnum.loading)
                                       const SizedBox(
                                         height: 25,
                                         width: 25,
