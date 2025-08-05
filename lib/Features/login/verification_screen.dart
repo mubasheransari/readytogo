@@ -13,20 +13,20 @@ import 'bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'dart:async';
 
-class VerificattionScreen extends StatefulWidget {
+class VerificationViewEmail extends StatefulWidget {
   final String email, password;
 
-  const VerificattionScreen({
+  const VerificationViewEmail({
     super.key,
     required this.email,
     required this.password,
   });
 
   @override
-  State<VerificattionScreen> createState() => _VerificattionScreenState();
+  State<VerificationViewEmail> createState() => _VerificationViewEmailState();
 }
 
-class _VerificattionScreenState extends State<VerificattionScreen>
+class _VerificationViewEmailState extends State<VerificationViewEmail>
     with CodeAutoFill {
   String codeValue = "";
   late Timer _timer;
@@ -332,7 +332,7 @@ class _VerificattionScreenState extends State<VerificattionScreen>
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            LoginSMSOtpRequest()));
+                                            LoginOtpRequestSMS()));
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Constants().themeColor,

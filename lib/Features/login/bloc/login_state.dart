@@ -136,6 +136,13 @@ enum VerificationLoginThroughSMSOtpLoginRequestEnum {
   failure,
 }
 
+enum LoginThroughSMSOtpRequest {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {

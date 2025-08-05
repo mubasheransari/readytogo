@@ -133,17 +133,14 @@ class GetSavedSearches extends LoginEvent {}
 
 class SavedSearch extends LoginEvent {
   final String searchId;
-  const SavedSearch({
-    required this.searchId
-  });
+  const SavedSearch({required this.searchId});
 }
 
 class RemoveSearch extends LoginEvent {
   final String searchId;
-  const RemoveSearch({
-    required this.searchId
-  });
+  const RemoveSearch({required this.searchId});
 }
+
 class RemoveSavedSearch extends LoginEvent {
   final String userId;
   RemoveSavedSearch(this.userId);
@@ -156,15 +153,20 @@ class AddSavedSearch extends LoginEvent {
 }
 
 class LoginThroughSMSOtpLoginRequest extends LoginEvent {
-  final String phone,password;
+  final String phone, password;
 
-  LoginThroughSMSOtpLoginRequest({required this.phone,required this.password});
-
+  LoginThroughSMSOtpLoginRequest({required this.phone, required this.password});
 }
 
 class VerificationLoginThroughSMSOtpLoginRequest extends LoginEvent {
-  final String phone,otp;
+  final String phone, otp;
 
-  VerificationLoginThroughSMSOtpLoginRequest({required this.phone,required this.otp});
+  VerificationLoginThroughSMSOtpLoginRequest(
+      {required this.phone, required this.otp});
+}
 
+class LoginThroughSMSOtp extends LoginEvent {
+  final String phone, otp;
+
+  LoginThroughSMSOtp({required this.phone, required this.otp});
 }

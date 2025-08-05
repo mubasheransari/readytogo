@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => VerificattionScreen(
+                                    builder: (_) => VerificationViewEmail(
                                       email: emailController.text.trim(),
                                       password: passwordController.text.trim(),
                                     ),

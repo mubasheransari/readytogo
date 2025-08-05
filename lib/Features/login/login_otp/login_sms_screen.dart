@@ -10,14 +10,14 @@ import '../../../widgets/textfeild_widget.dart';
 import '../../../widgets/toast_widget.dart';
 import '../bloc/login_event.dart';
 
-class LoginSMSOtpRequest extends StatefulWidget {
-  LoginSMSOtpRequest({Key? key}) : super(key: key);
+class LoginOtpRequestSMS extends StatefulWidget {
+  LoginOtpRequestSMS({Key? key}) : super(key: key);
 
   @override
-  State<LoginSMSOtpRequest> createState() => _LoginSMSOtpRequestState();
+  State<LoginOtpRequestSMS> createState() => _LoginOtpRequestSMSState();
 }
 
-class _LoginSMSOtpRequestState extends State<LoginSMSOtpRequest> {
+class _LoginOtpRequestSMSState extends State<LoginOtpRequestSMS> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController phoneController = TextEditingController();
 
@@ -138,13 +138,12 @@ class _LoginSMSOtpRequestState extends State<LoginSMSOtpRequest> {
                               print("Print Karo");
                               print("Print Karo");
 
-                              toastWidget(
-                                  "OTP Sent Successfully", Colors.green);
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             VerificationLoginSMSScreen()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          VerificationLoginSMSScreen()));
+                              toastWidget("Print Karo", Colors.green);
 
                               // Navigator.push(
                               //     context,
@@ -186,6 +185,9 @@ class _LoginSMSOtpRequestState extends State<LoginSMSOtpRequest> {
                                     final storage = GetStorage();
                                     var password =
                                         storage.read("password_login");
+                                    print(
+                                        "PHONE CONTROLLER ${phoneController.text}");
+                                    print("PASSWORD CONTROLLER ${password}");
 
                                     context.read<LoginBloc>().add(
                                         LoginThroughSMSOtpLoginRequest(

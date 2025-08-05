@@ -490,7 +490,7 @@ class LoginRepository {
     return List<GetAllProfessionalProfileModel>.from(
       jsonResponse.map((x) => GetAllProfessionalProfileModel.fromJson(x)),
     );
-  } //10@Testing
+  } 
 
   Future<List<SearchModel>> searchFunctionality(String search) async {
     var storage = GetStorage();
