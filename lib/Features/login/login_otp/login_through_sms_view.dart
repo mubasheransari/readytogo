@@ -13,10 +13,12 @@ import '../../../widgets/textfeild_widget.dart';
 
 class LoginThroughSMSViewOTPRequest extends StatefulWidget {
   @override
-  State<LoginThroughSMSViewOTPRequest> createState() => _LoginThroughSMSViewOTPRequestState();
+  State<LoginThroughSMSViewOTPRequest> createState() =>
+      _LoginThroughSMSViewOTPRequestState();
 }
 
-class _LoginThroughSMSViewOTPRequestState extends State<LoginThroughSMSViewOTPRequest> {
+class _LoginThroughSMSViewOTPRequestState
+    extends State<LoginThroughSMSViewOTPRequest> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController phoneNumberController = TextEditingController();
 
@@ -26,7 +28,7 @@ class _LoginThroughSMSViewOTPRequestState extends State<LoginThroughSMSViewOTPRe
 
   String? validatePhoneNumber(String value) {
     if (value.isEmpty) return 'Email is required';
-    if (!isValidEmail(value)) return 'Enter a valid email';
+   // if (!isValidEmail(value)) return 'Enter a valid email';
     return null;
   }
 
@@ -113,21 +115,26 @@ class _LoginThroughSMSViewOTPRequestState extends State<LoginThroughSMSViewOTPRe
                         /// BlocConsumer section
                         BlocConsumer<LoginBloc, LoginState>(
                           listener: (context, state) {
-                            if (state.loginThroughSMSOtpRequestNewEnum ==  LoginThroughSMSOtpRequestNewEnum.success) {
+                            if (state.loginThroughSMSOtpRequestNewEnum ==
+                                LoginThroughSMSOtpRequestNewEnum.success) {
                               final box = GetStorage();
-                              box.write("phone",
-                                  phoneNumberController.text.trim());
-                                    Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          VerificationLoginSMSScreenOTP()));
-                           
+                              box.write(
+                                  "phone", phoneNumberController.text.trim());
+                              print("PHONE ${phoneNumberController.text}");
+                              print("PHONE ${phoneNumberController.text}");
+                              print("PHONE ${phoneNumberController.text}");
+                              print("PHONE ${phoneNumberController.text}");
+                              print("PHONE ${phoneNumberController.text}");
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             VerificationLoginSMSScreenOTP()));
 
                               toastWidget(
                                   "OTP Sent Successfully", Colors.green);
-                           
-                            } else if (state.loginThroughSMSOtpRequestNewEnum ==  LoginThroughSMSOtpRequestNewEnum.failure) {
+                            } else if (state.loginThroughSMSOtpRequestNewEnum ==
+                                LoginThroughSMSOtpRequestNewEnum.failure) {
                               toastWidget("Failed", Colors.red);
                             }
                           },
@@ -140,15 +147,14 @@ class _LoginThroughSMSViewOTPRequestState extends State<LoginThroughSMSViewOTPRe
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                      final storage = GetStorage();
+                                    final storage = GetStorage();
                                     var password =
                                         storage.read("password_login");
                                     FocusScope.of(context).unfocus();
                                     context.read<LoginBloc>().add(
                                           LoginThroughSMSOtpRequestNew(
-                                            phone: phoneNumberController.text.trim(),
-                                            password: password
-                                          ),
+                                              phone: phoneNumberController.text,
+                                              password: password),
                                         );
                                   }
                                 },
@@ -164,7 +170,10 @@ class _LoginThroughSMSViewOTPRequestState extends State<LoginThroughSMSViewOTPRe
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (state.loginThroughSMSOtpRequestNewEnum ==  LoginThroughSMSOtpRequestNewEnum.loading)
+                                    if (state
+                                            .loginThroughSMSOtpRequestNewEnum ==
+                                        LoginThroughSMSOtpRequestNewEnum
+                                            .loading)
                                       const SizedBox(
                                         height: 25,
                                         width: 25,

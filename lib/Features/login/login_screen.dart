@@ -152,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               storage.write("password_login",
                                   passwordController.text.trim());
                                     storage.write("email_login",
-                                  passwordController.text.trim());
+                                  emailController.text.trim());
                               Future.microtask(() {
                                 Navigator.push(
                                   context,

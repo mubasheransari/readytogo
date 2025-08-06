@@ -50,11 +50,13 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                     // LoginRepository().removeSavedSearch(
                     //     savedSearches[index].userId.toString());
 
-                    final userId = savedSearches[index].userId;
+                    final userId = savedSearches[index].locations![index].id;
+                    print("USER ID $userId");
+                    print("USER ID $userId");
+                    print("USER ID $userId");
                     context.read<LoginBloc>().add(RemoveSavedSearch(
                         savedSearches[index].userId.toString()));
-                    LoginRepository().removeSavedSearch(
-                        savedSearches[index].userId.toString());
+                    LoginRepository().removeSavedSearch(userId.toString());
                   },
                   profileImage: model.profileImageUrl != null
                       ? "http://173.249.27.4:343/${model.profileImageUrl}"

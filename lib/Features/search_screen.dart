@@ -613,6 +613,15 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                         icon: Icon(Icons.favorite_border_outlined,
                             color: Colors.blue),
                         onPressed: () {
+                          print("CLICK kro bhrwe");
+
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
                           setState(() {});
                           LoginRepository().addSavedSearch(model.userId);
                           final savedSearch = SavedSearchModel(
@@ -631,12 +640,18 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                                 .read<LoginBloc>()
                                 .add(AddSavedSearch(savedSearch));
                             LoginRepository().addSavedSearch(model.userId);
+                            print("ID ${model.userId}");
+                            print("ID ${model.userId}");
+                            print("ID ${model.userId}");
                           } else {
                             context
                                 .read<LoginBloc>()
                                 .add(RemoveSavedSearch(model.userId));
                             LoginRepository().removeSavedSearch(model.userId);
                             // context.read<LoginBloc>().add(AddSavedSearch(model));
+                            print("ID ${model.userId}");
+                            print("ID ${model.userId}");
+                            print("ID ${model.userId}");
                           }
                         }),
                   ),
@@ -817,13 +832,55 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
-                      icon: Icon(
-                        model.isSaved
-                            ? Icons.favorite
-                            : Icons.favorite_border_outlined,
-                        color: model.isSaved ? Colors.red : Colors.blue,
-                      ),
-                      onPressed: () {
+                        icon: Icon(
+                          model.isSaved
+                              ? Icons.favorite
+                              : Icons.favorite_border_outlined,
+                          color: model.isSaved ? Colors.red : Colors.blue,
+                        ),
+                        onPressed: () {
+                          print("CLICK kro bhrwe");
+
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          print("CLICK kro bhrwe");
+                          setState(() {});
+                          LoginRepository().addSavedSearch(model.userId);
+                          final savedSearch = SavedSearchModel(
+                            userId: model.userId,
+                            firstName: model.firstName,
+                            lastName: model.lastName,
+                            email: model.email,
+                            phoneNumber: model.phoneNumber,
+                            profileImageUrl: model.profileImageUrl,
+                            memberType: model.memberType,
+                            memberSince: DateTime.now(),
+                          );
+
+                          if (!model.isSaved) {
+                            context
+                                .read<LoginBloc>()
+                                .add(AddSavedSearch(savedSearch));
+                            LoginRepository().addSavedSearch(model.userId);
+                            print("ID ${model.userId}");
+                            print("ID ${model.userId}");
+                            print("ID ${model.userId}");
+                          } else {
+                            context
+                                .read<LoginBloc>()
+                                .add(RemoveSavedSearch(model.userId));
+                            LoginRepository().removeSavedSearch(model.userId);
+                            // context.read<LoginBloc>().add(AddSavedSearch(model));
+                            print("ID ${model.userId}");
+                            print("ID ${model.userId}");
+                            print("ID ${model.userId}");
+                          }
+                        }
+                        /*  onPressed: () {
                         print("Fav${model.isSaved}");
                         print("USER IDDD::: ${model.userId}");
 
@@ -851,9 +908,9 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                         setState(() {
                           model.isSaved = !model.isSaved;
                         });
-                      },
+                      },*/
 
-                      /*  onPressed: () {
+                        /*  onPressed: () {
                         print("Fav${model.isSaved}");
                         print("USER IDDD::: ${model.userId}");
                         LoginRepository().addSavedSearch(model.userId);
@@ -879,7 +936,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                               .add(RemoveSavedSearch(int.parse(model.userId)));
                         }
                       },*/
-                    ),
+                        ),
 
                     /*  IconButton(
                       icon: Icon(Icons.favorite_border_outlined,

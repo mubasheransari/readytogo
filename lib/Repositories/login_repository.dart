@@ -490,7 +490,7 @@ class LoginRepository {
     return List<GetAllProfessionalProfileModel>.from(
       jsonResponse.map((x) => GetAllProfessionalProfileModel.fromJson(x)),
     );
-  } 
+  }
 
   Future<List<SearchModel>> searchFunctionality(String search) async {
     var storage = GetStorage();
@@ -517,7 +517,12 @@ class LoginRepository {
   }
 
   Future<List<FilterSearchModel>> filterSearchFunctionality(
-      String search, String zipcode, String service, double distance, double lat, double lng) async {
+      String search,
+      String zipcode,
+      String service,
+      double distance,
+      double lat,
+      double lng) async {
     var storage = GetStorage();
     var token = storage.read("id");
     var role = storage.read("role");
@@ -549,24 +554,25 @@ class LoginRepository {
       throw Exception('Unexpected response format: ${response.body}');
     }
   }
+
   Future<List<SavedSearchModel>?> getAllSavedSearches() async {
-     var storage = GetStorage();
+    var storage = GetStorage();
     var token = storage.read("id");
-  final response = await _apiBaseHelper.get(
-    url: ApiConstants.baseDomain,
-    path: "${ApiConstants.apiPrefix}${ApiConstants.getSaveSearch}",
-    token: token,
-  );
+    final response = await _apiBaseHelper.get(
+      url: ApiConstants.baseDomain,
+      path: "${ApiConstants.apiPrefix}${ApiConstants.getSaveSearch}",
+      token: token,
+    );
 
-  return savedSearchModelFromJson(json.encode(response));
-}
+    return savedSearchModelFromJson(json.encode(response));
+  }
 
- Future<http.Response> removeSavedSearch(
-      String searchedUserId) async {
+  Future<http.Response> removeSavedSearch(String searchedUserId) async {
     var storage = GetStorage();
     var token = storage.read("id");
 
     return await _apiBaseHelper.delete(
+        //  path: "${ApiConstants.apiPrefix}${ApiConstants.removeSearch}",
         path: ApiConstants.removeSearch,
         body: {
           "searchedUserId": searchedUserId,
@@ -574,18 +580,18 @@ class LoginRepository {
         token: token);
   }
 
-    Future<http.Response> addSavedSearch(
-      String searchedUserId) async {
+  Future<http.Response> addSavedSearch(String searchedUserId) async {
     var storage = GetStorage();
     var token = storage.read("id");
     return await _apiBaseHelper.post(
+        //   path: "${ApiConstants.apiPrefix}${ApiConstants.addSearch}",
+
         path: ApiConstants.addSearch,
         body: {
           "searchedUserId": searchedUserId,
         },
         token: token);
   }
-
 
   /*Future<List<SavedSearchModel>> getAllSavedSearches() async {
     var storage = GetStorage();
@@ -625,25 +631,18 @@ class LoginRepository {
 
   // }
 
-
-    Future<http.Response> requestLoginPasswordThroughSMS(String phone,password) async {
+  Future<http.Response> requestLoginPasswordThroughSMS(
+      String phone, password) async {
     return await _apiBaseHelper.post(
       path: ApiConstants.loginRequestSMS,
-      body: {
-        "phoneNumber": phone,
-        "password":password
-      },
+      body: {"phoneNumber": phone, "password": password},
     );
   }
 
-
-    Future<http.Response> verifySMSOtp(String phone,otp) async {
+  Future<http.Response> verifySMSOtp(String phone, otp) async {
     return await _apiBaseHelper.post(
       path: ApiConstants.verifySMSotpLogin,
-      body: {
-        "phoneNumber": phone,
-        "otp":otp
-      },
+      body: {"phoneNumber": phone, "otp": otp},
     );
   }
 }

@@ -239,7 +239,7 @@ class _GroupAssociationEditProfessionalProfileState
                               (index) => ListTile(
                                 trailing: InkWell(
                                     onTap: () {
-                                      print("USER ID ${widget.userid}");
+                                 /*     print("USER ID ${widget.userid}");
                                       print(
                                           "GROUP ID ${widget.profile.groupAssociations![index].groupId}");
                                       var storage = GetStorage();
@@ -260,7 +260,7 @@ class _GroupAssociationEditProfessionalProfileState
                                       print(state.removeAffiliationGroupStatus
                                           .toString());
                                       print(state.removeAffiliationGroupStatus
-                                          .toString());
+                                          .toString());*/
                                     },
                                     child:
                                         Image.asset("assets/icon_delete.png")),

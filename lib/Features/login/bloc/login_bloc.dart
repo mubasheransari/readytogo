@@ -32,15 +32,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginThroughSMSOtpLoginRequest>(loginThroughSMSOtpLoginRequest);
     on<VerificationLoginThroughSMSOtpLoginRequest>(
         verificationLoginThroughSMSOtpLoginRequest);
-    on<LoginThroughSMSOtpRequestNew>(loginThroughSMSOtpRequestNew);    
+    on<LoginThroughSMSOtpRequestNew>(loginThroughSMSOtpRequestNew);
   }
 
   final LoginRepository loginRepository = LoginRepository();
   String? _tempToken;
-  addSavedSearch(AddSavedSearch event, emit) {
+  addSavedSearch(AddSavedSearch event, exmit) {
     final currentList =
         List<SavedSearchModel>.from(state.savedSearchModel ?? []);
     currentList.add(event.savedSearch);
+    //loginRepository.addSavedSearch(event.savedSearch.userId.toString());
     emit(state.copyWith(savedSearchModel: currentList));
   }
 
@@ -175,7 +176,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     VerifyOtpSubmitted event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: LoginStatus.otpLoading));
+    print(" REQUEST LOGIN");
+    print(" REQUEST LOGIN");
+    print(" REQUEST LOGIN");
+    print(" REQUEST LOGIN");
+    print(" REQUEST LOGIN");
+    print(" REQUEST LOGIN");
 
     try {
       final response = await loginRepository.verifyOTP(
@@ -791,7 +797,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
 
       if (response.statusCode == 200) {
-       // final data = jsonDecode(response.body);
+        // final data = jsonDecode(response.body);
         // final token = data['token'];
 
         emit(state.copyWith(
@@ -841,10 +847,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-    loginThroughSMSOtpRequestNew(
+  loginThroughSMSOtpRequestNew(
     LoginThroughSMSOtpRequestNew event,
-    Emitter<LoginState> emit,
+    emit,
   ) async {
+    print("OTP REQUEST LOGIN");
+    print("OTP REQUEST LOGIN");
+    print("OTP REQUEST LOGIN");
+    print("OTP REQUEST LOGIN");
+    print("OTP REQUEST LOGIN");
+    print("OTP REQUEST LOGIN");
+    print("OTP REQUEST LOGIN");
     emit(state.copyWith(
         loginThroughSMSOtpRequestNewEnum:
             LoginThroughSMSOtpRequestNewEnum.loading));
@@ -853,9 +866,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         event.phone,
         event.password,
       );
-
+      print("RESPONSE $response");
+      print("RESPONSE $response");
+      print("RESPONSE $response");
+      print("RESPONSE $response");
       if (response.statusCode == 200) {
-       // final data = jsonDecode(response.body);
+        // final data = jsonDecode(response.body);
         // final token = data['token'];
 
         emit(state.copyWith(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
-import 'package:readytogo/Features/login/login_otp/login_sms_screen.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import '../../Constants/constants.dart';
 import 'bloc/login_state.dart';
+import 'login_otp/login_through_sms_view.dart';
 import 'login_success_screen.dart';
 import '../../widgets/boxDecorationWidget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -266,8 +266,6 @@ class _VerificationViewEmailState extends State<VerificationViewEmail>
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.85,
                             height: 50,
-                            // width: 376,
-                            // height: 60,
                             child: ElevatedButton(
                               onPressed: (codeValue.length == 4 && !isLoading)
                                   ? () {
@@ -332,7 +330,7 @@ class _VerificationViewEmailState extends State<VerificationViewEmail>
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            LoginOtpRequestSMS()));
+                                            LoginThroughSMSViewOTPRequest()));
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Constants().themeColor,
