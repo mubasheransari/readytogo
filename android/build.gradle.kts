@@ -1,8 +1,8 @@
 // ✅ Top-level plugins block
 plugins {
-    id("com.android.application") version "8.7.0" apply false // ✅ Match your Gradle environment
-    id("org.jetbrains.kotlin.android") version "1.8.22" apply false // ✅ Match your installed Kotlin version
-    id("com.google.gms.google-services") version "4.4.0" apply false // ✅ Firebase plugin
+    id("com.android.application") version "8.7.0" apply false // Match your Gradle version
+    id("org.jetbrains.kotlin.android") version "1.8.22" apply false // Match your Kotlin version
+    id("com.google.gms.google-services") version "4.4.0" apply false // Google services plugin (for Google Sign-In)
 }
 
 // ✅ Required repositories
@@ -13,7 +13,7 @@ allprojects {
     }
 }
 
-// ✅ Relocate build directory (used in your original setup)
+// ✅ Relocate root build directory
 val newBuildDir = rootProject.layout.buildDirectory.dir("../../build").get()
 rootProject.layout.buildDirectory.set(newBuildDir)
 

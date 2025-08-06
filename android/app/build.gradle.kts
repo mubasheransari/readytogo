@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("com.google.gms.google-services") // ✅ Required for Firebase
+    id("com.google.gms.google-services") // ✅ Required for Google Sign-In and Firebase Messaging
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -9,7 +9,6 @@ android {
     namespace = "app.newreadytogo.com"
     compileSdk = flutter.compileSdkVersion
 
-    // ✅ Replace this with the required NDK version
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -33,6 +32,7 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("debug")
+            // Consider setting minifyEnabled, shrinkResources, proguard config for production
         }
     }
 }
@@ -42,6 +42,7 @@ flutter {
 }
 
 dependencies {
-    implementation("com.google.firebase:firebase-messaging:24.0.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    implementation("com.google.firebase:firebase-messaging:24.0.0") // ✅ Firebase messaging
+    implementation("com.google.android.gms:play-services-auth:21.0.0") // ✅ Google Sign-In
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4") // ✅ For Java 11 support
 }

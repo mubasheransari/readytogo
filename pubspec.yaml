@@ -55,6 +55,7 @@ dependencies:
   firebase_messaging:
   flutter_local_notifications: ^17.0.0
   geolocator: ^10.1.0
+  google_sign_in: ^6.1.5
 
 flutter_launcher_icons:
   android: "launcher_icon"

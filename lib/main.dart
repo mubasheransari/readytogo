@@ -9,6 +9,7 @@ import 'Features/ForgetPassword/bloc/forget_password_bloc.dart';
 import 'Features/login/bloc/login_bloc.dart';
 import 'Features/login/login_success_screen.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();
 //   runApp(MyApp());
@@ -397,3 +398,5 @@ class MyApp extends StatelessWidget {
         home: token != null ? LoginSuccessScreen() : SplashScreen());
   }
 }*/
+
+

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readytogo/Constants/constants.dart';
 import 'package:readytogo/Features/ForgetPassword/forget_password_screen.dart';
 import 'package:readytogo/Features/Signup/signup_screen.dart';
@@ -13,6 +14,46 @@ import 'bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'bloc/login_state.dart';
 
+class GoogleSignInService {
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'profile',
+    ],
+    // Only for Web — add your Web Client ID here
+    clientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
+  );
+
+  Future<void> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+
+      if (account == null) {
+        print('Google Sign-In aborted');
+        return;
+      }
+
+      final GoogleSignInAuthentication auth = await account.authentication;
+
+      final String? idToken = auth.idToken;
+      final String? accessToken = auth.accessToken;
+
+      print('✅ Signed in: ${account.email}');
+      print('🔐 ID Token: $idToken');
+      print('🔐 Access Token: $accessToken');
+
+      // Send token to your backend or use as needed
+    } catch (error) {
+      print('❌ Google Sign-In error: $error');
+    }
+  }
+
+  Future<void> signOut() async {
+    await _googleSignIn.signOut();
+    print('👋 Signed out from Google');
+  }
+}
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -24,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final GoogleSignInService _googleSignInService = GoogleSignInService();
 
   bool isValidEmail(String email) {
     return RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2,4}").hasMatch(email);
@@ -151,8 +193,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               final storage = GetStorage();
                               storage.write("password_login",
                                   passwordController.text.trim());
-                                    storage.write("email_login",
-                                  emailController.text.trim());
+                              storage.write(
+                                  "email_login", emailController.text.trim());
                               Future.microtask(() {
                                 Navigator.push(
                                   context,
@@ -239,25 +281,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 30),
                         _buildDividerWithOrText(),
                         const SizedBox(height: 20),
-                        InkWell(
-                          onTap: () {
-                            FcmRepository()
-                                .updateFcmToken("YOUR_TEST_TOKEN_HERE");
-                          },
-                          child: _buildSocialLoginButton(
-                            iconPath: 'assets/facebook.png',
-                            label: 'Login with Facebook',
-                            borderColor: const Color(0xFF1877F2),
-                          ),
+                        _buildSocialLoginButton(
+                          onTap: () {},
+                          iconPath: 'assets/facebook.png',
+                          label: 'Login with Facebook',
+                          borderColor: const Color(0xFF1877F2),
                         ),
                         const SizedBox(height: 20),
                         _buildSocialLoginButton(
+                          onTap: () {
+                            _googleSignInService.signInWithGoogle();
+                          },
                           iconPath: 'assets/Google.png',
                           label: 'Login with Google',
                           borderColor: const Color(0xFFDB4437),
                         ),
                         const SizedBox(height: 20),
                         _buildSocialLoginButton(
+                          onTap: () {},
                           iconPath: 'assets/Apple.png',
                           label: 'Login with Apple',
                           borderColor: Colors.black,
@@ -456,12 +497,13 @@ class _LoginScreenState extends State<LoginScreen> {
     required String iconPath,
     required String label,
     required Color borderColor,
+    required VoidCallback onTap,
   }) {
     return SizedBox(
       width: 376,
       height: 60,
       child: OutlinedButton.icon(
-        onPressed: () {},
+        onPressed: onTap,
         icon: Image.asset(iconPath, width: 32, height: 32),
         label: Text(
           label,
