@@ -5,6 +5,7 @@ import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
 import 'package:readytogo/Features/login/login_otp/verification_login_sms_screen.dart';
+import 'package:readytogo/splash_screen.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 
 import '../../../Constants/constants.dart';
@@ -27,8 +28,8 @@ class _LoginThroughSMSViewOTPRequestState
   }
 
   String? validatePhoneNumber(String value) {
-    if (value.isEmpty) return 'Email is required';
-   // if (!isValidEmail(value)) return 'Enter a valid email';
+    if (value.isEmpty) return 'Phone Number is required';
+    // if (!isValidEmail(value)) return 'Enter a valid email';
     return null;
   }
 
@@ -80,25 +81,7 @@ class _LoginThroughSMSViewOTPRequestState
                         ),
                         const SizedBox(height: 60),
                         Image.asset('assets/logo.png', height: 120, width: 115),
-                        // const SizedBox(height: 20),
-                        // const Text(
-                        //   'Forget Your Password?',
-                        //   style: TextStyle(
-                        //     fontSize: 28,
-                        //     fontWeight: FontWeight.w700,
-                        //     fontFamily: 'Satoshi',
-                        //   ),
-                        // ),
-                        // const SizedBox(height: 15),
-                        // const Text(
-                        //   "Let's get you back in.",
-                        //   style: TextStyle(
-                        //     fontFamily: 'Satoshi',
-                        //     fontSize: 24,
-                        //     color: Color(0xff666F80),
-                        //     fontWeight: FontWeight.w700,
-                        //   ),
-                        // ),
+
                         const SizedBox(height: 40),
                         CustomTextFieldWidget(
                           borderColor: Constants().themeColor,
@@ -125,12 +108,18 @@ class _LoginThroughSMSViewOTPRequestState
                               print("PHONE ${phoneNumberController.text}");
                               print("PHONE ${phoneNumberController.text}");
                               print("PHONE ${phoneNumberController.text}");
+                              if (!mounted) return;
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SplashScreen()),
+                              );
                               // Navigator.push(
                               //     context,
                               //     MaterialPageRoute(
                               //         builder: (context) =>
                               //             VerificationLoginSMSScreenOTP()));
-
                               toastWidget(
                                   "OTP Sent Successfully", Colors.green);
                             } else if (state.loginThroughSMSOtpRequestNewEnum ==
@@ -150,12 +139,13 @@ class _LoginThroughSMSViewOTPRequestState
                                     final storage = GetStorage();
                                     var password =
                                         storage.read("password_login");
-                                    FocusScope.of(context).unfocus();
+                                    print("Password : $password");
                                     context.read<LoginBloc>().add(
                                           LoginThroughSMSOtpRequestNew(
                                               phone: phoneNumberController.text,
                                               password: password),
                                         );
+                                    FocusScope.of(context).unfocus();
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

@@ -174,8 +174,8 @@ class LoginState extends Equatable {
   final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
   LoginState(
-      {
-      this.loginThroughSMSOtpRequestNewEnum = LoginThroughSMSOtpRequestNewEnum.initial,
+      {this.loginThroughSMSOtpRequestNewEnum =
+          LoginThroughSMSOtpRequestNewEnum.initial,
       this.searchResults,
       this.filterSearchResults,
       this.verifySMSOtpStatus = VerifySMSOtpStatus.initial,
@@ -209,7 +209,7 @@ class LoginState extends Equatable {
 
   /// Copy the state with updated fields
   LoginState copyWith({
-    LoginThroughSMSOtpRequestNewEnum ? loginThroughSMSOtpRequestNewEnum,
+    LoginThroughSMSOtpRequestNewEnum? loginThroughSMSOtpRequestNewEnum,
     VerifySMSOtpStatus? verifySMSOtpStatus,
     List<SearchModel>? searchResults,
     List<FilterSearchModel>? filterSearchResults,
@@ -238,7 +238,8 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
-      loginThroughSMSOtpRequestNewEnum : loginThroughSMSOtpRequestNewEnum ?? this.loginThroughSMSOtpRequestNewEnum,
+        loginThroughSMSOtpRequestNewEnum: loginThroughSMSOtpRequestNewEnum ??
+            this.loginThroughSMSOtpRequestNewEnum,
         verifySMSOtpStatus: verifySMSOtpStatus ?? this.verifySMSOtpStatus,
         loginThroughSMSOtpLoginRequestEnum:
             loginThroughSMSOtpLoginRequestEnum ??

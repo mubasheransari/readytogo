@@ -866,23 +866,69 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         event.phone,
         event.password,
       );
-      print("RESPONSE $response");
-      print("RESPONSE $response");
-      print("RESPONSE $response");
-      print("RESPONSE $response");
-      if (response.statusCode == 200) {
-        // final data = jsonDecode(response.body);
-        // final token = data['token'];
+      print("STATUS CODE: ${response.statusCode}");
+      print("BODY: ${response.body}");
 
+      if (response.statusCode == 200) {
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
+        print("STATUS 200");
         emit(state.copyWith(
-            loginThroughSMSOtpRequestNewEnum:
-                LoginThroughSMSOtpRequestNewEnum.success));
+          loginThroughSMSOtpRequestNewEnum:
+              LoginThroughSMSOtpRequestNewEnum.success,
+        ));
       } else {
+        // Optional: Decode error message
+        final error = jsonDecode(response.body);
+        print("ERROR: $error");
         emit(state.copyWith(
-            loginThroughSMSOtpRequestNewEnum:
-                LoginThroughSMSOtpRequestNewEnum.failure));
+          loginThroughSMSOtpRequestNewEnum:
+              LoginThroughSMSOtpRequestNewEnum.failure,
+        ));
       }
     } catch (e) {
+      print("EXCEPTION: $e");
+      emit(state.copyWith(
+        loginThroughSMSOtpRequestNewEnum:
+            LoginThroughSMSOtpRequestNewEnum.failure,
+      ));
+    }
+
+    // try {
+    //   final response = await loginRepository.requestLoginPasswordThroughSMS(
+    //     event.phone,
+    //     event.password,
+    //   );
+    //   print("RESPONSE $response");
+    //   print("RESPONSE $response");
+    //   print("RESPONSE $response");
+    //   print("RESPONSE $response");
+    //   if (response.statusCode == 200) {
+    //     print("UNDER STATUS CODE 200 ");
+    //     print("UNDER STATUS CODE 200 ");
+    //     print("UNDER STATUS CODE 200 ");
+    //     // final data = jsonDecode(response.body);
+    //     // final token = data['token'];
+
+    //     emit(state.copyWith(
+    //         loginThroughSMSOtpRequestNewEnum:
+    //             LoginThroughSMSOtpRequestNewEnum.success));
+    //   } else {
+    //     emit(state.copyWith(
+    //         loginThroughSMSOtpRequestNewEnum:
+    //             LoginThroughSMSOtpRequestNewEnum.failure));
+    //   }
+    // }
+    catch (e) {
       emit(state.copyWith(
           loginThroughSMSOtpRequestNewEnum:
               LoginThroughSMSOtpRequestNewEnum.failure));

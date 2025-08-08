@@ -326,6 +326,7 @@ class _VerificationViewEmailState extends State<VerificationViewEmail>
                             // height: 60,
                             child: ElevatedButton(
                               onPressed: () {
+                                print("Click");
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
