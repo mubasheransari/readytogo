@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readytogo/Constants/constants.dart';
+import 'package:readytogo/Service/auth_api.dart';
+import 'package:readytogo/Features/home_screen.dart';
+import 'package:readytogo/Features/welcome_screen.dart';
 import 'package:readytogo/Features/ForgetPassword/forget_password_screen.dart';
 import 'package:readytogo/Features/Signup/signup_screen.dart';
 import 'package:readytogo/Features/login/verification_screen.dart';
@@ -21,30 +24,52 @@ class GoogleSignInService {
       'profile',
     ],
     // Only for Web — add your Web Client ID here
-    clientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
+    serverClientId: '362654277646-usi14hdjf4uj00nsfpj1bvbu5j2phb07.apps.googleusercontent.com',
   );
 
-  Future<void> signInWithGoogle() async {
+  Future<void> signInWithGoogle(BuildContext context) async {
     try {
+      // Force account picker by disconnecting previous session
+      try {
+        await _googleSignIn.disconnect();
+      } catch (_) {}
+      await _googleSignIn.signOut();
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
-
       if (account == null) {
         print('Google Sign-In aborted');
         return;
       }
-
       final GoogleSignInAuthentication auth = await account.authentication;
-
       final String? idToken = auth.idToken;
       final String? accessToken = auth.accessToken;
+      print('✅ Signed in: \\${account.email}');
+      print('🔐 ID Token: \\${idToken}');
+      print('🔐 Access Token: \\${accessToken}');
 
-      print('✅ Signed in: ${account.email}');
-      print('🔐 ID Token: $idToken');
-      print('🔐 Access Token: $accessToken');
-
-      // Send token to your backend or use as needed
+      if (idToken != null) {
+        final response = await AuthApi.sendGoogleJwtToBackend(idToken);
+        print('Backend response: \\${response.statusCode} - \\${response.body}');
+        if (response.statusCode == 200) {
+          Future.microtask(() {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => HomeScreen()),
+            );
+          });
+        } else {
+          // Optionally show error to user
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Google login failed. Please try again.')),
+          );
+        }
+      } else {
+        print('No ID token received from Google.');
+      }
     } catch (error) {
       print('❌ Google Sign-In error: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google login error. Please try again.')),
+      );
     }
   }
 
@@ -290,7 +315,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 20),
                         _buildSocialLoginButton(
                           onTap: () {
-                            _googleSignInService.signInWithGoogle();
+                            _googleSignInService.signInWithGoogle(context);
                           },
                           iconPath: 'assets/Google.png',
                           label: 'Login with Google',

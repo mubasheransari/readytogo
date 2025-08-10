@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "849390676878",
-    "project_id": "readytogo-fd1f4",
-    "storage_bucket": "readytogo-fd1f4.firebasestorage.app"
+    "project_number": "581053811139",
+    "project_id": "rrtg-e480e",
+    "storage_bucket": "rrtg-e480e.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:849390676878:android:dc3592d195cf28c49492df",
+        "mobilesdk_app_id": "1:581053811139:android:f8a821f94029ae44bf1576",
         "android_client_info": {
-          "package_name": "app.newreadytogo.com"
+          "package_name": "app.rrtg.com"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDdsp025BZ6Y8aFNyn47ndHNbovv2-5-40"
+          "current_key": "AIzaSyAAowwYlT8M5-pN9s4ZQGvVr6DPTPV2eho"
         }
       ],
       "services": {
