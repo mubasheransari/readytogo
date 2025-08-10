@@ -19,9 +19,9 @@ class GoogleSignInService {
     scopes: [
       'email',
       'profile',
-    ],
-    // Only for Web — add your Web Client ID here
-    clientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
+    ], //1062837376701-3cedemkmb3nrha0s8159gt9bk6m45fuo.apps.googleusercontent.com
+    serverClientId:
+        '362654277646-o21p31eh2ngvtjdhshpcg35booqn6qra.apps.googleusercontent.com',
   );
 
   Future<void> signInWithGoogle() async {
@@ -29,20 +29,26 @@ class GoogleSignInService {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
       if (account == null) {
-        print('Google Sign-In aborted');
+        print('Google Sign-In aborted by user');
         return;
       }
 
       final GoogleSignInAuthentication auth = await account.authentication;
 
-      final String? idToken = auth.idToken;
+      final String? idToken = auth.idToken; // ✅ JWT
       final String? accessToken = auth.accessToken;
 
+      if (idToken == null) {
+        print('❌ No ID token received');
+        return;
+      }
+
       print('✅ Signed in: ${account.email}');
-      print('🔐 ID Token: $idToken');
+      print('🔐 ID Token (JWT): $idToken');
       print('🔐 Access Token: $accessToken');
 
-      // Send token to your backend or use as needed
+      // ✅ Send token to your backend
+      // await sendTokenToBackend(idToken);
     } catch (error) {
       print('❌ Google Sign-In error: $error');
     }
@@ -53,6 +59,47 @@ class GoogleSignInService {
     print('👋 Signed out from Google');
   }
 }
+
+// class GoogleSignInService {
+//   final GoogleSignIn _googleSignIn = GoogleSignIn(
+//     scopes: [
+//       'email',
+//       'profile',
+//     ],
+//     // Only for Web — add your Web Client ID here
+//     clientId:
+//         '362654277646-usi14hdjf4uj00nsfpj1bvbu5j2phb07.apps.googleusercontent.com',
+//   );
+
+//   Future<void> signInWithGoogle() async {
+//     try {
+//       final GoogleSignInAccount? account = await _googleSignIn.signIn();
+
+//       if (account == null) {
+//         print('Google Sign-In aborted');
+//         return;
+//       }
+
+//       final GoogleSignInAuthentication auth = await account.authentication;
+
+//       final String? idToken = auth.idToken;
+//       final String? accessToken = auth.accessToken;
+
+//       print('✅ Signed in: ${account.email}');
+//       print('🔐 ID Token: $idToken');
+//       print('🔐 Access Token: $accessToken');
+
+//       // Send token to your backend or use as needed
+//     } catch (error) {
+//       print('❌ Google Sign-In error: $error');
+//     }
+//   }
+
+//   Future<void> signOut() async {
+//     await _googleSignIn.signOut();
+//     print('👋 Signed out from Google');
+//   }
+// }
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

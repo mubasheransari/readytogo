@@ -886,6 +886,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           loginThroughSMSOtpRequestNewEnum:
               LoginThroughSMSOtpRequestNewEnum.success,
         ));
+        
       } else {
         // Optional: Decode error message
         final error = jsonDecode(response.body);
@@ -928,10 +929,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     //             LoginThroughSMSOtpRequestNewEnum.failure));
     //   }
     // }
-    catch (e) {
-      emit(state.copyWith(
-          loginThroughSMSOtpRequestNewEnum:
-              LoginThroughSMSOtpRequestNewEnum.failure));
-    }
+
   }
 }
