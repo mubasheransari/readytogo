@@ -310,7 +310,15 @@ class _EditOrganizationalProfileScreenState
                                   ),
                                   child: Row(
                                     children: [
-                                      Icon(Icons.edit),
+                                      IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () {
+                                          final location =
+                                              widget.profile.locations![index];
+                                          _showEditLocationDialog(
+                                              context, location, index);
+                                        },
+                                      ),
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -375,6 +383,64 @@ class _EditOrganizationalProfileScreenState
             );
           },
         ),
+      ),
+    );
+  }
+
+  void _showEditLocationDialog(
+      BuildContext context, Location location, int index) {
+    final streetController =
+        TextEditingController(text: location.streetAddress ?? "");
+    final areaController = TextEditingController(text: location.area ?? "");
+    final cityController = TextEditingController(text: location.city ?? "");
+    final stateController = TextEditingController(text: location.state ?? "");
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Edit Location'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: streetController,
+                decoration: InputDecoration(labelText: 'Street Address'),
+              ),
+              TextField(
+                controller: areaController,
+                decoration: InputDecoration(labelText: 'Area'),
+              ),
+              TextField(
+                controller: cityController,
+                decoration: InputDecoration(labelText: 'City'),
+              ),
+              TextField(
+                controller: stateController,
+                decoration: InputDecoration(labelText: 'State'),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          ElevatedButton(
+            child: Text('Save'),
+            onPressed: () {
+              setState(() {
+                widget.profile.locations![index] = location.copyWith(
+                  streetAddress: streetController.text,
+                  area: areaController.text,
+                  city: cityController.text,
+                  state: stateController.text,
+                );
+              });
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
     );
   }
