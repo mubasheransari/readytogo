@@ -285,19 +285,72 @@ class _EditOrganizationalProfileScreenState
                           const SizedBox(height: 30),
                           Padding(
                             padding: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width * 0.44,
-                            ),
-                            child: const Text(
-                              'Address Details',
-                              style: TextStyle(
-                                fontSize: 22,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: 'Satoshi',
-                              ),
+                                left:
+                                    0 //MediaQuery.of(context).size.width * 0.44,
+                                ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5.0),
+                                  child: const Text(
+                                    'Address Details',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Satoshi',
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 7.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      _showEditLocationDialog(
+                                          context, null, null);
+                                    },
+                                    child: Text(
+                                      "Add Address".toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Constants().themeColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Satoshi',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // InkWell(
+                                //   onTap: () {
+                                // _showEditLocationDialog(
+                                //     context, null, null);
+                                //   },
+                                //   child: Container(
+                                //     height: 30,
+                                //     width: 1800,
+                                //     decoration: BoxDecoration(
+                                //         color: Constants().themeColor),
+                                //     child: Center(
+                                //       child: Text(
+                                //         "Add Address",
+                                //         style: TextStyle(
+                                //           fontSize: 18,
+                                //           color: Colors.black87,
+                                //           fontWeight: FontWeight.w700,
+                                //           fontFamily: 'Satoshi',
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   ),
+                                // )
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 20),
                           // _buildAllLocations(widget.profile.locations ?? []),
                           ListView.builder(
                               shrinkWrap: true,
@@ -388,6 +441,92 @@ class _EditOrganizationalProfileScreenState
   }
 
   void _showEditLocationDialog(
+      BuildContext context, Location? location, int? index) {
+    // Controllers pre-filled if editing
+    final streetController =
+        TextEditingController(text: location?.streetAddress ?? "");
+    final areaController = TextEditingController(text: location?.area ?? "");
+    final cityController = TextEditingController(text: location?.city ?? "");
+    final stateController = TextEditingController(text: location?.state ?? "");
+    final zipController = TextEditingController(text: location?.zipCode ?? "");
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(index == null ? 'Add Address' : 'Edit Address'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: streetController,
+                decoration: const InputDecoration(labelText: 'Street Address'),
+              ),
+              TextField(
+                controller: areaController,
+                decoration: const InputDecoration(labelText: 'Area'),
+              ),
+              TextField(
+                controller: cityController,
+                decoration: const InputDecoration(labelText: 'City'),
+              ),
+              TextField(
+                controller: stateController,
+                decoration: const InputDecoration(labelText: 'State'),
+              ),
+              TextField(
+                controller: zipController,
+                decoration: const InputDecoration(labelText: 'Zip Code'),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          ElevatedButton(
+            child: Text(index == null ? 'Add Address' : 'Edit Address'),
+            onPressed: () {
+              final newLocation = Location(
+                id: location?.id,
+                streetAddress: streetController.text.trim(),
+                area: areaController.text.trim(),
+                city: cityController.text.trim(),
+                state: stateController.text.trim(),
+                zipCode: zipController.text.trim(),
+                latitude: location?.latitude,
+                longitude: location?.longitude,
+              );
+
+              setState(() {
+                if (index == null) {
+                  // Add mode
+                  if (widget.profile.locations == null) {
+                    // if list is null, create it once
+                    widget.profile.locations = []; // ❌ won't work if final
+                    // instead: make sure your Profile model initializes locations as []
+                    // OR handle new profile creation before this call
+                  }
+                  widget.profile.locations!.add(newLocation);
+                } else {
+                  // Edit mode
+                  widget.profile.locations![index] = newLocation;
+                }
+              });
+
+              Navigator.pop(context);
+
+              // Optional: BLoC API update
+              // context.read<ProfileBloc>().add(UpdateProfileEvent(profile: widget.profile));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /* void _showEditLocationDialog(
       BuildContext context, Location location, int index) {
     final streetController =
         TextEditingController(text: location.streetAddress ?? "");
@@ -443,7 +582,7 @@ class _EditOrganizationalProfileScreenState
         ],
       ),
     );
-  }
+  }*/
 
   Widget _buildInfoRow(String title, String value) {
     return Row(

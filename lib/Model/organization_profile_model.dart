@@ -20,7 +20,7 @@ class OrganizationProfileModel {
   final dynamic organizationJoiningDate;
   final List<GroupAssociation>? groupAssociations;
   final dynamic specializations;
-  final List<Location>? locations;
+  late final List<Location>? locations;
   final List<dynamic>? organizationProfessionals;
 
   OrganizationProfileModel({
