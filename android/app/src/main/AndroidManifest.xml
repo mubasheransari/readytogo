@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.rrtg.com">
+    package="app.newreadytogo.com">
 
     <!-- ✅ Internet Permission -->
     <uses-permission android:name="android.permission.INTERNET"/>

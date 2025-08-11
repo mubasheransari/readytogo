@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readytogo/Constants/constants.dart';
+import 'package:readytogo/Constants/api_constants.dart';
 import 'package:readytogo/Service/auth_api.dart';
 import 'package:readytogo/Features/home_screen.dart';
 import 'package:readytogo/Features/welcome_screen.dart';
@@ -23,8 +24,7 @@ class GoogleSignInService {
       'email',
       'profile',
     ],
-    // Only for Web — add your Web Client ID here
-    serverClientId: '362654277646-usi14hdjf4uj00nsfpj1bvbu5j2phb07.apps.googleusercontent.com',
+    serverClientId: ApiConstants.GOOGLE_SERVER_CLIENT_ID,
   );
 
   Future<void> signInWithGoogle(BuildContext context) async {

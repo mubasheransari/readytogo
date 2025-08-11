@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "app.rrtg.com"
+    namespace = "app.newreadytogo.com"
     compileSdk = flutter.compileSdkVersion
 
     ndkVersion = "27.0.12077973"
@@ -22,7 +22,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "app.rrtg.com"
+        applicationId = "app.newreadytogo.com"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
