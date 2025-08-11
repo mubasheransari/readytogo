@@ -108,35 +108,14 @@ enum GetSavedSearchesStatus {
   getSavedSearchesError,
 }
 
-// enum LoginOTPStatus {
-//   initial,
-//   loading,
-//   success,
-//   failure,
-// }
-
-enum VerifySMSOtpStatus {
-  initial,
-  loading,
-  success,
-  failure,
-}
-
-enum LoginThroughSMSOtpLoginRequestEnum {
-  initial,
-  loading,
-  success,
-  failure,
-}
-
-enum VerificationLoginThroughSMSOtpLoginRequestEnum {
-  initial,
-  loading,
-  success,
-  failure,
-}
-
 enum LoginThroughSMSOtpRequestNewEnum {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
+enum VerificationLoginThroughSMS {
   initial,
   loading,
   success,
@@ -146,16 +125,13 @@ enum LoginThroughSMSOtpRequestNewEnum {
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
+  final VerificationLoginThroughSMS verificationLoginThroughSMS;
   final LoginThroughSMSOtpRequestNewEnum loginThroughSMSOtpRequestNewEnum;
   final List<SearchModel>? searchResults;
   final List<FilterSearchModel>? filterSearchResults;
   final SearchStatus searchStatus;
   final GetSavedSearchesStatus getSavedSearchesStatus;
-  final LoginThroughSMSOtpLoginRequestEnum loginThroughSMSOtpLoginRequestEnum;
-  final VerificationLoginThroughSMSOtpLoginRequestEnum
-      verificationLoginThroughSMSOtpLoginRequestEnum;
   final FilterSearchStatus filterSearchStatus;
-  final VerifySMSOtpStatus verifySMSOtpStatus;
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
   //final LoginOTPStatus loginOTPStatus;
@@ -174,16 +150,12 @@ class LoginState extends Equatable {
   final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
   LoginState(
-      {this.loginThroughSMSOtpRequestNewEnum =
+      {
+      this.verificationLoginThroughSMS = VerificationLoginThroughSMS.initial,
+      this.loginThroughSMSOtpRequestNewEnum =
           LoginThroughSMSOtpRequestNewEnum.initial,
       this.searchResults,
       this.filterSearchResults,
-      this.verifySMSOtpStatus = VerifySMSOtpStatus.initial,
-      this.loginThroughSMSOtpLoginRequestEnum =
-          LoginThroughSMSOtpLoginRequestEnum.initial,
-      this.verificationLoginThroughSMSOtpLoginRequestEnum =
-          VerificationLoginThroughSMSOtpLoginRequestEnum.initial,
-      //this.loginOTPStatus = LoginOTPStatus.initial,
       this.getSavedSearchesStatus =
           GetSavedSearchesStatus.getSavedSearchesInitial,
       this.searchStatus = SearchStatus.searchInitial,
@@ -209,14 +181,10 @@ class LoginState extends Equatable {
 
   /// Copy the state with updated fields
   LoginState copyWith({
+    VerificationLoginThroughSMS? verificationLoginThroughSMS,
     LoginThroughSMSOtpRequestNewEnum? loginThroughSMSOtpRequestNewEnum,
-    VerifySMSOtpStatus? verifySMSOtpStatus,
     List<SearchModel>? searchResults,
     List<FilterSearchModel>? filterSearchResults,
-    LoginThroughSMSOtpLoginRequestEnum? loginThroughSMSOtpLoginRequestEnum,
-    VerificationLoginThroughSMSOtpLoginRequestEnum?
-        verificationLoginThroughSMSOtpLoginRequestEnum,
-    // LoginOTPStatus? loginOTPStatus,
     SearchStatus? searchStatus,
     GetSavedSearchesStatus? getSavedSearchesStatus,
     FilterSearchStatus? filterSearchStatus,
@@ -238,16 +206,12 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
+        verificationLoginThroughSMS:
+            verificationLoginThroughSMS ?? this.verificationLoginThroughSMS,
         loginThroughSMSOtpRequestNewEnum: loginThroughSMSOtpRequestNewEnum ??
             this.loginThroughSMSOtpRequestNewEnum,
-        verifySMSOtpStatus: verifySMSOtpStatus ?? this.verifySMSOtpStatus,
-        loginThroughSMSOtpLoginRequestEnum:
-            loginThroughSMSOtpLoginRequestEnum ??
-                this.loginThroughSMSOtpLoginRequestEnum,
-        verificationLoginThroughSMSOtpLoginRequestEnum:
-            verificationLoginThroughSMSOtpLoginRequestEnum ??
-                this.verificationLoginThroughSMSOtpLoginRequestEnum,
-        // loginOTPStatus: loginOTPStatus ?? this.loginOTPStatus,
+        // verifySMSOtpStatus: verifySMSOtpStatus ?? this.verifySMSOtpStatus,
+
         savedSearchModel: savedSearchModel ?? this.savedSearchModel,
         filterSearchResults: filterSearchResults ?? this.filterSearchResults,
         searchResults: searchResults ?? this.searchResults,
@@ -281,11 +245,9 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
+        verificationLoginThroughSMS,
         loginThroughSMSOtpRequestNewEnum,
-        verifySMSOtpStatus,
-        loginThroughSMSOtpLoginRequestEnum,
-        verificationLoginThroughSMSOtpLoginRequestEnum,
-        //loginOTPStatus,
+        //verifySMSOtpStatus,//100@Testing
         savedSearchModel,
         searchResults,
         filterSearchResults,
@@ -315,66 +277,3 @@ class LoginState extends Equatable {
   }
 }
 
-
-
-// class LoginState {}
-
-// class LoginInitial extends LoginState {}
-
-// class LoginLoading extends LoginState {}
-
-// class LoginSuccess extends LoginState {}
-
-// class LoginFailure extends LoginState {
-//   final String error;
-
-//   LoginFailure(this.error);
-// }
-
-// class LoginOtpLoading extends LoginState {}
-
-// class LoginOtpSuccess extends LoginState {
-//   final String token;
-
-//   LoginOtpSuccess(this.token);
-// }
-
-
-// // class LoginOtpSuccess extends LoginState {}
-
-// class LoginOtpFailure extends LoginState {
-//   final String error;
-
-//   LoginOtpFailure(this.error);
-// }
-
-// //profile states
-
-// class ProfileInitial extends LoginState {}
-
-// class ProfileLoading extends LoginState {}
-
-// class ProfileLoaded extends LoginState {
-//   final IndividualProfileModel profile;
-
-//    ProfileLoaded(this.profile);
-// }
-
-// class ProfileError extends LoginState {
-//   final String message;
-
-//    ProfileError(this.message);
-// }
-
-// class LoginOtpAndProfileSuccess extends LoginState {
-//   final String token;
-//   final IndividualProfileModel profile;
-
-//    LoginOtpAndProfileSuccess({
-//     required this.token,
-//     required this.profile,
-//   });
-
-//   @override
-//   List<Object> get props => [token, profile];
-// }

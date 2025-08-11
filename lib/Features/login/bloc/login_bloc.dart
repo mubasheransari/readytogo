@@ -29,7 +29,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetSavedSearches>(getSavedSearches);
     on<RemoveSavedSearch>(removeSavedSearch);
     on<AddSavedSearch>(addSavedSearch);
-    on<LoginThroughSMSOtpLoginRequest>(loginThroughSMSOtpLoginRequest);
     on<VerificationLoginThroughSMSOtpLoginRequest>(
         verificationLoginThroughSMSOtpLoginRequest);
     on<LoginThroughSMSOtpRequestNew>(loginThroughSMSOtpRequestNew);
@@ -637,117 +636,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  /*updateIndividualProfile(
-    UpdateIndividualProfile event,
-    Emitter<LoginState> emit,
-  ) async {
-    emit(state.copyWith(status: LoginStatus.updateProfileLoading));
 
-    try {
-      final response = await loginRepository.updateIndividualProfile(
-        id: event.userId,
-        profile: event.profile,
-        profileImage: event.profileImage,
-      );
-
-      if (response.statusCode == 200) {
-        // ✅ API call succeeded
-        emit(state.copyWith(status: LoginStatus.updateProfileSuccess));
-      } else {
-        // ❌ Server responded with error
-        emit(state.copyWith(
-          status: LoginStatus.updateProfileError,
-          errorMessage: response.body.isNotEmpty
-              ? response.body
-              : 'Failed to update profile.',
-        ));
-      }
-    } catch (e) {
-      // ❌ Request threw an exception
-      emit(state.copyWith(
-        status: LoginStatus.updateProfileError,
-        errorMessage: 'Exception: ${e.toString()}',
-      ));
-    }
-  }*/
-
-//   updateIndividualProfile(
-//     UpdateIndividualProfile event, Emitter<LoginState> emit) async {
-//   emit(state.copyWith(status: LoginStatus.updateProfileLoading));
-//   try {
-//     final response = await loginRepository.updateIndividualProfile(
-//       id: event.userId,
-//       profile: event.profile,
-//       profileImage: event.profileImage,
-//     );
-
-//     if (response.statusCode == 200) {
-//       emit(state.copyWith(status: LoginStatus.updateProfileSuccess));
-//     } else {
-//       emit(state.copyWith(
-//         status: LoginStatus.updateProfileError,
-//         errorMessage: response.body,
-//       ));
-//     }
-//   } catch (e) {
-//     emit(state.copyWith(
-//       status: LoginStatus.updateProfileError,
-//       errorMessage: e.toString(),
-//     ));
-//   }
-// }
-
-  /* updateIndividualProfile(
-    UpdateIndividualProfile event, Emitter<LoginState> emit) async {
-  emit(state.copyWith(status: LoginStatus.updateProfileLoading));
-  try {
-    final updatedProfile = await loginRepository.updateIndividualProfile(
-      id: event.userId,
-      profile: event.profile,
-      profileImage: event.profileImage,
-    );
-
-    emit(state.copyWith(
-      status: LoginStatus.updateProfileSuccess,
-      profile: updatedProfile,
-    ));
-  } catch (e) {
-    emit(state.copyWith(
-      status: LoginStatus.updateProfileError,
-      errorMessage: e.toString(),
-    ));
-  }
-}*/
-
-  /* updateIndividualProfile(
-      UpdateIndividualProfile event, Emitter<LoginState> emit) async {
-    emit(state.copyWith(status: LoginStatus.updateProfileLoading));
-    try {
-      final response = await loginRepository.updateIndividualProfile(
-        id: event.userId,
-        profile: event.profile,
-        profileImage: event.profileImage,
-      );
-
-      print("RESPONSE ${response}");
-      print("RESPONSE $response");
-      print("RESPONSE $response");
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        emit(LoginState(status: LoginStatus.updateProfileSuccess));
-      } else {
-        emit(LoginState(
-          status: LoginStatus.updateProfileError,
-          errorMessage: response.body,
-        ));
-      }
-    } catch (e) {
-      emit(LoginState(
-        status: LoginStatus.updateProfileError,
-        errorMessage: e.toString(),
-      ));
-    }
-  }*/
 
   logoutRequested(LogoutRequested event, emit) {
     emit(state.copyWith(
@@ -783,45 +672,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  loginThroughSMSOtpLoginRequest(
-    LoginThroughSMSOtpLoginRequest event,
-    Emitter<LoginState> emit,
-  ) async {
-    emit(state.copyWith(
-        loginThroughSMSOtpLoginRequestEnum:
-            LoginThroughSMSOtpLoginRequestEnum.loading));
-    try {
-      final response = await loginRepository.requestLoginPasswordThroughSMS(
-        event.phone,
-        event.password,
-      );
 
-      if (response.statusCode == 200) {
-        // final data = jsonDecode(response.body);
-        // final token = data['token'];
-
-        emit(state.copyWith(
-            loginThroughSMSOtpLoginRequestEnum:
-                LoginThroughSMSOtpLoginRequestEnum.success));
-      } else {
-        emit(state.copyWith(
-            loginThroughSMSOtpLoginRequestEnum:
-                LoginThroughSMSOtpLoginRequestEnum.failure));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-          loginThroughSMSOtpLoginRequestEnum:
-              LoginThroughSMSOtpLoginRequestEnum.failure));
-    }
-  }
 
   verificationLoginThroughSMSOtpLoginRequest(
     VerificationLoginThroughSMSOtpLoginRequest event,
     Emitter<LoginState> emit,
   ) async {
     emit(state.copyWith(
-        verificationLoginThroughSMSOtpLoginRequestEnum:
-            VerificationLoginThroughSMSOtpLoginRequestEnum.loading));
+        verificationLoginThroughSMS:
+            VerificationLoginThroughSMS.loading));
     try {
       final response = await loginRepository.verifySMSOtp(
         event.phone,
@@ -833,17 +692,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         // final token = data['token'];
 
         emit(state.copyWith(
-            verificationLoginThroughSMSOtpLoginRequestEnum:
-                VerificationLoginThroughSMSOtpLoginRequestEnum.success));
+            verificationLoginThroughSMS:
+                VerificationLoginThroughSMS.success));
       } else {
         emit(state.copyWith(
-            verificationLoginThroughSMSOtpLoginRequestEnum:
-                VerificationLoginThroughSMSOtpLoginRequestEnum.failure));
+            verificationLoginThroughSMS:
+                VerificationLoginThroughSMS.failure));
       }
     } catch (e) {
       emit(state.copyWith(
-          verificationLoginThroughSMSOtpLoginRequestEnum:
-              VerificationLoginThroughSMSOtpLoginRequestEnum.failure));
+          verificationLoginThroughSMS:
+              VerificationLoginThroughSMS.failure));
     }
   }
 
@@ -859,12 +718,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     print("OTP REQUEST LOGIN");
     print("OTP REQUEST LOGIN");
     emit(state.copyWith(
-        loginThroughSMSOtpRequestNewEnum:
+      status: LoginStatus.initial,
+        loginThroughSMSOtpRequestNewEnum://
             LoginThroughSMSOtpRequestNewEnum.loading));
     try {
       final response = await loginRepository.requestLoginPasswordThroughSMS(
         event.phone,
-        event.password,
+        event.password,//100@Testing
       );
       print("STATUS CODE: ${response.statusCode}");
       print("BODY: ${response.body}");
@@ -886,6 +746,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           loginThroughSMSOtpRequestNewEnum:
               LoginThroughSMSOtpRequestNewEnum.success,
         ));
+        
       } else {
         // Optional: Decode error message
         final error = jsonDecode(response.body);
@@ -928,10 +789,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     //             LoginThroughSMSOtpRequestNewEnum.failure));
     //   }
     // }
-    catch (e) {
-      emit(state.copyWith(
-          loginThroughSMSOtpRequestNewEnum:
-              LoginThroughSMSOtpRequestNewEnum.failure));
-    }
+
   }
 }

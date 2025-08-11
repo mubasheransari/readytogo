@@ -5,7 +5,6 @@ import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
 import 'package:readytogo/Features/login/login_otp/verification_login_sms_screen.dart';
-import 'package:readytogo/splash_screen.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 
 import '../../../Constants/constants.dart';
@@ -13,7 +12,9 @@ import '../../../widgets/boxDecorationWidget.dart';
 import '../../../widgets/textfeild_widget.dart';
 
 class LoginThroughSMSViewOTPRequest extends StatefulWidget {
-  @override
+  LoginThroughSMSViewOTPRequest({Key? key}) : super(key: key);
+
+  @override //100@Testing
   State<LoginThroughSMSViewOTPRequest> createState() =>
       _LoginThroughSMSViewOTPRequestState();
 }
@@ -22,10 +23,6 @@ class _LoginThroughSMSViewOTPRequestState
     extends State<LoginThroughSMSViewOTPRequest> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController phoneNumberController = TextEditingController();
-
-  bool isValidEmail(String email) {
-    return RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$").hasMatch(email);
-  }
 
   String? validatePhoneNumber(String value) {
     if (value.isEmpty) return 'Phone Number is required';
@@ -71,7 +68,7 @@ class _LoginThroughSMSViewOTPRequestState
                             const Text(
                               'Login Through SMS',
                               style: TextStyle(
-                                fontSize: 24,
+                                fontSize: 24, //100@Testing
                                 color: Colors.black87,
                                 fontWeight: FontWeight.w700,
                                 fontFamily: 'Satoshi',
@@ -103,23 +100,16 @@ class _LoginThroughSMSViewOTPRequestState
                               final box = GetStorage();
                               box.write(
                                   "phone", phoneNumberController.text.trim());
-                              print("PHONE ${phoneNumberController.text}");
-                              print("PHONE ${phoneNumberController.text}");
-                              print("PHONE ${phoneNumberController.text}");
-                              print("PHONE ${phoneNumberController.text}");
-                              print("PHONE ${phoneNumberController.text}");
-                              if (!mounted) return;
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SplashScreen()),
-                              );
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             VerificationLoginSMSScreenOTP()));
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          VerificationLoginSMSScreenOTP(phoneNumber: phoneNumberController.text,)),
+                                );
+                              });//100@Testing
+
                               toastWidget(
                                   "OTP Sent Successfully", Colors.green);
                             } else if (state.loginThroughSMSOtpRequestNewEnum ==
@@ -127,12 +117,12 @@ class _LoginThroughSMSViewOTPRequestState
                               toastWidget("Failed", Colors.red);
                             }
                           },
+
                           builder: (context, state) {
                             return SizedBox(
                               width: MediaQuery.of(context).size.width * 0.85,
                               height: 50,
-                              // width: 376,
-                              // height: 60,
+                   
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 ProfessionalProfileModel professionalProfileModelFromJson(String str) =>
     ProfessionalProfileModel.fromJson(json.decode(str));
 
@@ -101,7 +100,7 @@ class ProfessionalProfileModel {
     List<GroupAssociation>? groupAssociations,
     List<SpecializationId>? specializationIds,
     String? specializationIdsJson, // ✅ json input
-    String? locationJson,          // ✅ json input
+    String? locationJson, // ✅ json input
     dynamic organizationProfessionals,
   }) {
     final updatedLocations = locationJson != null
@@ -138,10 +137,9 @@ class ProfessionalProfileModel {
       organizationProfessionals:
           organizationProfessionals ?? this.organizationProfessionals,
     );
-    
   }
-  
 }
+
 class GroupAssociation {
   final String? groupId;
   final String? groupName;
@@ -192,6 +190,28 @@ class Location {
     this.longitude,
   });
 
+  Location copyWith({
+    String? id,
+    String? streetAddress,
+    String? area,
+    String? city,
+    String? state,
+    String? zipCode,
+    double? latitude,
+    double? longitude,
+  }) {
+    return Location(
+      id: id ?? this.id,
+      streetAddress: streetAddress ?? this.streetAddress,
+      area: area ?? this.area,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      zipCode: zipCode ?? this.zipCode,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+    );
+  }
+
   factory Location.fromJson(Map<String, dynamic> json) => Location(
         id: json["id"],
         streetAddress: json["streetAddress"],
@@ -215,6 +235,50 @@ class Location {
       };
 }
 
+/*class Location {
+  final String? id;
+  final String? streetAddress;
+  final String? area;
+  final String? city;
+  final String? state;
+  final String? zipCode;
+  final double? latitude;
+  final double? longitude;
+
+  Location({
+    this.id,
+    this.streetAddress,
+    this.area,
+    this.city,
+    this.state,
+    this.zipCode,
+    this.latitude,
+    this.longitude,
+  });
+
+  factory Location.fromJson(Map<String, dynamic> json) => Location(
+        id: json["id"],
+        streetAddress: json["streetAddress"],
+        area: json["area"],
+        city: json["city"],
+        state: json["state"],
+        zipCode: json["zipCode"],
+        latitude: json["latitude"]?.toDouble(),
+        longitude: json["longitude"]?.toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "streetAddress": streetAddress,
+        "area": area,
+        "city": city,
+        "state": state,
+        "zipCode": zipCode,
+        "latitude": latitude,
+        "longitude": longitude,
+      };
+}
+*/
 class SpecializationId {
   final String? id;
   final String? name;

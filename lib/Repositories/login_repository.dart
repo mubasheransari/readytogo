@@ -103,7 +103,6 @@ class LoginRepository {
     var storage = GetStorage();
     var token = storage.read("id");
 
-    // ✅ Set Authorization header (do NOT set Content-Type manually for MultipartRequest)
     if (token != null && token.toString().isNotEmpty) {
       request.headers['Authorization'] = 'Bearer $token';
     }
@@ -129,7 +128,7 @@ class LoginRepository {
       "City": loc?.city ?? "",
       "State": loc?.state ?? "",
       "ZipCode": loc?.zipCode ?? "",
-      "ProfileImageUrl": profile.profileImageUrl ?? "",
+      "ProfileImageUrl": profile.profileImageUrl?? '',//10@Testing
       "LocationsJson": jsonEncode(
         profile.locations?.map((e) => e.toJson()).toList() ?? [],
       ),
@@ -177,20 +176,6 @@ class LoginRepository {
     return null;
   }
 
-// Helper method (if not already defined)
-// String? _extractOrganizationId(dynamic organizationProfessionals) {
-//   if (organizationProfessionals is List && organizationProfessionals.isNotEmpty) {
-//     final first = organizationProfessionals.first;
-//     if (first is Map && first.containsKey('organizationId')) {
-//       return first['organizationId']?.toString();
-//     } else if (first is String) {
-//       return first;
-//     }
-//   } else if (organizationProfessionals is String) {
-//     return organizationProfessionals;
-//   }
-//   return null;
-// }
 
   Future<http.Response> updateIndividualProfile({
     required String id,
@@ -262,143 +247,6 @@ class LoginRepository {
     return await http.Response.fromStream(streamedResponse);
   }
 
-  /*Future<http.Response> updateIndividualProfile({
-    required String id,
-    required IndividualProfileModel profile,
-    File? profileImage,
-  }) async {
-    final uri = Uri.parse(
-        'http://173.249.27.4:343/api/Profile/individual/edit-profile');
-
-    final request = http.MultipartRequest('PUT', uri);
-
-    var storage = GetStorage();
-    var token = storage.read("id");
-
-    request.headers.addAll({
-      if (token.isNotEmpty) 'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-    });
-
-    // 📦 Basic fields
-    final loc = profile.locations.isNotEmpty ? profile.locations[0] : {};
-
-    request.fields.addAll({
-      "UserId": id,
-      "FirstName": profile.firstname,
-      "LastName": profile.lastname,
-      "Email": profile.email,
-      "PhoneNumber": profile.phoneNumber,
-      "StreetAddress": loc["streetAddress"] ?? "",
-      "Area": loc["area"] ?? "",
-      "City": loc["city"] ?? "",
-      "State": loc["state"] ?? "",
-      "ZipCode": loc["zipCode"] ?? "",
-      "Description": "Updated via app",
-      "ProfileImageUrl": profile.profileImageUrl,
-      "LocationsJson": jsonEncode(profile.locations),
-    });
-
-    // 🏢 OrganizationId
-    final orgId = _extractOrganizationId(profile.organizationProfessionals);
-    if (orgId != null && orgId.isNotEmpty) {
-      request.fields["OrganizationId"] = orgId;
-    }
-
-    // 🎯 SpecializationIds
-    if (profile.specializations is List &&
-        (profile.specializations as List).isNotEmpty) {
-      request.fields["SpecializationIds"] = jsonEncode(profile.specializations);
-    }
-
-    // 👨‍💼 ProfessionalIds
-    if (profile.organizationProfessionals is List &&
-        (profile.organizationProfessionals as List).isNotEmpty) {
-      request.fields["ProfessionalIds"] =
-          jsonEncode(profile.organizationProfessionals);
-    }
-
-    // 🖼️ Optional Profile Image
-    if (profileImage != null) {
-      request.files.add(await http.MultipartFile.fromPath(
-        "ProfileImage",
-        profileImage.path,
-        contentType: MediaType("image", "jpeg"),
-      ));
-    }
-
-    // ⏩ Send request and return response
-    final streamedResponse = await request.send();
-    return await http.Response.fromStream(streamedResponse);
-  }*/
-
-  // Future<http.Response> updateIndividualProfile({
-  //   required String id,
-  //   required IndividualProfileModel profile,
-  //   File? profileImage,
-  // }) async {
-  //   var uri = Uri.parse(
-  //       'http://173.249.27.4:343/api/Profile/individual/edit-profile');
-
-  //   var request = http.MultipartRequest('PUT', uri);
-
-  //   // Basic fields
-  //   request.fields.addAll({
-  //     "UserId": id,
-  //     "FirstName": profile.firstname,
-  //     "LastName": profile.lastname,
-  //     "Email": profile.email,
-  //     "PhoneNumber": profile.phoneNumber,
-  //     "StreetAddress": profile.locations.isNotEmpty
-  //         ? profile.locations[0]["streetAddress"] ?? ""
-  //         : "",
-  //     "Area": profile.locations.isNotEmpty
-  //         ? profile.locations[0]["area"] ?? ""
-  //         : "",
-  //     "City": profile.locations.isNotEmpty
-  //         ? profile.locations[0]["city"] ?? ""
-  //         : "",
-  //     "State": profile.locations.isNotEmpty
-  //         ? profile.locations[0]["state"] ?? ""
-  //         : "",
-  //     "ZipCode": profile.locations.isNotEmpty
-  //         ? profile.locations[0]["zipCode"] ?? ""
-  //         : "",
-  //     "Description": "Updated via app",
-  //     "ProfileImageUrl": profile.profileImageUrl,
-  //     "LocationsJson": jsonEncode(profile.locations),
-  //   });
-
-  //   // 🔐 Only add if valid 10@Testing
-  //   final orgId = _extractOrganizationId(profile.organizationProfessionals);
-  //   if (orgId != null && orgId.isNotEmpty) {
-  //     request.fields["OrganizationId"] = orgId;
-  //   }
-
-  //   if (profile.specializations is List &&
-  //       (profile.specializations as List).isNotEmpty) {
-  //     request.fields["SpecializationIds"] = jsonEncode(profile.specializations);
-  //   }
-
-  //   if (profile.organizationProfessionals is List &&
-  //       (profile.organizationProfessionals as List).isNotEmpty) {
-  //     request.fields["ProfessionalIds"] =
-  //         jsonEncode(profile.organizationProfessionals);
-  //   }
-
-  //   if (profileImage != null) {
-  //     request.files.add(await http.MultipartFile.fromPath(
-  //       "ProfileImage",
-  //       profileImage.path,
-  //       contentType: MediaType("image", "jpeg"),
-  //     ));
-  //   }
-
-  //   final streamedResponse = await request.send();
-  //   return await http.Response.fromStream(streamedResponse);
-  // }
-
-  /// Helper to extract organizationId safely
   String? extractOrganizationId(dynamic organizationProfessionals) {
     if (organizationProfessionals is List &&
         organizationProfessionals.isNotEmpty) {
