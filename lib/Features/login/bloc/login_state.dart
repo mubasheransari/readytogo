@@ -131,7 +131,6 @@ class LoginState extends Equatable {
   final List<FilterSearchModel>? filterSearchResults;
   final SearchStatus searchStatus;
   final GetSavedSearchesStatus getSavedSearchesStatus;
-
   final FilterSearchStatus filterSearchStatus;
   final LoginStatus status;
   final ProfessionalStatus professionalStatus;
@@ -151,7 +150,8 @@ class LoginState extends Equatable {
   final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
   LoginState(
-      {this.verificationLoginThroughSMS = VerificationLoginThroughSMS.initial,
+      {
+      this.verificationLoginThroughSMS = VerificationLoginThroughSMS.initial,
       this.loginThroughSMSOtpRequestNewEnum =
           LoginThroughSMSOtpRequestNewEnum.initial,
       this.searchResults,

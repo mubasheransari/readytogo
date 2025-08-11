@@ -11,6 +11,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:readytogo/Model/individual_profile_model.dart';
 
+import 'edit_organizational_profile_screen.dart';
+
 class OrganizationProfileScreen extends StatefulWidget {
   const OrganizationProfileScreen({Key? key}) : super(key: key);
 
@@ -52,7 +54,6 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
         }
       },
       builder: (context, state) {
-
         if (state.organizationalStatus == OrganizationalStatus.loading //||
             ) {
           return const Center(child: CircularProgressIndicator());
@@ -130,21 +131,22 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                           ),
                           child: IconButton(
                             onPressed: () async {
-                              // final shouldRefresh = await Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) =>
-                              //         EditIndividualProfileScreen(
-                              //             profile: profile),
-                              //   ),
-                              // );
-                              // if (shouldRefresh == true) {
-                              //   final userId = GetStorage().read("id");
-                              //   if (userId != null) {
-                              //     context.read<LoginBloc>().add(
-                              //         GetIndividualProfile(userId: userId));
-                              //   }
-                              // }
+                              final shouldRefresh = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditOrganizationalProfileScreen(
+                                          profile: profile),
+                                ),
+                              );
+                              if (shouldRefresh == true) {
+                                final userId = GetStorage().read("id");
+                                if (userId != null) {
+                                  // ignore: use_build_context_synchronously
+                                  context.read<LoginBloc>().add(
+                                      GetOrganizationProfile(userId: userId));
+                                }
+                              }
                             },
                             icon: Icon(Icons.edit, color: Colors.white),
                           ),
@@ -178,7 +180,6 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                         _buildInfoRow('Phone:', profile.phoneNumber!),
                         SizedBox(height: 10),
                         _buildAllLocations(profile.locations ?? []),
-
                         SizedBox(height: 10),
                         _buildInfoRow(
                           'Zip Code:',

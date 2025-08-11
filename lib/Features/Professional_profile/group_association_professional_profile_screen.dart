@@ -91,6 +91,11 @@ class _GroupAssociationEditProfessionalProfileState
               ])
             : jsonEncode(widget.profile.locations),
       );
+      if (_selectedImage != null) {
+        print("Null nhi hai");
+      } else {
+        print("Null hai");
+      }
       context.read<LoginBloc>().add(UpdateProfessionalProfile(
             userId: widget.userid,
             profile: updatedProfile,
@@ -239,7 +244,7 @@ class _GroupAssociationEditProfessionalProfileState
                               (index) => ListTile(
                                 trailing: InkWell(
                                     onTap: () {
-                                 /*     print("USER ID ${widget.userid}");
+                                      /*     print("USER ID ${widget.userid}");
                                       print(
                                           "GROUP ID ${widget.profile.groupAssociations![index].groupId}");
                                       var storage = GetStorage();
