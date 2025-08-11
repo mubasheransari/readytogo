@@ -29,8 +29,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetSavedSearches>(getSavedSearches);
     on<RemoveSavedSearch>(removeSavedSearch);
     on<AddSavedSearch>(addSavedSearch);
-    // on<VerificationLoginThroughSMSOtpLoginRequest>(
-    //     verificationLoginThroughSMSOtpLoginRequest);
+    on<VerificationLoginThroughSMSOtpLoginRequest>(
+        verificationLoginThroughSMSOtpLoginRequest);
     on<LoginThroughSMSOtpRequestNew>(loginThroughSMSOtpRequestNew);
   }
 
@@ -674,13 +674,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
 
 
- /* verificationLoginThroughSMSOtpLoginRequest(
+  verificationLoginThroughSMSOtpLoginRequest(
     VerificationLoginThroughSMSOtpLoginRequest event,
     Emitter<LoginState> emit,
   ) async {
     emit(state.copyWith(
-        verificationLoginThroughSMSOtpLoginRequestEnum:
-            VerificationLoginThroughSMSOtpLoginRequestEnum.loading));
+        verificationLoginThroughSMS:
+            VerificationLoginThroughSMS.loading));
     try {
       final response = await loginRepository.verifySMSOtp(
         event.phone,
@@ -692,19 +692,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         // final token = data['token'];
 
         emit(state.copyWith(
-            verificationLoginThroughSMSOtpLoginRequestEnum:
-                VerificationLoginThroughSMSOtpLoginRequestEnum.success));
+            verificationLoginThroughSMS:
+                VerificationLoginThroughSMS.success));
       } else {
         emit(state.copyWith(
-            verificationLoginThroughSMSOtpLoginRequestEnum:
-                VerificationLoginThroughSMSOtpLoginRequestEnum.failure));
+            verificationLoginThroughSMS:
+                VerificationLoginThroughSMS.failure));
       }
     } catch (e) {
       emit(state.copyWith(
-          verificationLoginThroughSMSOtpLoginRequestEnum:
-              VerificationLoginThroughSMSOtpLoginRequestEnum.failure));
+          verificationLoginThroughSMS:
+              VerificationLoginThroughSMS.failure));
     }
-  }*/
+  }
 
   loginThroughSMSOtpRequestNew(
     LoginThroughSMSOtpRequestNew event,

@@ -106,7 +106,7 @@ class _LoginThroughSMSViewOTPRequestState
                                   context,
                                   MaterialPageRoute(
                                       builder: (_) =>
-                                          VerificationLoginSMSScreenOTP()),
+                                          VerificationLoginSMSScreenOTP(phoneNumber: phoneNumberController.text,)),
                                 );
                               });//100@Testing
 
