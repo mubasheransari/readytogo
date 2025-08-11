@@ -118,41 +118,11 @@ class _LoginThroughSMSViewOTPRequestState
                             }
                           },
 
-                          /* if (state.loginThroughSMSOtpRequestNewEnum ==
-                                LoginThroughSMSOtpRequestNewEnum.success) {
-                              final box = GetStorage();
-                              box.write(
-                                  "phone", phoneNumberController.text.trim());
-                              print("PHONE ${phoneNumberController.text}");
-                              print("PHONE ${phoneNumberController.text}");
-                              print("PHONE ${phoneNumberController.text}");
-                              print("PHONE ${phoneNumberController.text}");
-                              print("PHONE ${phoneNumberController.text}");
-                              if (!mounted) return;
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SplashScreen()),
-                              );
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             VerificationLoginSMSScreenOTP()));
-                              toastWidget(
-                                  "OTP Sent Successfully", Colors.green);
-                            } else if (state.loginThroughSMSOtpRequestNewEnum ==
-                                LoginThroughSMSOtpRequestNewEnum.failure) {
-                              toastWidget("Failed", Colors.red);
-                            }
-                          },*/
                           builder: (context, state) {
                             return SizedBox(
                               width: MediaQuery.of(context).size.width * 0.85,
                               height: 50,
-                              // width: 376,
-                              // height: 60,
+                   
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
