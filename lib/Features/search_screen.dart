@@ -99,7 +99,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
       );
     }
 
-    _mapController?.animateCamera(
+    _mapController.animateCamera(
       CameraUpdate.newLatLng(_currentLatLng!),
     );
 
@@ -431,8 +431,11 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                               bottom: MediaQuery.of(context).viewInsets.bottom,
                             ),
                             child: FilterBottomSheet(
-                                lat: _currentLatLng!.latitude,
-                                lng: _currentLatLng!.longitude),
+                              lat: _currentLatLng?.latitude ?? 0.0,
+                              lng: _currentLatLng?.longitude ?? 0.0,
+                              // lat: _currentLatLng!.latitude,
+                              // lng: _currentLatLng!.longitude
+                            ),
                           ),
                         );
                       },
@@ -654,50 +657,51 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
-                        icon: Icon(Icons.favorite_border_outlined,
-                            color: Colors.blue),
-                        onPressed: () {
-                          print("CLICK kro bhrwe");
+                      icon: Icon(
+                        model.isSaved
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined,
+                        color: model.isSaved ? Colors.red : Colors.blue,
+                      ),
+                      onPressed: () {
+                        // Toggle the saved state
+                        model.isSaved = !model.isSaved;
 
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          setState(() {});
-                          LoginRepository().addSavedSearch(model.userId);
-                          final savedSearch = SavedSearchModel(
-                            userId: model.userId,
-                            firstName: model.firstName,
-                            lastName: model.lastName,
-                            email: model.email,
-                            phoneNumber: model.phoneNumber,
-                            profileImageUrl: model.profileImageUrl,
-                            memberType: model.memberType,
-                            memberSince: DateTime.now(),
-                          );
+                        setState(
+                            () {}); // Trigger UI update after changing the state
 
-                          if (!model.isSaved) {
-                            context
-                                .read<LoginBloc>()
-                                .add(AddSavedSearch(savedSearch));
-                            LoginRepository().addSavedSearch(model.userId);
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                          } else {
-                            context
-                                .read<LoginBloc>()
-                                .add(RemoveSavedSearch(model.userId));
-                            LoginRepository().removeSavedSearch(model.userId);
-                            // context.read<LoginBloc>().add(AddSavedSearch(model));
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                          }
-                        }),
+                        final savedSearch = SavedSearchModel(
+                          userId: model.userId,
+                          firstName: model.firstName,
+                          lastName: model.lastName,
+                          email: model.email,
+                          phoneNumber: model.phoneNumber,
+                          profileImageUrl: model.profileImageUrl,
+                          memberType: model.memberType,
+                          memberSince: DateTime.now(),
+                        );
+
+                        if (model.isSaved) {
+                          toastWidget("Added to Saved Searches", Colors.green);
+
+                          context
+                              .read<LoginBloc>()
+                              .add(AddSavedSearch(savedSearch));
+                          LoginRepository().addSavedSearch(
+                              model.locations.first.id.toString());
+                          print("ADD");
+                        } else {
+                          toastWidget("Removed", Colors.red);
+
+                          context
+                              .read<LoginBloc>()
+                              .add(RemoveSavedSearch(model.userId));
+                          LoginRepository().removeSavedSearch(
+                              model.locations.first.id.toString());
+                          print("REMOVE");
+                        }
+                      },
+                    ),
                   ),
                   SizedBox(
                     width: 5,
@@ -925,7 +929,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                   SizedBox(
                     width: 5,
                   ),
-                  // Call button
+                  // Call button 10@Testing
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.blue.shade50,
