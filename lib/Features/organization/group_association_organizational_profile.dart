@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:readytogo/Model/organization_profile_model.dart';
 import '../../Constants/constants.dart';
 import '../../Model/get_all_individual_profile_model.dart';
+import '../../Repositories/login_repository.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
@@ -15,18 +16,7 @@ class GroupAssociationEditOrganizationalProfile extends StatefulWidget {
   final OrganizationProfileModel profile;
   final File? selectedImageFile;
   final String? imageUrl;
-  final String userid,
-      firstName,
-      lastName,
-      phone,
-      description,
-      street,
-      area,
-      city,
-      states,
-      zip,
-      email;
-  final bool isAddressChanged;
+  final String userid, firstName, lastName, phone, description, email;
 
   const GroupAssociationEditOrganizationalProfile({
     super.key,
@@ -38,13 +28,7 @@ class GroupAssociationEditOrganizationalProfile extends StatefulWidget {
     required this.firstName,
     required this.lastName,
     required this.phone,
-    required this.street,
-    required this.area,
-    required this.city,
-    required this.states,
-    required this.zip,
     required this.email,
-    required this.isAddressChanged,
   });
 
   @override
@@ -65,7 +49,61 @@ class _GroupAssociationEditOrganizationalProfileState
     _selectedImage = widget.selectedImageFile; // ✅ FIX
   }
 
-  void _submit() {
+  void _submit() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _submitted = true);
+
+      var storage = GetStorage();
+      var userId = storage.read('userid') ?? "";
+
+      // ✅ Create updated profile with UI values
+      final updatedProfile = widget.profile.copyWith(
+        firstname: widget.firstName,
+        lastname: widget.lastName,
+        email: widget.email,
+        phoneNumber: widget.phone,
+        description: widget.description,
+        locationJson: jsonEncode(widget.profile.locations),
+      );
+
+      try {
+        final response = await LoginRepository().updateOrganizationalProfile(
+          id: userId,
+          profile: updatedProfile,
+          profileImage: _selectedImage, // can be null
+        );
+
+        if (response.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Profile Updated Successfully",
+                  style: TextStyle(color: Colors.white)),
+              backgroundColor: Colors.green,
+            ),
+          );
+          Navigator.pop(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Update failed: ${response.body}"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Error: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      } finally {
+        setState(() => _submitted = false);
+      }
+    }
+  }
+
+  /* void _submit() {
     if (_formKey.currentState!.validate()) {
       var storage = GetStorage();
 
@@ -76,37 +114,8 @@ class _GroupAssociationEditOrganizationalProfileState
         email: widget.email,
         phoneNumber: widget.phone,
         description: widget.description,
-        locationJson: widget.isAddressChanged
-            ? jsonEncode([
-                {
-                  if (widget.profile.locations != null &&
-                      widget.profile.locations!.isNotEmpty &&
-                      widget.profile.locations!.first.id != null)
-                    "id": widget.profile.locations!.first.id, // existing Guid
-                  "streetAddress": widget.street,
-                  "area": widget.area,
-                  "city": widget.city,
-                  "state": widget.states,
-                  "zipCode": widget.zip,
-                  "latitude": 0,
-                  "longitude": 0
-                }
-              ])
-            : jsonEncode(widget.profile.locations),
+        locationJson: jsonEncode(widget.profile.locations)
 
-        // jsonEncode([
-        //     {
-        //       "id": useerid,
-        //       "streetAddress": widget.street,
-        //       "area": widget.area,
-        //       "city": widget.city,
-        //       "state": widget.states,
-        //       "zipCode": widget.zip,
-        //       "latitude": 0,
-        //       "longitude": 0
-        //     }
-        //   ])
-        // : jsonEncode(widget.profile.locations),
       );
       if (_selectedImage != null) {
         print("Null nhi hai");
@@ -114,7 +123,7 @@ class _GroupAssociationEditOrganizationalProfileState
         print("Null hai");
       }
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +133,7 @@ class _GroupAssociationEditOrganizationalProfileState
       backgroundColor: Colors.grey[200],
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
-          if (state.updateProfessionalProfileStatus ==
+          /*      if (state.updateProfessionalProfileStatus ==
                   UpdateProfessionalProfileStatus.success &&
               state.professionalProfileModel != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -173,7 +182,7 @@ class _GroupAssociationEditOrganizationalProfileState
                 backgroundColor: Colors.red,
               ),
             );
-          }
+          }*/
         },
         builder: (context, state) {
           return SingleChildScrollView(

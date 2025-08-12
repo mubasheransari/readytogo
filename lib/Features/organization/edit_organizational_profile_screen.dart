@@ -38,7 +38,7 @@ class _EditOrganizationalProfileScreenState
   late TextEditingController areaController;
   late TextEditingController cityController;
   late TextEditingController stateController;
-  late TextEditingController zipController;
+  late TextEditingController zipController; //10@Testing
 
   @override
   void initState() {
@@ -415,19 +415,13 @@ class _EditOrganizationalProfileScreenState
                                 GroupAssociationEditOrganizationalProfile(
                               description: widget.profile.description,
                               profile: widget.profile,
-                              area: areaController.text,
-                              city: cityController.text,
                               firstName: firstNameController.text,
                               lastName: lastNameController.text,
                               phone: phoneController.text,
                               selectedImageFile: selectedImage,
                               imageUrl: widget.profile.profileImageUrl,
-                              states: stateController.text,
-                              street: streetController.text ?? "",
                               userid: userId,
-                              zip: zipController.text,
                               email: widget.profile.email,
-                              isAddressChanged: _isAddressChanged(),
                             ),
                           ),
                         );
