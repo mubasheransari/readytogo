@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:readytogo/Features/login/login_screen.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,7 +110,7 @@ class _VerificationLoginSMSScreenOTPState
                   VerificationLoginThroughSMS.failure) {
                 toastWidget("Incorrect Code", Colors.red);
               }
-            },//100@Testing
+            }, //100@Testing
             builder: (context, state) {
               final isLoading = state.verificationLoginThroughSMS ==
                   VerificationLoginThroughSMS.loading;
@@ -279,7 +280,7 @@ class _VerificationLoginSMSScreenOTPState
                                             ),
                                           );
                                     }
-                                  : null,//100@Testing
+                                  : null, //100@Testing
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Constants().themeColor,
                                 minimumSize: const Size(200, 50),
@@ -318,6 +319,51 @@ class _VerificationLoginSMSScreenOTPState
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            height: 50,
+                            // width: 376,
+                            // height: 60,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                print("Click");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginScreen()));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Constants().themeColor,
+                                minimumSize: const Size(200, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Try through Email',
+                                    style: TextStyle(
+                                      letterSpacing: 1,
+                                      color: Colors.white,
+                                      fontFamily: 'Satoshi',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Icon(Icons.north_east,
+                                      size: 21, color: Colors.white),
+                                ],
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -332,7 +378,6 @@ class _VerificationLoginSMSScreenOTPState
   }
 }
 
-
 String getResendText(String timerText) {
   final parts = timerText.split(':');
   final minutes = int.parse(parts[0]);
@@ -345,4 +390,3 @@ String getResendText(String timerText) {
     return 'You can resend the code in $seconds second${seconds > 1 ? 's' : ''}.';
   }
 }
-
