@@ -9,11 +9,14 @@ import '../Model/professional_profile_model.dart';
 import '../Model/search_model.dart';
 import '../widgets/boxDecorationWidget.dart';
 import '../widgets/customscfaffold_widget.dart';
+import '../widgets/toast_widget.dart';
 import 'filters_search_screen.dart';
 import 'login/bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'package:location/location.dart' as loc;
 import 'login/bloc/login_state.dart';
+
+bool _followCurrentLocation = true;
 
 // Assume imports are already handled
 
@@ -49,12 +52,27 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
   @override
   void initState() {
     super.initState();
+    _requestPermissionAndFetchLocation(moveCamera: true);
     //     _initLocationFuture = _requestPermissionAndFetchLocation();
     _delayedMapLoad = Future.delayed(Duration(milliseconds: 100));
     _loadCustomMarker();
   }
 
-  Future<void> _requestPermissionAndFetchLocation() async {
+  Future<void> _requestPermissionAndFetchLocation(
+      {bool moveCamera = false}) async {
+    _initialCameraPosition ??= CameraPosition(
+      target: _currentLatLng!,
+      zoom: 16,
+    );
+
+    if (moveCamera && _mapController != null) {
+      _mapController!.animateCamera(
+        CameraUpdate.newLatLngZoom(_currentLatLng!, 16),
+      );
+    }
+
+    setState(() {});
+
     bool serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
@@ -74,11 +92,21 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
     );
 
     _currentLatLng = currentLatLng;
+    if (_followCurrentLocation) {
+      _initialCameraPosition = CameraPosition(
+        target: currentLatLng,
+        zoom: 16,
+      );
+    }
 
-    _initialCameraPosition = CameraPosition(
-      target: currentLatLng,
-      zoom: 16,
+    _mapController.animateCamera(
+      CameraUpdate.newLatLng(_currentLatLng!),
     );
+
+    // _initialCameraPosition = CameraPosition(
+    //   target: currentLatLng,
+    //   zoom: 16,
+    // );
 
     // Add current location marker
     if (_customMarkerIcon != null) {
@@ -112,7 +140,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
     location.changeSettings(
       accuracy: loc.LocationAccuracy.high,
       interval: 1000,
-      distanceFilter: 1,
+      distanceFilter: 1, //10@Testing
     );
 
     loc.LocationData currentLocation = await location.getLocation();
@@ -182,7 +210,11 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
               _selectedProvider = model;
               _selectedFilterProvider = null;
               _showInfoWindow = true;
+              _followCurrentLocation = false;
             });
+            _mapController.animateCamera(
+              CameraUpdate.newLatLng(_currentLatLng!),
+            );
 
             // Move camera to marker
             // _mapController.animateCamera(
@@ -261,7 +293,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
         final longitude = location.longitude;
 
         if (latitude != null && longitude != null) {
-          final marker = Marker(
+          final marker = Marker(//100@Testing
             markerId:
                 MarkerId('filter_marker_${provider.userId}_${location.id}'),
             position: LatLng(latitude, longitude),
@@ -273,7 +305,11 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                 _selectedProvider = null;
                 _selectedFilterLocation = location;
                 _showInfoWindow = true;
+                _followCurrentLocation = false;
               });
+              _mapController.animateCamera(
+                CameraUpdate.newLatLng(_currentLatLng!),
+              );
             },
           );
 
@@ -395,8 +431,11 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                               bottom: MediaQuery.of(context).viewInsets.bottom,
                             ),
                             child: FilterBottomSheet(
-                                lat: _currentLatLng!.latitude,
-                                lng: _currentLatLng!.longitude),
+                              lat: _currentLatLng?.latitude ?? 0.0,
+                              lng: _currentLatLng?.longitude ?? 0.0,
+                              // lat: _currentLatLng!.latitude,
+                              // lng: _currentLatLng!.longitude
+                            ),
                           ),
                         );
                       },
@@ -462,6 +501,14 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                   onMapCreated: (controller) {
                     _mapController = controller;
                     _mapController.setMapStyle(Constants.mapStyle);
+                  },
+                  onCameraMoveStarted: () {
+                    if (_followCurrentLocation) {
+                      setState(() {
+                        _followCurrentLocation =
+                            false; // 🛑 Stop when user pans/zooms
+                      });
+                    }
                   },
                   onTap: (_) {
                     setState(() => _showInfoWindow = false);
@@ -610,50 +657,51 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
-                        icon: Icon(Icons.favorite_border_outlined,
-                            color: Colors.blue),
-                        onPressed: () {
-                          print("CLICK kro bhrwe");
+                      icon: Icon(
+                        model.isSaved
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined,
+                        color: model.isSaved ? Colors.red : Colors.blue,
+                      ),
+                      onPressed: () {
+                        // Toggle the saved state
+                        model.isSaved = !model.isSaved;
 
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          setState(() {});
-                          LoginRepository().addSavedSearch(model.userId);
-                          final savedSearch = SavedSearchModel(
-                            userId: model.userId,
-                            firstName: model.firstName,
-                            lastName: model.lastName,
-                            email: model.email,
-                            phoneNumber: model.phoneNumber,
-                            profileImageUrl: model.profileImageUrl,
-                            memberType: model.memberType,
-                            memberSince: DateTime.now(),
-                          );
+                        setState(
+                            () {}); // Trigger UI update after changing the state
 
-                          if (!model.isSaved) {
-                            context
-                                .read<LoginBloc>()
-                                .add(AddSavedSearch(savedSearch));
-                            LoginRepository().addSavedSearch(model.userId);
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                          } else {
-                            context
-                                .read<LoginBloc>()
-                                .add(RemoveSavedSearch(model.userId));
-                            LoginRepository().removeSavedSearch(model.userId);
-                            // context.read<LoginBloc>().add(AddSavedSearch(model));
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                          }
-                        }),
+                        final savedSearch = SavedSearchModel(
+                          userId: model.userId,
+                          firstName: model.firstName,
+                          lastName: model.lastName,
+                          email: model.email,
+                          phoneNumber: model.phoneNumber,
+                          profileImageUrl: model.profileImageUrl,
+                          memberType: model.memberType,
+                          memberSince: DateTime.now(),
+                        );
+
+                        if (model.isSaved) {
+                          toastWidget("Added to Saved Searches", Colors.green);
+
+                          context
+                              .read<LoginBloc>()
+                              .add(AddSavedSearch(savedSearch));
+                          LoginRepository().addSavedSearch(
+                              model.locations.first.id.toString());
+                          print("ADD");
+                        } else {
+                          toastWidget("Removed", Colors.red);
+
+                          context
+                              .read<LoginBloc>()
+                              .add(RemoveSavedSearch(model.userId));
+                          LoginRepository().removeSavedSearch(
+                              model.locations.first.id.toString());
+                          print("REMOVE");
+                        }
+                      },
+                    ),
                   ),
                   SizedBox(
                     width: 5,
@@ -832,89 +880,19 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
-                        icon: Icon(
-                          model.isSaved
-                              ? Icons.favorite
-                              : Icons.favorite_border_outlined,
-                          color: model.isSaved ? Colors.red : Colors.blue,
-                        ),
-                        onPressed: () {
-                          print("CLICK kro bhrwe");
+                      icon: Icon(
+                        model.isSaved
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined,
+                        color: model.isSaved ? Colors.red : Colors.blue,
+                      ),
+                      onPressed: () {
+                        // Toggle the saved state
+                        model.isSaved = !model.isSaved;
 
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          print("CLICK kro bhrwe");
-                          setState(() {});
-                          LoginRepository().addSavedSearch(model.userId);
-                          final savedSearch = SavedSearchModel(
-                            userId: model.userId,
-                            firstName: model.firstName,
-                            lastName: model.lastName,
-                            email: model.email,
-                            phoneNumber: model.phoneNumber,
-                            profileImageUrl: model.profileImageUrl,
-                            memberType: model.memberType,
-                            memberSince: DateTime.now(),
-                          );
+                        setState(
+                            () {}); // Trigger UI update after changing the state
 
-                          if (!model.isSaved) {
-                            context
-                                .read<LoginBloc>()
-                                .add(AddSavedSearch(savedSearch));
-                            LoginRepository().addSavedSearch(model.userId);
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                          } else {
-                            context
-                                .read<LoginBloc>()
-                                .add(RemoveSavedSearch(model.userId));
-                            LoginRepository().removeSavedSearch(model.userId);
-                            // context.read<LoginBloc>().add(AddSavedSearch(model));
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                            print("ID ${model.userId}");
-                          }
-                        }
-                        /*  onPressed: () {
-                        print("Fav${model.isSaved}");
-                        print("USER IDDD::: ${model.userId}");
-
-                        if (!model.isSaved) {
-                          final savedSearch = SavedSearchModel(
-                            userId: model.userId,
-                            firstName: model.firstName,
-                            lastName: model.lastName,
-                            email: model.email,
-                            phoneNumber: model.phoneNumber,
-                            profileImageUrl: model.profileImageUrl,
-                            memberType: model.memberType,
-                            memberSince: DateTime.now(),
-                          );
-                          context
-                              .read<LoginBloc>()
-                              .add(AddSavedSearch(savedSearch));
-                        } else {
-                          context
-                              .read<LoginBloc>()
-                              .add(RemoveSavedSearch(model.userId));
-                        }
-
-                        // 👇 Toggle locally for immediate UI feedback
-                        setState(() {
-                          model.isSaved = !model.isSaved;
-                        });
-                      },*/
-
-                        /*  onPressed: () {
-                        print("Fav${model.isSaved}");
-                        print("USER IDDD::: ${model.userId}");
-                        LoginRepository().addSavedSearch(model.userId);
-                        // You can toggle saved state through a BLoC event
                         final savedSearch = SavedSearchModel(
                           userId: model.userId,
                           firstName: model.firstName,
@@ -926,47 +904,32 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                           memberSince: DateTime.now(),
                         );
 
-                        if (!model.isSaved) {
+                        if (model.isSaved) {
+                          toastWidget("Added to Saved Searches", Colors.green);
+
                           context
                               .read<LoginBloc>()
                               .add(AddSavedSearch(savedSearch));
+                          LoginRepository().addSavedSearch(
+                              model.locations.first.id.toString());
+                          print("ADD");
                         } else {
+                          toastWidget("Removed", Colors.red);
+
                           context
                               .read<LoginBloc>()
-                              .add(RemoveSavedSearch(int.parse(model.userId)));
+                              .add(RemoveSavedSearch(model.userId));
+                          LoginRepository().removeSavedSearch(
+                              model.locations.first.id.toString());
+                          print("REMOVE");
                         }
-                      },*/
-                        ),
-
-                    /*  IconButton(
-                      icon: Icon(Icons.favorite_border_outlined,
-                          color: Colors.blue),
-                      onPressed: () {
-                        setState(() {
-                          //model.add(newItem);
-                        });
-
-                        final savedSearch = SavedSearchModel(
-                          userId: _selectedProvider!.userId,
-                          firstName: _selectedProvider!.firstName,
-                          lastName: _selectedProvider!.lastName,
-                          email: _selectedProvider!.email,
-                          phoneNumber: _selectedProvider!.phoneNumber,
-                          profileImageUrl: _selectedProvider!.profileImageUrl,
-                          memberType: _selectedProvider!.memberType,
-                          memberSince: DateTime.now(), // Or parse if available
-                        );
-
-                        context
-                            .read<LoginBloc>()
-                            .add(AddSavedSearch(savedSearch));
                       },
-                    ),*/
+                    ),
                   ),
                   SizedBox(
                     width: 5,
                   ),
-                  // Call button
+                  // Call button 10@Testing
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.blue.shade50,
@@ -1014,108 +977,6 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
       },
     );
   }
-
-  /* Widget _buildCustomInfoWindow() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // Check if the screen width is smaller (e.g., mobile)
-        bool isMobile = constraints.maxWidth < 600;
-
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Circular profile picture with border
-                  Container(
-                    height: 56,
-                    width: 56,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  // Text info column
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Dr. Faizan (Nutritionist)',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(height: 3),
-                        Text(
-                          '+0594 56249 5894',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
-                        const SizedBox(height: 19),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  // Phone call icon in rounded background
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.phone, color: Colors.blue),
-                      onPressed: () {
-                        // Implement call functionality here
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              // Conditional layout for responsiveness
-              isMobile
-                  ? Column(
-                      children: [
-                        _infoRow(),
-                        const SizedBox(height: 16),
-                        // Removed extra _infoRow to avoid repetition
-                      ],
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _infoColumn('Location',
-                            'Distance 3.2 km'), // Removed 'Pediatrician'
-                        _separator(),
-                        _infoColumn('Member', 'Since July 15th'),
-                      ],
-                    ),
-            ],
-          ),
-        );
-      },
-    );
-  }*/
 
   Widget _infoColumn(String label, String value) {
     return Column(
