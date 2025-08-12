@@ -381,6 +381,43 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+
+    updateOrganizationalProfile(
+    UpdateOrganizationalProfile event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.updateProfileLoading));
+    try {
+      final response = await loginRepository.updateOrganizationalProfile(
+        id: event.userId,
+        profile: event.organizationProfileModel,
+        profileImage: event.profileImage,
+      );
+
+      if (response.statusCode == 200) {
+        //10@Testing
+        // ✅ Refetch profile from server after update
+        final refreshedProfile =
+            await loginRepository.individualProfile(event.userId);
+
+        emit(state.copyWith(
+          status: LoginStatus.profileLoaded,
+          profile: refreshedProfile,
+        ));
+      } else {
+        emit(state.copyWith(
+          status: LoginStatus.updateProfileError,
+          errorMessage: response.body,
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        status: LoginStatus.updateProfileError,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
+
   updateIndividualProfile(
     UpdateIndividualProfile event,
     Emitter<LoginState> emit,

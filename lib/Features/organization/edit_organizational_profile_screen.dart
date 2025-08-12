@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:readytogo/Model/organization_profile_model.dart';
 import 'package:readytogo/widgets/back_next_button_widget.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import '../../Constants/constants.dart';
-import '../../Model/individual_profile_model.dart';
+import '../../Model/organization_profile_model.dart';
 import '../../Model/professional_profile_model.dart';
+import '../../Repositories/login_repository.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_state.dart';
+import 'group_association_organizational_profile.dart';
 
 class EditOrganizationalProfileScreen extends StatefulWidget {
   final OrganizationProfileModel profile;
@@ -404,29 +405,32 @@ class _EditOrganizationalProfileScreenState
                     BackAndNextButton(
                       onBackPressed: () => Navigator.of(context).pop(),
                       onNextPressed: () {
-                        print(state.profile!.userId);
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) =>
-                        //         GroupAssociationEditIndividual(
-                        //       profile: widget.profile,
-                        //       area: areaController.text,
-                        //       city: cityController.text,
-                        //       firstName: firstNameController.text,
-                        //       lastName: lastNameController.text,
-                        //       phone: phoneController.text,
-                        //       selectedImageFile: selectedImage,
-                        //       imageUrl: widget.profile.profileImageUrl,
-                        //       states: stateController.text,
-                        //       street: streetController.text,
-                        //       userid: userId,
-                        //       zip: zipController.text,
-                        //       email: widget.profile.email,
-                        //       isAddressChanged: _isAddressChanged(),
-                        //     ),
-                        //   ),
-                        // );
+                        final userId = GetStorage().read("id");
+                        print("Profile ${userId}");
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                GroupAssociationEditOrganizationalProfile(
+                              description: widget.profile.description,
+                              profile: widget.profile,
+                              area: areaController.text,
+                              city: cityController.text,
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              phone: phoneController.text,
+                              selectedImageFile: selectedImage,
+                              imageUrl: widget.profile.profileImageUrl,
+                              states: stateController.text,
+                              street: streetController.text ?? "",
+                              userid: userId,
+                              zip: zipController.text,
+                              email: widget.profile.email,
+                              isAddressChanged: _isAddressChanged(),
+                            ),
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(height: 25),
@@ -441,6 +445,301 @@ class _EditOrganizationalProfileScreenState
   }
 
   void _showEditLocationDialog(
+    BuildContext context,
+    Location? location,
+    int? index,
+  ) {
+    final streetController =
+        TextEditingController(text: location?.streetAddress ?? "");
+    final areaController = TextEditingController(text: location?.area ?? "");
+    final cityController = TextEditingController(text: location?.city ?? "");
+    final stateController = TextEditingController(text: location?.state ?? "");
+    final zipController = TextEditingController(text: location?.zipCode ?? "");
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(index == null ? 'Add Address' : 'Edit Address'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                  controller: streetController,
+                  decoration:
+                      const InputDecoration(labelText: 'Street Address')),
+              TextField(
+                  controller: areaController,
+                  decoration: const InputDecoration(labelText: 'Area')),
+              TextField(
+                  controller: cityController,
+                  decoration: const InputDecoration(labelText: 'City')),
+              TextField(
+                  controller: stateController,
+                  decoration: const InputDecoration(labelText: 'State')),
+              TextField(
+                  controller: zipController,
+                  decoration: const InputDecoration(labelText: 'Zip Code')),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          ElevatedButton(
+            child: Text(index == null ? 'Add Address' : 'Edit Address'),
+            onPressed: () async {
+              final newLocation = Location(
+                id: location?.id, // Will be null for new addresses
+                streetAddress: streetController.text.trim(),
+                area: areaController.text.trim(),
+                city: cityController.text.trim(),
+                state: stateController.text.trim(),
+                zipCode: zipController.text.trim(),
+                latitude: location?.latitude,
+                longitude: location?.longitude,
+              );
+
+              setState(() {
+                if (index == null) {
+                  widget.profile.locations ??= [];
+                  widget.profile.locations!.add(newLocation);
+                } else {
+                  widget.profile.locations![index] = newLocation;
+                }
+              });
+
+              Navigator.pop(context);
+
+              // ✅ Call API immediately after change
+              try {
+                final res = await LoginRepository().updateOrganizationalProfile(
+                  id: widget.profile.userId ?? "",
+                  profile: widget.profile,
+                  profileImage: null,
+                );
+
+                if (res.statusCode == 200) {
+                  debugPrint("✅ Location saved successfully");
+                } else {
+                  debugPrint("❌ Failed to save location: ${res.body}");
+                }
+              } catch (e) {
+                debugPrint("❌ Error saving location: $e");
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /*void _showEditLocationDialog(
+      BuildContext context, Location? location, int? index) {
+    final streetController =
+        TextEditingController(text: location?.streetAddress ?? "");
+    final areaController = TextEditingController(text: location?.area ?? "");
+    final cityController = TextEditingController(text: location?.city ?? "");
+    final stateController = TextEditingController(text: location?.state ?? "");
+    final zipController = TextEditingController(text: location?.zipCode ?? "");
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(index == null ? 'Add Address' : 'Edit Address'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: streetController,
+                decoration: const InputDecoration(labelText: 'Street Address'),
+              ),
+              TextField(
+                controller: areaController,
+                decoration: const InputDecoration(labelText: 'Area'),
+              ),
+              TextField(
+                controller: cityController,
+                decoration: const InputDecoration(labelText: 'City'),
+              ),
+              TextField(
+                controller: stateController,
+                decoration: const InputDecoration(labelText: 'State'),
+              ),
+              TextField(
+                controller: zipController,
+                decoration: const InputDecoration(labelText: 'Zip Code'),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          ElevatedButton(
+            child: Text(index == null ? 'Add Address' : 'Edit Address'),
+            onPressed: () async {
+              final newLocation = Location(
+                id: location?.id,
+                streetAddress: streetController.text.trim(),
+                area: areaController.text.trim(),
+                city: cityController.text.trim(),
+                state: stateController.text.trim(),
+                zipCode: zipController.text.trim(),
+                latitude: location?.latitude,
+                longitude: location?.longitude,
+              );
+
+              // Update local list
+              setState(() {
+                if (index == null) {
+                  widget.profile.locations.add(newLocation);
+                } else {
+                  widget.profile.locations[index] = newLocation;
+                }
+              });
+
+              Navigator.pop(context);
+
+              // Call API to update profile
+              try {
+                final response =
+                    await LoginRepository().updateOrganizationalProfile(
+                  id: widget.profile.userId,
+                  profile: widget.profile,
+                  profileImage: null, // keep existing image
+                );
+
+                if (response.statusCode == 200) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(index == null
+                          ? "Location added successfully"
+                          : "Location updated successfully"),
+                    ),
+                  );
+                } else {
+                  print("ERROR ${response.body}");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Failed: ${response.body}")),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Error: $e")),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }*/
+
+  /*void _showEditLocationDialog(
+      BuildContext context, Location? location, int? index) {
+    final streetController =
+        TextEditingController(text: location?.streetAddress ?? "");
+    final areaController = TextEditingController(text: location?.area ?? "");
+    final cityController = TextEditingController(text: location?.city ?? "");
+    final stateController = TextEditingController(text: location?.state ?? "");
+    final zipController = TextEditingController(text: location?.zipCode ?? "");
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(index == null ? 'Add Address' : 'Edit Address'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: streetController,
+                decoration: const InputDecoration(labelText: 'Street Address'),
+              ),
+              TextField(
+                controller: areaController,
+                decoration: const InputDecoration(labelText: 'Area'),
+              ),
+              TextField(
+                controller: cityController,
+                decoration: const InputDecoration(labelText: 'City'),
+              ),
+              TextField(
+                controller: stateController,
+                decoration: const InputDecoration(labelText: 'State'),
+              ),
+              TextField(
+                controller: zipController,
+                decoration: const InputDecoration(labelText: 'Zip Code'),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          ElevatedButton(
+            child: Text(index == null ? 'Add Address' : 'Edit Address'),
+            onPressed: () async {
+              final newLocation = Location(
+                id: location?.id,
+                streetAddress: streetController.text.trim(),
+                area: areaController.text.trim(),
+                city: cityController.text.trim(),
+                state: stateController.text.trim(),
+                zipCode: zipController.text.trim(),
+                latitude: location?.latitude,
+                longitude: location?.longitude,
+              );
+
+              setState(() {
+                if (index == null) {
+                  widget.profile.locations.add(newLocation);
+                } else {
+                  widget.profile.locations[index] = newLocation;
+                }
+              });
+
+              Navigator.pop(context);
+
+              // ✅ Call API to update profile with the new location list
+              try {
+                final response =
+                    await LoginRepository().updateOrganizationalProfile(
+                  id: widget.profile.userId ?? "", // your profile ID here
+                  profile: widget.profile,
+                  profileImage: null, // keep existing image
+                );
+
+                if (response.statusCode == 200) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text("Location updated successfully")),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text("Failed to update: ${response.body}")),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Error: $e")),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }*/
+
+  /*void _showEditLocationDialog(//current
       BuildContext context, Location? location, int? index) {
     // Controllers pre-filled if editing
     final streetController =
@@ -524,7 +823,7 @@ class _EditOrganizationalProfileScreenState
         ],
       ),
     );
-  }
+  }*/
 
   /* void _showEditLocationDialog(
       BuildContext context, Location location, int index) {

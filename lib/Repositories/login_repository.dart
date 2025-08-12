@@ -128,7 +128,7 @@ class LoginRepository {
       "City": loc?.city ?? "",
       "State": loc?.state ?? "",
       "ZipCode": loc?.zipCode ?? "",
-      "ProfileImageUrl": profile.profileImageUrl?? '',//10@Testing
+      "ProfileImageUrl": profile.profileImageUrl ?? '', //10@Testing
       "LocationsJson": jsonEncode(
         profile.locations?.map((e) => e.toJson()).toList() ?? [],
       ),
@@ -176,6 +176,157 @@ class LoginRepository {
     return null;
   }
 
+  Future<http.Response> updateOrganizationalProfile({
+    required String id,
+    required OrganizationProfileModel profile,
+    File? profileImage,
+  }) async {
+    final uri = Uri.parse(
+      'http://173.249.27.4:343/api/Profile/organization/edit-profile',
+    );
+
+    final request = http.MultipartRequest('PUT', uri);
+
+    var storage = GetStorage();
+    var token = storage.read("id");
+
+    if (token != null && token.toString().isNotEmpty) {
+      request.headers['Authorization'] = 'Bearer $token';
+    }
+
+    // ✅ Clean locations: remove "id" if it's null
+    final cleanedLocations = profile.locations?.map((loc) {
+          final map = loc.toJson();
+          if (map["id"] == null) {
+            map.remove("id");
+          }
+          return map;
+        }).toList() ??
+        [];
+
+    request.fields.addAll({
+      "FirstName": profile.firstname ?? "",
+      "LastName": profile.lastname ?? "",
+      "Email": profile.email ?? "",
+      "PhoneNumber": profile.phoneNumber ?? "",
+      "StreetAddress": cleanedLocations.isNotEmpty
+          ? cleanedLocations[0]["streetAddress"] ?? ""
+          : "",
+      "Area":
+          cleanedLocations.isNotEmpty ? cleanedLocations[0]["area"] ?? "" : "",
+      "City":
+          cleanedLocations.isNotEmpty ? cleanedLocations[0]["city"] ?? "" : "",
+      "State":
+          cleanedLocations.isNotEmpty ? cleanedLocations[0]["state"] ?? "" : "",
+      "ZipCode": cleanedLocations.isNotEmpty
+          ? cleanedLocations[0]["zipCode"] ?? ""
+          : "",
+      "Description": "Updated via app",
+      "ProfileImageUrl": profile.profileImageUrl ?? "",
+      "LocationsJson": jsonEncode(cleanedLocations),
+    });
+
+    // ✅ Optional: OrganizationId
+    final orgId = _extractOrganizationId(profile.organizationProfessionals);
+    if (orgId != null && orgId.isNotEmpty) {
+      request.fields["OrganizationId"] = orgId;
+    }
+
+    // ✅ SpecializationIds
+    if (profile.specializations is List &&
+        profile.specializations!.isNotEmpty) {
+      request.fields["SpecializationIds"] = jsonEncode(profile.specializations);
+    }
+
+    // ✅ ProfessionalIds
+    if (profile.organizationProfessionals is List &&
+        profile.organizationProfessionals!.isNotEmpty) {
+      request.fields["ProfessionalIds"] =
+          jsonEncode(profile.organizationProfessionals);
+    }
+
+    // ✅ Profile image
+    if (profileImage != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        "ProfileImage",
+        profileImage.path,
+        contentType: MediaType("image", "jpeg"),
+      ));
+    }
+
+    final streamedResponse = await request.send();
+    return await http.Response.fromStream(streamedResponse);
+  }
+
+  /*Future<http.Response> updateOrganizationalProfile({
+    required String id,
+    required OrganizationProfileModel profile,
+    File? profileImage,
+  }) async {
+    final uri = Uri.parse(
+      'http://173.249.27.4:343/api/Profile/organization/edit-profile',
+    );
+
+    final request = http.MultipartRequest('PUT', uri);
+
+    var storage = GetStorage();
+    var token = storage.read("id"); // stored token
+
+    if (token != null && token.toString().isNotEmpty) {
+      request.headers['Authorization'] = 'Bearer $token';
+    }
+
+    // ✅ First location (if available)
+    final loc = profile.locations.isNotEmpty ? profile.locations[0] : null;
+
+    request.fields.addAll({
+      "FirstName": profile.firstname,
+      "LastName": profile.lastname,
+      "Email": profile.email,
+      "PhoneNumber": profile.phoneNumber,
+      "StreetAddress": loc?.streetAddress ?? "",
+      "Area": loc?.area ?? "",
+      "City": loc?.city ?? "",
+      "State": loc?.state ?? "",
+      "ZipCode": loc?.zipCode ?? "",
+      "Description": "Updated via app",
+      "ProfileImageUrl": profile.profileImageUrl,
+      "LocationsJson": jsonEncode(
+        profile.locations.map((l) => l.toJson()).toList(),
+      ),
+    });
+
+    // ✅ Optional: OrganizationId
+    final orgId = _extractOrganizationId(profile.organizationProfessionals);
+    if (orgId != null && orgId.isNotEmpty) {
+      request.fields["OrganizationId"] = orgId;
+    }
+
+    // ✅ SpecializationIds
+    if (profile.specializations is List &&
+        (profile.specializations as List).isNotEmpty) {
+      request.fields["SpecializationIds"] = jsonEncode(profile.specializations);
+    }
+
+    // ✅ ProfessionalIds
+    if (profile.organizationProfessionals.isNotEmpty) {
+      request.fields["ProfessionalIds"] =
+          jsonEncode(profile.organizationProfessionals);
+    }
+
+    // ✅ Optional profile image
+    if (profileImage != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        "ProfileImage",
+        profileImage.path,
+        contentType: MediaType("image", "jpeg"),
+      ));
+    }
+
+    // ✅ Send request
+    final streamedResponse = await request.send();
+    return await http.Response.fromStream(streamedResponse);
+  }*/
 
   Future<http.Response> updateIndividualProfile({
     required String id,

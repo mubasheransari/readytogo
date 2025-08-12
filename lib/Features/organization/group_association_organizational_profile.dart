@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:readytogo/Model/organization_profile_model.dart';
 import '../../Constants/constants.dart';
 import '../../Model/get_all_individual_profile_model.dart';
-import '../../Model/professional_profile_model.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
 
-class GroupAssociationEditProfessionalProfile extends StatefulWidget {
-  final ProfessionalProfileModel profile;
+class GroupAssociationEditOrganizationalProfile extends StatefulWidget {
+  final OrganizationProfileModel profile;
   final File? selectedImageFile;
   final String? imageUrl;
   final String userid,
@@ -28,7 +28,7 @@ class GroupAssociationEditProfessionalProfile extends StatefulWidget {
       email;
   final bool isAddressChanged;
 
-  const GroupAssociationEditProfessionalProfile({
+  const GroupAssociationEditOrganizationalProfile({
     super.key,
     required this.profile,
     this.selectedImageFile,
@@ -48,12 +48,12 @@ class GroupAssociationEditProfessionalProfile extends StatefulWidget {
   });
 
   @override
-  State<GroupAssociationEditProfessionalProfile> createState() =>
-      _GroupAssociationEditProfessionalProfileState();
+  State<GroupAssociationEditOrganizationalProfile> createState() =>
+      _GroupAssociationEditOrganizationalProfileState();
 }
 
-class _GroupAssociationEditProfessionalProfileState
-    extends State<GroupAssociationEditProfessionalProfile> {
+class _GroupAssociationEditOrganizationalProfileState
+    extends State<GroupAssociationEditOrganizationalProfile> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
@@ -79,7 +79,10 @@ class _GroupAssociationEditProfessionalProfileState
         locationJson: widget.isAddressChanged
             ? jsonEncode([
                 {
-                  "id": useerid,
+                  if (widget.profile.locations != null &&
+                      widget.profile.locations!.isNotEmpty &&
+                      widget.profile.locations!.first.id != null)
+                    "id": widget.profile.locations!.first.id, // existing Guid
                   "streetAddress": widget.street,
                   "area": widget.area,
                   "city": widget.city,
@@ -90,17 +93,26 @@ class _GroupAssociationEditProfessionalProfileState
                 }
               ])
             : jsonEncode(widget.profile.locations),
+
+        // jsonEncode([
+        //     {
+        //       "id": useerid,
+        //       "streetAddress": widget.street,
+        //       "area": widget.area,
+        //       "city": widget.city,
+        //       "state": widget.states,
+        //       "zipCode": widget.zip,
+        //       "latitude": 0,
+        //       "longitude": 0
+        //     }
+        //   ])
+        // : jsonEncode(widget.profile.locations),
       );
       if (_selectedImage != null) {
         print("Null nhi hai");
       } else {
         print("Null hai");
       }
-      context.read<LoginBloc>().add(UpdateProfessionalProfile(
-            userId: widget.userid,
-            profile: updatedProfile,
-            profileImage: _selectedImage,
-          ));
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:equatable/equatable.dart';
+import 'package:readytogo/Model/organization_profile_model.dart';
 import '../../../Model/individual_profile_model.dart';
 import '../../../Model/professional_profile_model.dart';
 import '../../../Model/saved_search_model.dart';
@@ -68,6 +69,18 @@ class UpdateProfessionalProfile extends LoginEvent {
   UpdateProfessionalProfile({
     required this.userId,
     required this.profile,
+    this.profileImage,
+  });
+}
+
+class UpdateOrganizationalProfile extends LoginEvent {
+  final String userId;
+  final OrganizationProfileModel organizationProfileModel;
+  final File? profileImage;
+
+  UpdateOrganizationalProfile({
+    required this.userId,
+    required this.organizationProfileModel,
     this.profileImage,
   });
 }

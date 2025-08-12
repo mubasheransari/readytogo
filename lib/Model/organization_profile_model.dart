@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:readytogo/Model/professional_profile_model.dart';
+
+import 'professional_profile_model.dart';
 
 OrganizationProfileModel organizationProfileModelFromJson(String str) =>
     OrganizationProfileModel.fromJson(json.decode(str));
@@ -8,85 +9,131 @@ String organizationProfileModelToJson(OrganizationProfileModel data) =>
     json.encode(data.toJson());
 
 class OrganizationProfileModel {
-  final String? firstname;
-  final String? lastname;
-  final String? email;
-  final String? phoneNumber;
-  final String? role;
-  final String? userName;
-  final dynamic profileImageUrl;
-  final String? organizationName;
-  final String? description;
+  final String userId;
+  final String firstname;
+  final String lastname;
+  final String email;
+  final String phoneNumber;
+  final String role;
+  final String userName;
+  final String profileImageUrl;
+  final String organizationName;
+  final String description;
   final dynamic organizationJoiningDate;
-  final List<GroupAssociation>? groupAssociations;
+  final List<GroupAssociation> groupAssociations;
   final dynamic specializations;
-  late final List<Location>? locations;
-  final List<dynamic>? organizationProfessionals;
+  late final List<Location> locations;
+  final List<dynamic> organizationProfessionals;
 
   OrganizationProfileModel({
-    this.firstname,
-    this.lastname,
-    this.email,
-    this.phoneNumber,
-    this.role,
-    this.userName,
-    this.profileImageUrl,
-    this.organizationName,
-    this.description,
-    this.organizationJoiningDate,
-    this.groupAssociations,
-    this.specializations,
-    this.locations,
-    this.organizationProfessionals,
+    required this.userId,
+    required this.firstname,
+    required this.lastname,
+    required this.email,
+    required this.phoneNumber,
+    required this.role,
+    required this.userName,
+    required this.profileImageUrl,
+    required this.organizationName,
+    required this.description,
+    required this.organizationJoiningDate,
+    required this.groupAssociations,
+    required this.specializations,
+    required this.locations,
+    required this.organizationProfessionals,
   });
 
-  factory OrganizationProfileModel.fromJson(Map<String, dynamic> json) =>
-      OrganizationProfileModel(
-        firstname: json["firstname"],
-        lastname: json["lastname"],
-        email: json["email"],
-        phoneNumber: json["phoneNumber"],
-        role: json["role"],
-        userName: json["userName"],
-        profileImageUrl: json["profileImageUrl"],
-        organizationName: json["organizationName"],
-        description: json["description"],
-        organizationJoiningDate: json["organizationJoiningDate"],
-        groupAssociations: json["groupAssociations"] == null
-            ? []
-            : List<GroupAssociation>.from(json["groupAssociations"]
-                .map((x) => GroupAssociation.fromJson(x))),
-        specializations: json["specializations"],
-        locations: json["locations"] == null
-            ? []
-            : List<Location>.from(
-                json["locations"].map((x) => Location.fromJson(x))),
-        organizationProfessionals: json["organizationProfessionals"] == null
-            ? []
-            : List<dynamic>.from(json["organizationProfessionals"]),
-      );//10@Testing
+  factory OrganizationProfileModel.fromJson(Map<String, dynamic> json) {
+    return OrganizationProfileModel(
+      userId: json["userId"] ?? '',
+      firstname: json["firstname"] ?? '',
+      lastname: json["lastname"] ?? '',
+      email: json["email"] ?? '',
+      phoneNumber: json["phoneNumber"] ?? '',
+      role: json["role"] ?? '',
+      userName: json["userName"] ?? '',
+      profileImageUrl: json["profileImageUrl"] ?? '',
+      organizationName: json["organizationName"] ?? '',
+      description: json["description"] ?? '',
+      organizationJoiningDate: json["organizationJoiningDate"],
+      groupAssociations: List<GroupAssociation>.from(
+        (json["groupAssociations"] ?? [])
+            .map((x) => GroupAssociation.fromJson(x)),
+      ),
+      specializations: json["specializations"],
+      locations: List<Location>.from(
+        (json["locations"] ?? []).map((x) => Location.fromJson(x)),
+      ),
+      organizationProfessionals:
+          List<dynamic>.from(json["organizationProfessionals"] ?? const []),
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        "firstname": firstname,
-        "lastname": lastname,
-        "email": email,
-        "phoneNumber": phoneNumber,
-        "role": role,
-        "userName": userName,
-        "profileImageUrl": profileImageUrl,
-        "organizationName": organizationName,
-        "description": description,
-        "organizationJoiningDate": organizationJoiningDate,
-        "groupAssociations": groupAssociations == null
-            ? []
-            : List<dynamic>.from(groupAssociations!.map((x) => x.toJson())),
-        "specializations": specializations,
-        "locations": locations == null
-            ? []
-            : List<dynamic>.from(locations!.map((x) => x.toJson())),
-        "organizationProfessionals":
-            organizationProfessionals == null ? [] : organizationProfessionals,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      "userId": userId,
+      "firstname": firstname,
+      "lastname": lastname,
+      "email": email,
+      "phoneNumber": phoneNumber,
+      "role": role,
+      "userName": userName,
+      "profileImageUrl": profileImageUrl,
+      "organizationName": organizationName,
+      "description": description,
+      "organizationJoiningDate": organizationJoiningDate,
+      "groupAssociations":
+          List<dynamic>.from(groupAssociations.map((x) => x.toJson())),
+      "specializations": specializations,
+      "locations": List<dynamic>.from(locations.map((x) => x.toJson())),
+      "organizationProfessionals": organizationProfessionals,
+    };
+  }
+
+  OrganizationProfileModel copyWith({
+    String? userId,
+    String? firstname,
+    String? lastname,
+    String? email,
+    String? phoneNumber,
+    String? role,
+    String? userName,
+    String? profileImageUrl,
+    String? organizationName,
+    String? description,
+    dynamic organizationJoiningDate,
+    List<GroupAssociation>? groupAssociations,
+    dynamic specializations,
+    String? locationJson, // JSON string for updating locations
+    List<Location>? locations,
+    List<dynamic>? organizationProfessionals,
+  }) {
+    final updatedLocations = locationJson != null
+        ? List<Location>.from(
+            (jsonDecode(locationJson) as List).map((x) => Location.fromJson(x)),
+          )
+        : locations ?? this.locations;
+
+    return OrganizationProfileModel(
+      userId: userId ?? this.userId,
+      firstname: firstname ?? this.firstname,
+      lastname: lastname ?? this.lastname,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      role: role ?? this.role,
+      userName: userName ?? this.userName,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+      organizationName: organizationName ?? this.organizationName,
+      description: description ?? this.description,
+      organizationJoiningDate:
+          organizationJoiningDate ?? this.organizationJoiningDate,
+      groupAssociations: groupAssociations ?? this.groupAssociations,
+      specializations: specializations ?? this.specializations,
+      locations: updatedLocations,
+      organizationProfessionals:
+          organizationProfessionals ?? this.organizationProfessionals,
+    );
+  }
 }
 
 class GroupAssociation {
@@ -117,50 +164,3 @@ class GroupAssociation {
         "memberCount": memberCount,
       };
 }
-
-
-
-
-// class Location {
-//   final String? id;
-//   final String? streetAddress;
-//   final String? area;
-//   final String? city;
-//   final String? state;
-//   final String? zipCode;
-//   final int? latitude;
-//   final int? longitude;
-
-//   Location({
-//     this.id,
-//     this.streetAddress,
-//     this.area,
-//     this.city,
-//     this.state,
-//     this.zipCode,
-//     this.latitude,
-//     this.longitude,
-//   });
-
-//   factory Location.fromJson(Map<String, dynamic> json) => Location(
-//         id: json["id"],
-//         streetAddress: json["streetAddress"],
-//         area: json["area"],
-//         city: json["city"],
-//         state: json["state"],
-//         zipCode: json["zipCode"],
-//         latitude: json["latitude"],
-//         longitude: json["longitude"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "id": id,
-//         "streetAddress": streetAddress,
-//         "area": area,
-//         "city": city,
-//         "state": state,
-//         "zipCode": zipCode,
-//         "latitude": latitude,
-//         "longitude": longitude,
-//       };
-// }

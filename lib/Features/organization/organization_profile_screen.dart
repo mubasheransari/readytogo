@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:readytogo/Model/organization_profile_model.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 import '../../Model/professional_profile_model.dart';
 import '../login/bloc/login_bloc.dart';
@@ -9,7 +10,6 @@ import '../login/bloc/login_event.dart';
 import '../login/bloc/login_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:readytogo/Model/individual_profile_model.dart';
 
 import 'edit_organizational_profile_screen.dart';
 
@@ -61,7 +61,7 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
             state.organizationProfileModel != null) {
           final profile = state.organizationProfileModel!;
 
-          final List<Location> locationList =
+          List<Location> locationList =
               state.organizationProfileModel?.locations ?? [];
 
           final latLngList = convertLocationsToLatLng(locationList);
@@ -424,7 +424,7 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
     );
   }
 
-  Widget _buildDetailsCard(IndividualProfileModel profile) {
+  Widget _buildDetailsCard(OrganizationProfileModel profile) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -444,18 +444,29 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
           _detailRow(label: 'Email:', value: profile.email),
           _detailRow(label: 'Phone:', value: profile.phoneNumber),
           _detailRow(
-            label: 'Location:',
+            label: 'Locations:',
             value: profile.locations.isNotEmpty
-                ? '${profile.locations[0]["streetAddress"] ?? ""}, ${profile.locations[0]["city"] ?? ""}'
+                ? profile.locations
+                    .map((loc) =>
+                        '${loc.streetAddress ?? ""}, ${loc.city ?? ""}, ${loc.zipCode ?? ""}')
+                    .join('\n') // separate locations by new lines
                 : 'No Address Provided',
             isMultiline: true,
           ),
-          _detailRow(
-            label: 'Zip Code:',
-            value: profile.locations.isNotEmpty
-                ? profile.locations[0]["zipCode"] ?? "N/A"
-                : "N/A",
-          ),
+
+          // _detailRow(
+          //   label: 'Location:',
+          //   value: profile.locations.isNotEmpty
+          //       ? '${profile.locations[0]["streetAddress"] ?? ""}, ${profile.locations[0]["city"] ?? ""}'
+          //       : 'No Address Provided',
+          //   isMultiline: true,
+          // ),
+          // _detailRow(
+          //   label: 'Zip Code:',
+          //   value: profile.locations.isNotEmpty
+          //       ? profile.locations[0]["zipCode"] ?? "N/A"
+          //       : "N/A",
+          // ),
         ],
       ),
     );
