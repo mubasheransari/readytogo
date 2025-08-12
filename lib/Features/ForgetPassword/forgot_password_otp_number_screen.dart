@@ -368,12 +368,15 @@ class _ForgetPasswordOtpNumberScreenState
                         // height: 60,
                         child: ElevatedButton(
                           onPressed: () {
-                            print("Click");//100@Testing
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ForgetPasswordScreen()));
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            print("Click"); //100@Testing
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             ForgetPasswordScreen()));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Constants().themeColor,

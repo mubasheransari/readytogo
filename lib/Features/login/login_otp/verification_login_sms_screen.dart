@@ -330,10 +330,12 @@ class _VerificationLoginSMSScreenOTPState
                             child: ElevatedButton(
                               onPressed: () {
                                 print("Click");
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen()));
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) => LoginScreen()));
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Constants().themeColor,
@@ -348,7 +350,7 @@ class _VerificationLoginSMSScreenOTPState
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Text(
-                                    'Try through Email',
+                                    'Try through Email', //10@Testing
                                     style: TextStyle(
                                       letterSpacing: 1,
                                       color: Colors.white,
