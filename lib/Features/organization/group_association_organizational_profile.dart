@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:readytogo/Model/organization_profile_model.dart';
 import '../../Constants/constants.dart';
+import '../../Model/get_all_associated_groups_model.dart';
 import '../../Model/get_all_individual_profile_model.dart';
 import '../../Repositories/login_repository.dart';
 import '../login/bloc/login_bloc.dart';
@@ -127,8 +128,10 @@ class _GroupAssociationEditOrganizationalProfileState
 
   @override
   Widget build(BuildContext context) {
-    final List<GetAllProfessionalProfileModel> selectedGroups = [];
-    GetAllProfessionalProfileModel? _dropdownValue;
+    GetAllAssociatedGroupModel? _dropdownValue;
+    final List<GetAllAssociatedGroupModel> selectedGroups = [];
+    // final List<GetAllProfessionalProfileModel> selectedGroups = [];
+    // GetAllProfessionalProfileModel? _dropdownValue;
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: BlocConsumer<LoginBloc, LoginState>(
@@ -265,18 +268,20 @@ class _GroupAssociationEditOrganizationalProfileState
                               (index) => ListTile(
                                 trailing: InkWell(
                                     onTap: () {
-                                      /*     print("USER ID ${widget.userid}");
+                                      print("USER ID ${widget.userid}");
                                       print(
                                           "GROUP ID ${widget.profile.groupAssociations![index].groupId}");
                                       var storage = GetStorage();
 
+                                      var id = storage.read("id");
+
                                       var useerid = storage.read('userid');
                                       context.read<LoginBloc>().add(
-                                            RemoveAffiliationsProfrofessional(
+                                            RemoveAffiliationsOrganization(
                                               userId: useerid,
                                               groupId: widget
                                                   .profile
-                                                  .groupAssociations![index]
+                                                  .groupAssociations[index]
                                                   .groupId
                                                   .toString(),
                                             ),
@@ -286,7 +291,12 @@ class _GroupAssociationEditOrganizationalProfileState
                                       print(state.removeAffiliationGroupStatus
                                           .toString());
                                       print(state.removeAffiliationGroupStatus
-                                          .toString());*/
+                                          .toString());
+
+                                      context.read<LoginBloc>().add(
+                                          GetOrganizationProfile(userId: id));
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
                                     },
                                     child:
                                         Image.asset("assets/icon_delete.png")),
@@ -307,25 +317,445 @@ class _GroupAssociationEditOrganizationalProfileState
                         SizedBox(
                           height: 15,
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width * 0.53),
-                          child: const Text(
-                            'Select Group',
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'Satoshi',
-                            ),
-                          ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(
+                        //       right: MediaQuery.of(context).size.width * 0.53),
+                        //   child: const Text(
+                        //     'Select Group',
+                        //     style: TextStyle(
+                        //       fontSize: 22,
+                        //       color: Colors.black87,
+                        //       fontWeight: FontWeight.w700,
+                        //       fontFamily: 'Satoshi',
+                        //     ),
+                        //   ),
+                        // ),
+                        BlocBuilder<LoginBloc, LoginState>(
+                          builder: (context, state) {
+                            final allGroups =
+                                state.getAllAssociatedGroupModel ?? [];
+
+                            // ✅ Safely extract associated group IDs from widget.profile
+                            final associatedGroupIds =
+                                (widget.profile.groupAssociations)
+                                    .map((group) => group.groupId)
+                                    .whereType<String>()
+                                    .toSet();
+
+                            // 🔽 Filter only groups not already associated
+                            final availableGroups = allGroups
+                                .where((group) =>
+                                    !associatedGroupIds.contains(group.id))
+                                .toList();
+
+                            // ⛔ Hide dropdown if no available groups
+                            if (availableGroups.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
+
+                            // ✅ Validate dropdown value in case list changes
+                            final isValidValue =
+                                availableGroups.contains(_dropdownValue);
+                            final currentValue =
+                                isValidValue ? _dropdownValue : null;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 15),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'Select Group',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Satoshi',
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.83,
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      canvasColor: Colors.white,
+                                      dropdownMenuTheme:
+                                          const DropdownMenuThemeData(),
+                                    ),
+                                    child: DropdownButtonFormField<
+                                        GetAllAssociatedGroupModel>(
+                                      elevation: 0,
+                                      value: currentValue,
+                                      decoration: InputDecoration(
+                                        hintText: "Select group",
+                                        hintStyle: const TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'Satoshi',
+                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 12,
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                      items: availableGroups.map((group) {
+                                        return DropdownMenuItem<
+                                            GetAllAssociatedGroupModel>(
+                                          value: group,
+                                          child: Text(
+                                            group.name,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'Satoshi',
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (group) {
+                                        if (group != null &&
+                                            !selectedGroups
+                                                .any((g) => g.id == group.id)) {
+                                          final storage = GetStorage();
+                                          final userId = storage.read('userid');
+
+                                          context.read<LoginBloc>().add(
+                                                AddAffiliationsOrganization(
+                                                  userId: userId,
+                                                  groupId: group.id,
+                                                ),
+                                              );
+
+                                          setState(() {
+                                            _dropdownValue = group;
+                                            selectedGroups.add(group);
+                                          });
+
+                                          var id = storage.read("id");
+
+                                          context.read<LoginBloc>().add(
+                                              GetOrganizationProfile(
+                                                  userId: id));
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                        Padding(
+                        /* BlocBuilder<LoginBloc, LoginState>(
+                          builder: (context, state) {
+                            final allGroups =
+                                state.getAllAssociatedGroupModel ?? [];
+
+                            final List<GetAllAssociatedGroupModel>
+                                selectedGroups = [];
+                            GetAllAssociatedGroupModel? _dropdownValue;
+
+                            // ✅ Handle null profile or groupAssociations
+                            final associatedGroupIds = (state
+                                        .profile?.groupAssociations ??
+                                    [])
+                                .map((group) => group['groupId'] ?? group['id'])
+                                .whereType<String>()
+                                .toSet();
+
+                            // 🔽 Filter only unassociated groups
+                            final availableGroups = allGroups
+                                .where((group) =>
+                                    !associatedGroupIds.contains(group.id))
+                                .toList();
+
+                            // ⛔ Hide dropdown if no available groups
+                            if (availableGroups.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
+
+                            // ✅ Validate dropdown value
+                            final isValidValue =
+                                availableGroups.contains(_dropdownValue);
+                            final currentValue =
+                                isValidValue ? _dropdownValue : null;
+
+                            return Column(
+                              children: [
+                                const SizedBox(height: 15),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    right: MediaQuery.of(context).size.width *
+                                        0.53,
+                                  ),
+                                  child: const Text(
+                                    'Select Group',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Satoshi',
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.83,
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      canvasColor: Colors.white,
+                                      dropdownMenuTheme:
+                                          const DropdownMenuThemeData(),
+                                    ),
+                                    child: DropdownButtonFormField<
+                                        GetAllAssociatedGroupModel>(
+                                      elevation: 0,
+                                      value: currentValue,
+                                      decoration: InputDecoration(
+                                        hintText: "Select group",
+                                        hintStyle: const TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'Satoshi',
+                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 12,
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                      items: availableGroups.map((group) {
+                                        return DropdownMenuItem<
+                                            GetAllAssociatedGroupModel>(
+                                          value: group,
+                                          child: Text(
+                                            group.name,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'Satoshi',
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (group) {
+                                        var storage = GetStorage();
+                                        var userId = storage.read('userid');
+
+                                        if (group != null &&
+                                            !selectedGroups
+                                                .any((g) => g.id == group.id)) {
+                                          context.read<LoginBloc>().add(
+                                                AddAffiliations(
+                                                  userId: userId,
+                                                  groupId: group.id,
+                                                ),
+                                              );
+
+                                          setState(() {
+                                            _dropdownValue = group;
+                                            selectedGroups.add(group);
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),*/
+
+                        /*    BlocBuilder<LoginBloc, LoginState>(
+                          builder: (context, state) {
+                            final allGroups =
+                                state.getAllAssociatedGroupModel ?? [];
+
+                            final List<GetAllAssociatedGroupModel>
+                                selectedGroups = [];
+                            GetAllAssociatedGroupModel? _dropdownValue;
+
+                            // 10@Testing Extract already associated group IDs
+                            final associatedGroupIds = state
+                                .profile!.groupAssociations
+                                .map((group) => group['groupId'] ?? group['id'])
+                                .whereType<String>()
+                                .toSet();
+
+                            // 🔽 Filter only unassociated groups
+                            final availableGroups = allGroups
+                                .where((group) =>
+                                    !associatedGroupIds.contains(group.id))
+                                .toList();
+
+                            // ⛔ Hide dropdown if no available groups
+                            if (availableGroups.isEmpty) {
+                              return SizedBox.shrink();
+                            }
+
+                            // ✅ Validate dropdown value
+                            final isValidValue =
+                                availableGroups.contains(_dropdownValue);
+                            final currentValue =
+                                isValidValue ? _dropdownValue : null;
+
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      right: MediaQuery.of(context).size.width *
+                                          0.53),
+                                  child: const Text(
+                                    'Select Group',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Satoshi',
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.83,
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                        canvasColor: Colors.white,
+                                        dropdownMenuTheme:
+                                            DropdownMenuThemeData()),
+                                    child: DropdownButtonFormField<
+                                        GetAllAssociatedGroupModel>(
+                                      elevation: 0,
+                                      value: currentValue,
+                                      decoration: InputDecoration(
+                                        hintText: "Select group",
+                                        hintStyle: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'Satoshi',
+                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 12, vertical: 12),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                      items: availableGroups.map((group) {
+                                        return DropdownMenuItem<
+                                            GetAllAssociatedGroupModel>(
+                                          value: group,
+                                          child: Text(
+                                            group.name,
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'Satoshi',
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (group) {
+                                        var storage = GetStorage();
+
+                                        var useerid = storage.read('userid');
+                                        print("USER ID $useerid");
+                                        if (group != null &&
+                                            !selectedGroups
+                                                .any((g) => g.id == group.id)) {
+                                          context.read<LoginBloc>().add(
+                                                AddAffiliations(
+                                                  userId: useerid,
+                                                  groupId: group.id,
+                                                ),
+                                              );
+
+                                          setState(() {
+                                            _dropdownValue = group;
+                                            selectedGroups.add(group);
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),*/
+                        /*  Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: BlocBuilder<LoginBloc, LoginState>(
                             builder: (context, state) {
                               final allGroups =
                                   state.getAllProfessionalProfileModel ?? [];
+                              final joinedGroupIds = widget
+                                  .profile.groupAssociations!
+                                  .map((g) => g.groupId)
+                                  .toSet();
+
+                              final filteredGroups = allGroups
+                                  .where((g) => !joinedGroupIds.contains(g.id))
+                                  .toList();
                               return SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.83,
                                 child: Theme(
@@ -362,13 +792,13 @@ class _GroupAssociationEditOrganizationalProfileState
                                       ),
                                     ),
                                     value: _dropdownValue,
-                                    items: allGroups.map((group) {
+                                    items: filteredGroups.map((group) {
                                       return DropdownMenuItem<
                                           GetAllProfessionalProfileModel>(
                                         value: group,
                                         child: Text(
                                           group.name,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 18,
                                             color: Colors.black87,
                                             fontWeight: FontWeight.w600,
@@ -402,7 +832,7 @@ class _GroupAssociationEditOrganizationalProfileState
                               );
                             },
                           ),
-                        ),
+                        ),*/
                         SizedBox(
                           height: 20,
                         ),

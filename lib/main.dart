@@ -152,7 +152,6 @@ Future<void> getCurrentLocation() async {
   }
 }
 
-
 // StreamSubscription<Position> positionStream =
 //     Geolocator.getPositionStream().listen(
 //   (Position position) {
@@ -161,7 +160,6 @@ Future<void> getCurrentLocation() async {
 //         : '${position.latitude}, ${position.longitude}');
 //   },
 // );
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -243,6 +241,7 @@ void main() async {
                         lazy: false,
                         create: (context) => LoginBloc()
                           ..add(GetOrganizationProfile(userId: value))
+                          ..add(GetAllAssociatedGroups())
                           ..add(GetSavedSearches()))
                     : BlocProvider<LoginBloc>(
                         lazy: false,

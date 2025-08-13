@@ -165,7 +165,6 @@ class AddSavedSearch extends LoginEvent {
   AddSavedSearch(this.savedSearch);
 }
 
-
 class VerificationLoginThroughSMSOtpLoginRequest extends LoginEvent {
   final String phone, otp;
 
@@ -177,4 +176,21 @@ class LoginThroughSMSOtpRequestNew extends LoginEvent {
   final String phone, password;
 
   LoginThroughSMSOtpRequestNew({required this.phone, required this.password});
+}
+
+class RemoveAffiliationsOrganization extends LoginEvent {
+  final String userId;
+  final String groupId;
+
+  RemoveAffiliationsOrganization({
+    required this.userId,
+    required this.groupId,
+  });
+}
+
+class AddAffiliationsOrganization extends LoginEvent {
+  final String userId;
+  final String groupId;
+
+  AddAffiliationsOrganization({required this.userId, required this.groupId});
 }

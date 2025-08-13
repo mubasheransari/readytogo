@@ -476,6 +476,19 @@ class LoginRepository {
         token: token);
   }
 
+   Future<http.Response> addAffiliationsGroupsOrganization(
+      String userId, String groupId) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
+    return await _apiBaseHelper.post(
+        path: ApiConstants.addAffiliationsGroupsOrganization,
+        body: {
+          "userId": userId,
+          "groupId": groupId,
+        },
+        token: token);
+  }
+
   Future<List<GetAllProfessionalProfileModel>>
       getAllProfessionalProfile() async {
     final jsonResponse = await _apiBaseHelper.get(
@@ -588,6 +601,20 @@ class LoginRepository {
         path: ApiConstants.addSearch,
         body: {
           "searchedUserId": searchedUserId,
+        },
+        token: token);
+  }
+
+    Future<http.Response> removeAffiliationsGroupsOrganizational(
+      String userId, String groupId) async {
+    var storage = GetStorage();
+    var token = storage.read("id");
+
+    return await _apiBaseHelper.delete(
+        path: ApiConstants.removeAffiliationsGroupsOrganizational,
+        body: {
+          "userId": userId,
+          "groupId": groupId,
         },
         token: token);
   }

@@ -32,6 +32,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<VerificationLoginThroughSMSOtpLoginRequest>(
         verificationLoginThroughSMSOtpLoginRequest);
     on<LoginThroughSMSOtpRequestNew>(loginThroughSMSOtpRequestNew);
+    on<RemoveAffiliationsOrganization>(removeAffiliationsOrganization);
+    on<AddAffiliationsOrganization>(addAffiliationsOrganization);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -293,6 +295,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     final getallgroups = await loginRepository.getAllAssociatedGroup();
 
+    print("GET ALL GROUPS $getallgroups");
+
     if (getallgroups != null) {
       emit(state.copyWith(
           getAllAssociatedGroupModel: getallgroups,
@@ -381,8 +385,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-
-    updateOrganizationalProfile(
+  updateOrganizationalProfile(
     UpdateOrganizationalProfile event,
     Emitter<LoginState> emit,
   ) async {
@@ -673,8 +676,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-
-
   logoutRequested(LogoutRequested event, emit) {
     emit(state.copyWith(
         status: LoginStatus.initial,
@@ -709,15 +710,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-
-
   verificationLoginThroughSMSOtpLoginRequest(
     VerificationLoginThroughSMSOtpLoginRequest event,
     Emitter<LoginState> emit,
   ) async {
     emit(state.copyWith(
-        verificationLoginThroughSMS:
-            VerificationLoginThroughSMS.loading));
+        verificationLoginThroughSMS: VerificationLoginThroughSMS.loading));
     try {
       final response = await loginRepository.verifySMSOtp(
         event.phone,
@@ -729,17 +727,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         // final token = data['token'];
 
         emit(state.copyWith(
-            verificationLoginThroughSMS:
-                VerificationLoginThroughSMS.success));
+            verificationLoginThroughSMS: VerificationLoginThroughSMS.success));
       } else {
         emit(state.copyWith(
-            verificationLoginThroughSMS:
-                VerificationLoginThroughSMS.failure));
+            verificationLoginThroughSMS: VerificationLoginThroughSMS.failure));
       }
     } catch (e) {
       emit(state.copyWith(
-          verificationLoginThroughSMS:
-              VerificationLoginThroughSMS.failure));
+          verificationLoginThroughSMS: VerificationLoginThroughSMS.failure));
     }
   }
 
@@ -755,13 +750,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     print("OTP REQUEST LOGIN");
     print("OTP REQUEST LOGIN");
     emit(state.copyWith(
-      status: LoginStatus.initial,
-        loginThroughSMSOtpRequestNewEnum://
+        status: LoginStatus.initial,
+        loginThroughSMSOtpRequestNewEnum: //
             LoginThroughSMSOtpRequestNewEnum.loading));
     try {
       final response = await loginRepository.requestLoginPasswordThroughSMS(
         event.phone,
-        event.password,//100@Testing
+        event.password, //100@Testing
       );
       print("STATUS CODE: ${response.statusCode}");
       print("BODY: ${response.body}");
@@ -783,7 +778,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           loginThroughSMSOtpRequestNewEnum:
               LoginThroughSMSOtpRequestNewEnum.success,
         ));
-        
       } else {
         // Optional: Decode error message
         final error = jsonDecode(response.body);
@@ -826,6 +820,78 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     //             LoginThroughSMSOtpRequestNewEnum.failure));
     //   }
     // }
+  }
 
+  removeAffiliationsOrganization(
+    RemoveAffiliationsOrganization event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(
+        removeAffiliationGroupStatus:
+            RemoveAffiliationGroupStatusProfessional.loading));
+
+    try {
+      final response =
+          await loginRepository.removeAffiliationsGroupsProfessional(
+        event.userId,
+        event.groupId,
+      );
+
+      print("RemoveAffiliations Status Code: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        // ✅ Dispatch the GetIndividualProfile event to refresh profile
+        add(GetProfessionalProfile(userId: event.userId));
+        //10@Testing
+        emit(state.copyWith(
+            removeAffiliationGroupStatus:
+                RemoveAffiliationGroupStatusProfessional.success));
+      } else {
+        emit(state.copyWith(
+          removeAffiliationGroupStatus:
+              RemoveAffiliationGroupStatusProfessional.failure,
+          errorMessage:
+              "Failed to remove group (Status: ${response.statusCode})",
+        ));
+      }
+    } catch (e) {
+      print("Error in RemoveAffiliations: $e");
+      emit(state.copyWith(
+        removeAffiliationGroupStatus:
+            RemoveAffiliationGroupStatusProfessional.failure,
+        errorMessage: "An error occurred: ${e.toString()}",
+      ));
+    }
+  }
+
+  addAffiliationsOrganization(
+    AddAffiliationsOrganization event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: LoginStatus.addAffilicationGroupsLoading));
+
+    try {
+      final response = await loginRepository.addAffiliationsGroupsOrganization(
+        event.userId,
+        event.groupId,
+      );
+
+      print("Status Code: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        emit(state.copyWith(status: LoginStatus.addAffilicationGroupsSuccess));
+      } else {
+        emit(state.copyWith(
+          status: LoginStatus.failure,
+          errorMessage: "Login failed with status ${response.statusCode}",
+        ));
+      }
+    } catch (e) {
+      print("Error in login: $e");
+      emit(state.copyWith(
+        status: LoginStatus.addAffilicationGroupsError,
+        errorMessage: "An error occurred: ${e.toString()}",
+      ));
+    }
   }
 }

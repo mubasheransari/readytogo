@@ -23,6 +23,8 @@ class ApiConstants {
   static const String getAllProfessionalProfile = "api/profile/professionals";
   static const String addAffiliationsGroups =
       "profile/individual/affiliations/add";
+        static const String addAffiliationsGroupsOrganization =
+      "profile/organization/affiliations/add";
   static const String removeAffiliationsGroups =
       "profile/individual/affiliations/remove";
   static const String addAffiliationsGroupsProfessional =
@@ -39,5 +41,8 @@ class ApiConstants {
       "account/login/request-sms-otp";
              static const String verifySMSotpLogin =
       "account/login/verify-sms-otp";
+
+        static const String removeAffiliationsGroupsOrganizational =
+      "profile/professional/affiliations/remove";
   
 }
