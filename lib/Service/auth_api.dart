@@ -4,7 +4,7 @@ import 'package:readytogo/Constants/api_constants.dart';
 
 class AuthApi {
   static Future<http.Response> sendGoogleJwtToBackend(String idToken) async {
-    final url = Uri.parse('https://${ApiConstants.baseDomain}/${ApiConstants.apiPrefix}account/google-sign-up');
+    final url = Uri.parse('http://${ApiConstants.baseDomain}/${ApiConstants.apiPrefix}account/google-sign-up');
     return await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
