@@ -260,6 +260,69 @@ class _GroupAssociationEditOrganizationalProfileState
                             ),
                           ),
                         ),
+                      /*  BlocConsumer<LoginBloc, LoginState>(
+  listener: (context, state) {
+    if (state.removeAffiliationGroupStatus ==
+        RemoveAffiliationGroupStatusProfessional.success) {
+      final storage = GetStorage();
+      final id = storage.read("id");
+
+      context.read<LoginBloc>().add(GetOrganizationProfile(userId: id));
+
+      Navigator.of(context).pop();
+     // Navigator.of(context).pop();
+    }
+
+    if (state.removeAffiliationGroupStatus ==
+        RemoveAffiliationGroupStatusProfessional.failure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.errorMessage ?? "Failed to remove group")),
+      );
+    }
+  },
+  builder: (context, state) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Column(
+        children: List.generate(
+          widget.profile.groupAssociations!.length,
+          (index) => ListTile(
+            trailing: InkWell(
+              onTap: () {
+                print("USER ID ${widget.userid}");
+                print(
+                    "GROUP ID ${widget.profile.groupAssociations![index].groupId}");
+
+                var storage = GetStorage();
+                var useerid = storage.read('userid');
+
+                context.read<LoginBloc>().add(
+                      RemoveAffiliationsOrganization(
+                        userId: useerid,
+                        groupId: widget.profile.groupAssociations![index]
+                            .groupId
+                            .toString(),
+                      ),
+                    );
+              },
+              child: Image.asset("assets/icon_delete.png"),
+            ),
+            title: Text(
+              widget.profile.groupAssociations![index].groupName!,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Satoshi',
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  },
+),*/
+
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Column(
@@ -285,13 +348,7 @@ class _GroupAssociationEditOrganizationalProfileState
                                                   .groupId
                                                   .toString(),
                                             ),
-                                          ); //10@Testing
-                                      print(state.removeAffiliationGroupStatus
-                                          .toString());
-                                      print(state.removeAffiliationGroupStatus
-                                          .toString());
-                                      print(state.removeAffiliationGroupStatus
-                                          .toString());
+                                          );
 
                                       context.read<LoginBloc>().add(
                                           GetOrganizationProfile(userId: id));
@@ -317,19 +374,7 @@ class _GroupAssociationEditOrganizationalProfileState
                         SizedBox(
                           height: 15,
                         ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(
-                        //       right: MediaQuery.of(context).size.width * 0.53),
-                        //   child: const Text(
-                        //     'Select Group',
-                        //     style: TextStyle(
-                        //       fontSize: 22,
-                        //       color: Colors.black87,
-                        //       fontWeight: FontWeight.w700,
-                        //       fontFamily: 'Satoshi',
-                        //     ),
-                        //   ),
-                        // ),
+                      
                         BlocBuilder<LoginBloc, LoginState>(
                           builder: (context, state) {
                             final allGroups =
@@ -376,7 +421,99 @@ class _GroupAssociationEditOrganizationalProfileState
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                SizedBox(
+                                BlocConsumer<LoginBloc, LoginState>(
+  listener: (context, state) {
+    if (state.status == LoginStatus.addAffilicationGroupsSuccess) {
+      final storage = GetStorage();
+      final id = storage.read("id");
+
+      context.read<LoginBloc>().add(GetOrganizationProfile(userId: id));
+
+      Navigator.of(context).pop();
+    //  Navigator.of(context).pop();
+    }
+
+    if (state.status == LoginStatus.addAffilicationGroupsError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.errorMessage ?? "Something went wrong")),
+      );
+    }
+  },
+  builder: (context, state) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.83,
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.white,
+          dropdownMenuTheme: const DropdownMenuThemeData(),
+        ),
+        child: DropdownButtonFormField<GetAllAssociatedGroupModel>(
+          elevation: 0,
+          value: currentValue,
+          decoration: InputDecoration(
+            hintText: "Select group",
+            hintStyle: const TextStyle(
+              fontSize: 18,
+              color: Colors.black87,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Satoshi',
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 12,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Colors.white),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Colors.white),
+            ),
+          ),
+          items: availableGroups.map((group) {
+            return DropdownMenuItem<GetAllAssociatedGroupModel>(
+              value: group,
+              child: Text(
+                group.name,
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Satoshi',
+                ),
+              ),
+            );
+          }).toList(),
+          onChanged: (group) {
+            if (group != null &&
+                !selectedGroups.any((g) => g.id == group.id)) {
+              final storage = GetStorage();
+              final userId = storage.read('userid');
+
+              context.read<LoginBloc>().add(
+                    AddAffiliationsOrganization(
+                      userId: userId,
+                      groupId: group.id,
+                    ),
+                  );
+
+              setState(() {
+                _dropdownValue = group;
+                selectedGroups.add(group);
+              });
+            }
+          },
+        ),
+      ),
+    );
+  },
+),
+
+                            /*    SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.83,
                                   child: Theme(
@@ -455,6 +592,7 @@ class _GroupAssociationEditOrganizationalProfileState
 
                                           var id = storage.read("id");
 
+
                                           context.read<LoginBloc>().add(
                                               GetOrganizationProfile(
                                                   userId: id));
@@ -464,7 +602,7 @@ class _GroupAssociationEditOrganizationalProfileState
                                       },
                                     ),
                                   ),
-                                ),
+                                ),*/
                               ],
                             );
                           },

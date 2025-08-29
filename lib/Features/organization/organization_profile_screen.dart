@@ -235,9 +235,9 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                   ),
                   SizedBox(height: 16),
                   ...profile.groupAssociations!.map<Widget>((group) {
-                    return Column(
+                    return  Column(
                       children: [
-                        _groupCard(
+                      _groupCard(
                           context: context,
                           title: group.groupName!,
                           memberCount: group.memberCount!,
@@ -246,6 +246,7 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                       ],
                     );
                   }).toList(),
+
                   SizedBox(height: 28),
                   Text(
                     'Groups Contacts',
