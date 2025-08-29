@@ -50,13 +50,16 @@ class GoogleSignInService {
         final response = await AuthApi.sendGoogleJwtToBackend(idToken);
         print('Backend response: \\${response.statusCode} - \\${response.body}');
         if (response.statusCode == 200) {
+          
+
           Future.microtask(() {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => HomeScreen()),
             );
           });
-        } else {
+        }
+         else {
           // Optionally show error to user
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Google login failed. Please try again.')),

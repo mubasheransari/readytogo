@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:readytogo/Features/login/login_screen.dart';
 import 'package:readytogo/widgets/toast_widget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'dart:async';
-
 import '../../../Constants/constants.dart';
 import '../../../widgets/boxDecorationWidget.dart';
 import '../bloc/login_event.dart';
@@ -101,6 +99,8 @@ class _VerificationLoginSMSScreenOTPState
             listener: (context, state) {
               if (state.verificationLoginThroughSMS ==
                   VerificationLoginThroughSMS.success) {
+                   final box = GetStorage();
+                box.write("token", state.token);
                 toastWidget("Logged-in Successfully", Colors.green);
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const LoginSuccessScreen()),
@@ -110,7 +110,7 @@ class _VerificationLoginSMSScreenOTPState
                   VerificationLoginThroughSMS.failure) {
                 toastWidget("Incorrect Code", Colors.red);
               }
-            }, //100@Testing
+            }, 
             builder: (context, state) {
               final isLoading = state.verificationLoginThroughSMS ==
                   VerificationLoginThroughSMS.loading;
@@ -268,8 +268,6 @@ class _VerificationLoginSMSScreenOTPState
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.85,
                             height: 50,
-                            // width: 376,
-                            // height: 60,
                             child: ElevatedButton(
                               onPressed: (codeValue.length == 4 && !isLoading)
                                   ? () {
@@ -280,7 +278,7 @@ class _VerificationLoginSMSScreenOTPState
                                             ),
                                           );
                                     }
-                                  : null, //100@Testing
+                                  : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Constants().themeColor,
                                 minimumSize: const Size(200, 50),

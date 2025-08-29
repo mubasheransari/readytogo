@@ -101,11 +101,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           event.distance,
           event.lat,
           event.lng);
-      print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
-      print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
-      print("FILTERS SEARCH STATUS ${state.filterSearchStatus}");
+
       emit(state.copyWith(
-          filterSearchResults: result, // searchModel: result,10@Testing
+          filterSearchResults: result,
           filterSearchStatus: FilterSearchStatus.filtersearchSuccess));
     } catch (e) {
       emit(state.copyWith(
@@ -115,30 +113,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  /*_searchFunctionality(
-    SearchFunctionality event,
-    Emitter<LoginState> emit,
-  ) async {
-    emit(state.copyWith(
-      searchStatus: SearchStatus.searchLoading,
-      searchResults: [],
-      errorMessage: null,
-    ));
 
-    try {
-      final results = await loginRepository.searchFunctionality(event.services);
-
-      emit(state.copyWith(
-        searchStatus: SearchStatus.searchSuccess,
-        searchResults: results,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-        searchStatus: SearchStatus.searchError,
-        errorMessage: e.toString(),
-      ));
-    }
-  }*/
 
   _loginWithEmailPassword(
     LoginWithEmailPassword event,
@@ -189,7 +164,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         event.email,
         event.password,
         event.otp,
-      ); //10@Testing
+      );
 
       print("VERIFY OTP: $response");
       final responseBody = json.decode(response.body);
@@ -205,7 +180,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         List<dynamic> roles = responseBody['role'];
         String userRole = roles.isNotEmpty ? roles[0] : '';
 
-        print('User Role: $userRole'); //10@Testing
+        print('User Role: $userRole');
 
         var storage = GetStorage();
         storage.write("id", userId);
@@ -273,7 +248,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             errorMessage: "Token or User ID missing",
           ));
         }
-      } else {
+      } 
+      
+      else {
         emit(state.copyWith(
           status: LoginStatus.otpFailure,
           errorMessage: "OTP verification failed: ${response.statusCode}",
@@ -722,20 +699,109 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         event.otp,
       );
 
-      if (response.statusCode == 200) {
-        //  final data = jsonDecode(response.body);
-        // final token = data['token'];
+       final responseBody = json.decode(response.body);
+      print("RESPONSE BODY $responseBody");
+      print("RESPONSE BODY $responseBody");
+      print("RESPONSE BODY $responseBody");
 
+      if (response.statusCode == 200) {
+        final responseBody = json.decode(response.body);
+        final token = responseBody['token'];
+        final userId = responseBody['token'];
+
+        List<dynamic> roles = responseBody['role'];
+        String userRole = roles.isNotEmpty ? roles[0] : '';
+
+        print('User Role: $userRole');
+
+        var storage = GetStorage();
+        storage.write("id", userId);
+        storage.write("role", userRole);
+        storage.write('userid', responseBody['id']);
+
+        if (token != null && userId != null) {
+          _tempToken = token;
+
+          emit(state.copyWith(
+         verificationLoginThroughSMS: VerificationLoginThroughSMS.success,
+            token: token,
+          ));
+
+        
+          if (userRole == "Individual") {
+            emit(state.copyWith(status: LoginStatus.profileLoading));
+
+            final profile = await loginRepository.individualProfile(userId);
+            final getSavedSerches = await loginRepository.getAllSavedSearches();
+
+            emit(state.copyWith(
+                status: LoginStatus.profileLoaded,
+                profile: profile, 
+                savedSearchModel: getSavedSerches,
+                getSavedSearchesStatus:
+                    GetSavedSearchesStatus.getSavedSearchesSuccess));
+          } else if (userRole == "Professional") {
+            emit(
+                state.copyWith(professionalStatus: ProfessionalStatus.loading));
+
+            final profile = await loginRepository.professionalProfile(userId);
+            final getSavedSerches = await loginRepository.getAllSavedSearches();
+            emit(state.copyWith(
+                professionalStatus: ProfessionalStatus.success,
+                professionalProfileModel: profile,
+                savedSearchModel: getSavedSerches,
+                getSavedSearchesStatus:
+                    GetSavedSearchesStatus.getSavedSearchesSuccess));
+          } 
+          else if (userRole == "Organization") {
+            emit(state.copyWith(
+                organizationalStatus: OrganizationalStatus.loading));
+
+            final profile = await loginRepository.organizationProfile(userId);
+            final getSavedSerches = await loginRepository.getAllSavedSearches();
+
+            emit(state.copyWith(
+                organizationalStatus: OrganizationalStatus.success,
+                organizationProfileModel: profile,
+                savedSearchModel: getSavedSerches,
+                getSavedSearchesStatus:
+                    GetSavedSearchesStatus.getSavedSearchesSuccess));
+          }
+        } else {
+          emit(state.copyWith(
+                verificationLoginThroughSMS: VerificationLoginThroughSMS.failure,   //  status: LoginStatus.otpFailure,
+            errorMessage: "Token or User ID missing",
+          ));
+        }
+      } 
+      
+      else {
         emit(state.copyWith(
-            verificationLoginThroughSMS: VerificationLoginThroughSMS.success));
-      } else {
-        emit(state.copyWith(
-            verificationLoginThroughSMS: VerificationLoginThroughSMS.failure));
+                verificationLoginThroughSMS: VerificationLoginThroughSMS.failure,  // status: LoginStatus.otpFailure,
+          errorMessage: "OTP verification failed: ${response.statusCode}",
+        ));
       }
     } catch (e) {
       emit(state.copyWith(
-          verificationLoginThroughSMS: VerificationLoginThroughSMS.failure));
+              verificationLoginThroughSMS: VerificationLoginThroughSMS.success, //  status: LoginStatus.otpFailure,
+        errorMessage: "OTP error: ${e.toString()}",
+      ));
     }
+
+    //   if (response.statusCode == 200) {
+    //     //  final data = jsonDecode(response.body);
+    //     // final token = data['token'];
+
+    //     emit(state.copyWith(
+    //         verificationLoginThroughSMS: VerificationLoginThroughSMS.success));
+    //   } else {
+    //     emit(state.copyWith(
+    //         verificationLoginThroughSMS: VerificationLoginThroughSMS.failure));
+    //   }
+    // } catch (e) {
+    //   emit(state.copyWith(
+    //       verificationLoginThroughSMS: VerificationLoginThroughSMS.failure));
+    // }
   }
 
   loginThroughSMSOtpRequestNew(
