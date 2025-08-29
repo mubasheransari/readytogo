@@ -260,7 +260,7 @@ class _GroupAssociationEditOrganizationalProfileState
                             ),
                           ),
                         ),
-                      /*  BlocConsumer<LoginBloc, LoginState>(
+                       BlocConsumer<LoginBloc, LoginState>(
   listener: (context, state) {
     if (state.removeAffiliationGroupStatus ==
         RemoveAffiliationGroupStatusProfessional.success) {
@@ -321,9 +321,9 @@ class _GroupAssociationEditOrganizationalProfileState
       ),
     );
   },
-),*/
+),
 
-                        Padding(
+                      /*  Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Column(
                             children: List.generate(
@@ -352,8 +352,8 @@ class _GroupAssociationEditOrganizationalProfileState
 
                                       context.read<LoginBloc>().add(
                                           GetOrganizationProfile(userId: id));
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
+                                   //   Navigator.of(context).pop();
+                                 //     Navigator.of(context).pop();
                                     },
                                     child:
                                         Image.asset("assets/icon_delete.png")),
@@ -370,7 +370,7 @@ class _GroupAssociationEditOrganizationalProfileState
                               ),
                             ),
                           ),
-                        ),
+                        ),*/
                         SizedBox(
                           height: 15,
                         ),
@@ -380,25 +380,23 @@ class _GroupAssociationEditOrganizationalProfileState
                             final allGroups =
                                 state.getAllAssociatedGroupModel ?? [];
 
-                            // ✅ Safely extract associated group IDs from widget.profile
                             final associatedGroupIds =
                                 (widget.profile.groupAssociations)
                                     .map((group) => group.groupId)
                                     .whereType<String>()
                                     .toSet();
 
-                            // 🔽 Filter only groups not already associated
                             final availableGroups = allGroups
                                 .where((group) =>
                                     !associatedGroupIds.contains(group.id))
                                 .toList();
 
-                            // ⛔ Hide dropdown if no available groups
+                     
                             if (availableGroups.isEmpty) {
                               return const SizedBox.shrink();
                             }
 
-                            // ✅ Validate dropdown value in case list changes
+           
                             final isValidValue =
                                 availableGroups.contains(_dropdownValue);
                             final currentValue =
