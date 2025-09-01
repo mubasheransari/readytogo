@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 class ApiBaseHelper {
   bool _wasConnected = true;
 
-
   Future<dynamic> get({
     required String url,
     required String path,
@@ -75,7 +74,7 @@ class ApiBaseHelper {
       request.headers.addAll({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token'
-      });//10@Testing
+      }); //10@Testing
 
       if (body != null) {
         request.body = json.encode(body);
@@ -101,6 +100,7 @@ class ApiBaseHelper {
     Map<String, dynamic>? queryParam,
   }) async {
     print('Api POST -> path: $path');
+    print('URL ${baseUrl}${path}');
 
     final hasInternet = await _checkConnectionWithToast();
     if (!hasInternet) {
@@ -113,13 +113,17 @@ class ApiBaseHelper {
         '${ApiConstants.apiPrefix}$path',
         queryParam,
       );
+      print("URI ${uri}");
+      print("URI ${uri}");
+      print("URI ${uri}");
 
       final response = await http.post(
         uri,
         headers: {
           'Content-Type': 'application/json',
           'X-Request-For': '::1',
-          if (token != null && token.isNotEmpty)  'Authorization': 'Bearer $token',
+          if (token != null && token.isNotEmpty)
+            'Authorization': 'Bearer $token',
         },
         body: json.encode(body),
       );

@@ -161,8 +161,9 @@ class RemoveSavedSearch extends LoginEvent {
 
 class AddSavedSearch extends LoginEvent {
   final SavedSearchModel savedSearch;
+  String userid;
 
-  AddSavedSearch(this.savedSearch);
+  AddSavedSearch(this.savedSearch,this.userid);
 }
 
 class VerificationLoginThroughSMSOtpLoginRequest extends LoginEvent {

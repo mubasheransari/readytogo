@@ -44,6 +44,42 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                 final model = savedSearches[index];
                 return DoctorCard(
                   onFavoriteTap: () {
+                    print('USER ID :${model.userId}');
+                    print('USER ID :${model.userId}');
+                    print('USER ID :${model.userId}');
+                    print('USER ID :${model.userId}');
+  toastWidget("Removed", Colors.red);
+  setState(() {
+    savedSearches.removeAt(index);
+  });
+
+  final userId = (model.locations?.isNotEmpty ?? false)
+      ? model.locations!.first.id
+      : model.userId;
+
+  context.read<LoginBloc>().add(RemoveSavedSearch(savedSearches[index].userId.toString()));
+  LoginRepository().removeSavedSearch(userId.toString());
+},
+
+               /*   onFavoriteTap: () {
+  toastWidget("Removed", Colors.red);
+
+  final userId = savedSearches[index].locations?.isNotEmpty == true
+      ? savedSearches[index].locations!.first.id
+      : savedSearches[index].userId;
+
+  print("USER ID $userId");
+
+  setState(() {
+    savedSearches.removeAt(index);
+  });
+
+  context.read<LoginBloc>().add(RemoveSavedSearch(
+      savedSearches[index].userId.toString())); // ← consider fixing here too
+  LoginRepository().removeSavedSearch(userId.toString());
+},*/
+
+               /*   onFavoriteTap: () {
                     toastWidget("Rmoved", Colors.red);
                     setState(() {
                       savedSearches.removeAt(index);
@@ -62,7 +98,7 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                     context.read<LoginBloc>().add(RemoveSavedSearch(
                         savedSearches[index].userId.toString()));
                     LoginRepository().removeSavedSearch(userId.toString());
-                  },
+                  },*/
                   profileImage: model.profileImageUrl != null
                       ? "http://173.249.27.4:343/${model.profileImageUrl}"
                       : "https://i.pravatar.cc/100?img=60",

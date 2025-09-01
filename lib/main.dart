@@ -260,7 +260,7 @@ void main() async {
                           ..add(GetSavedSearches()),
                       ),
         BlocProvider<ForgetPasswordBloc>(
-          lazy: false, //10@Testing
+          lazy: false,
           create: (context) => ForgetPasswordBloc(),
         ),
       ],

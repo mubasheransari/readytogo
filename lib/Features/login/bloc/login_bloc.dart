@@ -39,10 +39,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository loginRepository = LoginRepository();
   String? _tempToken;
   addSavedSearch(AddSavedSearch event, exmit) {
+    print('USER ID ${event.userid}');
+    print('USER ID ${event.userid}');
+    print('USER ID ${event.userid}');
+    print('USER ID ${event.userid}');
+    print('USER ID ${event.userid}');
+
     final currentList =
         List<SavedSearchModel>.from(state.savedSearchModel ?? []);
     currentList.add(event.savedSearch);
-    //loginRepository.addSavedSearch(event.savedSearch.userId.toString());
+    loginRepository.addSavedSearch(event.userid.toString());
     emit(state.copyWith(savedSearchModel: currentList));
   }
 
@@ -112,8 +118,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       ));
     }
   }
-
-
 
   _loginWithEmailPassword(
     LoginWithEmailPassword event,
@@ -248,9 +252,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             errorMessage: "Token or User ID missing",
           ));
         }
-      } 
-      
-      else {
+      } else {
         emit(state.copyWith(
           status: LoginStatus.otpFailure,
           errorMessage: "OTP verification failed: ${response.statusCode}",
@@ -699,7 +701,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         event.otp,
       );
 
-       final responseBody = json.decode(response.body);
+      final responseBody = json.decode(response.body);
       print("RESPONSE BODY $responseBody");
       print("RESPONSE BODY $responseBody");
       print("RESPONSE BODY $responseBody");
@@ -723,11 +725,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           _tempToken = token;
 
           emit(state.copyWith(
-         verificationLoginThroughSMS: VerificationLoginThroughSMS.success,
+            verificationLoginThroughSMS: VerificationLoginThroughSMS.success,
             token: token,
           ));
 
-        
           if (userRole == "Individual") {
             emit(state.copyWith(status: LoginStatus.profileLoading));
 
@@ -736,7 +737,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
             emit(state.copyWith(
                 status: LoginStatus.profileLoaded,
-                profile: profile, 
+                profile: profile,
                 savedSearchModel: getSavedSerches,
                 getSavedSearchesStatus:
                     GetSavedSearchesStatus.getSavedSearchesSuccess));
@@ -752,8 +753,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 savedSearchModel: getSavedSerches,
                 getSavedSearchesStatus:
                     GetSavedSearchesStatus.getSavedSearchesSuccess));
-          } 
-          else if (userRole == "Organization") {
+          } else if (userRole == "Organization") {
             emit(state.copyWith(
                 organizationalStatus: OrganizationalStatus.loading));
 
@@ -769,21 +769,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           }
         } else {
           emit(state.copyWith(
-                verificationLoginThroughSMS: VerificationLoginThroughSMS.failure,   //  status: LoginStatus.otpFailure,
+            verificationLoginThroughSMS: VerificationLoginThroughSMS
+                .failure, //  status: LoginStatus.otpFailure,
             errorMessage: "Token or User ID missing",
           ));
         }
-      } 
-      
-      else {
+      } else {
         emit(state.copyWith(
-                verificationLoginThroughSMS: VerificationLoginThroughSMS.failure,  // status: LoginStatus.otpFailure,
+          verificationLoginThroughSMS: VerificationLoginThroughSMS
+              .failure, // status: LoginStatus.otpFailure,
           errorMessage: "OTP verification failed: ${response.statusCode}",
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-              verificationLoginThroughSMS: VerificationLoginThroughSMS.success, //  status: LoginStatus.otpFailure,
+        verificationLoginThroughSMS: VerificationLoginThroughSMS
+            .success, //  status: LoginStatus.otpFailure,
         errorMessage: "OTP error: ${e.toString()}",
       ));
     }

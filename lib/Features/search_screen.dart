@@ -205,6 +205,11 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
           position: position,
           icon: _customMarkerIcon ?? BitmapDescriptor.defaultMarker,
           onTap: () {
+            print("simple search result");
+            print("simple search result");
+            print("simple search result");
+            print("simple search result");
+            print("simple search result");
             setState(() {
               _selectedMarkerPosition = position;
               _selectedProvider = model;
@@ -293,7 +298,8 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
         final longitude = location.longitude;
 
         if (latitude != null && longitude != null) {
-          final marker = Marker(//100@Testing
+          final marker = Marker(
+            //x
             markerId:
                 MarkerId('filter_marker_${provider.userId}_${location.id}'),
             position: LatLng(latitude, longitude),
@@ -686,7 +692,7 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
 
                           context
                               .read<LoginBloc>()
-                              .add(AddSavedSearch(savedSearch));
+                              .add(AddSavedSearch(savedSearch, model.userId));
                           LoginRepository().addSavedSearch(
                               model.locations.first.id.toString());
                           print("ADD");
@@ -907,11 +913,16 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                         if (model.isSaved) {
                           toastWidget("Added to Saved Searches", Colors.green);
 
+                          print("USER ID FROM EVENT ${model.userId}");
+                          print("USER ID FROM EVENT ${model.userId}");
+                          print("USER ID FROM EVENT ${model.userId}");
+                          print("USER ID FROM EVENT ${model.userId}");
+                          print("USER ID FROM EVENT ${model.userId}");
+
                           context
                               .read<LoginBloc>()
-                              .add(AddSavedSearch(savedSearch));
-                          LoginRepository().addSavedSearch(
-                              model.locations.first.id.toString());
+                              .add(AddSavedSearch(savedSearch, model.userId));
+                          //  LoginRepository().addSavedSearch(model.userId);
                           print("ADD");
                         } else {
                           toastWidget("Removed", Colors.red);

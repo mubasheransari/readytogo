@@ -476,7 +476,7 @@ class LoginRepository {
         token: token);
   }
 
-   Future<http.Response> addAffiliationsGroupsOrganization(
+  Future<http.Response> addAffiliationsGroupsOrganization(
       String userId, String groupId) async {
     var storage = GetStorage();
     var token = storage.read("id");
@@ -593,19 +593,31 @@ class LoginRepository {
   }
 
   Future<http.Response> addSavedSearch(String searchedUserId) async {
-    var storage = GetStorage();
-    var token = storage.read("id");
-    return await _apiBaseHelper.post(
-        //   path: "${ApiConstants.apiPrefix}${ApiConstants.addSearch}",
+  var storage = GetStorage();
+  var token = storage.read("id");
 
-        path: ApiConstants.addSearch,
-        body: {
-          "searchedUserId": searchedUserId,
-        },
-        token: token);
-  }
+  return await _apiBaseHelper.post(
+    path: ApiConstants.addSearch,
+    token: token,
+    queryParam: {"searchedUserId": searchedUserId},
+  );
+}
 
-    Future<http.Response> removeAffiliationsGroupsOrganizational(
+  // Future<http.Response> addSavedSearch(String searchedUserId) async {
+  //   var storage = GetStorage();
+  //   var token = storage.read("id");
+  //   return await _apiBaseHelper.post(
+  //       //   path: "${ApiConstants.apiPrefix}${ApiConstants.addSearch}",
+
+  //       path: ApiConstants.addSearch + "$searchedUserId",
+  //       // queryParam: {"searchedUserId": searchedUserId},
+  //       // body: {
+  //       //   "searchedUserId": searchedUserId
+  //       // },
+  //       token: token);
+  // }
+
+  Future<http.Response> removeAffiliationsGroupsOrganizational(
       String userId, String groupId) async {
     var storage = GetStorage();
     var token = storage.read("id");
