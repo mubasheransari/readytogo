@@ -57,6 +57,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         List<SavedSearchModel>.from(state.savedSearchModel ?? []);
 
     currentList.removeWhere((element) => element.userId == event.userId);
+    loginRepository.removeSavedSearch(event.userId.toString());
 
     emit(state.copyWith(savedSearchModel: currentList));
   }

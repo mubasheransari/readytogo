@@ -924,15 +924,34 @@ class _FindProvidersScreenState extends State<FindProvidersScreen> {
                               .add(AddSavedSearch(savedSearch, model.userId));
                           //  LoginRepository().addSavedSearch(model.userId);
                           print("ADD");
+                          print("ADD");
+                          print("ADD");
+                          print("ADD");
+                          print("ADD");
+                          print("ADD");
+                          print("ADD");
                         } else {
                           toastWidget("Removed", Colors.red);
+                          print('USERID ${model.userId}');
+                          print('USERID ${model.userId}');
+                          print('USERID ${model.userId}');
+
+                          print('USERID ${model.userId}');
+                          print('USERID ${model.userId}');
+                          print("REMOVE");
+                          print("REMOVE");
+                          print("REMOVE");
+                          print("REMOVE");
+                          print("REMOVE");
+                          print("REMOVE");
+                          print("REMOVE");
 
                           context
                               .read<LoginBloc>()
                               .add(RemoveSavedSearch(model.userId));
-                          LoginRepository().removeSavedSearch(
-                              model.locations.first.id.toString());
-                          print("REMOVE");
+                          // LoginRepository().removeSavedSearch(
+                          //     model.locations.first.id.toString());
+                          // print("REMOVE");
                         }
                       },
                     ),

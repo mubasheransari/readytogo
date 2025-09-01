@@ -586,22 +586,20 @@ class LoginRepository {
     return await _apiBaseHelper.delete(
         //  path: "${ApiConstants.apiPrefix}${ApiConstants.removeSearch}",
         path: ApiConstants.removeSearch,
-        body: {
-          "searchedUserId": searchedUserId,
-        },
+        queryParam: {"searchedUserId": searchedUserId},
         token: token);
   }
 
   Future<http.Response> addSavedSearch(String searchedUserId) async {
-  var storage = GetStorage();
-  var token = storage.read("id");
+    var storage = GetStorage();
+    var token = storage.read("id");
 
-  return await _apiBaseHelper.post(
-    path: ApiConstants.addSearch,
-    token: token,
-    queryParam: {"searchedUserId": searchedUserId},
-  );
-}
+    return await _apiBaseHelper.post(
+      path: ApiConstants.addSearch,
+      token: token,
+      queryParam: {"searchedUserId": searchedUserId},
+    );
+  }
 
   // Future<http.Response> addSavedSearch(String searchedUserId) async {
   //   var storage = GetStorage();

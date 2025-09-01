@@ -45,6 +45,20 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
                 return DoctorCard(
                   onFavoriteTap: () {
                     print('USER ID :${model.userId}');
+                    toastWidget("Removed", Colors.red);
+
+                    // grab userId first
+                    final userId = savedSearches[index].userId.toString();
+
+                    setState(() {
+                      savedSearches.removeAt(index);
+                    });
+
+                    context.read<LoginBloc>().add(RemoveSavedSearch(userId));
+                  },
+
+                  /*  onFavoriteTap: () {
+                    print('USER ID :${model.userId}');
                     print('USER ID :${model.userId}');
                     print('USER ID :${model.userId}');
                     print('USER ID :${model.userId}');
@@ -58,10 +72,10 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
       : model.userId;
 
   context.read<LoginBloc>().add(RemoveSavedSearch(savedSearches[index].userId.toString()));
-  LoginRepository().removeSavedSearch(userId.toString());
-},
+ // LoginRepository().removeSavedSearch(userId.toString());
+},*/
 
-               /*   onFavoriteTap: () {
+                  /*   onFavoriteTap: () {
   toastWidget("Removed", Colors.red);
 
   final userId = savedSearches[index].locations?.isNotEmpty == true
@@ -79,7 +93,7 @@ class _SavedSearchScreenState extends State<SavedSearchScreen> {
   LoginRepository().removeSavedSearch(userId.toString());
 },*/
 
-               /*   onFavoriteTap: () {
+                  /*   onFavoriteTap: () {
                     toastWidget("Rmoved", Colors.red);
                     setState(() {
                       savedSearches.removeAt(index);
