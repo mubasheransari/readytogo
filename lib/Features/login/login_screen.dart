@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -17,6 +19,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_bloc.dart';
 import 'bloc/login_state.dart';
+import 'login_success_screen.dart';
 
 class GoogleSignInService {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -48,9 +51,12 @@ class GoogleSignInService {
 
       if (idToken != null) {
         final response = await AuthApi.sendGoogleJwtToBackend(idToken);
+        
         print('Backend response: \\${response.statusCode} - \\${response.body}');
         if (response.statusCode == 200) {
-          
+           final responseBody = json.decode(response.body);
+
+           
 
           Future.microtask(() {
             Navigator.pushReplacement(
@@ -357,14 +363,44 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderColor: const Color(0xFF1877F2),
                         ),
                         const SizedBox(height: 20),
-                        _buildSocialLoginButton(
-                          onTap: () {
-                            _googleSignInService.signInWithGoogle(context);
-                          },
-                          iconPath: 'assets/Google.png',
-                          label: 'Login with Google',
-                          borderColor: const Color(0xFFDB4437),
-                        ),
+
+                        BlocConsumer<LoginBloc, LoginState>(
+  listener: (context, state) {
+    if (state.googleSignInEnum == GoogleSignInEnum.success) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LoginSuccessScreen()),
+        (route) => false,
+      );
+    } else if (state.googleSignInEnum == GoogleSignInEnum.failure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.errorMessage ?? "Google login failed")),
+      );
+    }
+  },
+  builder: (context, state) {
+    if (state.googleSignInEnum == GoogleSignInEnum.loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return _buildSocialLoginButton(
+      onTap: () {
+        context.read<LoginBloc>().add(SignInWithGoogle());
+      },
+      iconPath: 'assets/Google.png',
+      label: 'Login with Google',
+      borderColor: const Color(0xFFDB4437),
+    );
+  },
+),
+
+                        // _buildSocialLoginButton(
+                        //   onTap: () {
+                        //     _googleSignInService.signInWithGoogle(context);
+                        //   },
+                        //   iconPath: 'assets/Google.png',
+                        //   label: 'Login with Google',
+                        //   borderColor: const Color(0xFFDB4437),
+                        // ),
                         const SizedBox(height: 20),
                         _buildSocialLoginButton(
                           onTap: () {},

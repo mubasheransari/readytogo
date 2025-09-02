@@ -195,3 +195,6 @@ class AddAffiliationsOrganization extends LoginEvent {
 
   AddAffiliationsOrganization({required this.userId, required this.groupId});
 }
+
+class SignInWithGoogle extends LoginEvent {
+}

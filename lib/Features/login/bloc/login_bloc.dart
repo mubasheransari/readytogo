@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
 import 'package:readytogo/Repositories/login_repository.dart';
 
+import '../../../Constants/api_constants.dart';
 import '../../../Model/saved_search_model.dart';
+import '../../../Service/auth_api.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginState()) {
@@ -34,6 +37,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginThroughSMSOtpRequestNew>(loginThroughSMSOtpRequestNew);
     on<RemoveAffiliationsOrganization>(removeAffiliationsOrganization);
     on<AddAffiliationsOrganization>(addAffiliationsOrganization);
+    on<SignInWithGoogle>(signInWithGoogle);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -959,6 +963,138 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(state.copyWith(
         status: LoginStatus.addAffilicationGroupsError,
         errorMessage: "An error occurred: ${e.toString()}",
+      ));
+    }
+  }
+
+  signInWithGoogle(
+    SignInWithGoogle event,
+    Emitter<LoginState> emit,
+  ) async {
+    final GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: ['email', 'profile'],
+      serverClientId: ApiConstants.GOOGLE_SERVER_CLIENT_ID,
+    );
+
+    try {
+      // Force account picker by disconnecting previous session
+      try {
+        await _googleSignIn.disconnect();
+      } catch (_) {}
+      await _googleSignIn.signOut();
+
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+      if (account == null) {
+        print('Google Sign-In aborted by user');
+        return;
+      }
+
+      final GoogleSignInAuthentication auth = await account.authentication;
+      final String? idToken = auth.idToken;
+      final String? accessToken = auth.accessToken;
+
+      print('✅ Signed in: ${account.email}');
+      print('🔐 ID Token: $idToken');
+      print('🔐 Access Token: $accessToken');
+
+      if (idToken == null) {
+        print('❌ No ID token received from Google.');
+        emit(state.copyWith(
+          status: LoginStatus.otpFailure,
+          errorMessage: "No ID token received from Google.",
+        ));
+        return;
+      }
+
+      // Send token to backend
+      final response = await AuthApi.sendGoogleJwtToBackend(idToken);
+      print('Backend response: ${response.statusCode} - ${response.body}');
+
+      final responseBody = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        final token = responseBody['token'];
+        final userId = responseBody['id']; // ✅ corrected (was token before)
+
+        List<dynamic> roles = responseBody['role'] ?? [];
+        String userRole = roles.isNotEmpty ? roles[0] : '';
+
+        print('User Role: $userRole');
+
+        var storage = GetStorage();
+        storage.write("id", userId);
+        storage.write("role", userRole);
+        storage.write('userid', userId);
+
+        if (token != null && userId != null) {
+          _tempToken = token;
+
+          emit(state.copyWith(
+            googleSignInEnum:
+                GoogleSignInEnum.success, // status: LoginStatus.otpSuccess,
+            token: token,
+          ));
+
+          // Load profiles based on role
+          if (userRole == "Individual") {
+            emit(state.copyWith(status: LoginStatus.profileLoading));
+
+            final profile = await loginRepository.individualProfile(userId);
+            final savedSearches = await loginRepository.getAllSavedSearches();
+
+            emit(state.copyWith(
+              status: LoginStatus.profileLoaded,
+              profile: profile,
+              savedSearchModel: savedSearches,
+              getSavedSearchesStatus:
+                  GetSavedSearchesStatus.getSavedSearchesSuccess,
+            ));
+          } else if (userRole == "Professional") {
+            emit(
+                state.copyWith(professionalStatus: ProfessionalStatus.loading));
+
+            final profile = await loginRepository.professionalProfile(userId);
+            final savedSearches = await loginRepository.getAllSavedSearches();
+
+            emit(state.copyWith(
+              professionalStatus: ProfessionalStatus.success,
+              professionalProfileModel: profile,
+              savedSearchModel: savedSearches,
+              getSavedSearchesStatus:
+                  GetSavedSearchesStatus.getSavedSearchesSuccess,
+            ));
+          } else if (userRole == "Organization") {
+            emit(state.copyWith(
+                organizationalStatus: OrganizationalStatus.loading));
+
+            final profile = await loginRepository.organizationProfile(userId);
+            final savedSearches = await loginRepository.getAllSavedSearches();
+
+            emit(state.copyWith(
+              organizationalStatus: OrganizationalStatus.success,
+              organizationProfileModel: profile,
+              savedSearchModel: savedSearches,
+              getSavedSearchesStatus:
+                  GetSavedSearchesStatus.getSavedSearchesSuccess,
+            ));
+          }
+        } else {
+          emit(state.copyWith(
+            googleSignInEnum: GoogleSignInEnum.failure,
+            errorMessage: "Token or User ID missing",
+          ));
+        }
+      } else {
+        emit(state.copyWith(
+          googleSignInEnum: GoogleSignInEnum.failure,
+          errorMessage: "Google login failed: ${response.statusCode}",
+        ));
+      }
+    } catch (e) {
+      print('❌ Google Sign-In error: $e');
+      emit(state.copyWith(
+        googleSignInEnum: GoogleSignInEnum.failure,
+        errorMessage: "Google login error: ${e.toString()}",
       ));
     }
   }

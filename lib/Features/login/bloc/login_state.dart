@@ -122,6 +122,13 @@ enum VerificationLoginThroughSMS {
   failure,
 }
 
+enum GoogleSignInEnum {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
@@ -133,6 +140,7 @@ class LoginState extends Equatable {
   final GetSavedSearchesStatus getSavedSearchesStatus;
   final FilterSearchStatus filterSearchStatus;
   final LoginStatus status;
+  final GoogleSignInEnum googleSignInEnum;
   final ProfessionalStatus professionalStatus;
   //final LoginOTPStatus loginOTPStatus;
   final UpdateProfessionalProfileStatus updateProfessionalProfileStatus;
@@ -150,7 +158,7 @@ class LoginState extends Equatable {
   final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
   LoginState(
-      {
+      {this.googleSignInEnum = GoogleSignInEnum.initial,
       this.verificationLoginThroughSMS = VerificationLoginThroughSMS.initial,
       this.loginThroughSMSOtpRequestNewEnum =
           LoginThroughSMSOtpRequestNewEnum.initial,
@@ -181,6 +189,7 @@ class LoginState extends Equatable {
 
   /// Copy the state with updated fields
   LoginState copyWith({
+    GoogleSignInEnum? googleSignInEnum,
     VerificationLoginThroughSMS? verificationLoginThroughSMS,
     LoginThroughSMSOtpRequestNewEnum? loginThroughSMSOtpRequestNewEnum,
     List<SearchModel>? searchResults,
@@ -206,6 +215,7 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
+        googleSignInEnum: googleSignInEnum ?? this.googleSignInEnum,
         verificationLoginThroughSMS:
             verificationLoginThroughSMS ?? this.verificationLoginThroughSMS,
         loginThroughSMSOtpRequestNewEnum: loginThroughSMSOtpRequestNewEnum ??
@@ -245,6 +255,7 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
+        googleSignInEnum,
         verificationLoginThroughSMS,
         loginThroughSMSOtpRequestNewEnum,
         //verifySMSOtpStatus,//100@Testing
@@ -276,4 +287,3 @@ class LoginState extends Equatable {
     return 'LoginState(status: $status, errorMessage: $errorMessage, token: $token, profile: $profile)';
   }
 }
-
