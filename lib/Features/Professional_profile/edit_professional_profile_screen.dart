@@ -38,39 +38,50 @@ class _EditProfessionalProfileScreenState
   late TextEditingController cityController;
   late TextEditingController stateController;
   late TextEditingController zipController;
+  String? _selectedSpec;
+  late final List<String> _specOptions;
 
   @override
-void initState() {
-  super.initState();
-  final p = widget.profile;
-  firstNameController = TextEditingController(text: p.firstname ?? '');
-  lastNameController = TextEditingController(text: p.lastname ?? '');
-  emailController = TextEditingController(text: p.email ?? '');
-  phoneController = TextEditingController(text: p.phoneNumber ?? '');
-  descriptionController = TextEditingController(text: p.description ?? '');
+  void initState() {
+    super.initState();
+    final p = widget.profile;
+    firstNameController = TextEditingController(text: p.firstname ?? '');
+    lastNameController = TextEditingController(text: p.lastname ?? '');
+    emailController = TextEditingController(text: p.email ?? '');
+    phoneController = TextEditingController(text: p.phoneNumber ?? '');
+    descriptionController = TextEditingController(text: p.description ?? '');
 
-  final loc = (p.locations != null && p.locations!.isNotEmpty) ? p.locations![0] : null;
-  streetController = TextEditingController(text: loc?.streetAddress ?? '');
-  areaController = TextEditingController(text: loc?.area ?? '');
-  cityController = TextEditingController(text: loc?.city ?? '');
-  stateController = TextEditingController(text: loc?.state ?? '');
-  zipController = TextEditingController(text: loc?.zipCode ?? '');
-}
+    final loc = (p.locations != null && p.locations!.isNotEmpty)
+        ? p.locations![0]
+        : null;
+    streetController = TextEditingController(text: loc?.streetAddress ?? '');
+    areaController = TextEditingController(text: loc?.area ?? '');
+    cityController = TextEditingController(text: loc?.city ?? '');
+    stateController = TextEditingController(text: loc?.state ?? '');
+    zipController = TextEditingController(text: loc?.zipCode ?? '');
+    _specOptions = (widget.profile.specializationIds ?? [])
+        .map((e) => e.name)
+        .whereType<String>()
+        .toList();
 
-bool _isAddressChanged() {
-  final location = (widget.profile.locations != null && widget.profile.locations!.isNotEmpty)
-      ? widget.profile.locations![0]
-      : null;
+    if (_specOptions.isNotEmpty) {
+      _selectedSpec = _specOptions.first; // optional preselect
+    }
+  }
 
-  return location == null ||
-      streetController.text != (location.streetAddress ?? '') ||
-      areaController.text != (location.area ?? '') ||
-      cityController.text != (location.city ?? '') ||
-      stateController.text != (location.state ?? '') ||
-      zipController.text != (location.zipCode ?? '');
-}
+  bool _isAddressChanged() {
+    final location = (widget.profile.locations != null &&
+            widget.profile.locations!.isNotEmpty)
+        ? widget.profile.locations![0]
+        : null;
 
-
+    return location == null ||
+        streetController.text != (location.streetAddress ?? '') ||
+        areaController.text != (location.area ?? '') ||
+        cityController.text != (location.city ?? '') ||
+        stateController.text != (location.state ?? '') ||
+        zipController.text != (location.zipCode ?? '');
+  }
 
   // @override
   // void initState() {
@@ -105,8 +116,6 @@ bool _isAddressChanged() {
   //       zipController.text != (location['zipCode'] ?? '');
   // }
 
-
-
   _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -114,7 +123,7 @@ bool _isAddressChanged() {
     }
   }
 
-  
+  var selected;
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +289,6 @@ bool _isAddressChanged() {
                           SizedBox(
                             height: 20,
                           ),
-
                           Padding(
                             padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width * 0.33,
@@ -306,19 +314,21 @@ bool _isAddressChanged() {
                             child: _buildField(lastNameController, "Last Name"),
                           ),
                           InkWell(
-                               onTap:(){
-                              toastWidget("The email address is locked for editing", Colors.red);
+                            onTap: () {
+                              toastWidget(
+                                  "The email address is locked for editing",
+                                  Colors.red);
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
-                              child: _buildField(emailController, "Email",readOnly: true),
+                              child: _buildField(emailController, "Email",
+                                  readOnly: true),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: _buildField(phoneController, "Phone Number"),
                           ),
-
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: _buildField(
@@ -326,10 +336,123 @@ bool _isAddressChanged() {
                                 descriptionController,
                                 "Description"),
                           ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left:
+                                        27 //MediaQuery.of(context).size.width * 0.13,
+                                    ),
+                                child: const Text(
+                                  'Specializations',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'Satoshi',
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15.0, right: 15),
+                                  child: DropdownButtonFormField<String>(
+                                    // hint: const Text('Select Specialization'),
+                                    value: _specOptions.contains(_selectedSpec)
+                                        ? _selectedSpec
+                                        : null,
+                                    items: _specOptions
+                                        .map((n) => DropdownMenuItem<String>(
+                                              value: n,
+                                              child: Text(
+                                                _selectedSpec == null
+                                                    ? "Select Specialization"
+                                                    : n,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontFamily: 'Satoshi',
+                                                ),
+                                              ),
+                                            ))
+                                        .toList(),
+                                    onChanged: (val) =>
+                                        setState(() => _selectedSpec = val),
+                                    decoration: InputDecoration(
+                                      // hintText removed to allow `hint:` to show
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 12),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      enabledBorder: const OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                      ),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
 
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 8.0),
+                              //   child: Padding(
+                              //     padding: const EdgeInsets.only(
+                              //         left: 15.0, right: 15),
+                              //     child: DropdownButtonFormField<String>(
+                              //       hint: Text('Select Specialization'),
+                              //       value: _specOptions.contains(_selectedSpec)
+                              //           ? _selectedSpec
+                              //           : null,
+                              //       items: _specOptions
+                              //           .map((n) => DropdownMenuItem<String>(
+                              //                 value: n,
+                              //                 child: Text(
+                              //                   n,
+                              //                   style: TextStyle(
+                              //                     fontSize: 18,
+                              //                     color: Colors.black87,
+                              //                     fontWeight: FontWeight.w700,
+                              //                     fontFamily: 'Satoshi',
+                              //                   ),
+                              //                 ),
+                              //               ))
+                              //           .toList(),
+                              //       onChanged: (val) =>
+                              //           setState(() => _selectedSpec = val),
+                              //       decoration: InputDecoration(
+                              //         hintText: "Select specialization",
+                              //         contentPadding:
+                              //             const EdgeInsets.symmetric(
+                              //                 horizontal: 12, vertical: 12),
+                              //         border: OutlineInputBorder(
+                              //             borderRadius:
+                              //                 BorderRadius.circular(16)),
+                              //         enabledBorder: const OutlineInputBorder(
+                              //           borderSide:
+                              //               BorderSide(color: Colors.white),
+                              //         ),
+                              //         focusedBorder: const OutlineInputBorder(
+                              //           borderSide:
+                              //               BorderSide(color: Colors.white),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
+                          ),
                           const SizedBox(height: 30),
-
-                          /// --- Address Section ---
                           Padding(
                             padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width * 0.49,
@@ -350,7 +473,6 @@ bool _isAddressChanged() {
                           _buildField(cityController, "City"),
                           _buildField(stateController, "State"),
                           _buildField(zipController, "Zip Code"),
-
                           const SizedBox(height: 10),
                         ],
                       ),
@@ -364,7 +486,7 @@ bool _isAddressChanged() {
                           MaterialPageRoute(
                             builder: (context) =>
                                 GroupAssociationEditProfessionalProfile(
-                                  description: descriptionController.text,
+                              description: descriptionController.text,
                               profile: widget.profile,
                               area: areaController.text,
                               city: cityController.text,
@@ -394,95 +516,96 @@ bool _isAddressChanged() {
       ),
     );
   }
+
   Widget _buildField(
-  TextEditingController controller,
-  String label, {
-  bool obscureText = false,
-  bool isMultiline = false,
-  bool readOnly = false,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 12.0),
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w900,
-              fontFamily: 'Satoshi',
-              color: Color(0xff323747),
+    TextEditingController controller,
+    String label, {
+    bool obscureText = false,
+    bool isMultiline = false,
+    bool readOnly = false,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0),
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+                fontFamily: 'Satoshi',
+                color: Color(0xff323747),
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 5),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.85,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFFE6DCFD), Color(0xFFD8E7FF)],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
+          const SizedBox(height: 5),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.85,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFE6DCFD), Color(0xFFD8E7FF)],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
               ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: GestureDetector(
-              onTap: () {
-                if (readOnly) {
-                  toastWidget("Unable to edit $label", Colors.red);
-                }
-              },
-              child: AbsorbPointer(
-                absorbing: readOnly,
-                child: TextFormField(
-                  controller: controller,
-                  obscureText: obscureText,
-                  readOnly: readOnly, // still set readOnly for keyboard suppression
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) =>
-                      value == null || value.isEmpty ? 'Required' : null,
-                  keyboardType: isMultiline
-                      ? TextInputType.multiline
-                      : TextInputType.text,
-                  minLines: isMultiline ? 1 : 1,
-                  maxLines: isMultiline ? null : 1,
-                  decoration: InputDecoration(
-                    hintText: 'Enter $label',
-                    hintStyle: const TextStyle(
-                      color: Color(0xff666F80),
-                      fontSize: 18,
-                      fontFamily: 'Satoshi',
-                      fontWeight: FontWeight.w500,
-                    ),
-                    filled: true,
-                    fillColor: Colors.transparent,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 18),
-                    errorStyle: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 14,
-                      height: 1.5,
+              child: GestureDetector(
+                onTap: () {
+                  if (readOnly) {
+                    toastWidget("Unable to edit $label", Colors.red);
+                  }
+                },
+                child: AbsorbPointer(
+                  absorbing: readOnly,
+                  child: TextFormField(
+                    controller: controller,
+                    obscureText: obscureText,
+                    readOnly:
+                        readOnly, // still set readOnly for keyboard suppression
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) =>
+                        value == null || value.isEmpty ? 'Required' : null,
+                    keyboardType: isMultiline
+                        ? TextInputType.multiline
+                        : TextInputType.text,
+                    minLines: isMultiline ? 1 : 1,
+                    maxLines: isMultiline ? null : 1,
+                    decoration: InputDecoration(
+                      hintText: 'Enter $label',
+                      hintStyle: const TextStyle(
+                        color: Color(0xff666F80),
+                        fontSize: 18,
+                        fontFamily: 'Satoshi',
+                        fontWeight: FontWeight.w500,
+                      ),
+                      filled: true,
+                      fillColor: Colors.transparent,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 18),
+                      errorStyle: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 14,
+                        height: 1.5,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
+        ],
+      ),
+    );
+  }
 
   /*Widget _buildField(
     TextEditingController controller,
