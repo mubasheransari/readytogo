@@ -33,6 +33,11 @@ migrate_working_dir/
 .pub/
 /build/
 
+# Ignore generated plugin registrant files
+**/flutter/generated_*
+**/Flutter/ephemeral/**
+**/Flutter/GeneratedPluginRegistrant.swift
+
 # Symbolication related
 app.*.symbols
 
