@@ -91,77 +91,153 @@ class LoginRepository {
     return OrganizationProfileModel.fromJson(jsonResponse);
   }
 
+
   Future<http.Response> updateProfessionalProfile({
-    required String id,
-    required ProfessionalProfileModel profile,
-    File? profileImage,
-  }) async {
-    final uri = Uri.parse(
-        'http://173.249.27.4:343/api/Profile/professional/edit-profile');
-    final request = http.MultipartRequest(
-      'PUT',
-      uri,
-    );
-    var storage = GetStorage();
-    var token = storage.read("id");
+  required String id,
+  required ProfessionalProfileModel profile,
+  File? profileImage,
+}) async {
+  final uri = Uri.parse('http://173.249.27.4:343/api/Profile/professional/edit-profile');
+  final request = http.MultipartRequest('PUT', uri);
 
-    if (token != null && token.toString().isNotEmpty) {
-      request.headers['Authorization'] = 'Bearer $token';
-    }
-
-    final Location? loc =
-        profile.locations?.isNotEmpty == true ? profile.locations!.first : null;
-
-    final List<String> specializationIds = profile.specializationIds
-            ?.map((e) => e.id)
-            .whereType<String>()
-            .toList() ??
-        [];
-
-    request.fields.addAll({
-      //"UserId": id,
-      "FirstName": profile.firstname ?? "",
-      "LastName": profile.lastname ?? "",
-      "Email": profile.email ?? "",
-      "Description": profile.description ?? "",
-      "PhoneNumber": profile.phoneNumber ?? "",
-      "StreetAddress": loc?.streetAddress ?? "",
-      "Area": loc?.area ?? "",
-      "City": loc?.city ?? "",
-      "State": loc?.state ?? "",
-      "ZipCode": loc?.zipCode ?? "",
-      "ProfileImageUrl": profile.profileImageUrl ?? '', //10@Testing
-      "LocationsJson": jsonEncode(
-        profile.locations?.map((e) => e.toJson()).toList() ?? [],
-      ),
-    });
-
-    final orgId = _extractOrganizationId(profile.organizationProfessionals);
-    if (orgId != null && orgId.isNotEmpty) {
-      request.fields["OrganizationId"] = orgId;
-    }
-
-    if (specializationIds.isNotEmpty) {
-      request.fields["SpecializationIds"] = jsonEncode(specializationIds);
-    }
-
-    if (profile.organizationProfessionals is List &&
-        (profile.organizationProfessionals as List).isNotEmpty) {
-      request.fields["ProfessionalIds"] =
-          jsonEncode(profile.organizationProfessionals);
-    }
-
-    if (profileImage != null) {
-      request.files.add(await http.MultipartFile.fromPath(
-        "ProfileImage",
-        profileImage.path,
-        contentType: MediaType("image", "jpeg"),
-      ));
-    }
-
-    final streamedResponse = await request.send();
-    return await http.Response.fromStream(streamedResponse);
+  final storage = GetStorage();
+  final token = storage.read("id"); // <- if this is actually JWT, keep; otherwise use the real token key
+  if (token != null && token.toString().isNotEmpty) {
+    request.headers['Authorization'] = 'Bearer $token';
   }
+
+  final Location? loc = (profile.locations?.isNotEmpty ?? false)
+      ? profile.locations!.first
+      : null;
+
+  // 🔹 SpecializationIds array
+  final specializationIds = (profile.specializationIds ?? const <SpecializationId>[])
+      .map((s) => s.id)
+      .whereType<String>()
+      .where((id) => id.isNotEmpty)
+      .toList();
+
+  request.fields.addAll({
+    // "UserId": id, // uncomment if backend requires it
+    "FirstName": profile.firstname ?? "",
+    "LastName": profile.lastname ?? "",
+    "Email": profile.email ?? "",
+    "Description": profile.description ?? "",
+    "PhoneNumber": profile.phoneNumber ?? "",
+    "StreetAddress": loc?.streetAddress ?? "",
+    "Area": loc?.area ?? "",
+    "City": loc?.city ?? "",
+    "State": loc?.state ?? "",
+    "ZipCode": loc?.zipCode ?? "",
+    "ProfileImageUrl": profile.profileImageUrl ?? "",
+    "LocationsJson": jsonEncode(
+      (profile.locations ?? const <Location>[])
+          .map((e) => e.toJson())
+          .toList(),
+    ),
+    // 🔹 always send as JSON array (e.g. ["1111-...","2222-..."])
+    "SpecializationIds": jsonEncode(specializationIds),
+  });
+
+  final orgId = _extractOrganizationId(profile.organizationProfessionals);
+  if (orgId != null && orgId.isNotEmpty) {
+    request.fields["OrganizationId"] = orgId;
+  }
+
+  if (profile.organizationProfessionals is List &&
+      (profile.organizationProfessionals as List).isNotEmpty) {
+    request.fields["ProfessionalIds"] =
+        jsonEncode(profile.organizationProfessionals);
+  }
+
+  if (profileImage != null) {
+    request.files.add(await http.MultipartFile.fromPath(
+      "ProfileImage",
+      profileImage.path,
+      contentType: MediaType("image", "jpeg"),
+    ));
+  }
+
+  final streamedResponse = await request.send();
+  return http.Response.fromStream(streamedResponse);
+}
+
+
+  
+
+
+
+  // Future<http.Response> updateProfessionalProfile({//recently used
+  //   required String id,
+  //   required ProfessionalProfileModel profile,
+  //   File? profileImage,
+  // }) async {
+  //   final uri = Uri.parse(
+  //       'http://173.249.27.4:343/api/Profile/professional/edit-profile');
+  //   final request = http.MultipartRequest(
+  //     'PUT',
+  //     uri,
+  //   );
+  //   var storage = GetStorage();
+  //   var token = storage.read("id");
+
+  //   if (token != null && token.toString().isNotEmpty) {
+  //     request.headers['Authorization'] = 'Bearer $token';
+  //   }
+
+  //   final Location? loc =
+  //       profile.locations?.isNotEmpty == true ? profile.locations!.first : null;
+
+  //   final List<String> specializationIds = profile.specializationIds
+  //           ?.map((e) => e.id)
+  //           .whereType<String>()
+  //           .toList() ??
+  //       [];
+
+  //   request.fields.addAll({
+  //     //"UserId": id,
+  //     "FirstName": profile.firstname ?? "",
+  //     "LastName": profile.lastname ?? "",
+  //     "Email": profile.email ?? "",
+  //     "Description": profile.description ?? "",
+  //     "PhoneNumber": profile.phoneNumber ?? "",
+  //     "StreetAddress": loc?.streetAddress ?? "",
+  //     "Area": loc?.area ?? "",
+  //     "City": loc?.city ?? "",
+  //     "State": loc?.state ?? "",
+  //     "ZipCode": loc?.zipCode ?? "",
+  //     "ProfileImageUrl": profile.profileImageUrl ?? '', //10@Testing
+  //     "LocationsJson": jsonEncode(
+  //       profile.locations?.map((e) => e.toJson()).toList() ?? [],
+  //     ),
+  //   });
+
+  //   final orgId = _extractOrganizationId(profile.organizationProfessionals);
+  //   if (orgId != null && orgId.isNotEmpty) {
+  //     request.fields["OrganizationId"] = orgId;
+  //   }
+
+  //   if (specializationIds.isNotEmpty) {
+  //     request.fields["SpecializationIds"] = jsonEncode(specializationIds);
+  //   }
+
+  //   if (profile.organizationProfessionals is List &&
+  //       (profile.organizationProfessionals as List).isNotEmpty) {
+  //     request.fields["ProfessionalIds"] =
+  //         jsonEncode(profile.organizationProfessionals);
+  //   }
+
+  //   if (profileImage != null) {
+  //     request.files.add(await http.MultipartFile.fromPath(
+  //       "ProfileImage",
+  //       profileImage.path,
+  //       contentType: MediaType("image", "jpeg"),
+  //     ));
+  //   }
+
+  //   final streamedResponse = await request.send();
+  //   return await http.Response.fromStream(streamedResponse);
+  // }
 
   String? _extractOrganizationId(dynamic organizationProfessionals) {
     if (organizationProfessionals is List &&

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:readytogo/Model/professional_profile_model.dart';
 import 'package:readytogo/widgets/customscfaffold_widget.dart';
 
 import '../../widgets/boxDecorationWidget.dart';
@@ -102,13 +103,17 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
 
                                   //  profile.specializations.map((e) => Text(e.name)).toList(),
                                   Text(
-                                    '(${profile.role})',
+                                    profile.specializationNames.isNotEmpty
+                                        ? profile.specializationNames
+                                            .first // "Periodontics"
+                                        : '—',
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                        fontFamily: 'satoshi'),
-                                  ),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      fontFamily: 'satoshi',
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
