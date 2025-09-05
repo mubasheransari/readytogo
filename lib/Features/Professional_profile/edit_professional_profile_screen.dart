@@ -28,6 +28,8 @@ class _EditProfessionalProfileScreenState
   File? selectedImage;
   bool _submitted = false;
   final userId = GetStorage().read("id");
+  String? _selectedSpecializationId; // single pick (UI)
+  List<String> _selectedSpecializationIds = []; // what we pass to API
 
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
@@ -153,6 +155,8 @@ class _EditProfessionalProfileScreenState
             // }
           },
           builder: (context, state) {
+            final list = state.specializationModel ?? <SpecializationModel>[];
+
             return SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Form(
@@ -348,7 +352,7 @@ class _EditProfessionalProfileScreenState
                                     left: 8),
                                 child: const Text(
                                   'Specializations',
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w900,
                                     fontFamily: 'Satoshi',
@@ -358,6 +362,62 @@ class _EditProfessionalProfileScreenState
                               ),
 
                               BlocBuilder<LoginBloc, LoginState>(
+                                builder: (context, state) {
+                                  final list = state.specializationModel ??
+                                      <SpecializationModel>[];
+                                  return SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.83,
+                                    child: DropdownButtonFormField<String>(
+                                      value: _selectedSpecializationId,
+                                      decoration: InputDecoration(
+                                        hintText: "Select specialization",
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 12, vertical: 12),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        enabledBorder: const OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16)),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16)),
+                                        ),
+                                      ),
+                                      items: [
+                                        for (final s in list)
+                                          DropdownMenuItem<String>(
+                                            value: s.id,
+                                            child: Text(
+                                              s.name,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black87,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'Satoshi',
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                      onChanged: (id) => setState(() {
+                                        _selectedSpecializationId = id;
+                                        // store as array for the API (single choice -> 1 element array)
+                                        _selectedSpecializationIds =
+                                            id == null ? [] : [id];
+                                      }),
+                                    ),
+                                  );
+                                },
+                              ),
+
+                              /* BlocBuilder<LoginBloc, LoginState>(
                                 builder: (context, state) {
                                   final List<SpecializationModel> list =
                                       state.specializationModel!;
@@ -416,7 +476,7 @@ class _EditProfessionalProfileScreenState
                                     ),
                                   );
                                 },
-                              ),
+                              ),*/
 
                               /* Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
@@ -549,6 +609,7 @@ class _EditProfessionalProfileScreenState
                           MaterialPageRoute(
                             builder: (context) =>
                                 GroupAssociationEditProfessionalProfile(
+                              specializationIds: _selectedSpecializationIds,
                               description: descriptionController.text,
                               profile: widget.profile,
                               area: areaController.text,

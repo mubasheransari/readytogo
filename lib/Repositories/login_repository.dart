@@ -91,81 +91,156 @@ class LoginRepository {
     return OrganizationProfileModel.fromJson(jsonResponse);
   }
 
-
   Future<http.Response> updateProfessionalProfile({
-  required String id,
-  required ProfessionalProfileModel profile,
-  File? profileImage,
-}) async {
-  final uri = Uri.parse('http://173.249.27.4:343/api/Profile/professional/edit-profile');
-  final request = http.MultipartRequest('PUT', uri);
+    required String id,
+    required ProfessionalProfileModel profile,
+    File? profileImage,
+  }) async {
+    final uri = Uri.parse(
+      'http://173.249.27.4:343/api/Profile/professional/edit-profile',
+    );
+    final request = http.MultipartRequest('PUT', uri);
 
-  final storage = GetStorage();
-  final token = storage.read("id"); // <- if this is actually JWT, keep; otherwise use the real token key
-  if (token != null && token.toString().isNotEmpty) {
-    request.headers['Authorization'] = 'Bearer $token';
+    final storage = GetStorage();
+    final token = storage.read("id"); // <-- if this is NOT a JWT, fix this!
+    if (token != null && token.toString().isNotEmpty) {
+      request.headers['Authorization'] = 'Bearer $token';
+    }
+
+    final Location? loc =
+        profile.locations?.isNotEmpty == true ? profile.locations!.first : null;
+
+    // Build a pure list of string IDs from your model
+    final List<String> specializationIds =
+        (profile.specializationIds ?? const [])
+            .map((e) => e.id)
+            .whereType<String>()
+            .where((s) => s.isNotEmpty)
+            .toList();
+
+    // Regular scalar fields
+    request.fields.addAll({
+      "FirstName": profile.firstname ?? "",
+      "LastName": profile.lastname ?? "",
+      "Email": profile.email ?? "",
+      "Description": profile.description ?? "",
+      "PhoneNumber": profile.phoneNumber ?? "",
+      "StreetAddress": loc?.streetAddress ?? "",
+      "Area": loc?.area ?? "",
+      "City": loc?.city ?? "",
+      "State": loc?.state ?? "",
+      "ZipCode": loc?.zipCode ?? "",
+      "ProfileImageUrl": profile.profileImageUrl ?? '',
+      "LocationsJson": jsonEncode(
+        profile.locations?.map((e) => e.toJson()).toList() ?? [],
+      ),
+    });
+
+    // OrganizationId (if you have it)
+    final orgId = _extractOrganizationId(profile.organizationProfessionals);
+    if (orgId != null && orgId.isNotEmpty) {
+      request.fields["OrganizationId"] = orgId;
+    }
+
+    // ✅ IMPORTANT: send array as indexed fields for multipart/form-data
+    // Do NOT send `[]` as JSON when empty. Either send indexed items or send nothing.
+    for (int i = 0; i < specializationIds.length; i++) {
+      request.fields['SpecializationIds[$i]'] =specializationIds[i];
+    }
+    // If empty, we intentionally do NOT add any `SpecializationIds` key.
+
+    // ProfessionalIds if needed
+    if (profile.organizationProfessionals is List &&
+        (profile.organizationProfessionals as List).isNotEmpty) {
+      request.fields["ProfessionalIds"] =
+          jsonEncode(profile.organizationProfessionals);
+    }
+
+    // File
+    if (profileImage != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        "ProfileImage",
+        profileImage.path,
+        contentType: MediaType("image", "jpeg"),
+      ));
+    }
+
+    final streamed = await request.send();
+    return http.Response.fromStream(streamed);
   }
 
-  final Location? loc = (profile.locations?.isNotEmpty ?? false)
-      ? profile.locations!.first
-      : null;
+  /* Future<http.Response> updateProfessionalProfile({
+    required String id,
+    required ProfessionalProfileModel profile,
+    File? profileImage,
+  }) async {
+    final uri = Uri.parse(
+        'http://173.249.27.4:343/api/Profile/professional/edit-profile');
+    final request = http.MultipartRequest('PUT', uri);
 
-  // 🔹 SpecializationIds array
-  final specializationIds = (profile.specializationIds ?? const <SpecializationId>[])
-      .map((s) => s.id)
-      .whereType<String>()
-      .where((id) => id.isNotEmpty)
-      .toList();
+    final storage = GetStorage();
+    final token = storage.read(
+        "id"); // <- if this is actually JWT, keep; otherwise use the real token key
+    if (token != null && token.toString().isNotEmpty) {
+      request.headers['Authorization'] = 'Bearer $token';
+    }
 
-  request.fields.addAll({
-    // "UserId": id, // uncomment if backend requires it
-    "FirstName": profile.firstname ?? "",
-    "LastName": profile.lastname ?? "",
-    "Email": profile.email ?? "",
-    "Description": profile.description ?? "",
-    "PhoneNumber": profile.phoneNumber ?? "",
-    "StreetAddress": loc?.streetAddress ?? "",
-    "Area": loc?.area ?? "",
-    "City": loc?.city ?? "",
-    "State": loc?.state ?? "",
-    "ZipCode": loc?.zipCode ?? "",
-    "ProfileImageUrl": profile.profileImageUrl ?? "",
-    "LocationsJson": jsonEncode(
-      (profile.locations ?? const <Location>[])
-          .map((e) => e.toJson())
-          .toList(),
-    ),
-    // 🔹 always send as JSON array (e.g. ["1111-...","2222-..."])
-    "SpecializationIds": jsonEncode(specializationIds),
-  });
+    final Location? loc = (profile.locations?.isNotEmpty ?? false)
+        ? profile.locations!.first
+        : null;
 
-  final orgId = _extractOrganizationId(profile.organizationProfessionals);
-  if (orgId != null && orgId.isNotEmpty) {
-    request.fields["OrganizationId"] = orgId;
-  }
+    // 🔹 SpecializationIds array
+    final specializationIds =
+        (profile.specializationIds ?? const <SpecializationId>[])
+            .map((s) => s.id)
+            .whereType<String>()
+            .where((id) => id.isNotEmpty)
+            .toList();
 
-  if (profile.organizationProfessionals is List &&
-      (profile.organizationProfessionals as List).isNotEmpty) {
-    request.fields["ProfessionalIds"] =
-        jsonEncode(profile.organizationProfessionals);
-  }
+    request.fields.addAll({
+      // "UserId": id, // uncomment if backend requires it
+      "FirstName": profile.firstname ?? "",
+      "LastName": profile.lastname ?? "",
+      "Email": profile.email ?? "",
+      "Description": profile.description ?? "",
+      "PhoneNumber": profile.phoneNumber ?? "",
+      "StreetAddress": loc?.streetAddress ?? "",
+      "Area": loc?.area ?? "",
+      "City": loc?.city ?? "",
+      "State": loc?.state ?? "",
+      "ZipCode": loc?.zipCode ?? "",
+      "ProfileImageUrl": profile.profileImageUrl ?? "",
+      "LocationsJson": jsonEncode(
+        (profile.locations ?? const <Location>[])
+            .map((e) => e.toJson())
+            .toList(),
+      ),
+      // 🔹 always send as JSON array (e.g. ["1111-...","2222-..."])
+      "SpecializationIds": jsonEncode('44444444-4444-4444-4444-444444444444'),
+    });
 
-  if (profileImage != null) {
-    request.files.add(await http.MultipartFile.fromPath(
-      "ProfileImage",
-      profileImage.path,
-      contentType: MediaType("image", "jpeg"),
-    ));
-  }
+    final orgId = _extractOrganizationId(profile.organizationProfessionals);
+    if (orgId != null && orgId.isNotEmpty) {
+      request.fields["OrganizationId"] = orgId;
+    }
 
-  final streamedResponse = await request.send();
-  return http.Response.fromStream(streamedResponse);
-}
+    if (profile.organizationProfessionals is List &&
+        (profile.organizationProfessionals as List).isNotEmpty) {
+      request.fields["ProfessionalIds"] =
+          jsonEncode(profile.organizationProfessionals);
+    }
 
+    if (profileImage != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        "ProfileImage",
+        profileImage.path,
+        contentType: MediaType("image", "jpeg"),
+      ));
+    }
 
-  
-
-
+    final streamedResponse = await request.send();
+    return http.Response.fromStream(streamedResponse);
+  }*/
 
   // Future<http.Response> updateProfessionalProfile({//recently used
   //   required String id,
@@ -299,8 +374,8 @@ class LoginRepository {
       "ZipCode": cleanedLocations.isNotEmpty
           ? cleanedLocations[0]["zipCode"] ?? ""
           : "",
-      "Description": profile.description?? "",
-      "Website": profile.website?? "",
+      "Description": profile.description ?? "",
+      "Website": profile.website ?? "",
       "ProfileImageUrl": profile.profileImageUrl ?? "",
       "LocationsJson": jsonEncode(cleanedLocations),
     });
@@ -488,7 +563,7 @@ class LoginRepository {
     return null;
   }
 
-   Future<List<SpecializationModel>> getAllSpecializations() async {
+  Future<List<SpecializationModel>> getAllSpecializations() async {
     final jsonResponse = await _apiBaseHelper.get(
       url: ApiConstants.baseDomain,
       path: ApiConstants.getAllSpecialization,

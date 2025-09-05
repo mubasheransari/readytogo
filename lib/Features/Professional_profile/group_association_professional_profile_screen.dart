@@ -13,6 +13,7 @@ import '../login/bloc/login_state.dart';
 
 class GroupAssociationEditProfessionalProfile extends StatefulWidget {
   final ProfessionalProfileModel profile;
+    final List<String> specializationIds;
   final File? selectedImageFile;
   final String? imageUrl;
   final String userid,
@@ -30,6 +31,7 @@ class GroupAssociationEditProfessionalProfile extends StatefulWidget {
 
   const GroupAssociationEditProfessionalProfile({
     super.key,
+    required this.specializationIds,
     required this.profile,
     this.selectedImageFile,
     this.imageUrl,
@@ -76,6 +78,9 @@ class _GroupAssociationEditProfessionalProfileState
         email: widget.email,
         phoneNumber: widget.phone,
         description: widget.description,
+          specializationIds: widget.specializationIds
+      .map((id) => SpecializationId(id: id))
+      .toList(), // 👈 put into model
         locationJson: widget.isAddressChanged
             ? jsonEncode([
                 {
