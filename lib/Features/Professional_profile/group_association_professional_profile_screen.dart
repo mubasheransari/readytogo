@@ -13,7 +13,7 @@ import '../login/bloc/login_state.dart';
 
 class GroupAssociationEditProfessionalProfile extends StatefulWidget {
   final ProfessionalProfileModel profile;
-    final List<String> specializationIds;
+  final List<String> specializationIds;
   final File? selectedImageFile;
   final String? imageUrl;
   final String userid,
@@ -78,9 +78,9 @@ class _GroupAssociationEditProfessionalProfileState
         email: widget.email,
         phoneNumber: widget.phone,
         description: widget.description,
-          specializationIds: widget.specializationIds
-      .map((id) => SpecializationId(id: id))
-      .toList(), // 👈 put into model
+        specializationIds: widget.specializationIds
+            .map((id) => SpecializationId(id: id))
+            .toList(), // 👈 put into model
         locationJson: widget.isAddressChanged
             ? jsonEncode([
                 {
@@ -291,7 +291,7 @@ class _GroupAssociationEditProfessionalProfileState
                         SizedBox(
                           height: 15,
                         ),
-                        Padding(
+                        /* Padding(
                           padding: EdgeInsets.only(
                               right: MediaQuery.of(context).size.width * 0.53),
                           child: const Text(
@@ -386,7 +386,7 @@ class _GroupAssociationEditProfessionalProfileState
                               );
                             },
                           ),
-                        ),
+                        ),*/
                         SizedBox(
                           height: 20,
                         ),
