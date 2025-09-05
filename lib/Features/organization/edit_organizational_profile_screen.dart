@@ -34,6 +34,7 @@ class _EditOrganizationalProfileScreenState
   late TextEditingController lastNameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
+  late TextEditingController websiteController;
   late TextEditingController streetController;
   late TextEditingController areaController;
   late TextEditingController cityController;
@@ -48,6 +49,7 @@ class _EditOrganizationalProfileScreenState
     lastNameController = TextEditingController(text: p.lastname);
     emailController = TextEditingController(text: p.email);
     phoneController = TextEditingController(text: p.phoneNumber);
+    websiteController = TextEditingController(text: p.website);
     // streetController = TextEditingController(
     //     text: p.locations!.isNotEmpty
     //         ? p.locations!['streetAddress'] ?? ''
@@ -282,6 +284,10 @@ class _EditOrganizationalProfileScreenState
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: _buildField(phoneController, "Phone Number"),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: _buildField(websiteController, "Website"),
                           ),
                           const SizedBox(height: 30),
                           Padding(

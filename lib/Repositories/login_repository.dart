@@ -221,7 +221,8 @@ class LoginRepository {
       "ZipCode": cleanedLocations.isNotEmpty
           ? cleanedLocations[0]["zipCode"] ?? ""
           : "",
-      "Description": "Updated via app",
+      "Description": profile.description,
+      "Website": profile.website,
       "ProfileImageUrl": profile.profileImageUrl ?? "",
       "LocationsJson": jsonEncode(cleanedLocations),
     });
