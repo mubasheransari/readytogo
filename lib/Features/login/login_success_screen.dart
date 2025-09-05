@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:readytogo/Features/Donate/add_new_card.dart';
 import 'package:readytogo/Features/home_screen.dart';
+import 'package:readytogo/Features/admin/dashboard/admin_dashboard_screen.dart';
 import 'package:readytogo/Features/login/emergency_call_screen.dart';
 import 'package:readytogo/Features/login/invite_friend.dart';
 import 'package:readytogo/widgets/boxDecorationWidget.dart';
@@ -215,8 +216,24 @@ class LoginSuccessScreen extends StatelessWidget {
                   context: context,
                   label: 'Home',
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => HomeScreen()));
+                    final storage = GetStorage();
+                    final dynamic roles = storage.read("role");
+                    if (roles is List && roles.contains("Admin")) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const AdminDashboardScreen()),
+                      );
+                    } else if (roles is String && roles == "Admin") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const AdminDashboardScreen()),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => HomeScreen()),
+                      );
+                    }
                   },
                 ),
 
