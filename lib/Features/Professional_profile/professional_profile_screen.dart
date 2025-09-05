@@ -77,7 +77,7 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> {
                             CircleAvatar(
                               radius: 35,
                               backgroundImage: NetworkImage(
-                                'http://173.249.27.4:343/${profile.profileImageUrl}',
+                                'http://173.249.27.4:343${profile.profileImageUrl}',
                               ),
                             ),
                             SizedBox(width: 16),
