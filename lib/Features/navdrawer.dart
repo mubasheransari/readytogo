@@ -49,13 +49,15 @@ class CustomNavDrawer extends StatelessWidget {
                               : state.organizationalStatus == OrganizationalStatus.success
                                   ? 'http://173.249.27.4:343/${state.organizationProfileModel!.profileImageUrl}'
                                   : 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=64&q=80';
-                      final String userRole = state.status == LoginStatus.profileLoaded
-                          ? 'Individual'
-                          : state.professionalStatus == ProfessionalStatus.success
-                              ? 'Professional'
-                              : state.organizationalStatus == OrganizationalStatus.success
-                                  ? 'Organization'
-                                  : 'Guest';
+                      final String userRole = isAdmin
+                          ? 'Admin'
+                          : state.status == LoginStatus.profileLoaded
+                              ? 'Individual'
+                              : state.professionalStatus == ProfessionalStatus.success
+                                  ? 'Professional'
+                                  : state.organizationalStatus == OrganizationalStatus.success
+                                      ? 'Organization'
+                                      : 'Guest';
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
                         child: Column(

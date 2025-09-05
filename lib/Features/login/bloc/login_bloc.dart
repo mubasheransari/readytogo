@@ -211,20 +211,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           // }
           if (userRole == "Individual") {
             emit(state.copyWith(status: LoginStatus.profileLoading));
-
             final profile = await loginRepository.individualProfile(userId);
             final getSavedSerches = await loginRepository.getAllSavedSearches();
-
             emit(state.copyWith(
                 status: LoginStatus.profileLoaded,
-                profile: profile, //10@Testing
+                profile: profile,
                 savedSearchModel: getSavedSerches,
                 getSavedSearchesStatus:
                     GetSavedSearchesStatus.getSavedSearchesSuccess));
           } else if (userRole == "Professional") {
-            emit(
-                state.copyWith(professionalStatus: ProfessionalStatus.loading));
-
+            emit(state.copyWith(professionalStatus: ProfessionalStatus.loading));
             final profile = await loginRepository.professionalProfile(userId);
             final getSavedSerches = await loginRepository.getAllSavedSearches();
             emit(state.copyWith(
@@ -233,20 +229,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 savedSearchModel: getSavedSerches,
                 getSavedSearchesStatus:
                     GetSavedSearchesStatus.getSavedSearchesSuccess));
-          } //10@Testing
-          else if (userRole == "Organization") {
-            emit(state.copyWith(
-                organizationalStatus: OrganizationalStatus.loading));
-
+          } else if (userRole == "Organization") {
+            emit(state.copyWith(organizationalStatus: OrganizationalStatus.loading));
             final profile = await loginRepository.organizationProfile(userId);
             final getSavedSerches = await loginRepository.getAllSavedSearches();
-
             emit(state.copyWith(
                 organizationalStatus: OrganizationalStatus.success,
                 organizationProfileModel: profile,
                 savedSearchModel: getSavedSerches,
                 getSavedSearchesStatus:
                     GetSavedSearchesStatus.getSavedSearchesSuccess));
+          } else if (userRole == "Admin") {
+            emit(state.copyWith(status: LoginStatus.profileLoading));
+            final profile = await loginRepository.individualProfile(userId); // Assuming admin uses individual profile
+            emit(state.copyWith(
+                status: LoginStatus.profileLoaded,
+                profile: profile));
           }
 
           // Fetch profile next
@@ -771,6 +769,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 savedSearchModel: getSavedSerches,
                 getSavedSearchesStatus:
                     GetSavedSearchesStatus.getSavedSearchesSuccess));
+          } else if (userRole == "Admin") {
+            emit(state.copyWith(status: LoginStatus.profileLoading));
+            final profile = await loginRepository.individualProfile(userId); // Assuming admin uses individual profile
+            emit(state.copyWith(
+                status: LoginStatus.profileLoaded,
+                profile: profile));
           }
         } else {
           emit(state.copyWith(
