@@ -19,6 +19,7 @@ class OrganizationProfileModel {
   final String profileImageUrl;
   final String organizationName;
   final String description;
+  final String website;
   final dynamic organizationJoiningDate;
   final List<GroupAssociation> groupAssociations;
   final dynamic specializations;
@@ -36,6 +37,7 @@ class OrganizationProfileModel {
     required this.profileImageUrl,
     required this.organizationName,
     required this.description,
+    required this.website,
     required this.organizationJoiningDate,
     required this.groupAssociations,
     required this.specializations,
@@ -55,6 +57,7 @@ class OrganizationProfileModel {
       profileImageUrl: json["profileImageUrl"] ?? '',
       organizationName: json["organizationName"] ?? '',
       description: json["description"] ?? '',
+      website: json["website"] ?? '',
       organizationJoiningDate: json["organizationJoiningDate"],
       groupAssociations: List<GroupAssociation>.from(
         (json["groupAssociations"] ?? [])
@@ -81,6 +84,7 @@ class OrganizationProfileModel {
       "profileImageUrl": profileImageUrl,
       "organizationName": organizationName,
       "description": description,
+      "website": website,
       "organizationJoiningDate": organizationJoiningDate,
       "groupAssociations":
           List<dynamic>.from(groupAssociations.map((x) => x.toJson())),
@@ -101,6 +105,7 @@ class OrganizationProfileModel {
     String? profileImageUrl,
     String? organizationName,
     String? description,
+    String? website,
     dynamic organizationJoiningDate,
     List<GroupAssociation>? groupAssociations,
     dynamic specializations,
@@ -125,6 +130,7 @@ class OrganizationProfileModel {
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       organizationName: organizationName ?? this.organizationName,
       description: description ?? this.description,
+      website: website ?? this.website,
       organizationJoiningDate:
           organizationJoiningDate ?? this.organizationJoiningDate,
       groupAssociations: groupAssociations ?? this.groupAssociations,

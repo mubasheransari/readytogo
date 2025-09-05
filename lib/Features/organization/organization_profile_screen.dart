@@ -187,9 +187,12 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                               ? '${profile.locations![0].zipCode ?? ""}'
                               : 'No Address Provided',
                         ),
+                         SizedBox(height: 10),
+                  _buildInfoRow('Website:', profile.website!),
                       ],
                     ),
-                  ),
+                  ),//10@Testing
+                 
                   SizedBox(height: 10),
                   Container(
                     decoration: BoxDecoration(
@@ -235,9 +238,9 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                   ),
                   SizedBox(height: 16),
                   ...profile.groupAssociations!.map<Widget>((group) {
-                    return  Column(
+                    return Column(
                       children: [
-                      _groupCard(
+                        _groupCard(
                           context: context,
                           title: group.groupName!,
                           memberCount: group.memberCount!,
