@@ -13,7 +13,7 @@ import 'aboutus_screen.dart';
 import 'login/login_screen.dart';
 import 'manage_my_geo_navbar.dart';
 import 'package:readytogo/Features/login/bloc/login_state.dart';
-import 'package:readytogo/Features/admin/dashboard/user_assessments_screen.dart';
+import 'package:readytogo/Features/admin/user_management/user_assessments_screen.dart';
 import 'package:readytogo/Features/admin/dashboard/admin_dashboard_screen.dart';
 
 class CustomNavDrawer extends StatelessWidget {

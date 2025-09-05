@@ -12,10 +12,12 @@ class UserAssessmentsLoading extends UserAssessmentsState {}
 
 class UserAssessmentsLoaded extends UserAssessmentsState {
   final List<AssessmentModel> assessments;
-  UserAssessmentsLoaded(this.assessments);
+  final int page;
+  final int totalPages;
+  UserAssessmentsLoaded(this.assessments, {this.page = 1, this.totalPages = 1});
 
   @override
-  List<Object?> get props => [assessments];
+  List<Object?> get props => [assessments, page, totalPages];
 }
 
 class UserAssessmentsError extends UserAssessmentsState {
