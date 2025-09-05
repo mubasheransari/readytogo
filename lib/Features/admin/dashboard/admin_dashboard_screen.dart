@@ -26,9 +26,13 @@ class AdminDashboardScreen extends StatelessWidget {
                     style: TextStyle(color: _Brand.textSecondary)),
                 const SizedBox(height: 16),
                 // Grid cards
-                Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
+                GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 1.4,
                   children: const [
                     _StatCard(
                       icon: Icons.groups_2_rounded,
