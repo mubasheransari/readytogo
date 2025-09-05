@@ -38,6 +38,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<RemoveAffiliationsOrganization>(removeAffiliationsOrganization);
     on<AddAffiliationsOrganization>(addAffiliationsOrganization);
     on<SignInWithGoogle>(signInWithGoogle);
+    on<UpdateOrganizationalProfile>(updateOrganizationalProfile);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -373,7 +374,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     UpdateOrganizationalProfile event,
     Emitter<LoginState> emit,
   ) async {
-    emit(state.copyWith(status: LoginStatus.updateProfileLoading));
+    emit(state.copyWith(
+        updateOrganizationalProfileEnum:
+            UpdateOrganizationalProfileEnum.loading));
     try {
       final response = await loginRepository.updateOrganizationalProfile(
         id: event.userId,
@@ -385,21 +388,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         //10@Testing
         // ✅ Refetch profile from server after update
         final refreshedProfile =
-            await loginRepository.individualProfile(event.userId);
+            await loginRepository.organizationProfile(event.userId);
 
         emit(state.copyWith(
-          status: LoginStatus.profileLoaded,
-          profile: refreshedProfile,
+          updateOrganizationalProfileEnum:
+              UpdateOrganizationalProfileEnum.success,
+          organizationProfileModel: refreshedProfile,
         ));
       } else {
         emit(state.copyWith(
-          status: LoginStatus.updateProfileError,
+          updateOrganizationalProfileEnum:
+              UpdateOrganizationalProfileEnum.failure,
           errorMessage: response.body,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-        status: LoginStatus.updateProfileError,
+        updateOrganizationalProfileEnum:
+            UpdateOrganizationalProfileEnum.failure,
         errorMessage: e.toString(),
       ));
     }

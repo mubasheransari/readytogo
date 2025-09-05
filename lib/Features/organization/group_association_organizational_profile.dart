@@ -17,7 +17,7 @@ class GroupAssociationEditOrganizationalProfile extends StatefulWidget {
   final OrganizationProfileModel profile;
   final File? selectedImageFile;
   final String? imageUrl;
-  final String userid, firstName, lastName, phone, description, email;
+  final String userid, firstName, lastName, phone, description, wesite, email;
 
   const GroupAssociationEditOrganizationalProfile({
     super.key,
@@ -25,6 +25,7 @@ class GroupAssociationEditOrganizationalProfile extends StatefulWidget {
     this.selectedImageFile,
     this.imageUrl,
     required this.description,
+    required this.wesite,
     required this.userid,
     required this.firstName,
     required this.lastName,
@@ -64,10 +65,17 @@ class _GroupAssociationEditOrganizationalProfileState
         email: widget.email,
         phoneNumber: widget.phone,
         description: widget.description,
+        website: widget.wesite,
         locationJson: jsonEncode(widget.profile.locations),
       );
 
-      try {
+      context.read<LoginBloc>().add(UpdateOrganizationalProfile(
+            userId: userId,
+            organizationProfileModel: updatedProfile,
+            profileImage: _selectedImage,
+          ));
+
+      /*  try {
         final response = await LoginRepository().updateOrganizationalProfile(
           id: userId,
           profile: updatedProfile,
@@ -100,7 +108,7 @@ class _GroupAssociationEditOrganizationalProfileState
         );
       } finally {
         setState(() => _submitted = false);
-      }
+      }*/
     }
   }
 
@@ -136,7 +144,31 @@ class _GroupAssociationEditOrganizationalProfileState
       backgroundColor: Colors.grey[200],
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
-          /*      if (state.updateProfessionalProfileStatus ==
+          if (state.updateOrganizationalProfileEnum ==
+              UpdateOrganizationalProfileEnum.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Profile updated successfully",
+                    style: TextStyle(color: Colors.white)),
+                backgroundColor: Colors.green,
+              ),
+            );
+            Navigator.pop(context);
+            Navigator.of(context).pop();
+          } else if (state.updateOrganizationalProfileEnum ==
+              UpdateOrganizationalProfileEnum.failure) {
+            print("UPDATE FAILED ${state.errorMessage}");
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage ?? "Update failed"),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        //   listener: (context, state) {
+
+        /*      if (state.updateProfessionalProfileStatus ==
                   UpdateProfessionalProfileStatus.success &&
               state.professionalProfileModel != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -186,7 +218,7 @@ class _GroupAssociationEditOrganizationalProfileState
               ),
             );
           }*/
-        },
+        //},
         builder: (context, state) {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -260,70 +292,80 @@ class _GroupAssociationEditOrganizationalProfileState
                             ),
                           ),
                         ),
-                       BlocConsumer<LoginBloc, LoginState>(
-  listener: (context, state) {
-    if (state.removeAffiliationGroupStatus ==
-        RemoveAffiliationGroupStatusProfessional.success) {
-      final storage = GetStorage();
-      final id = storage.read("id");
+                        BlocConsumer<LoginBloc, LoginState>(
+                          listener: (context, state) {
+                            if (state.removeAffiliationGroupStatus ==
+                                RemoveAffiliationGroupStatusProfessional
+                                    .success) {
+                              final storage = GetStorage();
+                              final id = storage.read("id");
 
-      context.read<LoginBloc>().add(GetOrganizationProfile(userId: id));
+                              context
+                                  .read<LoginBloc>()
+                                  .add(GetOrganizationProfile(userId: id));
 
-      Navigator.of(context).pop();
-     // Navigator.of(context).pop();
-    }
+                              Navigator.of(context).pop();
+                              // Navigator.of(context).pop();
+                            }
 
-    if (state.removeAffiliationGroupStatus ==
-        RemoveAffiliationGroupStatusProfessional.failure) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(state.errorMessage ?? "Failed to remove group")),
-      );
-    }
-  },
-  builder: (context, state) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: Column(
-        children: List.generate(
-          widget.profile.groupAssociations!.length,
-          (index) => ListTile(
-            trailing: InkWell(
-              onTap: () {
-                print("USER ID ${widget.userid}");
-                print(
-                    "GROUP ID ${widget.profile.groupAssociations![index].groupId}");
+                            if (state.removeAffiliationGroupStatus ==
+                                RemoveAffiliationGroupStatusProfessional
+                                    .failure) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(state.errorMessage ??
+                                        "Failed to remove group")),
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Column(
+                                children: List.generate(
+                                  widget.profile.groupAssociations!.length,
+                                  (index) => ListTile(
+                                    trailing: InkWell(
+                                      onTap: () {
+                                        print("USER ID ${widget.userid}");
+                                        print(
+                                            "GROUP ID ${widget.profile.groupAssociations![index].groupId}");
 
-                var storage = GetStorage();
-                var useerid = storage.read('userid');
+                                        var storage = GetStorage();
+                                        var useerid = storage.read('userid');
 
-                context.read<LoginBloc>().add(
-                      RemoveAffiliationsOrganization(
-                        userId: useerid,
-                        groupId: widget.profile.groupAssociations![index]
-                            .groupId
-                            .toString(),
-                      ),
-                    );
-              },
-              child: Image.asset("assets/icon_delete.png"),
-            ),
-            title: Text(
-              widget.profile.groupAssociations![index].groupName!,
-              style: const TextStyle(
-                fontSize: 18,
-                color: Colors.black87,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Satoshi',
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  },
-),
+                                        context.read<LoginBloc>().add(
+                                              RemoveAffiliationsOrganization(
+                                                userId: useerid,
+                                                groupId: widget
+                                                    .profile
+                                                    .groupAssociations![index]
+                                                    .groupId
+                                                    .toString(),
+                                              ),
+                                            );
+                                      },
+                                      child:
+                                          Image.asset("assets/icon_delete.png"),
+                                    ),
+                                    title: Text(
+                                      widget.profile.groupAssociations![index]
+                                          .groupName!,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Satoshi',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
 
-                      /*  Padding(
+                        /*  Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Column(
                             children: List.generate(
@@ -374,7 +416,6 @@ class _GroupAssociationEditOrganizationalProfileState
                         SizedBox(
                           height: 15,
                         ),
-                      
                         BlocBuilder<LoginBloc, LoginState>(
                           builder: (context, state) {
                             final allGroups =
@@ -391,12 +432,10 @@ class _GroupAssociationEditOrganizationalProfileState
                                     !associatedGroupIds.contains(group.id))
                                 .toList();
 
-                     
                             if (availableGroups.isEmpty) {
                               return const SizedBox.shrink();
                             }
 
-           
                             final isValidValue =
                                 availableGroups.contains(_dropdownValue);
                             final currentValue =
@@ -420,98 +459,118 @@ class _GroupAssociationEditOrganizationalProfileState
                                 ),
                                 const SizedBox(height: 8),
                                 BlocConsumer<LoginBloc, LoginState>(
-  listener: (context, state) {
-    if (state.status == LoginStatus.addAffilicationGroupsSuccess) {
-      final storage = GetStorage();
-      final id = storage.read("id");
+                                  listener: (context, state) {
+                                    if (state.status ==
+                                        LoginStatus
+                                            .addAffilicationGroupsSuccess) {
+                                      final storage = GetStorage();
+                                      final id = storage.read("id");
 
-      context.read<LoginBloc>().add(GetOrganizationProfile(userId: id));
+                                      context.read<LoginBloc>().add(
+                                          GetOrganizationProfile(userId: id));
 
-      Navigator.of(context).pop();
-    //  Navigator.of(context).pop();
-    }
+                                      Navigator.of(context).pop();
+                                      //  Navigator.of(context).pop();
+                                    }
 
-    if (state.status == LoginStatus.addAffilicationGroupsError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(state.errorMessage ?? "Something went wrong")),
-      );
-    }
-  },
-  builder: (context, state) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.83,
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.white,
-          dropdownMenuTheme: const DropdownMenuThemeData(),
-        ),
-        child: DropdownButtonFormField<GetAllAssociatedGroupModel>(
-          elevation: 0,
-          value: currentValue,
-          decoration: InputDecoration(
-            hintText: "Select group",
-            hintStyle: const TextStyle(
-              fontSize: 18,
-              color: Colors.black87,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'Satoshi',
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 12,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-          ),
-          items: availableGroups.map((group) {
-            return DropdownMenuItem<GetAllAssociatedGroupModel>(
-              value: group,
-              child: Text(
-                group.name,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'Satoshi',
-                ),
-              ),
-            );
-          }).toList(),
-          onChanged: (group) {
-            if (group != null &&
-                !selectedGroups.any((g) => g.id == group.id)) {
-              final storage = GetStorage();
-              final userId = storage.read('userid');
+                                    if (state.status ==
+                                        LoginStatus
+                                            .addAffilicationGroupsError) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(state.errorMessage ??
+                                                "Something went wrong")),
+                                      );
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    return SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.83,
+                                      child: Theme(
+                                        data: Theme.of(context).copyWith(
+                                          canvasColor: Colors.white,
+                                          dropdownMenuTheme:
+                                              const DropdownMenuThemeData(),
+                                        ),
+                                        child: DropdownButtonFormField<
+                                            GetAllAssociatedGroupModel>(
+                                          elevation: 0,
+                                          value: currentValue,
+                                          decoration: InputDecoration(
+                                            hintText: "Select group",
+                                            hintStyle: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'Satoshi',
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                              horizontal: 12,
+                                              vertical: 12,
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.white),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          items: availableGroups.map((group) {
+                                            return DropdownMenuItem<
+                                                GetAllAssociatedGroupModel>(
+                                              value: group,
+                                              child: Text(
+                                                group.name,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: 'Satoshi',
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (group) {
+                                            if (group != null &&
+                                                !selectedGroups.any(
+                                                    (g) => g.id == group.id)) {
+                                              final storage = GetStorage();
+                                              final userId =
+                                                  storage.read('userid');
 
-              context.read<LoginBloc>().add(
-                    AddAffiliationsOrganization(
-                      userId: userId,
-                      groupId: group.id,
-                    ),
-                  );
+                                              context.read<LoginBloc>().add(
+                                                    AddAffiliationsOrganization(
+                                                      userId: userId,
+                                                      groupId: group.id,
+                                                    ),
+                                                  );
 
-              setState(() {
-                _dropdownValue = group;
-                selectedGroups.add(group);
-              });
-            }
-          },
-        ),
-      ),
-    );
-  },
-),
+                                              setState(() {
+                                                _dropdownValue = group;
+                                                selectedGroups.add(group);
+                                              });
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
 
-                            /*    SizedBox(
+                                /*    SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.83,
                                   child: Theme(

@@ -35,6 +35,7 @@ class _EditOrganizationalProfileScreenState
   late TextEditingController emailController;
   late TextEditingController phoneController;
   late TextEditingController websiteController;
+  late TextEditingController descriptionController;
   late TextEditingController streetController;
   late TextEditingController areaController;
   late TextEditingController cityController;
@@ -50,6 +51,7 @@ class _EditOrganizationalProfileScreenState
     emailController = TextEditingController(text: p.email);
     phoneController = TextEditingController(text: p.phoneNumber);
     websiteController = TextEditingController(text: p.website);
+    descriptionController = TextEditingController(text: p.description);
     // streetController = TextEditingController(
     //     text: p.locations!.isNotEmpty
     //         ? p.locations!['streetAddress'] ?? ''
@@ -289,6 +291,12 @@ class _EditOrganizationalProfileScreenState
                             padding: const EdgeInsets.only(left: 8.0),
                             child: _buildField(websiteController, "Website"),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: _buildField(
+                                descriptionController, "Description",
+                                isMultiline: true),
+                          ),
                           const SizedBox(height: 30),
                           Padding(
                             padding: EdgeInsets.only(
@@ -419,7 +427,8 @@ class _EditOrganizationalProfileScreenState
                           MaterialPageRoute(
                             builder: (context) =>
                                 GroupAssociationEditOrganizationalProfile(
-                              description: widget.profile.description,
+                              wesite: websiteController.text.trim(),
+                              description: descriptionController.text.trim(),
                               profile: widget.profile,
                               firstName: firstNameController.text,
                               lastName: lastNameController.text,

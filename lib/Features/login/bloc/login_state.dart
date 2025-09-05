@@ -129,6 +129,13 @@ enum GoogleSignInEnum {
   failure,
 }
 
+enum UpdateOrganizationalProfileEnum {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
@@ -136,6 +143,7 @@ class LoginState extends Equatable {
   final LoginThroughSMSOtpRequestNewEnum loginThroughSMSOtpRequestNewEnum;
   final List<SearchModel>? searchResults;
   final List<FilterSearchModel>? filterSearchResults;
+  final UpdateOrganizationalProfileEnum ? updateOrganizationalProfileEnum;
   final SearchStatus searchStatus;
   final GetSavedSearchesStatus getSavedSearchesStatus;
   final FilterSearchStatus filterSearchStatus;
@@ -158,7 +166,9 @@ class LoginState extends Equatable {
   final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
   LoginState(
-      {this.googleSignInEnum = GoogleSignInEnum.initial,
+      {
+        this.updateOrganizationalProfileEnum = UpdateOrganizationalProfileEnum.initial,
+        this.googleSignInEnum = GoogleSignInEnum.initial,
       this.verificationLoginThroughSMS = VerificationLoginThroughSMS.initial,
       this.loginThroughSMSOtpRequestNewEnum =
           LoginThroughSMSOtpRequestNewEnum.initial,
@@ -189,6 +199,7 @@ class LoginState extends Equatable {
 
   /// Copy the state with updated fields
   LoginState copyWith({
+    UpdateOrganizationalProfileEnum ? updateOrganizationalProfileEnum,
     GoogleSignInEnum? googleSignInEnum,
     VerificationLoginThroughSMS? verificationLoginThroughSMS,
     LoginThroughSMSOtpRequestNewEnum? loginThroughSMSOtpRequestNewEnum,
@@ -215,6 +226,7 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
+      updateOrganizationalProfileEnum : updateOrganizationalProfileEnum ?? this.updateOrganizationalProfileEnum,
         googleSignInEnum: googleSignInEnum ?? this.googleSignInEnum,
         verificationLoginThroughSMS:
             verificationLoginThroughSMS ?? this.verificationLoginThroughSMS,
@@ -255,6 +267,7 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
+    updateOrganizationalProfileEnum,
         googleSignInEnum,
         verificationLoginThroughSMS,
         loginThroughSMSOtpRequestNewEnum,

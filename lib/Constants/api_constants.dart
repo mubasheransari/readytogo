@@ -17,14 +17,15 @@ class ApiConstants {
   static const String updateFcmToken = "account/update-fcm-token";
   static const String sendPushNotification = "notification/send-notification";
   static const String getIndividualProfileData =
-      "profile/individual"; //10@Testing
+      "profile/individual";
   static const String getProfessionalProfileData = "profile/professional/";
   static const String getOrganizationalProfileData = "profile/organization/";
   static const String getAllAssociatedGroups = "api/profile/groups";
   static const String getAllProfessionalProfile = "api/profile/professionals";
+    static const String getAllSpecialization = "api/profile/get-all-specializations";
   static const String addAffiliationsGroups =
       "profile/individual/affiliations/add";
-  static const String addAffiliationsGroupsOrganization =
+  static const String addAffiliationsGroupsOrganization =//10@Testing
       "profile/organization/affiliations/add";
   static const String removeAffiliationsGroups =
       "profile/individual/affiliations/remove";

@@ -221,13 +221,13 @@ class LoginRepository {
       "ZipCode": cleanedLocations.isNotEmpty
           ? cleanedLocations[0]["zipCode"] ?? ""
           : "",
-      "Description": profile.description,
-      "Website": profile.website,
+      "Description": profile.description?? "",
+      "Website": profile.website?? "",
       "ProfileImageUrl": profile.profileImageUrl ?? "",
       "LocationsJson": jsonEncode(cleanedLocations),
     });
 
-    // ✅ Optional: OrganizationId
+    // ✅ Optional: OrganizationId 10@Testing
     final orgId = _extractOrganizationId(profile.organizationProfessionals);
     if (orgId != null && orgId.isNotEmpty) {
       request.fields["OrganizationId"] = orgId;
