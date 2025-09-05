@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:readytogo/Model/professional_profile_model.dart';
 import 'package:readytogo/widgets/back_next_button_widget.dart';
 import '../../Constants/constants.dart';
+import '../../Model/specialization_model.dart';
 import '../../widgets/toast_widget.dart';
 import '../login/bloc/login_bloc.dart';
 import '../login/bloc/login_state.dart';
@@ -291,7 +292,7 @@ class _EditProfessionalProfileScreenState
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width * 0.33,
+                              right: MediaQuery.of(context).size.width * 0.30,
                             ),
                             child: const Text(
                               'Personal Information',
@@ -342,20 +343,82 @@ class _EditProfessionalProfileScreenState
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(
-                                    left:
-                                        27 //MediaQuery.of(context).size.width * 0.13,
-                                    ),
+                                    // right: MediaQuery.of(context).size.width *
+                                    //     0.25,
+                                    left: 8),
                                 child: const Text(
                                   'Specializations',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w700,
+                                  style:  TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w900,
                                     fontFamily: 'Satoshi',
+                                    color: Color(0xff323747),
                                   ),
                                 ),
                               ),
-                              Padding(
+
+                              BlocBuilder<LoginBloc, LoginState>(
+                                builder: (context, state) {
+                                  final List<SpecializationModel> list =
+                                      state.specializationModel!;
+                                  String? _selectedSpecializationId;
+
+                                  return SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.83,
+                                    child: DropdownButtonFormField<String>(
+                                      value: _selectedSpecializationId,
+                                      decoration: InputDecoration(
+                                        hintText: "Select specialization",
+                                        hintStyle: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900,
+                                          fontFamily: 'Satoshi',
+                                          color: Color(0xff323747),
+                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 12, vertical: 12),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16)),
+                                        enabledBorder: const OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16)),
+                                        ),
+                                        focusedBorder: const OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16)),
+                                        ),
+                                      ),
+                                      // 🔹 Just map: List<SpecializationModel> -> DropdownMenuItem<String>
+                                      items: [
+                                        for (final s in list)
+                                          DropdownMenuItem<String>(
+                                            value: s.id,
+                                            child: Text(
+                                              s.name,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.black87,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'Satoshi',
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                      onChanged: (id) => setState(
+                                          () => _selectedSpecializationId = id),
+                                    ),
+                                  );
+                                },
+                              ),
+
+                              /* Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Padding(
                                   padding: const EdgeInsets.only(
@@ -402,7 +465,7 @@ class _EditProfessionalProfileScreenState
                                     ),
                                   ),
                                 ),
-                              )
+                              )*/
 
                               // Padding(
                               //   padding: const EdgeInsets.only(left: 8.0),
@@ -455,7 +518,7 @@ class _EditProfessionalProfileScreenState
                           const SizedBox(height: 30),
                           Padding(
                             padding: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width * 0.49,
+                              right: MediaQuery.of(context).size.width * 0.40,
                             ),
                             child: const Text(
                               'Address Details',

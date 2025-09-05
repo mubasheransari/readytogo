@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:get_storage/get_storage.dart';
+import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Model/filter_search_model.dart';
 import 'package:readytogo/Model/get_all_associated_groups_model.dart';
 import 'package:readytogo/Model/get_all_individual_profile_model.dart';
@@ -9,6 +10,7 @@ import 'package:readytogo/Model/professional_profile_model.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:readytogo/Model/saved_search_model.dart';
 import 'package:readytogo/Model/search_model.dart';
+import 'package:readytogo/Model/specialization_model.dart';
 import '../Constants/api_constants.dart';
 import '../Model/individual_profile_model.dart';
 import '../Service/api_basehelper.dart';
@@ -408,6 +410,19 @@ class LoginRepository {
       }
     }
     return null;
+  }
+
+   Future<List<SpecializationModel>> getAllSpecializations() async {
+    final jsonResponse = await _apiBaseHelper.get(
+      url: ApiConstants.baseDomain,
+      path: ApiConstants.getAllSpecialization,
+    );
+
+    print(jsonResponse);
+
+    return List<SpecializationModel>.from(
+      jsonResponse.map((x) => SpecializationModel.fromJson(x)),
+    );
   }
 
   Future<List<GetAllAssociatedGroupModel>> getAllAssociatedGroup() async {

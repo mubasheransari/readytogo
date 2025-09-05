@@ -39,6 +39,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<AddAffiliationsOrganization>(addAffiliationsOrganization);
     on<SignInWithGoogle>(signInWithGoogle);
     on<UpdateOrganizationalProfile>(updateOrganizationalProfile);
+    on<GetAllSpecializations>(getAllSpecializations);
   }
 
   final LoginRepository loginRepository = LoginRepository();
@@ -88,7 +89,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final result = await loginRepository.searchFunctionality(event.services);
 
       emit(state.copyWith(
-        searchResults: result, // searchModel: result,10@Testing
+        searchResults: result,
         searchStatus: SearchStatus.searchSuccess,
       ));
     } catch (e) {
@@ -272,6 +273,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+  getAllSpecializations(
+    GetAllSpecializations event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(specializationEnum: SpecializationEnum.loading));
+
+    final getSpecializations = await loginRepository.getAllSpecializations();
+
+    print("GET ALL GROUPS $getSpecializations");
+
+    if (getSpecializations != null) {
+      emit(state.copyWith(
+          specializationModel: getSpecializations,
+          specializationEnum: SpecializationEnum.success));
+    } else {
+      emit(state.copyWith(
+          specializationEnum: SpecializationEnum
+              .failure //status: LoginStatus.getAllGroupsError,
+          //errorMessage: "Fxailed to fetch profile: ${e.toString()}",
+          ));
+    }
+  }
+
   getAllAssociatedGroups(
     GetAllAssociatedGroups event,
     Emitter<LoginState> emit,
@@ -289,12 +313,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else {
       emit(state.copyWith(
         status: LoginStatus.getAllGroupsError,
-        //errorMessage: "Failed to fetch profile: ${e.toString()}",
+        //errorMessage: "Fxailed to fetch profile: ${e.toString()}",
       ));
     }
   }
 
-  getAllProfessionalProfiles(
+   getAllProfessionalProfiles(
     GetAllProfessionalProfiles event,
     Emitter<LoginState> emit,
   ) async {

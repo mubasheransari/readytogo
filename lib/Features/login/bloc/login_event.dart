@@ -87,6 +87,8 @@ class UpdateOrganizationalProfile extends LoginEvent {
 
 class GetAllAssociatedGroups extends LoginEvent {}
 
+class GetAllSpecializations extends LoginEvent {}
+
 class AddAffiliations extends LoginEvent {
   final String userId;
   final String groupId;

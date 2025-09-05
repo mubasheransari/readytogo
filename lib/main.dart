@@ -165,7 +165,8 @@ class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
@@ -236,13 +237,14 @@ void main() async {
                   ..add(GetAllProfessionalProfiles())
                   ..add(GetSavedSearches()),
               )
-            : role == "Professional" //Professional 10@Testing
+            : role == "Professional"
                 ? BlocProvider<LoginBloc>(
                     lazy: false,
                     create: (context) => LoginBloc()
                       ..add(GetAllProfessionalProfiles())
                       ..add(GetProfessionalProfile(userId: value))
                       ..add(GetAllAssociatedGroups())
+                      ..add(GetAllSpecializations())
                       ..add(GetSavedSearches()),
                   )
                 : role == "Organization"

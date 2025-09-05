@@ -8,6 +8,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../Model/organization_profile_model.dart';
 import '../../../Model/saved_search_model.dart';
+import '../../../Model/specialization_model.dart';
 
 /// Enum to represent different states in the login process
 enum LoginStatus {
@@ -136,14 +137,23 @@ enum UpdateOrganizationalProfileEnum {
   failure,
 }
 
+enum SpecializationEnum {
+  initial,
+  loading,
+  success,
+  failure,
+}
+
 /// A unified state class for Login & Profile operations
 // ignore: must_be_immutable
 class LoginState extends Equatable {
+  final SpecializationEnum specializationEnum;
+  final List<SpecializationModel>? specializationModel;
   final VerificationLoginThroughSMS verificationLoginThroughSMS;
   final LoginThroughSMSOtpRequestNewEnum loginThroughSMSOtpRequestNewEnum;
   final List<SearchModel>? searchResults;
   final List<FilterSearchModel>? filterSearchResults;
-  final UpdateOrganizationalProfileEnum ? updateOrganizationalProfileEnum;
+  final UpdateOrganizationalProfileEnum? updateOrganizationalProfileEnum;
   final SearchStatus searchStatus;
   final GetSavedSearchesStatus getSavedSearchesStatus;
   final FilterSearchStatus filterSearchStatus;
@@ -166,9 +176,11 @@ class LoginState extends Equatable {
   final List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel;
 
   LoginState(
-      {
-        this.updateOrganizationalProfileEnum = UpdateOrganizationalProfileEnum.initial,
-        this.googleSignInEnum = GoogleSignInEnum.initial,
+      {this.specializationEnum = SpecializationEnum.initial,
+      this.specializationModel,
+      this.updateOrganizationalProfileEnum =
+          UpdateOrganizationalProfileEnum.initial,
+      this.googleSignInEnum = GoogleSignInEnum.initial,
       this.verificationLoginThroughSMS = VerificationLoginThroughSMS.initial,
       this.loginThroughSMSOtpRequestNewEnum =
           LoginThroughSMSOtpRequestNewEnum.initial,
@@ -199,7 +211,9 @@ class LoginState extends Equatable {
 
   /// Copy the state with updated fields
   LoginState copyWith({
-    UpdateOrganizationalProfileEnum ? updateOrganizationalProfileEnum,
+    SpecializationEnum? specializationEnum,
+    List<SpecializationModel>? specializationModel,
+    UpdateOrganizationalProfileEnum? updateOrganizationalProfileEnum,
     GoogleSignInEnum? googleSignInEnum,
     VerificationLoginThroughSMS? verificationLoginThroughSMS,
     LoginThroughSMSOtpRequestNewEnum? loginThroughSMSOtpRequestNewEnum,
@@ -226,7 +240,10 @@ class LoginState extends Equatable {
     List<GetAllProfessionalProfileModel>? getAllProfessionalProfileModel,
   }) {
     return LoginState(
-      updateOrganizationalProfileEnum : updateOrganizationalProfileEnum ?? this.updateOrganizationalProfileEnum,
+        specializationEnum: specializationEnum ?? this.specializationEnum,
+        specializationModel: specializationModel ?? this.specializationModel,
+        updateOrganizationalProfileEnum: updateOrganizationalProfileEnum ??
+            this.updateOrganizationalProfileEnum,
         googleSignInEnum: googleSignInEnum ?? this.googleSignInEnum,
         verificationLoginThroughSMS:
             verificationLoginThroughSMS ?? this.verificationLoginThroughSMS,
@@ -267,7 +284,9 @@ class LoginState extends Equatable {
 
   @override
   List<Object?> get props => [
-    updateOrganizationalProfileEnum,
+        specializationEnum,
+        specializationModel,
+        updateOrganizationalProfileEnum,
         googleSignInEnum,
         verificationLoginThroughSMS,
         loginThroughSMSOtpRequestNewEnum,
