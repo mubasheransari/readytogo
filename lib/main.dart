@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:readytogo/Features/Signup/bloc/signup_bloc.dart';
 import 'package:readytogo/Features/login/bloc/login_event.dart';
 import 'package:readytogo/Features/splash_screen.dart';
+import 'Features/3MinuteAssisment/Step1Screen.dart';
 import 'Features/ForgetPassword/bloc/forget_password_bloc.dart';
 import 'Features/login/bloc/login_bloc.dart';
 import 'Features/login/login_success_screen.dart';
@@ -339,11 +340,16 @@ class _MyAppState extends State<MyApp> {
 
     final box = GetStorage();
     var token = box.read("token");
+    var assesment = box.read("3min");
 
     return MaterialApp(
       title: 'Ready to go',
       debugShowCheckedModeBanner: false,
-      home: token != null ? LoginSuccessScreen() : SplashScreen(),
+      home: token != null
+          ? LoginSuccessScreen()
+          : assesment != null
+              ? Step1Screen()
+              : SplashScreen(),
     );
   }
 }

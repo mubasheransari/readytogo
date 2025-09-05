@@ -9,6 +9,7 @@ import 'package:readytogo/widgets/toast_widget.dart';
 import '../../widgets/back_next_button_widget.dart';
 import '../Donate/payment_sucess.dart';
 import '../Subscription/subscription_success_screen.dart';
+import '../login/login_screen.dart';
 
 class TelehealthScreen extends StatefulWidget {
   TelehealthScreen({Key? key}) : super(key: key);
@@ -156,17 +157,28 @@ class _TelehealthScreenState extends State<TelehealthScreen> {
                   Navigator.of(context).pop();
                 },
                 onNextPressed: () {
-                  // Navigator.of(context).pop();
-                  // Navigator.of(context).pop();
-                  // Navigator.of(context).pop();
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                  );
                   var box = GetStorage();
-                  box.write("assessment", "1");
-                  toastWidget("Assessment Completed", Colors.green);
+                  var assesment = box.read("3min");
+                  if (assesment != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+
+                    box.write("assessment", "1");
+                    toastWidget("Assessment Completed", Colors.green);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    );
+
+                    box.write("assessment", "1");
+                    toastWidget("Assessment Completed", Colors.green);
+                  }
+                  // Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
                 },
               ),
             ],

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:get_storage/get_storage.dart';
+import 'package:readytogo/Features/3MinuteAssisment/Step1Screen.dart';
 import 'package:readytogo/Features/Signup/bloc/signup_event.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +100,8 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  var storage = GetStorage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,8 +111,9 @@ class _SignupScreenState extends State<SignupScreen> {
             toastWidget("Signup Successful", Colors.green);
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (_) => LoginScreen()),
+              MaterialPageRoute(builder: (_) => Step1Screen()),
             );
+            storage.write("3min", "3min");
           } else if (state is SignUpFailure) {
             toastWidget(state.error, Colors.red);
           }

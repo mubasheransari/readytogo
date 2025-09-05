@@ -51,12 +51,11 @@ class GoogleSignInService {
 
       if (idToken != null) {
         final response = await AuthApi.sendGoogleJwtToBackend(idToken);
-        
-        print('Backend response: \\${response.statusCode} - \\${response.body}');
-        if (response.statusCode == 200) {
-           final responseBody = json.decode(response.body);
 
-           
+        print(
+            'Backend response: \\${response.statusCode} - \\${response.body}');
+        if (response.statusCode == 200) {
+          final responseBody = json.decode(response.body);
 
           Future.microtask(() {
             Navigator.pushReplacement(
@@ -64,8 +63,7 @@ class GoogleSignInService {
               MaterialPageRoute(builder: (_) => HomeScreen()),
             );
           });
-        }
-         else {
+        } else {
           // Optionally show error to user
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Google login failed. Please try again.')),
@@ -137,6 +135,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    var box = GetStorage();
+    box.remove("3min");
+    super.initState();
+  }
+
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -365,33 +370,42 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 20),
 
                         BlocConsumer<LoginBloc, LoginState>(
-  listener: (context, state) {
-    if (state.googleSignInEnum == GoogleSignInEnum.success) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const LoginSuccessScreen()),
-        (route) => false,
-      );
-    } else if (state.googleSignInEnum == GoogleSignInEnum.failure) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(state.errorMessage ?? "Google login failed")),
-      );
-    }
-  },
-  builder: (context, state) {
-    if (state.googleSignInEnum == GoogleSignInEnum.loading) {
-      return const Center(child: CircularProgressIndicator());
-    }
+                          listener: (context, state) {
+                            if (state.googleSignInEnum ==
+                                GoogleSignInEnum.success) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (_) => const LoginSuccessScreen()),
+                                (route) => false,
+                              );
+                            } else if (state.googleSignInEnum ==
+                                GoogleSignInEnum.failure) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(state.errorMessage ??
+                                        "Google login failed")),
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state.googleSignInEnum ==
+                                GoogleSignInEnum.loading) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
 
-    return _buildSocialLoginButton(
-      onTap: () {
-        context.read<LoginBloc>().add(SignInWithGoogle());
-      },
-      iconPath: 'assets/Google.png',
-      label: 'Login with Google',
-      borderColor: const Color(0xFFDB4437),
-    );
-  },
-),
+                            return _buildSocialLoginButton(
+                              onTap: () {
+                                context
+                                    .read<LoginBloc>()
+                                    .add(SignInWithGoogle());
+                              },
+                              iconPath: 'assets/Google.png',
+                              label: 'Login with Google',
+                              borderColor: const Color(0xFFDB4437),
+                            );
+                          },
+                        ),
 
                         // _buildSocialLoginButton(
                         //   onTap: () {
