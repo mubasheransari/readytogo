@@ -114,7 +114,7 @@ class _LoginThroughSMSViewOTPRequestState
                                   "OTP Sent Successfully", Colors.green);
                             } else if (state.loginThroughSMSOtpRequestNewEnum ==
                                 LoginThroughSMSOtpRequestNewEnum.failure) {
-                              toastWidget("Failed", Colors.red);
+                              toastWidget("This number is not connected with this account.", Colors.red);
                             }
                           },
 
