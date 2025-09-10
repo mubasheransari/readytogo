@@ -87,7 +87,7 @@ class _GroupAssociationEditOrganizationalProfileState
               UpdateOrganizationalProfileEnum.success) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text("Profile updated successfully",
+                content: Text("Profile Updated Successfully",
                     style: TextStyle(color: Colors.white)),
                 backgroundColor: Colors.green,
               ),
@@ -202,17 +202,6 @@ class _GroupAssociationEditOrganizationalProfileState
                                           OrganizationProfileScreen()),
                                 );
                               });
-
-                              // final storage = GetStorage();
-                              // final id = storage.read("userid");
-
-                              // context
-                              //     .read<LoginBloc>()
-                              //     .add(GetOrganizationProfile(userId: id));
-
-                              // Navigator.of(context).pop();
-                              // Navigator.of(context).pop();
-                              //      toastWidget('Group Removed', Colors.red);
                             }
 
                             if (state.removeAffiliationGroupStatus ==
@@ -268,54 +257,6 @@ class _GroupAssociationEditOrganizationalProfileState
                           },
                         ),
 
-                        /*  Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Column(
-                            children: List.generate(
-                              widget.profile.groupAssociations!.length,
-                              (index) => ListTile(
-                                trailing: InkWell(
-                                    onTap: () {
-                                      print("USER ID ${widget.userid}");
-                                      print(
-                                          "GROUP ID ${widget.profile.groupAssociations![index].groupId}");
-                                      var storage = GetStorage();
-
-                                      var id = storage.read("id");
-
-                                      var useerid = storage.read('userid');
-                                      context.read<LoginBloc>().add(
-                                            RemoveAffiliationsOrganization(
-                                              userId: useerid,
-                                              groupId: widget
-                                                  .profile
-                                                  .groupAssociations[index]
-                                                  .groupId
-                                                  .toString(),
-                                            ),
-                                          );
-
-                                      context.read<LoginBloc>().add(
-                                          GetOrganizationProfile(userId: id));
-                                   //   Navigator.of(context).pop();
-                                 //     Navigator.of(context).pop();
-                                    },
-                                    child:
-                                        Image.asset("assets/icon_delete.png")),
-                                title: Text(
-                                  widget.profile.groupAssociations![index]
-                                      .groupName!,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'Satoshi',
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),*/
                         widget.profile.groupAssociations.length != 0
                             ? SizedBox(
                                 height: 15,
