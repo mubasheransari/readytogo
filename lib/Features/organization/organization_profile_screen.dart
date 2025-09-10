@@ -26,6 +26,10 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
   void initState() {
     super.initState();
     final userId = GetStorage().read("id");
+    print("ID PRINT $userId");
+    print("ID PRINT $userId");
+    print("ID PRINT $userId");
+    print("ID PRINT $userId");
     if (userId != null) {
       context.read<LoginBloc>().add(GetOrganizationProfile(userId: userId));
     }
@@ -56,7 +60,15 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
       builder: (context, state) {
         if (state.organizationalStatus == OrganizationalStatus.loading //||
             ) {
-          return const Center(child: CircularProgressIndicator());
+          return Scaffold(
+            backgroundColor:
+                const Color(0xFFF6F7FF), // same as your profile screen
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+
+          //  return const Center(child: CircularProgressIndicator());
         } else if (state.organizationalStatus == OrganizationalStatus.success &&
             state.organizationProfileModel != null) {
           final profile = state.organizationProfileModel!;
@@ -187,12 +199,12 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                               ? '${profile.locations![0].zipCode ?? ""}'
                               : 'No Address Provided',
                         ),
-                         SizedBox(height: 10),
-                  _buildInfoRow('Website:', profile.website!),
+                        SizedBox(height: 10),
+                        _buildInfoRow('Website:', profile.website!),
                       ],
                     ),
-                  ),//10@Testing
-                 
+                  ), //10@Testing
+
                   SizedBox(height: 10),
                   Container(
                     decoration: BoxDecoration(
@@ -236,8 +248,19 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                       fontFamily: 'Satoshi',
                     ),
                   ),
-                  SizedBox(height: 16),
-                  ...profile.groupAssociations!.map<Widget>((group) {
+                  SizedBox(height: 5),
+                  profile.groupAssociations.length == 0
+                      ? Text(
+                          'No group joined yet!',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            color: Colors.red,
+                            fontFamily: 'Satoshi',
+                          ),
+                        )
+                      : SizedBox(),
+                  ...profile.groupAssociations.map<Widget>((group) {
                     return Column(
                       children: [
                         _groupCard(
@@ -260,7 +283,7 @@ class _OrganizationProfileScreenState extends State<OrganizationProfileScreen> {
                       fontFamily: 'Satoshi',
                     ),
                   ),
-                  SizedBox(height: 18),
+                  SizedBox(height: 8),
                   ...profile.organizationProfessionals!
                       .map<Widget>((professional) {
                     return Column(
